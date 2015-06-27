@@ -1,48 +1,16 @@
-<html>
-	<head>
-		<title>Laravel</title>
-		
-		<link href='//fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
+@extends('base')   {{-- 继承master模版 --}}
 
-		<style>
-			body {
-				margin: 0;
-				padding: 0;
-				width: 100%;
-				height: 100%;
-				color: #B0BEC5;
-				display: table;
-				font-weight: 100;
-				font-family: 'Lato';
-			}
+@section('title')   {{-- 对应@yield('title') --}}
+    学生成绩管理系统
+@stop
 
-			.container {
-				text-align: center;
-				display: table-cell;
-				vertical-align: middle;
-			}
-
-			.content {
-				text-align: center;
-				display: inline-block;
-			}
-
-			.title {
-				font-size: 96px;
-				margin-bottom: 40px;
-			}
-
-			.quote {
-				font-size: 24px;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="container">
-			<div class="content">
-				<div class="title">Laravel 5</div>
-				<div class="quote">{{ Inspiring::quote() }}</div>
-			</div>
-		</div>
-	</body>
-</html>
+@section('content')   {{-- 对应@yield('content') --}}
+    <div class="container">
+        <div class="jumbotron">
+            <h2><div class="quote">{{ Inspiring::quote() }}</div></h2>
+            <p>同学们登录后先修改相关资料</p>
+            <p>查询分数,有疑问咨询管理员</p>
+            <p><a class="btn btn-primary btn-lg" href="/auth/login" role="button">点击登录</a></p>
+        </div>
+    </div>
+@stop
