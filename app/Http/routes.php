@@ -15,6 +15,8 @@ Route::get('/', 'HomeController@index');
 
 Route::get('home', 'HomeController@index');
 
+Route::get('auth/login/url/{url}', [
+	'middleware' => 'guest', 'as' => 'login', 'uses' => 'Auth\AuthController@loginUrl']);
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',

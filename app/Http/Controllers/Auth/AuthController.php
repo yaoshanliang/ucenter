@@ -37,17 +37,16 @@ class AuthController extends Controller {
 
 		$this->middleware('guest', ['except' => 'getLogout']);
 	}
-	function authenticate()
-	{
-		if (Auth::attempt(['email' => $email, 'password' => $password]))
-		{
-		    return redirect()->intended('dashboard');
-		}
-	}
 
 	public function getLogin()
 	{
-		return view('auth.login');
+		if(!isset($_GET['app'])) {
+			return view('auth.login');
+		}
+		$app = $_GET['app'];//代号
+		$app_name = 'xx';//中文名称
+		$app_url = 'http://localhost/ids/example';//地址
+		return view('auth.login', ['app_name' => $app_name, 'app_url' => $app_url]);
 	}
 
 	public function postLogin(Request $request)
@@ -55,6 +54,14 @@ class AuthController extends Controller {
 		$this->validate($request, ['username' => 'required', 'password' => 'required']);
 		$credentials = $request->only('username', 'password');
 		if (Auth::attempt($credentials, $request->has('remember'))) {
+			ini_set('session.cookie_path', '/');
+
+			 ini_set('session.cookie_domain', 'localhost://ucenter/example');
+
+			 ini_set('session.cookie_lifetime', '10');
+
+			 session_start();
+			 $_SESSION['username'] = 'iatboy';
 			return redirect()->guest('home');
 		} else {
 			return redirect()->guest('auth/login')
@@ -63,5 +70,9 @@ class AuthController extends Controller {
 		}
 	}
 
+	public function loginUrl()
+	{
+		echo '11';
+	}
 
 }
