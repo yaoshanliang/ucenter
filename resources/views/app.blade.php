@@ -28,12 +28,14 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">统一身份认证</a>
+				<a class="navbar-brand" href="{{url('/')}}">统一身份认证</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/') }}">Home</a></li>
+					@if (isset($app_url))
+						<li><a href={{$app_url}} target="_blank">{{$app_name}}</a></li>
+					@endif
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
