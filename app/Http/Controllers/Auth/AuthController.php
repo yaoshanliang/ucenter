@@ -1,5 +1,8 @@
 <?php namespace App\Http\Controllers\Auth;
 
+use Input, Redirect;
+use Auth;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
@@ -34,5 +37,31 @@ class AuthController extends Controller {
 
 		$this->middleware('guest', ['except' => 'getLogout']);
 	}
+	function authenticate()
+	{
+		if (Auth::attempt(['email' => $email, 'password' => $password]))
+		{
+		    return redirect()->intended('dashboard');
+		}
+	}
+
+	public function getLogin()
+	{
+		return view('auth.login');
+	}
+
+	public function postLogin(Request $request)
+	{
+		$this->validate($request, ['username' => 'required', 'password' => 'required']);
+		$credentials = $request->only('username', 'password');
+		if (Auth::attempt($credentials, $request->has('remember'))) {
+			return redirect()->guest('home');
+		} else {
+			return redirect()->guest('auth/login')
+				->withInput()
+				->withErrors('用户名与密码不匹配，请重试！');
+		}
+	}
+
 
 }
