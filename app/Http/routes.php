@@ -30,7 +30,11 @@ Route::get('logout', [
  */
 Route::get('api', [
 	'middleware' => 'guest', 'uses' => 'Api\ApiController@forbidden']);
+// Route::get('api/get_token', [
+	// 'middleware' => 'guest', 'uses' => 'Api\ApiController@get_token']);
 Route::get('api/get_token', [
-	'middleware' => 'guest', 'uses' => 'Api\ApiController@get_token']);
+'uses' => 'Api\ApiController@get_token']);
+Route::get('api/validate_token', [
+'uses' => 'Api\ApiController@validate_token']);
 Route::post('api', [
 	'middleware' => 'guest', 'uses' => 'Api\ApiController@index']);

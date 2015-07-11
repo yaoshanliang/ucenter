@@ -28,6 +28,10 @@ class ApiController extends Controller {
 		return json_encode($data);
 	}
 
+	public function validate_token() {
+		return '1';
+	}
+
 	//根据request_type分发
 	public function index(Request $request)
 	{

@@ -51,17 +51,13 @@ class AuthController extends Controller {
 
 	public function postLogin(Request $request)
 	{
+		if($request->has('app_url')) {
+			$this->idsLogin($request);
+			return;
+		}
 		$this->validate($request, ['username' => 'required', 'password' => 'required']);
 		$credentials = $request->only('username', 'password');
 		if (Auth::attempt($credentials, $request->has('remember'))) {
-			ini_set('session.cookie_path', '/');
-
-			 ini_set('session.cookie_domain', 'localhost://ucenter/example');
-
-			 ini_set('session.cookie_lifetime', '10');
-
-			 session_start();
-			 $_SESSION['username'] = 'iatboy';
 			return redirect()->guest('home');
 		} else {
 			return redirect()->guest('auth/login')
@@ -70,9 +66,17 @@ class AuthController extends Controller {
 		}
 	}
 
-	public function loginUrl()
+	private function idsLogin($request)
 	{
-		echo '11';
+		$this->validate($request, ['username' => 'required', 'password' => 'required']);
+		$credentials = $request->only('username', 'password');
+		if (Auth::attempt($credentials, $request->has('remember'))) {
+			header("Location: http://localhost/ids/example/login.php?token=1");
+		}
+		else{
+			echo 'shibai ';
+		}
+		exit;
 	}
 
 }
