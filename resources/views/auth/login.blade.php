@@ -21,6 +21,10 @@
 					<form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/login') }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
+						@if (isset($app_url))
+							<input type="hidden" name="app_url" value="{{$app_url}}">
+						@endif
+
 						<div class="form-group">
 							<label class="col-md-4 control-label">用户名</label>
 							<div class="col-md-6">
