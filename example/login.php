@@ -1,11 +1,19 @@
-<script src='jquery-2.1.1.js'></script>
 <?php
 session_start();
 if(isset($_SESSION['username'])) {
 	header('Location : http://localhost/ids/example/index.php');
 } else {
-	echo 'not login';
-
+	$username = $_GET['username'];
+	$token = $_GET['token'];
+	$app_secret = 'xxx';
+	$validate_token = MD5($username . $app_secret);
+	if($validate_token === $token) {
+		$_SESSION['username'] = $username;
+		header('Location:http://localhost/ids/example/index.php');
+	} else {
+		echo 'token invalidate';
+	}
+	/*
 	$url = 'http://ids.com/api';
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
@@ -27,5 +35,6 @@ if(isset($_SESSION['username'])) {
 		echo 'token invalidate';
 	}
 	var_dump($_GET['token']);
+	 */
 }
 ?>
