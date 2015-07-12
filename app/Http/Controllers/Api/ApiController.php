@@ -28,22 +28,22 @@ class ApiController extends Controller {
 		return json_encode($data);
 	}
 
-	public function validate_token() {
-		return '1';
-	}
-
 	//根据request_type分发
 	public function index(Request $request)
 	{
 		$input = json_decode(file_get_contents("php://input"), true);
 		var_dump($input);
-		if(isset($input['request_type'])) {
+		if(!isset($input['request_type'])) {
 			$data['errCode'] = 10001;
 			$data['errMsg'] = 'Request_type is missing';
+			return json_encode($data);
 		}
 		switch($input['request_type']) {
 			case 'login':
 				$data = $this->login($input);
+				break;
+			case 'validate_token':
+				$data = $this->validate_token($input);
 				break;
 		}
 		return json_encode($data);
@@ -72,6 +72,11 @@ class ApiController extends Controller {
 		        Auth::logout();
 	    }
 	    return Redirect::route('login');
+	}
+
+	private function validate_token($input) {
+		$data['errCode'] = 0;
+		return $data;
 	}
 
 }
