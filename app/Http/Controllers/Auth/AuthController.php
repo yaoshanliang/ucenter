@@ -2,6 +2,7 @@
 
 use Input, Redirect;
 use Auth;
+use Crypt;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
@@ -52,8 +53,7 @@ class AuthController extends Controller {
 	public function postLogin(Request $request)
 	{
 		if($request->has('app_url')) {
-			$this->idsLogin($request);
-			return;
+			return $this->idsLogin($request);
 		}
 		$this->validate($request, ['username' => 'required', 'password' => 'required']);
 		$credentials = $request->only('username', 'password');
@@ -71,12 +71,16 @@ class AuthController extends Controller {
 		$this->validate($request, ['username' => 'required', 'password' => 'required']);
 		$credentials = $request->only('username', 'password');
 		if (Auth::attempt($credentials, $request->has('remember'))) {
-			header("Location: http://localhost/ids/example/login.php?token=1");
+			$app_secret = 'xxx';
+			$token = MD5($request->username . $app_secret);
+			header("Location: http://localhost/ids/example/login.php?username=" . $request->username . "&token=$token");
+			exit;
 		}
 		else{
-			echo 'shibai ';
+			return redirect()->guest('auth/login?app=xxx')
+				->withInput()
+				->withErrors('用户名与密码不匹配，请重试！');
 		}
-		exit;
 	}
 
 }
