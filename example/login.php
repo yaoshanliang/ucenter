@@ -1,27 +1,24 @@
 <script src='jquery-2.1.1.js'></script>
 <?php
 session_start();
-var_dump($_SESSION);
 if(isset($_SESSION['username'])) {
-	echo $_SESSION['username'];
-	echo 'login';
-	header('Location:http://localhost/ids/example/index.php');
+	header('Location : http://localhost/ids/example/index.php');
 } else {
 	echo 'not login';
-?>
-	<script>
-		document.cookie="token="+1;
-		/*$.ajax({
-			type: 'GET',
-			url : 'http://localhost/ids/public/api/validate_token',
-			async : false,
-			success : function (data) {
-				alert(data);
-				document.cookie="token="+data;
-			},
-		});*/
-	</script>
-<?php
+
+	$url = 'http://ids.com/api';
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt($ch, CURLOPT_POST, 1);
+	$data['username'] = 'iat';
+
+	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+	$output = curl_exec($ch);
+	curl_close($ch);
+	//打印获得的数据
+	print_r($output);
+	exit;
 	$token = file_get_contents('http://localhost/ids/public/api/validate_token');
 	if($token === $_GET['token']) {
 		$_SESSION['username'] = 122;
