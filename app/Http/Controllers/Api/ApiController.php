@@ -32,7 +32,6 @@ class ApiController extends Controller {
 	public function index(Request $request)
 	{
 		$input = json_decode(file_get_contents("php://input"), true);
-		var_dump($input);
 		if(!isset($input['request_type'])) {
 			$data['errCode'] = 10001;
 			$data['errMsg'] = 'Request_type is missing';
@@ -55,12 +54,16 @@ class ApiController extends Controller {
 
 	private function login($input)
 	{
-	    if (Auth::attempt(['email' => $input['data']['username'], 'password' => $input['data']['password']])) {
+	    if (Auth::attempt(['username' => $input['data']['username'], 'password' => $input['data']['password']])) {
 			$data['errCode'] = 0;
+			$app_secret = 'example_secret';
+			$token = MD5($input['data']['username'] . $app_secret);
+			$data['data']['token'] = $token;
+			$data['data']['username'] = $input['data']['username'];
 
 		} else {
 			$data['errCode'] = 10002;
-			$errMsg['errMsg'] = 'Username or password is incorrect';
+			$data['errMsg'] = 'Username or password is incorrect';
 		}
 		return $data;
 
