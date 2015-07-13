@@ -1,18 +1,21 @@
 <?php
 session_start();
 if(isset($_SESSION['username'])) {
-	header('Location : http://localhost/ids/example/index.php');
+	header('Location:http://localhost/ids/example/index.php');
+	exit;
 } else {
 	$username = $_GET['username'];
 	$token = $_GET['token'];
 	$app_secret = 'xxx';
 	$validate_token = MD5($username . $app_secret);
+	var_dump($validate_token);
 	if($validate_token === $token) {
 		$_SESSION['username'] = $username;
 		header('Location:http://localhost/ids/example/index.php');
 	} else {
 		echo 'token invalidate';
 	}
+	exit;
 	/*
 	$url = 'http://ids.com/api';
 	$ch = curl_init();
