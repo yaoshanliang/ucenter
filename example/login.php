@@ -13,14 +13,13 @@ if(isset($_SESSION['username'])) {
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 	curl_setopt($ch, CURLOPT_POST, 1);
-
 	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
 	$output = curl_exec($ch);
 	curl_close($ch);
 	$result = json_decode($output, true);
 
 	if($result['errCode'] !== 0) {
-		// echo 'token 不合法！';//上线时不显示
 		echo '登录失败';
 	} else {
 		$_SESSION['username'] = $result['data']['username'];
