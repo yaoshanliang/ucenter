@@ -70,10 +70,10 @@ class AuthController extends Controller {
 	{
 		$this->validate($request, ['username' => 'required', 'password' => 'required']);
 		$credentials = $request->only('username', 'password');
-		if (Auth::attempt($credentials, $request->has('remember'))) {
+		if(Auth::validate($credentials)) {
 			$app_secret = 'example_secret';
 			$token = MD5($request->username . $app_secret);
-			header("Location: http://localhost/ids/example/login.php?username=" . $request->username . "&token=$token");
+			header("Location:http://example.com/login.php?username=" . $request->username . "&token=$token");
 			exit;
 		}
 		else{
@@ -81,7 +81,6 @@ class AuthController extends Controller {
 				->withInput()
 				->withErrors('用户名与密码不匹配，请重试！');
 		}
-		// exit;
 	}
 
 }
