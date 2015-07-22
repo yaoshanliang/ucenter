@@ -72,8 +72,12 @@ class AuthController extends Controller {
 		$credentials = $request->only('username', 'password');
 		if(Auth::validate($credentials)) {
 			$app_secret = 'example_secret';
-			$token = MD5($request->username . $app_secret);
-			header("Location:http://example.com/login.php?username=" . $request->username . "&token=$token");
+			$token_array['username'] = $request->username;
+			$token_array['app'] = 'example';
+			$token_array['app_secret'] = $app_secret;
+			$token_array['timestamp'] = time();
+			$token = base64_encode(json_encode($token_array));
+			header('Location:http://example.com/login.php?token=' . $token);
 			exit;
 		}
 		else{

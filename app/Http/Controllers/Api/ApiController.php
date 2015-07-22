@@ -52,21 +52,32 @@ class ApiController extends Controller {
 	    return view('login');
 	}
 
+	//验证token
+	private function validate_token($input)
+	{
+		$token_array = json_decode(base64_decode($input['data']['token']), true);
+		if(is_null($token_array) || $token_array['app_secret'] != 'example_secret') {
+			$data['errCode'] = 10001;
+			$data['errMsg'] = 'token invalid';
+		 } else {
+			 $data['errCode'] = 0;
+			 $data['data']['username'] = $token_array['username'];
+		 }
+		return json_encode($data);
+
+	}
+
 	private function login($input)
 	{
-	    if (Auth::attempt(['username' => $input['data']['username'], 'password' => $input['data']['password']])) {
-			$data['errCode'] = 0;
-			$app_secret = 'example_secret';
-			$token = MD5($input['data']['username'] . $app_secret);
-			$data['data']['token'] = $token;
-			$data['data']['username'] = $input['data']['username'];
-
+		$validate_token = $this->validate_token($input);
+		$result = json_decode($validate_token, true);
+		if($result['errCode'] !== 0) {
+			$data = $result;
 		} else {
-			$data['errCode'] = 10002;
-			$data['errMsg'] = 'Username or password is incorrect';
+			$data['errCode'] = 0;
+			$data['data']['username'] = $result['data']['username'];
 		}
 		return $data;
-
 	}
 
 	public function logout()
@@ -76,10 +87,4 @@ class ApiController extends Controller {
 	    }
 	    return Redirect::route('login');
 	}
-
-	private function validate_token($input) {
-		$data['errCode'] = 0;
-		return $data;
-	}
-
 }
