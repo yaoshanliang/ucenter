@@ -15,18 +15,6 @@ class ApiController extends Controller {
 		return json_encode($data);
 	}
 
-	public function get_token() {
-		$token =  csrf_token();
-		if($token) {
-			$data['errCode'] = 0;
-			$data['token'] = $token;
-		}
-		else {
-			$data['errCode'] = 10000;
-			$data['errMsg'] = 'Failed to get token';
-		}
-		return json_encode($data);
-	}
 
 	//根据request_type分发
 	public function index(Request $request)
@@ -38,18 +26,39 @@ class ApiController extends Controller {
 			return json_encode($data);
 		}
 		switch($input['request_type']) {
+			case 'get_token':
+				$data = $this->get_token($input);
+				break;
 			case 'login':
 				$data = $this->login($input);
 				break;
-			case 'validate_token':
-				$data = $this->validate_token($input);
-				break;
 		}
-		return json_encode($data);
+		return $data;
 	}
 	public function loginGet()
 	{
 	    return view('login');
+	}
+
+	//获取token
+	public function get_token($input) {
+
+		$credentials['username'] = $input['data']['username'];
+		$credentials['password'] = $input['data']['password'];
+		if(Auth::validate($credentials)) {
+			$app_secret = 'example_secret';
+			$token_array['username'] = $input['data']['username'];
+			$token_array['app'] = 'example';
+			$token_array['app_secret'] = $app_secret;
+			$token_array['timestamp'] = time();
+			$token = base64_encode(json_encode($token_array));
+			$data['errCode'] = 0;
+			$data['data']['token'] = $token;
+		} else {
+			$data['errCode'] = 111;
+			$data['errMsg'] = 'username and password do not match';
+		}
+		return json_encode($data);
 	}
 
 	//验证token
@@ -77,7 +86,7 @@ class ApiController extends Controller {
 			$data['errCode'] = 0;
 			$data['data']['username'] = $result['data']['username'];
 		}
-		return $data;
+		return json_encode($data);
 	}
 
 	public function logout()
