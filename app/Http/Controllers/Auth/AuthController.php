@@ -45,8 +45,8 @@ class AuthController extends Controller {
 			return view('auth.login');
 		}
 		$app = $_GET['app'];//代号
-		$app_name = 'xx';//中文名称
-		$app_url = 'http://localhost/ids/example';//地址
+		$app_name = '示例应用';//中文名称
+		$app_url = 'http://example.com';//地址
 		return view('auth.login', ['app_name' => $app_name, 'app_url' => $app_url]);
 	}
 
