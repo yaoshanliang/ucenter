@@ -40,25 +40,49 @@
 					@if (Auth::guest())
 						<li><a href="{{ url('/auth/login') }}">登录</a></li>
 					@else
-						<li><a href="#">{{ Auth::user()->username }}</a><li>
-						<li><a href="{{ url('/auth/logout') }}">登出</a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->username }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="{{ url('/auth/logout') }}">登出</a></li>
+								<li><a href="{{ url('/auth/logout') }}">个人信息</a></li>
 							</ul>
 						</li>
+						<li><a href="{{ url('/auth/logout') }}">登出</a></li>
 					@endif
 				</ul>
 			</div>
 		</div>
 	</nav>
+<!--
+	<div class="container">
+		<div class="row">
+			<div class="col-md-1">
+				<a class="navbar-brand" href="{{url('/admin')}}">管理后台</a>
+			</div>
+			<div class="col-md-pull-10">
+			</div>
+		</div>
+	</div>
+-->
+<style>
+#left{width:10%;}
+#right{width:90%;}
+#left,#right{float:left;}
+</style>
 
-	@yield('content')
+	<div class="container">
+		<div id="left">
+				<ul class="nav navbar-nav">
+					<a class="navbar-brand" href="{{url('/admin')}}">管理后台</a>
+					<a class="navbar-brand" href="{{url('/admin')}}">管理后台</a>
+				</ul>
+		</div>
+		<div id="right">
+			@yield('content')
+		</div>
+	</div>
 
 	<!-- Scripts -->
-	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
-	<script src="{{ asset('/js/jquery.min.js')}}"></script>
-	<script src="./js/bootstrap.min.js"></script>
+	<script src="{{ asset('/js/jquery.min.js') }}"></script>
+	<script src="{{ asset('/js/bootstrap.min.js') }}"></script>
 </body>
 </html>
