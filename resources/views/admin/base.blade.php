@@ -52,17 +52,7 @@
 			</div>
 		</div>
 	</nav>
-<!--
-	<div class="container">
-		<div class="row">
-			<div class="col-md-1">
-				<a class="navbar-brand" href="{{url('/admin')}}">管理后台</a>
-			</div>
-			<div class="col-md-pull-10">
-			</div>
-		</div>
-	</div>
--->
+
 <style>
 #left{width:10%;}
 #right{width:90%;}
@@ -72,11 +62,17 @@
 	<div class="container">
 		<div id="left">
 				<ul class="nav navbar-nav">
-					<a class="navbar-brand" href="{{url('/admin')}}">管理后台</a>
-					<a class="navbar-brand" href="{{url('/admin')}}">管理后台</a>
+					<a class="navbar-brand" href="{{url('/admin/app')}}">应用管理</a>
+					<a class="navbar-brand" href="{{url('/admin/user')}}">用户管理</a>
+					<a class="navbar-brand" href="{{url('/admin/log')}}">日志管理</a>
 				</ul>
 		</div>
 		<div id="right">
+			@if (Session::has('message'))
+				<div class="alert alert-success">
+					{{ session('message') }}
+				</div>
+			@endif
 			@yield('content')
 		</div>
 	</div>
