@@ -17,7 +17,7 @@ class AppController extends Controller {
 	 */
 	public function index()
 	{
-		return view('admin.app.index')->withPages(Page::all());
+		return view('admin.app.index')->withApps(App::all());
 	}
 
 	/**
