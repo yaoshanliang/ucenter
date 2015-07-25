@@ -5,6 +5,9 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
+use App\App;
+use Redirect, Input, Auth;
+
 class AppController extends Controller {
 
 	/**
@@ -14,7 +17,7 @@ class AppController extends Controller {
 	 */
 	public function index()
 	{
-		//
+		return view('admin.app.index')->withPages(Page::all());
 	}
 
 	/**
@@ -32,19 +35,24 @@ class AppController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store(Request $request)
 	{
 		$this->validate($request, [
-			'title' => 'required|unique:pages|max:255',
-			'body' => 'required',
+			'app' => 'required|unique:apps',
+			'app_name' => 'required',
+			'app_home_url' => 'required',
+			'app_login_url' => 'required',
+			'app_secret' => 'required'
 		]);
 
-		$page = new Page;
-		$page->title = Input::get('title');
-		$page->body = Input::get('body');
-		$page->user_id = 1;//Auth::user()->id;
+		$app = new App;
+		$app->app = Input::get('app');
+		$app->app_name = Input::get('app_name');
+		$app->app_home_url = Input::get('app_home_url');
+		$app->app_login_url = Input::get('app_login_url');
+		$app->app_secret = Input::get('app_secret');
 
-		if ($page->save()) {
+		if ($app->save()) {
 			return Redirect::to('admin');
 		} else {
 			return Redirect::back()->withInput()->withErrors('保存失败！');
