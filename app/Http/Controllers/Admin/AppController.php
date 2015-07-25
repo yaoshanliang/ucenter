@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\App;
 use Redirect, Input, Auth;
+use Illuminate\Pagination\Paginator;
 
 class AppController extends Controller {
 
@@ -17,6 +18,9 @@ class AppController extends Controller {
 	 */
 	public function index()
 	{
+		$count = App::count();
+		$apps = App::paginate(10);
+		return view('admin.app.index', compact('apps', 'count'));
 		return view('admin.app.index')->withApps(App::all());
 	}
 
@@ -53,7 +57,8 @@ class AppController extends Controller {
 		$app->app_secret = Input::get('app_secret');
 
 		if ($app->save()) {
-			return Redirect::to('admin');
+			session()->flash('message', '应用添加成功');
+			return Redirect::to('admin/app');
 		} else {
 			return Redirect::back()->withInput()->withErrors('保存失败！');
 		}
@@ -78,7 +83,7 @@ class AppController extends Controller {
 	 */
 	public function edit($id)
 	{
-		return view('admin.pages.edit')->withPage(Page::find($id));
+		return view('admin.app.edit')->withApp(App::find($id));
 	}
 
 	/**
@@ -87,20 +92,26 @@ class AppController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(Request $request, $id)
 	{
 		$this->validate($request, [
-			'title' => 'required|unique:pages,title,'.$id.'|max:255',
-			'body' => 'required',
+			'app' => 'required|unique:apps,app,'.$id.'',
+			'app_name' => 'required',
+			'app_home_url' => 'required',
+			'app_login_url' => 'required',
+			'app_secret' => 'required'
 		]);
 
-		$page = Page::find($id);
-		$page->title = Input::get('title');
-		$page->body = Input::get('body');
-		$page->user_id = 1;//Auth::user()->id;
+		$app = App::find($id);
+		$app->app = Input::get('app');
+		$app->app_name = Input::get('app_name');
+		$app->app_home_url = Input::get('app_home_url');
+		$app->app_login_url = Input::get('app_login_url');
+		$app->app_secret = Input::get('app_secret');
 
-		if ($page->save()) {
-			return Redirect::to('admin');
+		if ($app->save()) {
+			session()->flash('message', '应用修改成功');
+			return Redirect::to('admin/app');
 		} else {
 			return Redirect::back()->withInput()->withErrors('保存失败！');
 		}
@@ -114,10 +125,11 @@ class AppController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		$page = Page::find($id);
-		$page->delete();
+		$App = App::find($id);
+		$App->delete();
 
-		return Redirect::to('admin');
+		session()->flash('message', '应用删除成功');
+		return Redirect::to('admin/app');
 	}
 
 }
