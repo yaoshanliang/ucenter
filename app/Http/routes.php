@@ -26,6 +26,6 @@ Route::get('api', [
 Route::post('api', [
 	'middleware' => 'guest', 'uses' => 'Api\ApiController@index']);
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth'], function() {
-	  Route::get('/', 'AppController@index');
+	  Route::get('/', 'AdminController@index');
 	  Route::resource('app', 'AppController');
 });
