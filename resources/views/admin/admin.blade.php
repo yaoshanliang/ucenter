@@ -33,24 +33,21 @@
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					@if (isset($app_url))
-						<li><a href={{$app_url}} target="_blank">{{$app_name}}</a></li>
-					@endif
+					<a class="navbar-brand" href="{{url('/admin')}}">管理后台</a>
 				</ul>
 
 				<ul class="nav navbar-nav navbar-right">
 					@if (Auth::guest())
 						<li><a href="{{ url('/auth/login') }}">登录</a></li>
-						<li><a href="{{ url('/auth/register') }}">注册</a></li>
 					@else
 						<li><a href="#">{{ Auth::user()->username }}</a><li>
 						<li><a href="{{ url('/auth/logout') }}">登出</a></li>
-						<!--<li class="dropdown">
+						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->username }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a href="{{ url('/auth/logout') }}">登出</a></li>
 							</ul>
-						</li>-->
+						</li>
 					@endif
 				</ul>
 			</div>
@@ -60,7 +57,8 @@
 	@yield('content')
 
 	<!-- Scripts -->
-	<script src="./js/jquery.min.js"></script>
+	<link href="{{ asset('/css/app.css') }}" rel="stylesheet">
+	<script src="{{ asset('/js/jquery.min.js')}}"></script>
 	<script src="./js/bootstrap.min.js"></script>
 </body>
 </html>
