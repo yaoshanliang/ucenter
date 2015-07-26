@@ -19,7 +19,7 @@
 			@foreach ($apps as $app)
             <tr class="row">
 				<td class="col-lg-1">
-					{{ $app->app }}
+					<a href="{{ URL('auth/login?app='.$app->app) }}" target="_blank">{{ $app->app }}</a>
 				</td>
 				<td class="col-lg-2">
 					{{ $app->app_name }}
