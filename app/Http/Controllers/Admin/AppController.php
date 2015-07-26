@@ -19,7 +19,7 @@ class AppController extends Controller {
 	public function index()
 	{
 		$count = App::count();
-		$apps = App::paginate(10);
+		$apps = App::orderBy('updated_at', 'desc')->paginate(5);
 		return view('admin.app.index', compact('apps', 'count'));
 		return view('admin.app.index')->withApps(App::all());
 	}
