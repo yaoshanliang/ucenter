@@ -25,7 +25,7 @@
 					{{ $app->app_name }}
 				</td>
 				<td class="col-lg-2">
-					{{ $app->app_home_url }}
+					<a href="{{ $app->app_home_url }}" target="_blank">{{ $app->app_home_url }}</a>
 				</td>
 				<td class="col-lg-2">
 					{{ $app->app_login_url }}
