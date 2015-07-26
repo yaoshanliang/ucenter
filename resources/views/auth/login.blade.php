@@ -21,8 +21,8 @@
 					<form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/login') }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-						@if (isset($app_url))
-							<input type="hidden" name="app_url" value="{{$app_url}}">
+						@if (isset($app_info['app']))
+							<input type="hidden" name="app" value="{{$app_info['app']}}">
 						@endif
 
 						<div class="form-group">
