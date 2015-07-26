@@ -3,7 +3,7 @@
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Auth;
-// use Illuminate\Routing\Controller;
+use Crypt;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller {
@@ -64,8 +64,8 @@ class ApiController extends Controller {
 	//验证token
 	private function validate_token($input)
 	{
-		$token_array = json_decode(base64_decode($input['data']['token']), true);
-		if(is_null($token_array) || $token_array['app_secret'] != 'example_secret') {
+		$token_array = Crypt::decrypt($input['data']['token']);
+		if(is_null($token_array)) {
 			$data['errCode'] = 10001;
 			$data['errMsg'] = 'token invalid';
 		 } else {

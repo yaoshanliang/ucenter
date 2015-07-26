@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
+use App\App;
 class AuthController extends Controller {
 
 	/*
@@ -44,15 +45,17 @@ class AuthController extends Controller {
 		if(!isset($_GET['app'])) {
 			return view('auth.login');
 		}
-		$app = $_GET['app'];//代号
-		$app_name = '示例应用';//中文名称
-		$app_url = 'http://example.com';//地址
-		return view('auth.login', ['app_name' => $app_name, 'app_url' => $app_url]);
+		$app = $_GET['app'];
+		$app_info = App::where('app', '=', $app)->first();
+		if($app != '' && is_null($app_info)) {
+			return view('auth.forbidden');
+		}
+		return view('auth.login', ['app_info' => $app_info]);
 	}
 
 	public function postLogin(Request $request)
 	{
-		if($request->has('app_url')) {
+		if($request->has('app')) {
 			return $this->idsLogin($request);
 		}
 		$this->validate($request, ['username' => 'required', 'password' => 'required']);
@@ -71,17 +74,19 @@ class AuthController extends Controller {
 		$this->validate($request, ['username' => 'required', 'password' => 'required']);
 		$credentials = $request->only('username', 'password');
 		if(Auth::validate($credentials)) {
-			$app_secret = 'example_secret';
+			$app = $request->app;
+			$app_info = App::where('app', '=', $app)->first();
+
 			$token_array['username'] = $request->username;
-			$token_array['app'] = 'example';
-			$token_array['app_secret'] = $app_secret;
+			$token_array['app'] = $app_info['app'];
+			$token_array['app_secret'] = $app_info['app_secret'];
 			$token_array['timestamp'] = time();
-			$token = base64_encode(json_encode($token_array));
-			header('Location:http://example.com/login.php?token=' . $token);
+			$token = Crypt::encrypt($token_array);
+			header('Location:' . $app_info['app_login_url'] . '?token=' . $token);
 			exit;
 		}
 		else{
-			return redirect()->guest('auth/login?app=xxx')
+			return redirect()->guest('auth/login?app=' . $request->app)
 				->withInput()
 				->withErrors('用户名与密码不匹配，请重试！');
 		}
