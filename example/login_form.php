@@ -3,6 +3,7 @@ include_once('config.php');
 session_start();
 if($_POST) {
 	$data['request_type'] = 'get_token';
+	$data['data']['app'] = app;
 	$data['data']['username'] = $_POST['username'];
 	$data['data']['password'] = $_POST['password'];
 
