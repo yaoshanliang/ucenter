@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Crypt;
 use Illuminate\Http\Request;
+use App\App;
 
 class ApiController extends Controller {
 
@@ -45,13 +46,25 @@ class ApiController extends Controller {
 
 		$credentials['username'] = $input['data']['username'];
 		$credentials['password'] = $input['data']['password'];
+		if(!isset($input['data']['app'])) {
+			$data['errCode'] = 10000;
+			$data['errMsg'] = 'no app field in post data';
+			return json_encode($data);
+		}
+		$app = $input['data']['app'];
+		$app_info = App::where('app', '=', $app)->first();
+		if(is_null($app_info)) {
+			$data['errCode'] = 10000;
+			$data['errMsg'] = 'app invalid';
+			return json_encode($data);
+		}
 		if(Auth::validate($credentials)) {
-			$app_secret = 'example_secret';
 			$token_array['username'] = $input['data']['username'];
-			$token_array['app'] = 'example';
-			$token_array['app_secret'] = $app_secret;
+			$token_array['app'] = $app_info['app'];
+			$token_array['app_secret'] = $app_info['app_secret'];
 			$token_array['timestamp'] = time();
-			$token = base64_encode(json_encode($token_array));
+			$token = Crypt::encrypt($token_array);
+
 			$data['errCode'] = 0;
 			$data['data']['token'] = $token;
 		} else {
