@@ -2,6 +2,7 @@
 
 use Closure;
 
+use Auth;
 class Permission {
 
 	/**
@@ -13,6 +14,9 @@ class Permission {
 	 */
 	public function handle($request, Closure $next)
 	{
+		if(!Auth::user()->is_admin) {
+			return redirect('home');
+		}
 		return $next($request);
 	}
 
