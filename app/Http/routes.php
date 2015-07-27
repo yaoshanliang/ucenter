@@ -13,7 +13,11 @@
 
 Route::get('/', 'HomeController@index');
 
-Route::get('home', 'HomeController@index');
+Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth'], function() {
+	  Route::get('/', 'HomeController@index');
+	  Route::resource('user', 'AppController');
+});
+// Route::get('home', 'HomeController@index');
 
 Route::get('auth/login/url/{url}', [
 	'middleware' => 'guest', 'as' => 'login', 'uses' => 'Auth\AuthController@loginUrl']);
