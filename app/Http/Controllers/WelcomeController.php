@@ -1,4 +1,5 @@
 <?php namespace App\Http\Controllers;
+use Auth;
 
 class WelcomeController extends Controller {
 
@@ -20,7 +21,7 @@ class WelcomeController extends Controller {
 	 */
 	public function __construct()
 	{
-		$this->middleware('guest');
+		$this->middleware('auth');
 	}
 
 	/**
@@ -30,7 +31,10 @@ class WelcomeController extends Controller {
 	 */
 	public function index()
 	{
-		return view('welcome');
+		if(!Auth::user()->is_admin) {
+			return redirect('home');
+		}
+		return redirect('admin');
 	}
 
 }
