@@ -61,6 +61,11 @@ class AuthController extends Controller {
 		$this->validate($request, ['username' => 'required', 'password' => 'required']);
 		$credentials = $request->only('username', 'password');
 		if (Auth::attempt($credentials, $request->has('remember'))) {
+			if (!Auth::user()->is_admin) {
+				return redirect()->guest('/home');
+		    } else {
+				return redirect()->guest('/admin');
+			}
 			return redirect()->guest('home');
 		} else {
 			return redirect()->guest('auth/login')
