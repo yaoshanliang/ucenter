@@ -10,6 +10,15 @@ use Redirect, Input, Auth;
 
 class AdminController extends Controller {
 
+	public function __construct()
+	{
+		if(!Auth::user()->is_admin) {
+			 Redirect::to('home');
+
+				exit;
+			return view('home.index');
+		}
+	}
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -17,6 +26,7 @@ class AdminController extends Controller {
 	 */
 	public function index()
 	{
+			return Redirect::to('admin/app');
 		return view('admin.index');
 	}
 
