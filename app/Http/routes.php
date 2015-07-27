@@ -29,7 +29,7 @@ Route::get('api', [
 	'middleware' => 'guest', 'uses' => 'Api\ApiController@forbidden']);
 Route::post('api', [
 	'middleware' => 'guest', 'uses' => 'Api\ApiController@index']);
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'auth'], function() {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array('auth', 'permission')], function() {
 	  Route::get('/', 'AdminController@index');
 	  Route::resource('app', 'AppController');
 });
