@@ -11,25 +11,22 @@
 |
 */
 
-Route::get('/', 'HomeController@index');
-
-Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth'], function() {
-	  Route::get('/', 'HomeController@index');
-	  Route::resource('user', 'AppController');
-});
-// Route::get('home', 'HomeController@index');
-
+Route::get('/', 'WelcomeController@index');
 Route::get('auth/login/url/{url}', [
 	'middleware' => 'guest', 'as' => 'login', 'uses' => 'Auth\AuthController@loginUrl']);
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
-Route::get('api', [
-	'middleware' => 'guest', 'uses' => 'Api\ApiController@forbidden']);
-Route::post('api', [
-	'middleware' => 'guest', 'uses' => 'Api\ApiController@index']);
+Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth'], function() {
+	  Route::get('/', 'HomeController@index');
+	  Route::resource('user', 'AppController');
+});
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array('auth', 'permission')], function() {
 	  Route::get('/', 'AdminController@index');
 	  Route::resource('app', 'AppController');
 });
+Route::get('api', [
+	'middleware' => 'guest', 'uses' => 'Api\ApiController@forbidden']);
+Route::post('api', [
+	'middleware' => 'guest', 'uses' => 'Api\ApiController@index']);
