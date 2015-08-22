@@ -53,8 +53,14 @@ return [
 		],
 
 		'mysql' => [
+			'read' => array(
+				'host' => env('DB_HOST_R', 'localhost'),
+		    ),
+			'write' => array(
+				'host' => env('DB_HOST_W', 'localhost'),
+			),
+			// 'host'      => env('DB_HOST', 'localhost'),
 			'driver'    => 'mysql',
-			'host'      => env('DB_HOST', 'localhost'),
 			'database'  => env('DB_DATABASE', 'forge'),
 			'username'  => env('DB_USERNAME', 'forge'),
 			'password'  => env('DB_PASSWORD', ''),
