@@ -8,7 +8,7 @@ if($_POST) {
 	$data['data']['password'] = $_POST['password'];
 
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, ids_home . '/api');
+	curl_setopt($ch, CURLOPT_URL, ucenter_home . '/api');
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 	curl_setopt($ch, CURLOPT_POST, 1);
@@ -27,7 +27,7 @@ if($_POST) {
 	$data['data']['token'] = $result['data']['token'];
 
 	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, ids_home . '/api');
+	curl_setopt($ch, CURLOPT_URL, ucenter_home . '/api');
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 	curl_setopt($ch, CURLOPT_POST, 1);
