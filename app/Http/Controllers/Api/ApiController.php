@@ -81,6 +81,9 @@ class ApiController extends Controller {
 		if(is_null($token_array)) {
 			$data['errCode'] = 10001;
 			$data['errMsg'] = 'token invalid';
+		 } elseif(time() - $token_array['timestamp'] > 8) {
+			 $data['errCode'] = 1000;
+			 $data['errMsg'] = 'token expired';
 		 } else {
 			 $data['errCode'] = 0;
 			 $data['data']['username'] = $token_array['username'];
