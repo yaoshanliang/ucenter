@@ -17,68 +17,41 @@
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	@include('admin.partials.header')
+	@yield('header')
 </head>
 <body>
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle Navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="{{url('/')}}">统一身份认证</a>
-			</div>
+	<div id="wrapper">
 
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<a class="navbar-brand" href="{{url('/admin')}}">管理后台</a>
-				</ul>
+		<!-- Navigation -->
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 
-				<ul class="nav navbar-nav navbar-right">
-					@if (Auth::guest())
-						<li><a href="{{ url('/auth/login') }}">登录</a></li>
-					@else
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->username }} <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								<li><a href="{{ url('/auth/logout') }}">个人信息</a></li>
-							</ul>
-						</li>
-						<li><a href="{{ url('/auth/logout') }}">登出</a></li>
-					@endif
-				</ul>
-			</div>
-		</div>
-	</nav>
+            @include('admin.partials.navbar')
 
-<style>
-#left{width:10%;}
-#right{width:90%;}
-#left,#right{float:left;}
-</style>
+            @include('admin.partials.sidebar')
 
-	<div class="container">
-		<div id="left">
-				<ul class="nav navbar-nav">
-					<a class="navbar-brand" href="{{url('/admin/app')}}">应用管理</a>
-					<a class="navbar-brand" href="{{url('/admin/user')}}">用户管理</a>
-					<a class="navbar-brand" href="{{url('/admin/log')}}">日志管理</a>
-				</ul>
-		</div>
-		<div id="right">
-			@if (Session::has('message'))
-				<div class="alert alert-success">
-					{{ session('message') }}
-				</div>
-			@endif
-			@yield('content')
-		</div>
-	</div>
+        </nav>
 
-	<!-- Scripts -->
-	<script src="{{ asset('/js/jquery.min.js') }}"></script>
-	<script src="{{ asset('/js/bootstrap.min.js') }}"></script>
+        <div id="page-wrapper">
+
+            @include('flash::message')
+
+            @yield('content')
+
+            <div class="row">
+                <div class="col-lg-8">
+                    @include('errors.list')
+                </div>
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+	@include('admin.partials.footer')
+	@yield('footer')
 </body>
+
 </html>
+
