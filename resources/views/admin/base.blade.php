@@ -34,7 +34,6 @@
 
         <div id="page-wrapper">
 
-            @include('flash::message')
 
             @yield('content')
 
