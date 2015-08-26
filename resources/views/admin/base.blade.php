@@ -33,7 +33,12 @@
         </nav>
 
         <div id="page-wrapper">
-
+			<br />
+			@if (Session::has('message'))
+				<div class="alert alert-success">
+					{{ session('message') }}
+				</div>
+			@endif
 
             @yield('content')
 
