@@ -17,7 +17,7 @@ class CreateSettingsTable extends Migration {
 			$table->increments('id');
 			$table->string('name')->unique();
 			$table->string('value')->default('');
-			$table->string('description')->default($value);
+			$table->string('description')->default('');
 			$table->integer('order');
 			$table->enum('type', ['text', 'textarea', 'select', 'checkbox', 'radio'])->default('text');
 			$table->timestamps();
