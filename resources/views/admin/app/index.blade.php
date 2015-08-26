@@ -4,8 +4,15 @@
 <div class="panel panel-default">
 	<div class="panel-heading">应用管理</div>
 	<div class="panel-body">
-		<a href="{{ URL('admin/app/create') }}" class="btn btn-primary">新增</a>
-		<br />
+		<div class="input-group custom-search-form">
+			<a href="{{ URL('admin/app/create') }}" class="btn btn-primary">新增</a>
+			<input type="text" class="form-control" style="float:right; width:30%; border-top-left-radius:4px; border-bottom-left-radius:4px;"placeholder="Search...">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button">
+					<i class="fa fa-search"></i>
+				</button>
+			</span>
+		</div>
 		<br />
 		<table class="table table-striped">
 			<tr class="row">
