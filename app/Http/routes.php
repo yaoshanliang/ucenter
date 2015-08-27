@@ -25,6 +25,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth']
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array('auth', 'permission')], function() {
 	  Route::get('/', 'AdminController@index');
 	  Route::resource('app', 'AppController');
+	  Route::resource('user', 'UserController');
 });
 Route::get('api', [
 	'middleware' => 'guest', 'uses' => 'Api\ApiController@forbidden']);
