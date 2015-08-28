@@ -3244,7 +3244,6 @@
 			vis        = settings.fnRecordsDisplay(),
 			all        = len === -1;
 
-		settings.oLanguage.sLengthMenu.replace( '_PAGES_', formatter.call( settings, all ? 1 : Math.ceil( vis / len ) ) );
 		return str.
 			replace(/_START_/g, formatter.call( settings, start ) ).
 			replace(/_END_/g,   formatter.call( settings, settings.fnDisplayEnd() ) ).
@@ -3399,8 +3398,17 @@
 			div[0].id = tableId+'_length';
 		}
 
+		var
+			formatter  = settings.fnFormatNumber,
+			start      = settings._iDisplayStart+1,
+			len        = settings._iDisplayLength,
+			vis        = settings.fnRecordsDisplay(),
+			all        = len === -1;
+
 		div.children().append(
 			settings.oLanguage.sLengthMenu.replace( '_MENU_', select[0].outerHTML )
+				.replace( '_PAGES_', formatter.call( settings, all ? 1 : Math.ceil( vis / len ) ) )
+				.replace( '_TOTAL_', formatter.call( settings, vis ) )
 		);
 
 		// Can't use `select` variable as user might provide their own and the
