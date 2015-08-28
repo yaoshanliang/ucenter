@@ -8,8 +8,10 @@
 <script src="/admin-assets/js/metisMenu.min.js"></script>
 
 <!-- DataTables JavaScript -->
-<script src="/sb-admin/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
-<script src="/sb-admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script src="/admin-assets/js/jquery.dataTables.js"></script>
+<script src="/admin-assets/js/dataTables.bootstrap.min.js"></script>
+<!-- <script src="/sb-admin/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>-->
+<!-- <script src="/sb-admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>-->
 
 <!-- Custom Theme JavaScript -->
 <script src="/admin-assets/js/sb-admin-2.js"></script>
@@ -19,19 +21,36 @@
 td.highlight {
     background-color: whitesmoke !important;
 }
+.table-bordered thead tr td {
+	border-bottom-width: 0px;
+	// text-align: center;
+}
+div.dataTables_length {
+	padding-top: 1px;
+	color: #777;
+}
 </style>
 <script>
     $(document).ready(function() {
         $('#dataTables-example').DataTable({
-				"dom": '<"top"fi>rt<"bottom"lp><"clear">',
-				"pagingType":   "full_numbers",
+				// "dom": '<"top">rt<"bottom">lip<"clear">',
+				// "dom": '<"top"i>rt<"bottom"flp><"clear">',
+				"dom":
+				   "<'row'<'col-sm-6'><'col-sm-6'f>r>"+
+				   "t"+
+				   "<'row'<'col-sm-6 pull-left'l><'col-sm-6 pull-right'p>>",
+				"pagingType": "full_numbers",
+				"processing": true,
+				"lengthMenu": [[8, 25, 50, 100], [8, 25, 50, 100]],
 				"language": {
-					"lengthMenu": "每页 _MENU_ 条记录",
+					"processing" : "处理中...",
+					"lengthMenu": "每页 _MENU_ 条， 共 _PAGES_ 页， 共 _TOTAL_ 条",
 					"zeroRecords": "没有找到记录",
-					"info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
+					"info": "共 _PAGES_ 页, _TOTAL_ 条",
 					"infoEmpty": "无记录",
 					"infoFiltered": "(从 _MAX_ 条记录过滤)",
 					"search":"搜索：",
+					"loadingRecords": "载入中...",
 					"paginate":{
 						"first":"首页",
 						"previous":"上一页",
