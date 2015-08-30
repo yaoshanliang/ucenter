@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "52a4f765b037bcd6987443396bf3b293",
+    "hash": "02c06d3c867aea2b560c856023e78414",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -59,6 +59,59 @@
                 "webprofiler"
             ],
             "time": "2015-07-09 14:51:59"
+        },
+        {
+            "name": "chumper/datatable",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Chumper/Datatable.git",
+                "reference": "37b7a5550101eb2cbcacb8e7c7ae6a8e47f48271"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Chumper/Datatable/zipball/37b7a5550101eb2cbcacb8e7c7ae6a8e47f48271",
+                "reference": "37b7a5550101eb2cbcacb8e7c7ae6a8e47f48271",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "~5.0",
+                "illuminate/support": "~5.0",
+                "illuminate/view": "~5.0",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master",
+                "orchestra/testbench": "2.1.*",
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Chumper\\Datatable": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nils Plaschke",
+                    "email": "github@nilsplaschke.de",
+                    "homepage": "http://nilsplaschke.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is a laravel 4 package for the server and client side of datatablaes at http://datatables.net/",
+            "homepage": "http://github.com/Chumper/datatable",
+            "keywords": [
+                "ajax",
+                "datatables",
+                "jquery",
+                "laravel"
+            ],
+            "time": "2015-07-29 00:08:38"
         },
         {
             "name": "classpreloader/classpreloader",
@@ -3378,7 +3431,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "chumper/datatable": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
