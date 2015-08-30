@@ -16,6 +16,9 @@
 <!-- Custom Theme JavaScript -->
 <script src="/admin-assets/js/sb-admin-2.js"></script>
 
+<!-- icheck JavaScript -->
+<script src="/plugin/icheck/icheck.min.js"></script>
+
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <style>
 td.highlight {
@@ -32,7 +35,16 @@ div.dataTables_length {
 </style>
 <script>
     $(document).ready(function() {
+		$('input').iCheck({
+    checkboxClass: 'icheckbox_square-blue',
+    radioClass: 'iradio_square-red',
+    increaseArea: '20%' // optional
+  });
         $('#dataTables-example').DataTable({
+				columnDefs:[{
+                 orderable:false,//禁用排序
+                 targets:[0,4]   //指定的列
+             }],
 				// "dom": '<"top">rt<"bottom">lip<"clear">',
 				// "dom": '<"top"i>rt<"bottom"flp><"clear">',
 				"dom":
@@ -40,7 +52,6 @@ div.dataTables_length {
 				   "t"+
 				   "<'row'<'col-sm-6 pull-left'l><'col-sm-6 pull-right'p>>",
 				"pagingType": "full_numbers",
-				"processing": true,
 				"lengthMenu": [[8, 25, 50, 100], [8, 25, 50, 100]],
 				"language": {
 					"processing" : "处理中...",
@@ -57,6 +68,13 @@ div.dataTables_length {
 						"next":"下一页",
 						"last":"尾页"
 					}
+				},
+				"processing": true,
+				"serverSide": true,
+				"ajax": {
+					"url": "scripts/server_processing.php",
+					"type": 'POST',
+					// "data":
 				},
                 responsive: true
         });
