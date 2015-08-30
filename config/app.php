@@ -145,6 +145,7 @@ return [
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
 		'Barryvdh\Debugbar\ServiceProvider',
+		'Chumper\Datatable\DatatableServiceProvider',
 
 	],
 
@@ -194,7 +195,7 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 		'Debugbar'  => 'Barryvdh\Debugbar\Facade',
-
+		'Datatable' => 'Chumper\Datatable\Facades\DatatableFacade',
 	],
 
 ];
