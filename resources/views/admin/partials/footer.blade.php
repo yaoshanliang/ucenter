@@ -35,16 +35,21 @@ div.dataTables_length {
 </style>
 <script>
     $(document).ready(function() {
-		$('input').iCheck({
-    checkboxClass: 'icheckbox_square-blue',
-    radioClass: 'iradio_square-red',
-    increaseArea: '20%' // optional
-  });
         $('#dataTables-example').DataTable({
-				columnDefs:[{
-                 orderable:false,//禁用排序
-                 targets:[0,4]   //指定的列
-             }],
+				// "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 1,0,2 ] }],
+				// columnDefs:[{
+				 // orderable:false,//禁用排序
+				 // targets:[0,1]   //指定的列
+			 // }],
+			 "order": [0,null],
+			"columnDefs": [{
+                       orderable: false, targets: 0 },{
+                       orderable: false, targets: 1 }
+               ],//第一列与第二列禁止排序
+				// "columns": [
+				// { "orderable": false },
+				// { "orderable": false },
+				// null,null],
 				// "dom": '<"top">rt<"bottom">lip<"clear">',
 				// "dom": '<"top"i>rt<"bottom"flp><"clear">',
 				"dom":
@@ -69,13 +74,52 @@ div.dataTables_length {
 						"last":"尾页"
 					}
 				},
-				"processing": true,
+				// "processing": true,
 				"serverSide": true,
 				"ajax": {
-					"url": "scripts/server_processing.php",
+					"url": "/admin/user/lists",
 					"type": 'POST',
-					// "data":
+					"data":{"name":123},
+					dataType: 'json',
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+					},
+					// success: function(data){
+						// console.log(data);
+					// },
+					// error: function(xhr, type){
+						// console.log('error');
+					// }
 				},
+/*"columns": [
+            { "data": "id" },
+            { "data": "username" },
+            { "data": "username" },
+            { "data": "email" },
+            { "data": "phone" },
+		],*/
+				"aoColumns": [
+		{
+			"mDataProp": "id",
+			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+				$(nTd).html("<input type='checkbox' class='checkbox' name='checkList' value='" + sData + "'>");
+
+			}
+		},
+        {"mDataProp": "username"},
+        {"mDataProp": "email"},
+		{"mDataProp": "phone"},
+        {
+            "mDataProp": "id",
+            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                $(nTd).html("<a href='javascript:void(0);' ");
+                // "onclick='_editFun(\" + oData.id + "\",\"" + oData.name + "\",\"" + oData.job + "\",\"" + oData.note + "\")'>编辑</a>a>&nbsp;&nbsp;")
+                    // .append("<a href='javascript:void(0);' onclick='_deleteFun(" + sData + ")'>删除</a>a>");
+            }
+        },
+	],
+    // "sDom": "<'row-fluid'<'span6 myBtnBox'><'span6'f>r>t<'row-fluid'<'span6'i><'span6 'p>>",
+    // "sPaginationType": "bootstrap",
                 responsive: true
         });
 		var lastIdx = null;
@@ -91,6 +135,11 @@ div.dataTables_length {
         .on( 'mouseleave', function () {
             $( table.cells().nodes() ).removeClass( 'highlight' );
         } );
+	$('input').iCheck({
+		checkboxClass: 'icheckbox_square-blue',
+		radioClass: 'iradio_square-red',
+		increaseArea: '20%' // optional
+	});
     });
 </script>
 
