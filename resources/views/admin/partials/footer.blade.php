@@ -65,7 +65,7 @@ div.dataTables_length {
 				"pagingType": "full_numbers",
 				"lengthMenu": [[8, 25, 50, 100], [8, 25, 50, 100]],
 				"language": {
-					"processing" : "处理中...",
+					"processing" : "<img src='/images/loading.gif'>处理中...",
 					"lengthMenu": "每页 _MENU_ 条， 共 _PAGES_ 页， 共 _TOTAL_ 条",
 					"zeroRecords": "没有找到记录",
 					"info": "共 _PAGES_ 页, _TOTAL_ 条",
