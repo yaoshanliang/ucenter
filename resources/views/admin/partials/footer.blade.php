@@ -19,6 +19,8 @@
 <!-- icheck JavaScript -->
 <script src="/plugin/icheck/icheck.min.js"></script>
 
+<script src="/admin-assets/js/colResizable-1.5.min.js"></script>
+
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <style>
 td.highlight {
@@ -32,6 +34,10 @@ div.dataTables_length {
 	padding-top: 1px;
 	color: #777;
 }
+.JColResizer {
+	 // display:none;
+	 // margin:0,4px,0,4px !important;
+}
 </style>
 <script>
     $(document).ready(function() {
@@ -44,7 +50,7 @@ div.dataTables_length {
 			 "order": [0,null],
 			"columnDefs": [{
                        orderable: false, targets: 0 },{
-                       orderable: false, targets: 1 }
+                       orderable: false, targets: 6 }
                ],//第一列与第二列禁止排序
 				// "columns": [
 				// { "orderable": false },
@@ -102,6 +108,12 @@ div.dataTables_length {
 		{
 			"mDataProp": "id",
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+				// $(nTd).html('<div class="icheckbox_square-blue" style="position: relative;">'+
+				// '<input class="checkbox" type="checkbox" name="user_id" id="checkAll"' +
+				// 'style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);">'+
+					// '<ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins>'+
+				// '</input>'+
+				// '<div>');
 				$(nTd).html("<input type='checkbox' class='checkbox' name='checkList' value='" + sData + "'>");
 
 			}
@@ -109,18 +121,26 @@ div.dataTables_length {
         {"mDataProp": "username"},
         {"mDataProp": "email"},
 		{"mDataProp": "phone"},
+		{"mDataProp": "created_at"},
+		{"mDataProp": "updated_at"},
         {
             "mDataProp": "id",
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                $(nTd).html("<a href='javascript:void(0);' ");
-                // "onclick='_editFun(\" + oData.id + "\",\"" + oData.name + "\",\"" + oData.job + "\",\"" + oData.note + "\")'>编辑</a>a>&nbsp;&nbsp;")
-                    // .append("<a href='javascript:void(0);' onclick='_deleteFun(" + sData + ")'>删除</a>a>");
+                $(nTd).html("<a href='/admin/user/edit/'" + sData + ">编辑</a>");
+				// "onclick='_editFun(\" + oData.id + "\",\"" + oData.name + "\",\"" + oData.job + "\",\"" + oData.note + "\")'>编辑</a>a>&nbsp;&nbsp;")
+					// .append("<a href='javascript:void(0);' onclick='_deleteFun(" + sData + ")'>删除</a>a>");
             }
         },
 	],
     // "sDom": "<'row-fluid'<'span6 myBtnBox'><'span6'f>r>t<'row-fluid'<'span6'i><'span6 'p>>",
     // "sPaginationType": "bootstrap",
-                responsive: true
+                responsive: true,
+		"initComplete": function () {
+			// alert(22);
+			// $("table").colResizable();
+			// alert(33);
+			// $("table").removeClass("JColResizer");
+	},
         });
 		var lastIdx = null;
     var table = $('#dataTables-example').DataTable();
@@ -135,11 +155,17 @@ div.dataTables_length {
         .on( 'mouseleave', function () {
             $( table.cells().nodes() ).removeClass( 'highlight' );
         } );
-	$('input').iCheck({
-		checkboxClass: 'icheckbox_square-blue',
-		radioClass: 'iradio_square-red',
-		increaseArea: '20%' // optional
-	});
+		$('input').iCheck({
+			checkboxClass: 'icheckbox_square-blue',
+			radioClass: 'iradio_square-red',
+			increaseArea: '20%' // optional
+		});
+		$('input').on('ifChecked', function(event){
+			$('input').iCheck('check');
+		});
+		$('input').on('ifUnchecked', function(event){
+			$('input').iCheck('uncheck');
+		});
     });
 </script>
 
