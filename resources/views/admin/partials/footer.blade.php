@@ -80,7 +80,7 @@ div.dataTables_length {
 						"last":"尾页"
 					}
 				},
-				// "processing": true,
+				"processing": true,
 				"serverSide": true,
 				"ajax": {
 					"url": "/admin/user/lists",
@@ -105,47 +105,50 @@ div.dataTables_length {
             { "data": "phone" },
 		],*/
 				"aoColumns": [
-		{
-			"mDataProp": "id",
-			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-				// $(nTd).html('<div class="icheckbox_square-blue" style="position: relative;">'+
-				// '<input class="checkbox" type="checkbox" name="user_id" id="checkAll"' +
-				// 'style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);">'+
-					// '<ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins>'+
-				// '</input>'+
-				// '<div>');
-				$(nTd).html("<input type='checkbox' class='checkbox' name='checkList' value='" + sData + "'>");
+				{
+					"mDataProp": "id",
+					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+						// $(nTd).html('<div class="icheckbox_square-blue" style="position: relative;">'+
+						// '<input class="checkbox" type="checkbox" name="user_id" id="checkAll"' +
+						// 'style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);">'+
+							// '<ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins>'+
+						// '</input>'+
+						// '<div>');
+						$(nTd).html("<input type='checkbox' class='checkbox' name='checkList' value='" + sData + "'>");
 
-			}
-		},
-        {"mDataProp": "username"},
-        {"mDataProp": "email"},
-		{"mDataProp": "phone"},
-		{"mDataProp": "created_at"},
-		{"mDataProp": "updated_at"},
-        {
-            "mDataProp": "id",
-            "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                $(nTd).html("<a href='/admin/user/edit/'" + sData + ">编辑</a>");
-				// "onclick='_editFun(\" + oData.id + "\",\"" + oData.name + "\",\"" + oData.job + "\",\"" + oData.note + "\")'>编辑</a>a>&nbsp;&nbsp;")
-					// .append("<a href='javascript:void(0);' onclick='_deleteFun(" + sData + ")'>删除</a>a>");
-            }
-        },
-	],
-    // "sDom": "<'row-fluid'<'span6 myBtnBox'><'span6'f>r>t<'row-fluid'<'span6'i><'span6 'p>>",
-    // "sPaginationType": "bootstrap",
+					}
+				},
+				{"mDataProp": "username"},
+				{"mDataProp": "email"},
+				{"mDataProp": "phone"},
+				{"mDataProp": "created_at"},
+				{"mDataProp": "updated_at"},
+				{
+					"mDataProp": "id",
+					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+						$(nTd).html("<a href='/admin/user/edit/'" + sData + ">编辑</a>");
+						// "onclick='_editFun(\" + oData.id + "\",\"" + oData.name + "\",\"" + oData.job + "\",\"" + oData.note + "\")'>编辑</a>a>&nbsp;&nbsp;")
+							// .append("<a href='javascript:void(0);' onclick='_deleteFun(" + sData + ")'>删除</a>a>");
+					}
+				},
+			],
                 responsive: true,
-		"initComplete": function () {
-			// alert(22);
-			// $("table").colResizable();
-			// alert(33);
-			// $("table").removeClass("JColResizer");
-	},
-        });
+			//数据显示后回调
+			"initComplete": function () {
+				$('input').iCheck({
+					checkboxClass: 'icheckbox_square-blue',
+					radioClass: 'iradio_square-red',
+					increaseArea: '20%' // optional
+				});
+				// $("table").colResizable();
+				// $("table").removeClass("JColResizer");
+			},
+		});
+		//行列高亮
 		var lastIdx = null;
-    var table = $('#dataTables-example').DataTable();
-    $('#dataTables-example tbody')
-        .on( 'mouseover', 'td', function () {
+		var table = $('#dataTables-example').DataTable();
+		$('#dataTables-example tbody')
+		.on( 'mouseover', 'td', function () {
             var colIdx = table.cell(this).index().column;
             if ( colIdx !== lastIdx ) {
                 $( table.cells().nodes() ).removeClass( 'highlight' );
@@ -155,11 +158,8 @@ div.dataTables_length {
         .on( 'mouseleave', function () {
             $( table.cells().nodes() ).removeClass( 'highlight' );
         } );
-		$('input').iCheck({
-			checkboxClass: 'icheckbox_square-blue',
-			radioClass: 'iradio_square-red',
-			increaseArea: '20%' // optional
-		});
+
+		//全选全不选
 		$('input').on('ifChecked', function(event){
 			$('input').iCheck('check');
 		});
