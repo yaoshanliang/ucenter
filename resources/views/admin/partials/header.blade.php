@@ -17,7 +17,15 @@
 <link href="/admin-assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 <link href="/plugin/icheck/skins/square/blue.css" rel="stylesheet">
+<meta name="_token" content="{{ csrf_token() }}"/>
 <style>
+.search {
+	float:right !important;
+	width:30% !important;
+	border-top-left-radius:4px !important;
+	border-bottom-left-radius:4px !important;
+}
+
 .page .pagination{
 	margin-top: 0px;
 	margin-bottom: 0px;
