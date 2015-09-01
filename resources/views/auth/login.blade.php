@@ -26,9 +26,9 @@
 						@endif
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">用户名</label>
+							<label class="col-md-4 control-label">账户</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="username" value="{{ old('username') }}">
+								<input type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="用户名/邮箱/手机">
 							</div>
 						</div>
 
@@ -52,8 +52,8 @@
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn btn-primary">登录</button>
-
-								<a class="btn btn-link" href="{{ url('/password/email') }}">忘记密码?</a>
+								<a class="btn btn-link" href="{{ url('/password/email') }}">忘记密码</a>
+								<a class="btn btn-link" href="{{ url('/auth/register') }}">注册账户</a>
 							</div>
 						</div>
 					</form>
