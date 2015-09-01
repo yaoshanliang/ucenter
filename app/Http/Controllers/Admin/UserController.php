@@ -114,12 +114,15 @@ class UserController extends Controller {
 		$draw = $_POST['draw'];
 		// $recordsTotal = 57;
 		// $recordsFiltered = 57;
-		echo json_encode(array(
-		    "draw" => intval($draw),
-		    "recordsTotal" => intval($recordsTotal),
-		    "recordsFiltered" => intval($recordsFiltered),
-		    "data" => $users
-		),JSON_UNESCAPED_UNICODE);
+		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
+		if ( $jsonp ) {
+		    echo $jsonp.'('.json_encode(array(
+				"draw" => intval($draw),
+				"recordsTotal" => intval($recordsTotal),
+				"recordsFiltered" => intval($recordsFiltered),
+				"data" => $users
+				),JSON_UNESCAPED_UNICODE) . ');';
+		}
 		// return json_encode($output);
 		// var_dump($_REQUEST);
 		// exit;

@@ -87,7 +87,7 @@ div.dataTables_info {
 				"url": "/admin/user/lists",
 				"type": 'POST',
 				"data":{"name":123},
-				"dataType": 'json',
+				"dataType": 'jsonp',
 				"headers": {
 					'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 				},
