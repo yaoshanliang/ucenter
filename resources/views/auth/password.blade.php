@@ -39,6 +39,7 @@
 								<button type="submit" class="btn btn-primary">
 									发送验证邮件
 								</button>
+								<a class="btn btn-link" href="{{ url('/auth/login') }}">返回登录</a>
 							</div>
 						</div>
 					</form>
