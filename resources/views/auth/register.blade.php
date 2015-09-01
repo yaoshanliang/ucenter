@@ -54,6 +54,7 @@
 								<button type="submit" class="btn btn-primary">
 									注册
 								</button>
+								<a class="btn btn-link" href="{{ url('/auth/login') }}">返回登录</a>
 							</div>
 						</div>
 					</form>
