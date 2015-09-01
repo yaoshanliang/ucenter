@@ -31,7 +31,12 @@ td.highlight {
 	// text-align: center;
 }
 div.dataTables_length {
-	padding-top: 1px;
+	padding-left: 15px;
+	padding-top: 4px;
+	color: #777;
+}
+div.dataTables_info {
+	padding-top: 8px;
 	color: #777;
 }
 .JColResizer {
@@ -40,63 +45,53 @@ div.dataTables_length {
 }
 </style>
 <script>
+	$('input').iCheck({
+		checkboxClass: 'icheckbox_square-blue',
+		radioClass: 'iradio_square-red',
+		increaseArea: '20%' // optional
+	});
     $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-				// "aoColumnDefs": [ { "bSortable": false, "aTargets": [ 1,0,2 ] }],
-				// columnDefs:[{
-				 // orderable:false,//禁用排序
-				 // targets:[0,1]   //指定的列
-			 // }],
-			 "order": [0,null],
-			"columnDefs": [{
-                       orderable: false, targets: 0 },{
-                       orderable: false, targets: 6 }
-               ],//第一列与第二列禁止排序
-				// "columns": [
-				// { "orderable": false },
-				// { "orderable": false },
-				// null,null],
-				// "dom": '<"top">rt<"bottom">lip<"clear">',
-				// "dom": '<"top"i>rt<"bottom"flp><"clear">',
-				"dom":
-				   "<'row'<'col-sm-6'><'col-sm-6'f>r>"+
-				   "t"+
-				   "<'row'<'col-sm-6 pull-left'l><'col-sm-6 pull-right'p>>",
-				"pagingType": "full_numbers",
-				"lengthMenu": [[8, 25, 50, 100], [8, 25, 50, 100]],
-				"language": {
-					"processing" : "<img src='/images/loading.gif'>处理中...",
-					"lengthMenu": "每页 _MENU_ 条， 共 _PAGES_ 页， 共 _TOTAL_ 条",
-					"zeroRecords": "没有找到记录",
-					"info": "共 _PAGES_ 页, _TOTAL_ 条",
-					"infoEmpty": "无记录",
-					"infoFiltered": "(从 _MAX_ 条记录过滤)",
-					"search":"搜索：",
-					"loadingRecords": "载入中...",
-					"paginate":{
-						"first":"首页",
-						"previous":"上一页",
-						"next":"下一页",
-						"last":"尾页"
-					}
+        var table = $('#dataTables-example').DataTable({
+			//排序列
+			columnDefs:[{
+				orderable:false,//禁用排序
+				targets:[0, 6]//指定的列
+			}],
+			"order": [0,null],
+			"dom":
+				"<'row'<'col-sm-6'><'col-sm-6'>r>"+
+				"t"+
+				"<'row'<'pull-left'l><'pull-left'i><'col-sm-6 pull-right'p>>",
+			"pagingType": "full_numbers",
+			"lengthMenu": [[8, 25, 50, 100], [8, 25, 50, 100]],
+			"language": {
+				"processing" : "<img src='/images/loading.gif'>处理中...",
+				// "lengthMenu": "每页 _MENU_ 条， 共 _PAGES_ 页， 共 _TOTAL_ 条",
+				"lengthMenu": "每页 _MENU_ 条 ",
+				"zeroRecords": "没有找到记录",
+				"info": "，共 _PAGES_ 页，共 _TOTAL_ 条",
+				"infoEmpty": "无记录",
+				"infoFiltered": "(从 _MAX_ 条记录过滤)",
+				"search":"搜索：",
+				"loadingRecords": "载入中...",
+				"paginate":{
+					"first":"首页",
+					"previous":"上一页",
+					"next":"下一页",
+					"last":"尾页"
+				}
+			},
+			"processing": true,
+			"serverSide": true,
+			"ajax": {
+				"url": "/admin/user/lists",
+				"type": 'POST',
+				"data":{"name":123},
+				"dataType": 'json',
+				"headers": {
+					'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 				},
-				"processing": true,
-				"serverSide": true,
-				"ajax": {
-					"url": "/admin/user/lists",
-					"type": 'POST',
-					"data":{"name":123},
-					dataType: 'json',
-					headers: {
-						'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-					},
-					// success: function(data){
-						// console.log(data);
-					// },
-					// error: function(xhr, type){
-						// console.log('error');
-					// }
-				},
+			},
 /*"columns": [
             { "data": "id" },
             { "data": "username" },
@@ -108,14 +103,7 @@ div.dataTables_length {
 				{
 					"mDataProp": "id",
 					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-						// $(nTd).html('<div class="icheckbox_square-blue" style="position: relative;">'+
-						// '<input class="checkbox" type="checkbox" name="user_id" id="checkAll"' +
-						// 'style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);">'+
-							// '<ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins>'+
-						// '</input>'+
-						// '<div>');
 						$(nTd).html("<input type='checkbox' class='checkbox' name='checkList' value='" + sData + "'>");
-
 					}
 				},
 				{"mDataProp": "username"},
@@ -126,46 +114,47 @@ div.dataTables_length {
 				{
 					"mDataProp": "id",
 					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-						$(nTd).html("<a href='/admin/user/edit/'" + sData + ">编辑</a>");
+						$(nTd).html("<a href=/admin/user/" + sData + "/edit>编辑</a>");
 						// "onclick='_editFun(\" + oData.id + "\",\"" + oData.name + "\",\"" + oData.job + "\",\"" + oData.note + "\")'>编辑</a>a>&nbsp;&nbsp;")
 							// .append("<a href='javascript:void(0);' onclick='_deleteFun(" + sData + ")'>删除</a>a>");
 					}
 				},
 			],
-                responsive: true,
+            responsive: true,
 			//数据显示后回调
-			"initComplete": function () {
-				$('input').iCheck({
-					checkboxClass: 'icheckbox_square-blue',
-					radioClass: 'iradio_square-red',
-					increaseArea: '20%' // optional
-				});
-				// $("table").colResizable();
-				// $("table").removeClass("JColResizer");
-			},
+			"initComplete": initComplete
+		});
+
+	function initComplete() {
+		$('input').iCheck({
+			checkboxClass: 'icheckbox_square-blue',
+			radioClass: 'iradio_square-red',
+			increaseArea: '20%' // optional
 		});
 		//行列高亮
 		var lastIdx = null;
-		var table = $('#dataTables-example').DataTable();
+		// var table = $('#dataTables-example').DataTable();
 		$('#dataTables-example tbody')
 		.on( 'mouseover', 'td', function () {
-            var colIdx = table.cell(this).index().column;
-            if ( colIdx !== lastIdx ) {
-                $( table.cells().nodes() ).removeClass( 'highlight' );
-                $( table.column( colIdx ).nodes() ).addClass( 'highlight' );
-            }
-        } )
-        .on( 'mouseleave', function () {
-            $( table.cells().nodes() ).removeClass( 'highlight' );
-        } );
-
+			var colIdx = table.cell(this).index().column;
+			if ( colIdx !== lastIdx ) {
+				$( table.cells().nodes() ).removeClass( 'highlight' );
+				$( table.column( colIdx ).nodes() ).addClass( 'highlight' );
+			}
+		} )
+		.on( 'mouseleave', function () {
+			$( table.cells().nodes() ).removeClass( 'highlight' );
+		} );
 		//全选全不选
-		$('input').on('ifChecked', function(event){
+		$('#checkAll').on('ifChecked', function(event){
 			$('input').iCheck('check');
 		});
-		$('input').on('ifUnchecked', function(event){
+		$('#checkAll').on('ifUnchecked', function(event){
 			$('input').iCheck('uncheck');
 		});
-    });
+		// $("table").colResizable();
+		// $("table").removeClass("JColResizer");
+	}
+});
 </script>
 
