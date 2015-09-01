@@ -3407,8 +3407,8 @@
 
 		div.children().append(
 			settings.oLanguage.sLengthMenu.replace( '_MENU_', select[0].outerHTML )
-				.replace( '_PAGES_', formatter.call( settings, all ? 1 : Math.ceil( vis / len ) ) )
-				.replace( '_TOTAL_', formatter.call( settings, vis ) )
+				// .replace( '_PAGES_', formatter.call( settings, all ? 1 : Math.ceil( vis / len ) ) )
+				// .replace( '_TOTAL_', formatter.call( settings, vis ) )
 		);
 
 		// Can't use `select` variable as user might provide their own and the
