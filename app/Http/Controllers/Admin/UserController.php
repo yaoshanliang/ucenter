@@ -38,7 +38,7 @@ class UserController extends Controller {
 	{
 		// var_dump($_POST);
 		// exit;
-		$draw = $_POST['draw'];//这个值作者会直接返回给前台
+		$draw = $_POST['draw']+1;//这个值作者会直接返回给前台
 
 		//排序
 		$columns = $_POST['columns'];
@@ -48,6 +48,7 @@ class UserController extends Controller {
 		if(isset($order_column)) {
 			$orderSql = ' order by ' . $columns[$order_column]['data'] . ' ' . $order_dir;
 		}
+		// echo $orderSql;
 		$search = $_POST['search']['value'];//获取前台传过来的过滤条件
 
 		$start = $_POST['start'];//从多少开始
@@ -80,18 +81,26 @@ class UserController extends Controller {
 		//分页
 		$start = $_POST['start'];//从多少开始
 		$length = $_POST['length'];//数据长度
-		$limitSql = '';
-		$limitFlag = isset($_POST['start']) && $length != -1 ;
-		if ($limitFlag ) {
-		   $limitSql = " LIMIT ".intval($start).", ".intval($length);
-		}
+		// $limitSql = '';
+		// $limitFlag = isset($_POST['start']) && $length != -1 ;
+		// if ($limitFlag ) {
+		   // $limitSql = " LIMIT ".intval($start).", ".intval($length);
+		// }
 		$users = User::where("username" , 'LIKE',  '%' . $search . '%')
 			->orWhere("email" , 'LIKE',  '%' . $search . '%')
 			->orWhere("phone" , 'LIKE',  '%' . $search . '%')
-			->orderby('updated_at', 'desc')
+			->orderby($columns[$order_column]['data'], $order_dir)
+			->skip($start)
+			->take($length)
 			->get(array('id', 'username', 'email', 'phone', 'created_at', 'updated_at'))
 			->toArray();
-		// $users = User::orderBy('updated_at', 'desc')->paginate(5);
+		$recordsTotal = User::count();
+		if($search) {
+			$recordsFiltered = count($users);
+		} else {
+			$recordsFiltered = $recordsTotal;
+		}
+			// $users = User::orderBy('updated_at', 'desc')->paginate(5);
 		// $users = User::get(array('id', 'username', 'email', 'phone', 'created_at', 'updated_at'))->toArray();
 		// foreach($users as $user) {
 			// $users_value[] = array_values($user);
@@ -102,10 +111,9 @@ class UserController extends Controller {
 		// exit;
 		// var_dump(compact('users'));
 		// exit;
-		$draw = 1;
-		$recordsTotal = 57;
-		$recordsFiltered = 57;
-		$output['aaData'] = $users;
+		$draw = $_POST['draw'];
+		// $recordsTotal = 57;
+		// $recordsFiltered = 57;
 		echo json_encode(array(
 		    "draw" => intval($draw),
 		    "recordsTotal" => intval($recordsTotal),
