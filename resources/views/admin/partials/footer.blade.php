@@ -19,8 +19,6 @@
 <!-- icheck JavaScript -->
 <script src="/plugin/icheck/icheck.min.js"></script>
 
-<script src="/admin-assets/js/colResizable-1.5.min.js"></script>
-
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <style>
 td.highlight {
@@ -125,7 +123,6 @@ div.dataTables_info {
 		});
 		//行列高亮
 		var lastIdx = null;
-		// var table = $('#dataTables-example').DataTable();
 		$('#dataTables-example tbody')
 		.on( 'mouseover', 'td', function () {
 			var colIdx = table.cell(this).index().column;
@@ -136,18 +133,7 @@ div.dataTables_info {
 		} )
 		.on( 'mouseleave', function () {
 			$( table.cells().nodes() ).removeClass( 'highlight' );
-		} );
-		//全选全不选
-		// $('#checkAll').on('ifChecked', function(event){
-			// $('input').iCheck('check');
-		// });
-		// $('#checkAll').on('ifUnchecked', function(event){
-			// $('input').iCheck('uncheck');
-		// });
-		// $("table").colResizable();
-		// $("table").removeClass("JColResizer");
-	}
-		var table = $('#dataTables-example').DataTable();
+		})
 		table.on( 'draw.dt', function () {
 			$('input').iCheck({
 				checkboxClass: 'icheckbox_square-blue',
@@ -162,6 +148,18 @@ div.dataTables_info {
 			});
 			$('#checkAll').iCheck('uncheck');
 		} );
+		//全选全不选
+		$('#checkAll').on('ifChecked', function(event){
+			$('input').iCheck('check');
+		});
+		$('#checkAll').on('ifUnchecked', function(event){
+			$('input').iCheck('uncheck');
+		});
+		$("#search").on( 'keyup change', function () {
+            table.search( this.value )
+			.draw();
+		});
+	}
 });
 </script>
 
