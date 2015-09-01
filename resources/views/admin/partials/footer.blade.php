@@ -65,7 +65,7 @@ div.dataTables_info {
 			"pagingType": "full_numbers",
 			"lengthMenu": [[8, 25, 50, 100], [8, 25, 50, 100]],
 			"language": {
-				"processing" : "<img src='/images/loading.gif'>处理中...",
+				"processing" : "<img src='/images/loading.gif'>",
 				// "lengthMenu": "每页 _MENU_ 条， 共 _PAGES_ 页， 共 _TOTAL_ 条",
 				"lengthMenu": "每页 _MENU_ 条 ",
 				"zeroRecords": "没有找到记录",
@@ -154,6 +154,22 @@ div.dataTables_info {
 		});
 		// $("table").colResizable();
 		// $("table").removeClass("JColResizer");
+		var table = $('#dataTables-example').DataTable();
+		table.on( 'draw.dt', function () {
+		$('input').iCheck({
+			checkboxClass: 'icheckbox_square-blue',
+			radioClass: 'iradio_square-red',
+			increaseArea: '20%' // optional
+		});
+		$('#checkAll').on('ifChecked', function(event){
+			$('input').iCheck('check');
+		});
+		$('#checkAll').on('ifUnchecked', function(event){
+			$('input').iCheck('uncheck');
+		});
+		$('#checkAll').iCheck('uncheck');
+    // alert( 'Table redrawn' );
+} );
 	}
 });
 </script>
