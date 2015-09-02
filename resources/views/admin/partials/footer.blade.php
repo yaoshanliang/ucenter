@@ -94,7 +94,7 @@ div.dataTables_info {
 				{
 					"data": "id",
 					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-						$(nTd).html("<input type='checkbox' class='checkbox' name='checkList' value='" + sData + "'>");
+						$(nTd).html("<input type='checkbox' class='checkbox' name='ids[]' value='" + sData + "'>");
 					}
 				},
 				{"data": "username"},
@@ -105,9 +105,8 @@ div.dataTables_info {
 				{
 					"data": "id",
 					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-						$(nTd).html("<a href=/admin/user/" + sData + "/edit>编辑</a>");
-						// "onclick='_editFun(\" + oData.id + "\",\"" + oData.name + "\",\"" + oData.job + "\",\"" + oData.note + "\")'>编辑</a>a>&nbsp;&nbsp;")
-							// .append("<a href='javascript:void(0);' onclick='_deleteFun(" + sData + ")'>删除</a>a>");
+						$(nTd).html("<a href=/admin/user/" + sData + "/edit>编辑</a>" + " " +
+							"<a href='javascript:void(0);' onclick='$(\"#myModal\").modal();'>删除</a>");
 					}
 				},
 			],
@@ -155,11 +154,15 @@ div.dataTables_info {
 		$('#checkAll').on('ifUnchecked', function(event){
 			$('input').iCheck('uncheck');
 		});
-		$("#search").on( 'keyup change', function () {
+		$("#search").on( 'keyup', function () {
             table.search( this.value )
 			.draw();
 		});
 	}
 });
+function submit_delete() {
+	alert(11);
+$('#myModal').modal('hide');
+}
 </script>
 
