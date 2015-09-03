@@ -26,8 +26,17 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array(
 	  Route::get('/', 'AdminController@index');
 	  Route::resource('app', 'AppController');
 	  Route::resource('user', 'UserController');
+	  // Route::get('user', 'UserController');
+	  // Route::match(['get', 'post'], 'user', 'UserController');
+	  Route::post('user/lists', 'UserController@lists');
 });
-Route::get('api', [
-	'middleware' => 'guest', 'uses' => 'Api\ApiController@forbidden']);
-Route::post('api', [
-	'middleware' => 'guest', 'uses' => 'Api\ApiController@index']);
+Route::group(['prefix' => 'api', 'namespace' => 'Api','middleware' => 'guest'], function() {
+	  Route::get('/', 'ApiController@forbidden');
+	  Route::resource('user', 'UserController');
+	  // Route::resource('user', 'UserController');
+});
+Route::get('api/users', array('as'=>'api.users', 'uses'=>'Admin\UserController@getDatatable'));
+// Route::get('api', [
+	// 'middleware' => 'guest', 'uses' => 'Api\ApiController@forbidden']);
+// Route::post('api', [
+	// 'middleware' => 'guest', 'uses' => 'Api\ApiController@index']);
