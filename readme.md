@@ -1,5 +1,8 @@
-##基于laravel、bootstrap的用户中心
+##用户中心
 ####——“统一身份认证”、“用户分离”、“权限分离”、“日志分离”
+* Laravel
+* Bootstrap
+* DataTables
 
 ###安装配置
 
