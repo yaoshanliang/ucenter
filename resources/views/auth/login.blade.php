@@ -27,14 +27,14 @@
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">账户</label>
-							<div class="col-md-6">
+							<div class="col-md-5">
 								<input type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="用户名/邮箱/手机">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">密码</label>
-							<div class="col-md-6">
+							<div class="col-md-5">
 								<input type="password" class="form-control" name="password">
 							</div>
 						</div>
