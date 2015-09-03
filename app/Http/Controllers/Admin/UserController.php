@@ -18,26 +18,13 @@ class UserController extends Controller {
 	public function index()
 	{
 		// $count = User::count();
-		$users = User::orderBy('updated_at', 'desc')->paginate(5);
-		return view('admin.user.index', compact('users'));
-	}
-
-	public function getDatatable()
-	{
-		echo '111';exit;
-		// if(Datatable::shouldHandle()) {
-			return Datatable::collection(User::all(array('id','name')))
-				->showColumns('id', 'name')
-				->searchColumns('name')
-				->orderColumns('id','name')
-				->make();
-		// }
+		// $users = User::orderBy('updated_at', 'desc')->paginate(5);
+		// return view('admin.user.index', compact('users'));
+		return view('admin.user.index');
 	}
 
 	public function lists()
 	{
-		// var_dump($_POST);
-		// exit;
 		$draw = $_POST['draw']+1;//这个值作者会直接返回给前台
 
 		//排序
@@ -65,27 +52,9 @@ class UserController extends Controller {
 		$recordsFiltered = 0;
 		//表的总记录数 必要
 		$recordsTotal = 0;
-		// $recordsTotalResult = $db->query($sumSql);
-		// while ($row = $recordsTotalResult->fetchArray(SQLITE3_ASSOC)) {
-		   // $recordsTotal =  $row['sum'];
-		   // }
-		$sumSqlWhere =" where first_name||last_name||position||office||start_date||salary LIKE '%".$search."%'";
-		if(strlen($search)>0){
-			// $recordsFilteredResult = $db->query($sumSql.$sumSqlWhere);
-			// while ($row = $recordsFilteredResult->fetchArray(SQLITE3_ASSOC)) {
-					// $recordsFiltered =  $row['sum'];
-				// }
-		}else{
-		    $recordsFiltered = $recordsTotal;
-		}
 		//分页
 		$start = $_POST['start'];//从多少开始
 		$length = $_POST['length'];//数据长度
-		// $limitSql = '';
-		// $limitFlag = isset($_POST['start']) && $length != -1 ;
-		// if ($limitFlag ) {
-		   // $limitSql = " LIMIT ".intval($start).", ".intval($length);
-		// }
 		$users = User::where("username" , 'LIKE',  '%' . $search . '%')
 			->orWhere("email" , 'LIKE',  '%' . $search . '%')
 			->orWhere("phone" , 'LIKE',  '%' . $search . '%')
@@ -95,25 +64,12 @@ class UserController extends Controller {
 			->get(array('id', 'username', 'email', 'phone', 'created_at', 'updated_at'))
 			->toArray();
 		$recordsTotal = User::count();
-		if($search) {
+		if(strlen($search)) {
 			$recordsFiltered = count($users);
 		} else {
 			$recordsFiltered = $recordsTotal;
 		}
-			// $users = User::orderBy('updated_at', 'desc')->paginate(5);
-		// $users = User::get(array('id', 'username', 'email', 'phone', 'created_at', 'updated_at'))->toArray();
-		// foreach($users as $user) {
-			// $users_value[] = array_values($user);
-		// }
-// var_dump($users);
-// exit;
-		// var_dump($users_value);
-		// exit;
-		// var_dump(compact('users'));
-		// exit;
 		$draw = $_POST['draw'];
-		// $recordsTotal = 57;
-		// $recordsFiltered = 57;
 		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
 		if ( $jsonp ) {
 		    echo $jsonp.'('.json_encode(array(
