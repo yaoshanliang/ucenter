@@ -22,25 +22,30 @@ class UserController extends Controller {
 
 	public function lists()
 	{
-		//排序
 		$columns = $_POST['columns'];
 		$order_column = $_POST['order']['0']['column'];//那一列排序，从0开始
-		$order_dir = $_POST['order']['0']['dir'];//ase desc 升序或者降序]
+		$order_dir = $_POST['order']['0']['dir'];//ase desc 升序或者降序
 		$search = $_POST['search']['value'];//获取前台传过来的过滤条件
 		$start = $_POST['start'];//从多少开始
 		$length = $_POST['length'];//数据长度
-		$users = User::where("username" , 'LIKE',  '%' . $search . '%')
-			->orWhere("email" , 'LIKE',  '%' . $search . '%')
-			->orWhere("phone" , 'LIKE',  '%' . $search . '%')
-			->orderby($columns[$order_column]['data'], $order_dir)
-			->skip($start)
-			->take($length)
-			->get(array('id', 'username', 'email', 'phone', 'created_at', 'updated_at'))
-			->toArray();
+		$fields = array('id', 'username', 'email', 'phone', 'created_at', 'updated_at');
 		$recordsTotal = User::count();
 		if(strlen($search)) {
+			$users = User::where("username" , 'LIKE',  '%' . $search . '%')
+				->orWhere("email" , 'LIKE',  '%' . $search . '%')
+				->orWhere("phone" , 'LIKE',  '%' . $search . '%')
+				->orderby($columns[$order_column]['data'], $order_dir)
+				->skip($start)
+				->take($length)
+				->get($fields)
+				->toArray();
 			$recordsFiltered = count($users);
 		} else {
+			$users = User::orderby($columns[$order_column]['data'], $order_dir)
+				->skip($start)
+				->take($length)
+				->get($fields)
+				->toArray();
 			$recordsFiltered = $recordsTotal;
 		}
 		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
