@@ -160,9 +160,12 @@ div.dataTables_info {
 		});
 	}
 });
-function check_delete(ids) {
-	if(!ids) {
-		ids = $("input:checkbox[name='ids']:checked").map(function(index,elem) { return $(elem).val(); }).get().join(',');
+function check_delete(id) {
+	var ids =[];
+	if(!id) {
+        $('input[name="ids"]:checked').each(function(){ ids.push($(this).val()); });
+	} else {
+		ids.push(id);
 	}
 	$('#selected_ids').attr('value', ids);
 	if(ids == '') {
@@ -173,8 +176,19 @@ function check_delete(ids) {
 }
 function submit_delete() {
 	var ids = $('#selected_ids').val();
-	alert(ids);
 	$('#confirm_delete_modal').modal('hide');
+	$.ajax({
+		url: '/admin/user/delete',
+		type: 'POST',
+		data: {'ids': ids},
+		dataType: 'jsonp',
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+		},
+		success: function(data) {
+			alert(data);
+		}
+	});
 }
 </script>
 
