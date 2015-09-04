@@ -4,6 +4,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\User;
 use Redirect, Input, Auth;
@@ -123,4 +124,13 @@ class UserController extends Controller {
 		//
 	}
 
+	public function delete()
+	{
+		DB::transaction(function()
+		{
+			$ids = explode(',', $_POST['ids']);
+			$result = User::whereIn('id', $ids)->delete();
+		});
+		session()->flash('message', '应用删除成功');
+	}
 }
