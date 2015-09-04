@@ -29,6 +29,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array(
 	  // Route::get('user', 'UserController');
 	  // Route::match(['get', 'post'], 'user', 'UserController');
 	  Route::post('user/lists', 'UserController@lists');
+	  Route::post('user/delete', 'UserController@delete');
 });
 Route::group(['prefix' => 'api', 'namespace' => 'Api','middleware' => 'guest'], function() {
 	  Route::get('/', 'ApiController@forbidden');
