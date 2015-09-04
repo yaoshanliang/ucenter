@@ -11,9 +11,7 @@
 			<div class="input-group custom-search-form">
 				<a href="{{ URL('admin/user/create') }}" class="btn btn-primary">新增</a>
 				&nbsp;
-                <button class="btn btn-primary btn-danger" data-toggle="modal" data-target="#myModal">
-				删除
-                </button>
+				<a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return delete_check();'>删除</a>
 				<input type="text" id="search" class="form-control search" placeholder="搜索">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button">
@@ -57,7 +55,24 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" onClick="return submit_delete();">确定</button>
+                <button type="button" class="btn btn-primary" onClick="return delete_submit();">确定</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<div class="modal fade" id="nodata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5 class="modal-title" id="myModalLabel">请先勾选数据</h5>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
             </div>
         </div>
         <!-- /.modal-content -->
