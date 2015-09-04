@@ -84,7 +84,7 @@ div.dataTables_info {
 			"ajax": {
 				"url": "/admin/user/lists",
 				"type": 'POST',
-				"data":{"name":123},
+				// "data":{"name":123},
 				"dataType": 'jsonp',
 				"headers": {
 					'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -94,7 +94,7 @@ div.dataTables_info {
 				{
 					"data": "id",
 					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-						$(nTd).html("<input type='checkbox' class='checkbox' name='ids[]' value='" + sData + "'>");
+						$(nTd).html("<input type='checkbox' class='checkbox' name='ids' value='" + sData + "'>");
 					}
 				},
 				{"data": "username"},
@@ -106,7 +106,7 @@ div.dataTables_info {
 					"data": "id",
 					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
 						$(nTd).html("<a href=/admin/user/" + sData + "/edit>编辑</a>" + " " +
-							"<a href='javascript:void(0);' onclick='$(\"#myModal\").modal();'>删除</a>");
+							"<a href='javascript:void(0);' onclick='return delete_one(" + sData + ");'>删除</a>");
 					}
 				},
 			],
@@ -160,8 +160,22 @@ div.dataTables_info {
 		});
 	}
 });
-function submit_delete() {
-	alert(11);
+function delete_one(id) {
+
+	$('#myModal').modal('show');
+	alert(id);
+}
+function delete_check() {
+	var ids = $("input:checkbox[name='ids']:checked").map(function(index,elem) { return $(elem).val(); }).get().join(',');
+	if(ids == '') {
+		$('#nodata').modal('show');
+	} else {
+		$('#myModal').modal('show');
+	}
+}
+function delete_submit() {
+var ids = $("input:checkbox[name='ids']:checked").map(function(index,elem) { return $(elem).val(); }).get().join(',');
+		alert("选中的checkbox的值为：" + ids);
 $('#myModal').modal('hide');
 }
 </script>
