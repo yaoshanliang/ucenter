@@ -11,7 +11,7 @@
 			<div class="input-group custom-search-form">
 				<a href="{{ URL('admin/user/create') }}" class="btn btn-primary">新增</a>
 				&nbsp;
-				<a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return delete_check();'>删除</a>
+				<a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return check_delete();'>删除</a>
 				<input type="text" id="search" class="form-control search" placeholder="搜索">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="button">
@@ -21,6 +21,7 @@
 			</div>
 			<form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/app') }}">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
+				<input type="hidden" name="selected_ids" id="selected_ids">
 				<table class="table table-striped table-bordered table-hover" id="dataTables-example" class="display" cellspacing="0" width="100%" border='0px'>
 					<thead>
 						<tr>
@@ -46,7 +47,7 @@
 </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="confirm_delete_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -55,7 +56,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" onClick="return delete_submit();">确定</button>
+                <button type="button" class="btn btn-primary" onClick="return submit_delete();">确定</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -64,7 +65,7 @@
 </div>
 <!-- /.modal -->
 
-<div class="modal fade" id="nodata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="no_selected_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
