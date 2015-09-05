@@ -124,13 +124,20 @@ class UserController extends Controller {
 		//
 	}
 
+	//删除
 	public function delete()
 	{
-		DB::transaction(function()
-		{
+		DB::beginTransaction();
+		try{
 			$ids = explode(',', $_POST['ids']);
 			$result = User::whereIn('id', $ids)->delete();
-		});
+
+			DB::commit();
+		} catch (Exception $e) {
+			DB::rollBack();
+			throw $e;
+		}
+		return $result;
 		session()->flash('message', '应用删除成功');
 	}
 }
