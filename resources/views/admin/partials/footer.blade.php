@@ -80,6 +80,11 @@ div.dataTables_info {
 			},
 			"processing": true,
 			"serverSide": true,
+			// "deferLoading": 57,
+			// 'stateSave': true,
+			stateSaveCallback: function(){
+				alert(11);
+			},
             "responsive": true,
 			"ajax": {
 				"url": "/admin/user/lists",
