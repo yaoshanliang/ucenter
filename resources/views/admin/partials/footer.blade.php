@@ -80,10 +80,11 @@ div.dataTables_info {
 			},
 			"processing": true,
 			"serverSide": true,
-			// "deferLoading": 57,
-			// 'stateSave': true,
-			stateSaveCallback: function(){
-				alert(11);
+
+			//保存状态
+			'stateSave': true,
+			"stateLoaded": function (settings, data) {
+				$("#search").val(data.search.search);
 			},
             "responsive": true,
 			"ajax": {
