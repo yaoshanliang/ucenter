@@ -19,6 +19,9 @@
 <link href="/plugin/icheck/skins/square/blue.css" rel="stylesheet">
 <meta name="_token" content="{{ csrf_token() }}"/>
 <style>
+table {
+	margin-top: 6px !important;
+}
 .search {
 	float:right !important;
 	width:30% !important;
@@ -39,5 +42,26 @@ width: 24px;
 border-radius: 0px;
 border: none;
   cursor: pointer;
+}
+#myModal
+{
+	top:0px;
+}
+.modal-dialog {
+	margin-top: 0px;
+	width: 300px
+}
+.modal-content {
+	// border-radius: 4px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+.modal-footer {
+	padding-top: 15px;
+	padding-right: 15px;
+	padding-bottom: 10px;
+	padding-left: 15px;
 }
 </style>
