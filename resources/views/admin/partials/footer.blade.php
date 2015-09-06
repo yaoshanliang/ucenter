@@ -55,7 +55,7 @@ div.dataTables_info {
 				"orderable": false,//禁用排序
 				"targets": [0, 6]//指定的列
 			}],
-			"order": [0,null],
+			"order": [5, 'desc'],
 			"dom":
 				"<'row'<'col-sm-6'><'col-sm-6'>r>"+
 				"t"+
@@ -83,9 +83,19 @@ div.dataTables_info {
 
 			//保存状态
 			'stateSave': true,
+			'stateDuration': -1,//写入session
+			"stateLoadParams": function (settings, data) {
+				// data.oearch.sSearch = "";
+				alert(33);
+			},
+
 			"stateLoaded": function (settings, data) {
 				$("#search").val(data.search.search);
+				alert(22);
 			},
+			// "stateLoadCallback": function (settings) {
+				// alert(11);
+			// },
             "responsive": true,
 			"ajax": {
 				"url": "/admin/user/lists",
