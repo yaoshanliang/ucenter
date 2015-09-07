@@ -83,19 +83,17 @@ div.dataTables_info {
 
 			//保存状态
 			'stateSave': true,
-			'stateDuration': -1,//写入session
 			"stateLoadParams": function (settings, data) {
 				// data.oearch.sSearch = "";
-				alert(33);
+				// alert(33);
 			},
-
 			"stateLoaded": function (settings, data) {
 				$("#search").val(data.search.search);
-				alert(22);
+				console.log(data);
 			},
-			// "stateLoadCallback": function (settings) {
+			"stateLoadCallback": function (settings) {
 				// alert(11);
-			// },
+			},
             "responsive": true,
 			"ajax": {
 				"url": "/admin/user/lists",
@@ -189,6 +187,18 @@ function check_delete(id) {
 	} else {
 		$('#confirm_delete_modal').modal('show');
 	}
+// $('#dataTables-example').dataTable( {
+	// "ajax": function (data, callback, settings) {
+		// callback(
+			// JSON.parse( localStorage.getItem('dataTablesData') )
+		// );
+	// }
+// } );
+
+	console.log(JSON.parse(localStorage.getItem('DataTables_dataTables-example_/admin/user')));
+
+    var table = $('#dataTables-example').DataTable().data();
+	console.log(table);
 }
 function submit_delete() {
 	var ids = $('#selected_ids').val();
