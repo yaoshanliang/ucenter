@@ -187,17 +187,8 @@ function check_delete(id) {
 	} else {
 		$('#confirm_delete_modal').modal('show');
 	}
-// $('#dataTables-example').dataTable( {
-	// "ajax": function (data, callback, settings) {
-		// callback(
-			// JSON.parse( localStorage.getItem('dataTablesData') )
-		// );
-	// }
-// } );
 
-	console.log(JSON.parse(localStorage.getItem('DataTables_dataTables-example_/admin/user')));
-
-    var table = $('#dataTables-example').DataTable().data();
+    var table = $('#dataTables-example').DataTable().state();
 	console.log(table);
 }
 function submit_delete() {
