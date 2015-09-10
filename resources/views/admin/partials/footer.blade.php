@@ -19,6 +19,8 @@
 <!-- icheck JavaScript -->
 <script src="/plugin/icheck/icheck.min.js"></script>
 
+<!-- iat JavaScript -->
+<script src="/admin-assets/js/iat.js"></script>
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <style>
 td.highlight {
@@ -196,31 +198,8 @@ function submit_delete() {
 			$('#delete_failed').modal('show');
 		},
 	});
-		showTips('操作成功', 10, 1.5);
+		// showTips('操作成功', 10, 1.5);
+		showSuccessTip();
 
-}
-function showTips( tips, height, time ){
-	var windowWidth = document.documentElement.clientWidth;
-	var width = 200;
-	var tipsDiv = '<div class="tipsClass">' + tips + '</div>div>';
-
-	$( 'body' ).append( tipsDiv );
-	$( 'div.tipsClass' ).css({
-		'z-index':9999,
-		'top' : height + 'px',
-		'width': width + 'px',
-		'height': '30px',
-		'left' : ( windowWidth / 2 ) - ( width / 2 ) + 'px',
-		'position' : 'fixed',
-		'padding' : '3px 5px',
-		'background': '#8FBC8F',
-		'font-size' : 14 + 'px',
-		'margin' : '0 auto',
-		'text-align': 'center',
-		'color' : '#fff',
-		'opacity' : '0.8'
-	}).show();
-	setTimeout( function(){$( 'div.tipsClass' ).fadeOut();}, ( time * 1000 ) );
 }
 </script>
-
