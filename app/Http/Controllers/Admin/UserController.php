@@ -137,11 +137,13 @@ class UserController extends Controller {
 			DB::rollBack();
 			throw $e;
 		}
+		// jsonp_return($status_code, $status_msg, $status_data);
+		$data['status_code'] = 0;
+		$data['status_msg'] = '删除成功';
+		$data['status_data'] = $result;
 		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
 		if($jsonp) {
-			echo $jsonp.'('.json_encode(array(
-				'result' => $result
-				),JSON_UNESCAPED_UNICODE) . ');';
+		    echo $jsonp . '(' . json_encode($data, JSON_UNESCAPED_UNICODE) . ');';
 		}
 	}
 }
