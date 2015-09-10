@@ -83,17 +83,6 @@ div.dataTables_info {
 
 			//保存状态
 			'stateSave': true,
-			"stateLoadParams": function (settings, data) {
-				// data.oearch.sSearch = "";
-				// alert(33);
-			},
-			"stateLoaded": function (settings, data) {
-				$("#search").val(data.search.search);
-				console.log(data);
-			},
-			"stateLoadCallback": function (settings) {
-				// alert(11);
-			},
             "responsive": true,
 			"ajax": {
 				"url": "/admin/user/lists",
@@ -108,7 +97,7 @@ div.dataTables_info {
 				{
 					"data": "id",
 					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-						$(nTd).html("<input type='checkbox' class='checkbox' name='ids' value='" + sData + "'>");
+						$(nTd).html("<input type='checkbox' id='" + sData + "' class='checkbox' name='ids' value='" + sData + "'>");
 					}
 				},
 				{"data": "username"},
@@ -188,8 +177,27 @@ function check_delete(id) {
 		$('#confirm_delete_modal').modal('show');
 	}
 
+/*
     var table = $('#dataTables-example').DataTable().state();
+	var columns = table.columns;
+	var order = table.order;
+	var start = table.start;
+	var length = table.length;
+	var search = table.search;
 	console.log(table);
+	// $.ajax({
+		// url: '/admin/user/lists',
+		// type: 'POST',
+		// data: {'columns': columns, 'order': order, 'start': start, 'length': length, 'search': search},
+		// dataType: 'jsonp',
+		// headers: {
+			// 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+		// },
+		// success: function(data) {
+			// alert(data);
+		// }
+	// });
+*/
 }
 function submit_delete() {
 	var ids = $('#selected_ids').val();
@@ -206,6 +214,9 @@ function submit_delete() {
 			alert(data);
 		}
 	});
+
+    var table = $('#dataTables-example').DataTable();
+	table.draw();
 }
 </script>
 
