@@ -137,7 +137,11 @@ class UserController extends Controller {
 			DB::rollBack();
 			throw $e;
 		}
-		return $result;
-		session()->flash('message', '应用删除成功');
+		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
+		if($jsonp) {
+			echo $jsonp.'('.json_encode(array(
+				'result' => $result
+				),JSON_UNESCAPED_UNICODE) . ');';
+		}
 	}
 }
