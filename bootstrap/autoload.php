@@ -33,3 +33,4 @@ if (file_exists($compiledPath))
 {
 	require $compiledPath;
 }
+require_once __DIR__.'/../app/Services/Helper.php';
