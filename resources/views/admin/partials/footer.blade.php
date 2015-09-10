@@ -191,6 +191,7 @@ function submit_delete() {
 			'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 		},
 		success: function(data) {
+			console.log(data);
 			showSuccessTip();
 			var table = $('#dataTables-example').DataTable();
 			table.draw(false);//保持分页
