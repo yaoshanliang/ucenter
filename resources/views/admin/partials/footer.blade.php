@@ -176,28 +176,6 @@ function check_delete(id) {
 	} else {
 		$('#confirm_delete_modal').modal('show');
 	}
-
-/*
-    var table = $('#dataTables-example').DataTable().state();
-	var columns = table.columns;
-	var order = table.order;
-	var start = table.start;
-	var length = table.length;
-	var search = table.search;
-	console.log(table);
-	// $.ajax({
-		// url: '/admin/user/lists',
-		// type: 'POST',
-		// data: {'columns': columns, 'order': order, 'start': start, 'length': length, 'search': search},
-		// dataType: 'jsonp',
-		// headers: {
-			// 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-		// },
-		// success: function(data) {
-			// alert(data);
-		// }
-	// });
-*/
 }
 function submit_delete() {
 	var ids = $('#selected_ids').val();
@@ -211,12 +189,36 @@ function submit_delete() {
 			'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 		},
 		success: function(data) {
-			alert(data);
-		}
+			var table = $('#dataTables-example').DataTable();
+			table.draw(false);//保持分页
+		},
+		error: function() {
+			$('#delete_failed').modal('show');
+		},
 	});
+		showTips('操作成功', 10, 100);
 
-    var table = $('#dataTables-example').DataTable();
-	table.draw();
+}
+function showTips( tips, height, time ){
+var windowWidth = document.documentElement.clientWidth;
+var tipsDiv = '<div class="tipsClass">' + tips + '</div>div>';
+
+$( 'body' ).append( tipsDiv );
+$( 'div.tipsClass' ).css({
+'z-index':9999,
+'top' : height + 'px',
+'left' : ( windowWidth / 2 ) - ( tips.length * 13 / 2 ) + 'px',
+'position' : 'fixed',
+'padding' : '3px 5px',
+'background': '#8FBC8F',
+'font-size' : 12 + 'px',
+'margin' : '0 auto',
+'text-align': 'center',
+'width' : 'auto',
+'color' : '#fff',
+'opacity' : '0.8'
+}).show();
+setTimeout( function(){$( 'div.tipsClass' ).fadeOut();}, ( time * 1000 ) );
 }
 </script>
 
