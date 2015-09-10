@@ -191,15 +191,13 @@ function submit_delete() {
 			'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 		},
 		success: function(data) {
+			showSuccessTip();
 			var table = $('#dataTables-example').DataTable();
 			table.draw(false);//保持分页
 		},
 		error: function() {
-			$('#delete_failed').modal('show');
+			showFailTip();
 		},
 	});
-		// showTips('操作成功', 10, 1.5);
-		showSuccessTip();
-
 }
 </script>
