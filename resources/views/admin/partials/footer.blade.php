@@ -179,26 +179,5 @@ function check_delete(id) {
 		$('#confirm_delete_modal').modal('show');
 	}
 }
-function submit_delete() {
-	var ids = $('#selected_ids').val();
-	$('#confirm_delete_modal').modal('hide');
-	$.ajax({
-		url: '/admin/user/delete',
-		type: 'POST',
-		data: {'ids': ids},
-		dataType: 'jsonp',
-		headers: {
-			'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-		},
-		success: function(data) {
-			console.log(data);
-			showSuccessTip();
-			var table = $('#dataTables-example').DataTable();
-			table.draw(false);//保持分页
-		},
-		error: function() {
-			showFailTip();
-		},
-	});
-}
+
 </script>
