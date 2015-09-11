@@ -33,9 +33,11 @@ class UserController extends Controller {
 		$fields = array('id', 'username', 'email', 'phone', 'created_at', 'updated_at');
 		$recordsTotal = User::count();
 		if(strlen($search)) {
-			$users = User::where("username" , 'LIKE',  '%' . $search . '%')
-				->orWhere("email" , 'LIKE',  '%' . $search . '%')
-				->orWhere("phone" , 'LIKE',  '%' . $search . '%')
+			$users = User::where(function ($query) use ($search) {
+				$query->where("username" , 'LIKE',  '%' . $search . '%')
+					->orWhere("email" , 'LIKE',  '%' . $search . '%')
+					->orWhere("phone" , 'LIKE',  '%' . $search . '%');
+				})
 				->orderby($columns[$order_column]['data'], $order_dir)
 				->skip($start)
 				->take($length)
