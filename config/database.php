@@ -54,16 +54,20 @@ return [
 
 		'mysql' => [
 			'read' => array(
-				'host' => env('DB_HOST_R', 'localhost'),
+				'host' => env('DB_HOST_R'),
+				'port' => env('DB_PORT_R', 3306),
+				'database' => env('DB_DATABASE_R'),
+				'username' => env('DB_USERNAME_R'),
+				'password' => env('DB_PASSWORD_R')
 		    ),
 			'write' => array(
-				'host' => env('DB_HOST_W', 'localhost'),
+				'host' => env('DB_HOST_W'),
+				'port' => env('DB_PORT_W', 3306),
+				'database' => env('DB_DATABASE_W'),
+				'username' => env('DB_USERNAME_W'),
+				'password' => env('DB_PASSWORD_W')
 			),
-			// 'host'      => env('DB_HOST', 'localhost'),
 			'driver'    => 'mysql',
-			'database'  => env('DB_DATABASE', 'forge'),
-			'username'  => env('DB_USERNAME', 'forge'),
-			'password'  => env('DB_PASSWORD', ''),
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
