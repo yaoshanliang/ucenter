@@ -59,3 +59,27 @@ function showTip(tip, time, background, bordercolor) {
 	}).show();
 	setTimeout(function(){$('div.tipsClass').fadeOut();}, (time * 1000));
 }
+
+function submit_delete(datatable_id, delete_url, delete_ids, tip_msg, tip_time) {
+	$('#confirm_delete_modal').modal('hide');
+	$.ajax({
+		url: delete_url,
+		type: 'POST',
+		data: {'ids': delete_ids},
+		dataType: 'jsonp',
+		headers: {
+			'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+		},
+		success: function(data) {
+			if(data['status_code'] === 0) {
+				$('#' + datatable_id).DataTable().draw(false);//保持分页
+				showSuccessTip(tip_msg, tip_time);
+			} else {
+				showFailTip(tip_msg, tip_time);
+			}
+		},
+		error: function() {
+			showFailTip(tip_msg, tip_time);
+		},
+	});
+}
