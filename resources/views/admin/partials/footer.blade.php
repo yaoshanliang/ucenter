@@ -45,19 +45,13 @@ div.dataTables_info {
 }
 </style>
 <script>
-	$('input').iCheck({
-		checkboxClass: 'icheckbox_square-blue',
-		radioClass: 'iradio_square-red',
-		increaseArea: '20%' // optional
-	});
-    $(document).ready(function() {
-        var table = $('#dataTables-example').DataTable({
-			//排序列
-			"columnDefs": [{
-				"orderable": false,//禁用排序
-				"targets": [0, 6]//指定的列
-			}],
-			"order": [5, 'desc'],
+$('input').iCheck({
+	checkboxClass: 'icheckbox_square-blue',
+	radioClass: 'iradio_square-red',
+	increaseArea: '20%' // optional
+});
+function datatable_base() {
+	$.extend( $.fn.dataTable.defaults, {
 			"dom":
 				"<'row'<'col-sm-6'><'col-sm-6'>r>"+
 				"t"+
@@ -82,14 +76,28 @@ div.dataTables_info {
 			},
 			"processing": true,
 			"serverSide": true,
-
-			//保存状态
-			'stateSave': true,
             "responsive": true,
+			'stateSave': true,
+			"stateLoaded": function (settings, data) {
+				$("#search").val(data.search.search);
+			}
+	} );
+}
+var datatable_id = $('#datatable_id').val();
+var table;
+    $(document).ready(function() {
+		datatable_base();
+        table = $('#' + datatable_id).DataTable({
+			//排序列
+			"columnDefs": [{
+				"orderable": false,//禁用排序
+				"targets": [0, 6]//指定的列
+			}],
+			"order": [5, 'desc'],
+
 			"ajax": {
 				"url": "/admin/user/lists",
 				"type": 'POST',
-				// "data":{"name":123},
 				"dataType": 'jsonp',
 				"headers": {
 					'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
@@ -115,69 +123,7 @@ div.dataTables_info {
 					}
 				},
 			],
-			//数据显示后回调
 			"initComplete": initComplete
 		});
-
-	function initComplete() {
-		$('input').iCheck({
-			checkboxClass: 'icheckbox_square-blue',
-			radioClass: 'iradio_square-red',
-			increaseArea: '20%' // optional
-		});
-		//行列高亮
-		var lastIdx = null;
-		$('#dataTables-example tbody')
-		.on( 'mouseover', 'td', function () {
-			var colIdx = table.cell(this).index().column;
-			if ( colIdx !== lastIdx ) {
-				$( table.cells().nodes() ).removeClass( 'highlight' );
-				$( table.column( colIdx ).nodes() ).addClass( 'highlight' );
-			}
-		} )
-		.on( 'mouseleave', function () {
-			$( table.cells().nodes() ).removeClass( 'highlight' );
-		})
-		table.on( 'draw.dt', function () {
-			$('input').iCheck({
-				checkboxClass: 'icheckbox_square-blue',
-				radioClass: 'iradio_square-red',
-				increaseArea: '20%' // optional
-			});
-			$('#checkAll').on('ifChecked', function(event){
-				$('input').iCheck('check');
-			});
-			$('#checkAll').on('ifUnchecked', function(event){
-				$('input').iCheck('uncheck');
-			});
-			$('#checkAll').iCheck('uncheck');
-		} );
-		//全选全不选
-		$('#checkAll').on('ifChecked', function(event){
-			$('input').iCheck('check');
-		});
-		$('#checkAll').on('ifUnchecked', function(event){
-			$('input').iCheck('uncheck');
-		});
-		$("#search").on( 'keyup', function () {
-            table.search( this.value )
-			.draw();
-		});
-	}
 });
-function check_delete(id) {
-	var ids =[];
-	if(!id) {
-        $('input[name="ids"]:checked').each(function(){ ids.push($(this).val()); });
-	} else {
-		ids.push(id);
-	}
-	$('#selected_ids').attr('value', ids);
-	if(ids == '') {
-		$('#no_selected_modal').modal('show');
-	} else {
-		$('#confirm_delete_modal').modal('show');
-	}
-}
-
 </script>

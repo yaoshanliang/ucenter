@@ -83,3 +83,63 @@ function submit_delete(datatable_id, delete_url, delete_ids, tip_msg, tip_time) 
 		},
 	});
 }
+
+function initComplete() {
+	$('input').iCheck({
+		checkboxClass: 'icheckbox_square-blue',
+		radioClass: 'iradio_square-red',
+		increaseArea: '20%' // optional
+	});
+	//行列高亮
+	var lastIdx = null;
+	$('#' + datatable_id + ' tbody')
+	.on( 'mouseover', 'td', function () {
+		var colIdx = table.cell(this).index().column;
+		if ( colIdx !== lastIdx ) {
+			$( table.cells().nodes() ).removeClass( 'highlight' );
+			$( table.column( colIdx ).nodes() ).addClass( 'highlight' );
+		}
+	} )
+	.on( 'mouseleave', function () {
+		$( table.cells().nodes() ).removeClass( 'highlight' );
+	})
+	table.on( 'draw.dt', function () {
+		$('input').iCheck({
+			checkboxClass: 'icheckbox_square-blue',
+			radioClass: 'iradio_square-red',
+			increaseArea: '20%' // optional
+		});
+		$('#checkAll').on('ifChecked', function(event){
+			$('input').iCheck('check');
+		});
+		$('#checkAll').on('ifUnchecked', function(event){
+			$('input').iCheck('uncheck');
+		});
+		$('#checkAll').iCheck('uncheck');
+	} );
+	//全选全不选
+	$('#checkAll').on('ifChecked', function(event){
+		$('input').iCheck('check');
+	});
+	$('#checkAll').on('ifUnchecked', function(event){
+		$('input').iCheck('uncheck');
+	});
+	$("#search").on( 'keyup', function () {
+        table.search( this.value )
+		.draw();
+	});
+}
+function check_delete(id) {
+	var ids =[];
+	if(!id) {
+        $('input[name="ids"]:checked').each(function(){ ids.push($(this).val()); });
+	} else {
+		ids.push(id);
+	}
+	$('#selected_ids').attr('value', ids);
+	if(ids == '') {
+		$('#no_selected_modal').modal('show');
+	} else {
+		$('#confirm_delete_modal').modal('show');
+	}
+}
