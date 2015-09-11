@@ -47,4 +47,7 @@
 </div>
 </div>
 
+<input type="hidden" id="datatable_id" value="dataTables-example">
+<input type="hidden" id="delete_url" value="/admin/user/delete">
+
 @endsection
