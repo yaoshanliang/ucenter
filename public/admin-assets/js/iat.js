@@ -1,6 +1,8 @@
-/*
- * 操作成功提示信息
- * 参数：提示信息，显示时间
+/**
+ * 显示操作成功信息
+ *
+ * @param  string 提示信息, float 显示时间
+ * @return null
  */
 function showSuccessTip(tip, time){
 	var tip = arguments[0] || '操作成功';
@@ -11,9 +13,10 @@ function showSuccessTip(tip, time){
 	showTip(tip, time, background, bordercolor);
 }
 
-/*
- * 操作失败提示信息
- * 参数：提示信息，显示时间
+/**
+ * 显示操作失败信息
+ * @param string 提示信息, float 显示时间
+ * @return null
  */
 function showFailTip(tip, time){
 	var tip = arguments[0] || '操作失败';
@@ -24,6 +27,11 @@ function showFailTip(tip, time){
 	showTip(tip, time, background, bordercolor);
 }
 
+/**
+ * 显示信息，供成功、失败调用
+ * @param string 提示信息, float 显示时间, string 背景颜色, string 边框颜色
+ * @return null
+ */
 function showTip(tip, time, background, bordercolor) {
 	var windowWidth = document.documentElement.clientWidth;
 	var height = 10;
