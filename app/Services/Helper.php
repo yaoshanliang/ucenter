@@ -6,7 +6,7 @@ class Helper {
 	 * @param  string $status_code, string $status_msg, string $status_data
 	 * @return jsonp格式字符串
 	 */
-	public static function jsonp_return($status_code, $status_msg, $status_data) {
+	public static function jsonp_return($status_code, $status_msg, $status_data = array()) {
 		$data['status_code'] = $status_code;
 		$data['status_msg'] = $status_msg;
 		$data['status_data'] = $status_data;
