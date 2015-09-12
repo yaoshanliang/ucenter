@@ -81,4 +81,10 @@ class SettingController extends Controller {
 		//
 	}
 
+	public static function getAllSettings()
+	{
+		$settings = Setting::all();
+		return $settings;
+	}
+
 }
