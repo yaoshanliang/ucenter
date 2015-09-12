@@ -6,12 +6,23 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\App;
+use App\Setting;
 use Redirect, Input, Auth;
-
+use Cache;
 class AdminController extends Controller {
 
 	public function __construct()
 	{
+		$settings_array = array('site_name', 'site_url', 'site_sub_name', 'site_description', 'copyright', 'support_email',
+								'bei_an', 'tong_ji', 'page_size', 'expire');
+		$settings_prefix = 'settings:';
+		foreach($settings_array as $k => $v) {
+			$settings[$v] = Cache::get($settings_prefix . $v, function() use ($v, $settings_prefix) {
+				$setting = Setting::where('name', $v)->first(array('value'));
+				Cache::forever($settings_prefix . $v, $setting['value']);
+				return $setting['value'];
+			});
+		}
 	}
 	/**
 	 * Display a listing of the resource.
