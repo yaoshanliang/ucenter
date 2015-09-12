@@ -2,6 +2,7 @@
 ####——“统一身份认证”、“用户分离”、“权限分离”、“日志分离”
 * Laravel
 * Bootstrap
+* Redis
 * DataTables
 
 ###安装配置
