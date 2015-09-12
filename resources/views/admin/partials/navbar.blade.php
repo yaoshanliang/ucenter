@@ -5,7 +5,8 @@
 		<span class="icon-bar"></span>
 		<span class="icon-bar"></span>
 	</button>
-	<a class="navbar-brand" href="/" target="_blank">90Door Admin Dashboard</a>
+	<a class="navbar-brand" href={{ Cache::get('settings:site_url') }}>{{ Cache::get('settings:site_name') }}</a>
+	<a class="navbar-brand" href={{ Cache::get('settings:site_url') }}/admin>{{ Cache::get('settings:site_sub_name') }}</a>
 </div>
 <!-- /.navbar-header -->
 
@@ -161,12 +162,12 @@
 			<i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
 		</a>
 		<ul class="dropdown-menu dropdown-user">
-			<li><a href="#"><i class="fa fa-user fa-fw"></i> {{ Auth::user()->username }}</a>
+			<li><a href="#"><i class="fa fa-user fa-fw"></i>个人信息</a>
 			</li>
 			<li><a href="/admin/settings/index"><i class="fa fa-gear fa-fw"></i> Settings</a>
 			</li>
 			<li class="divider"></li>
-			<li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+			<li><a href="/auth/logout"><i class="fa fa-sign-out fa-fw"></i>退出</a>
 			</li>
 		</ul>
 		<!-- /.dropdown-user -->
