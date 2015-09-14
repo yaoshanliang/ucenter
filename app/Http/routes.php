@@ -26,8 +26,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array(
 	  Route::get('/', 'AdminController@index');
 	  Route::resource('app', 'AppController');
 	  Route::resource('user', 'UserController');
-	  // Route::get('user', 'UserController');
-	  // Route::match(['get', 'post'], 'user', 'UserController');
 	  Route::post('user/lists', 'UserController@lists');
 	  Route::post('user/delete', 'UserController@delete');
 });
