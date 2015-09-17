@@ -146,6 +146,7 @@ return [
 		'App\Providers\RouteServiceProvider',
 		'Barryvdh\Debugbar\ServiceProvider',
 		'Chumper\Datatable\DatatableServiceProvider',
+		'Zizaco\Entrust\EntrustServiceProvider',
 
 	],
 
@@ -196,6 +197,7 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 		'Debugbar'  => 'Barryvdh\Debugbar\Facade',
 		'Datatable' => 'Chumper\Datatable\Facades\DatatableFacade',
+		'Entrust'   => 'Zizaco\Entrust\EntrustFacade',
 	],
 
 ];
