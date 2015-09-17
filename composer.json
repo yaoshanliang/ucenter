@@ -4,6 +4,10 @@
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"type": "project",
+	"repositories": [
+		{"type": "composer", "url": "http://packagist.phpcomposer.com"},
+	    {"packagist": false}
+	],
 	"require": {
 		"laravel/framework": "5.0.*",
 		"barryvdh/laravel-debugbar": "^2.0",
@@ -45,9 +49,5 @@
 	},
 	"config": {
 		"preferred-install": "dist"
-	},
-	"repositories": [
-		{"type": "composer", "url": "http://packagist.phpcomposer.com"},
-	    {"packagist": false}
-	]
+	}
 }
