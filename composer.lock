@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c04646702f0f4b297862269e14b8401c",
-    "content-hash": "9088acd6fea8e4236fe0a5013d02bec6",
+    "hash": "14009ebecdd8f2794474081bdef8b224",
+    "content-hash": "94d66fd3b77279e7a3d1c345f2a8a929",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -1961,17 +1961,17 @@
             "time": "2015-05-30 15:59:26"
         },
         {
-            "name": "zizaco/entrust",
-            "version": "dev-laravel-5",
+            "name": "yaoshanliang/entrust",
+            "version": "dev-ucenter",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Zizaco/entrust.git",
-                "reference": "3a768eb52300ec4efe9d6a6685b9bf0db6a50ffd"
+                "url": "https://github.com/yaoshanliang/entrust.git",
+                "reference": "6e97f529b1eded0d09b5c6adf075fc5f000d2805"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/Zizaco/entrust/3a768eb52300ec4efe9d6a6685b9bf0db6a50ffd.zip",
-                "reference": "3a768eb52300ec4efe9d6a6685b9bf0db6a50ffd",
+                "url": "http://packagist.phpcomposer.com/files/yaoshanliang/entrust/6e97f529b1eded0d09b5c6adf075fc5f000d2805.zip",
+                "reference": "6e97f529b1eded0d09b5c6adf075fc5f000d2805",
                 "shasum": ""
             },
             "require": {
@@ -2014,9 +2014,14 @@
                 {
                     "name": "Michele Angioni",
                     "email": "michele.angioni@gmail.com"
+                },
+                {
+                    "name": "iat",
+                    "email": "i@iat.net.cn",
+                    "homepage": "http://iat.net.cn"
                 }
             ],
-            "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
+            "description": "This package provides a flexible way to add Role-based Permissions to Laravel5",
             "keywords": [
                 "acl",
                 "auth",
@@ -2025,7 +2030,7 @@
                 "permission",
                 "roles"
             ],
-            "time": "2015-07-09 16:32:53"
+            "time": "2015-09-16 11:34:28"
         }
     ],
     "packages-dev": [
@@ -3498,7 +3503,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "chumper/datatable": 20,
-        "zizaco/entrust": 20
+        "yaoshanliang/entrust": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -9,7 +9,7 @@
 		"barryvdh/laravel-debugbar": "^2.0",
 		"predis/predis": "^1.0",
 		"chumper/datatable": "dev-develop",
-		"zizaco/entrust": "dev-laravel-5"
+		"yaoshanliang/entrust": "dev-ucenter"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",
