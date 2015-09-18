@@ -3,3 +3,4 @@
 .env
 tags
 storage/debugbar
+storage/php-console.dat
