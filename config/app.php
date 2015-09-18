@@ -147,6 +147,7 @@ return [
 		'Barryvdh\Debugbar\ServiceProvider',
 		'Chumper\Datatable\DatatableServiceProvider',
 		'Zizaco\Entrust\EntrustServiceProvider',
+		'PhpConsole\Laravel\ServiceProvider',
 
 	],
 
