@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7df462aafced215a9b2bbb6dcd8bfefa",
-    "content-hash": "022c1403eb8d98329bb1dfa51332e561",
+    "hash": "733f7a08cc44e9736f26306b791a9731",
+    "content-hash": "bb797ad4dfb18a7171476cbee650b8e6",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -1036,6 +1036,122 @@
             "time": "2015-07-14 17:31:05"
         },
         {
+            "name": "php-console/laravel-service-provider",
+            "version": "5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barbushin/php-console-laravel.git",
+                "reference": "762cddcc6c17c08a2e499a1bd0dd575899fbec06"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "http://packagist.phpcomposer.com/files/barbushin/php-console-laravel/762cddcc6c17c08a2e499a1bd0dd575899fbec06.zip",
+                "reference": "762cddcc6c17c08a2e499a1bd0dd575899fbec06",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.*",
+                "php": ">=5.3.0",
+                "php-console/php-console": ">=3.1.4 <4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "PhpConsole\\Laravel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD 3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Barbushin Sergey",
+                    "email": "barbushin@gmail.com",
+                    "homepage": "http://linkedin.com/in/barbushin"
+                },
+                {
+                    "name": "Wemerson Januario",
+                    "email": "wemerson.januario@gmail.com",
+                    "homepage": "http://linkedin.com/in/wemersonjanuario",
+                    "role": "Laravel 5 support"
+                }
+            ],
+            "description": "Laravel service provider to handle PHP errors, dump variables, execute PHP code remotely in Google Chrome",
+            "homepage": "https://github.com/barbushin/php-console-laravel",
+            "keywords": [
+                "chrome",
+                "debug",
+                "error handler",
+                "errors",
+                "google chrome",
+                "laravel",
+                "php",
+                "php-console"
+            ],
+            "time": "2015-06-30 08:05:02"
+        },
+        {
+            "name": "php-console/php-console",
+            "version": "3.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barbushin/php-console.git",
+                "reference": "b40e988dcd7686128a47010161ba13e32d5fdb45"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "http://packagist.phpcomposer.com/files/barbushin/php-console/b40e988dcd7686128a47010161ba13e32d5fdb45.zip",
+                "reference": "b40e988dcd7686128a47010161ba13e32d5fdb45",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "suggest": {
+                "php-console/laravel-service-provider": "*",
+                "php-console/silex-service-provider": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "PhpConsole": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD 3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sergey Barbushin",
+                    "email": "barbushin@gmail.com",
+                    "homepage": "http://linkedin.com/in/barbushin"
+                }
+            ],
+            "description": "Server side PHP library for Google Chrome extension \"PHP Console\".",
+            "homepage": "https://github.com/barbushin/php-console",
+            "keywords": [
+                "chrome",
+                "debug",
+                "error handler",
+                "errors",
+                "google chrome",
+                "php"
+            ],
+            "time": "2015-06-30 07:52:47"
+        },
+        {
             "name": "predis/predis",
             "version": "v1.0.3",
             "source": {
@@ -2009,12 +2125,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yaoshanliang/entrust.git",
-                "reference": "6e97f529b1eded0d09b5c6adf075fc5f000d2805"
+                "reference": "de748463631ccb118fa0aef9376160a30ca67769"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/yaoshanliang/entrust/6e97f529b1eded0d09b5c6adf075fc5f000d2805.zip",
-                "reference": "6e97f529b1eded0d09b5c6adf075fc5f000d2805",
+                "url": "http://packagist.phpcomposer.com/files/yaoshanliang/entrust/de748463631ccb118fa0aef9376160a30ca67769.zip",
+                "reference": "de748463631ccb118fa0aef9376160a30ca67769",
                 "shasum": ""
             },
             "require": {
@@ -2064,7 +2180,7 @@
                     "homepage": "http://iat.net.cn"
                 }
             ],
-            "description": "This package provides a flexible way to add Role-based Permissions to Laravel5",
+            "description": "This package provides a flexible way to add Role-based Permissions to Laravel 5",
             "keywords": [
                 "acl",
                 "auth",
@@ -2073,7 +2189,7 @@
                 "permission",
                 "roles"
             ],
-            "time": "2015-09-16 11:34:28"
+            "time": "2015-09-17 09:59:37"
         }
     ],
     "packages-dev": [
