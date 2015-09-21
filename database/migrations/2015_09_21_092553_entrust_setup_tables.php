@@ -60,6 +60,8 @@ class EntrustSetupTables extends Migration
         Schema::create('role_permission', function (Blueprint $table) {
             $table->integer('role_id');
             $table->integer('permission_id');
+            $table->timestamps();
+			$table->softDeletes();
 
             $table->foreign('role_id')->references('id')->on('roles')
                 ->onUpdate('cascade')->onDelete('cascade');
