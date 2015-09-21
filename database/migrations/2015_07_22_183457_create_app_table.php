@@ -31,7 +31,7 @@ class CreateAppTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('users');
+		Schema::drop('app');
 	}
 
 }
