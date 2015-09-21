@@ -63,8 +63,8 @@ class EntrustSetupTables extends Migration
         // Create table for associating permissions to roles (Many-to-Many)
         Schema::create('role_permission', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('role_id')->unsigned;
-            $table->integer('permission_id')->unsigned;
+            $table->integer('role_id')->unsigned();
+            $table->integer('permission_id')->unsigned();
             $table->timestamps();
 			$table->softDeletes();
 
