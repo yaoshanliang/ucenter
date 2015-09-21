@@ -23,6 +23,8 @@ class EntrustSetupTables extends Migration
 
             $table->foreign('app_id')->references('id')->on('apps')
                 ->onUpdate('cascade')->onDelete('cascade');
+
+			$table->index('app_id');
         });
 
         // Create table for associating roles to users (Many-to-Many)
@@ -54,6 +56,8 @@ class EntrustSetupTables extends Migration
 
             $table->foreign('app_id')->references('id')->on('apps')
                 ->onUpdate('cascade')->onDelete('cascade');
+
+			$table->index('app_id');
         });
 
         // Create table for associating permissions to roles (Many-to-Many)

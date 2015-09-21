@@ -22,8 +22,8 @@ class CreateSysLogsTable extends Migration {
 			$table->string('ip')->default('');
 			$table->dateTime('created_at');
 
-            $table->foreign('app_id')->references('id')->on('apps')
-                ->onUpdate('cascade')->onDelete('cascade');
+			$table->foreign('app_id')->references('id')->on('apps')
+				->onUpdate('cascade')->onDelete('cascade');
 
 			$table->index('app_id');
 			$table->index('level');
