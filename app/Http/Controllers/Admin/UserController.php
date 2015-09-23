@@ -18,6 +18,9 @@ use Cache;
 use Bus;
 use Queue;
 use App\Commands\SendEmail;
+use App\Commands\WriteLog;
+use PhpConsole;
+use PC;
 
 class UserController extends Controller {
 
@@ -38,10 +41,11 @@ class UserController extends Controller {
 		    return $record;
 		});
 		$logger->addInfo('My logger is now ready');
-		// Bus::dispatch(new \App\Commands\SendEmail());
 		$message = 'message';
 		// Queue::pushOn('emails', new SendEmail($message));
-		Queue::push(new SendEmail($message));
+		Queue::push(new WriteLog($message));
+		PC::db($_SERVER);
+
 		return view('admin.user.index');
 	}
 
