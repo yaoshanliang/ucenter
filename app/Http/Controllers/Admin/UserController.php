@@ -10,6 +10,15 @@ use App\User;
 use Redirect, Input, Auth;
 use Illuminate\Pagination\Paginator;
 use App\Services\Helper;
+
+use Monolog\Logger;
+use Monolog\Handler\RedisHandler;
+
+use Cache;
+use Bus;
+use Queue;
+use App\Commands\SendEmail;
+
 class UserController extends Controller {
 
 	/**
@@ -19,6 +28,20 @@ class UserController extends Controller {
 	 */
 	public function index()
 	{
+		$logger = new Logger('my_logger');
+		$logger->pushHandler(new RedisHandler(Cache::connection(), 'log', 'prod'));
+
+		$logger->addInfo('My logger is now ready', array('username' => 'Seldaek'));
+		$logger->pushProcessor(function ($record) {
+		    $record['formatted']['dummy'] = 'Hello world!';
+
+		    return $record;
+		});
+		$logger->addInfo('My logger is now ready');
+		// Bus::dispatch(new \App\Commands\SendEmail());
+		$message = 'message';
+		// Queue::pushOn('emails', new SendEmail($message));
+		Queue::push(new SendEmail($message));
 		return view('admin.user.index');
 	}
 
