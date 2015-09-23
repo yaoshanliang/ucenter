@@ -19,5 +19,10 @@ class SendEmail extends Command implements ShouldBeQueued {
 	{
 		//
 	}
+	public function fire($job, $data)
+	{
+		echo 'fire';
+		// $job->delete();
+	}
 
 }
