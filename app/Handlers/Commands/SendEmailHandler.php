@@ -25,6 +25,21 @@ class SendEmailHandler {
 	public function handle(SendEmail $command)
 	{
 		//
+		if (true)
+		{
+			$this->release(30);
+			// $this->delete();
+		}
+	}
+
+	public static function release()
+	{
+		echo 'release..';
+	}
+	public function fire($job, $data)
+	{
+		echo 'fire';
+		// $job->delete();
 	}
 
 }
