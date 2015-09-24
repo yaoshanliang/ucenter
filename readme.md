@@ -1,10 +1,9 @@
 ##用户中心
-####——“统一身份认证”、“用户分离”、“权限分离”、“日志分离”
+####——“统一身份认证服务”、“用户系统”、“权限系统”、“日志系统”、“文件系统”、“邮件系统”
 * [Laravel](http://laravel.com)
 * [Bootstrap](http://getbootstrap.com)
 * [Redis](http://redis.io)
 * [DataTables](http://datatables.net)
-
 * [monolog](https://github.com/yaoshanliang/monolog)
 * [entrust](https://github.com/yaoshanliang/entrust)
 
