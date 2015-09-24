@@ -19,7 +19,7 @@ use Bus;
 use Queue;
 use App\Commands\SendEmail;
 use App\Commands\WriteLog;
-use PhpConsole;
+use App\Commands\UserLog;
 use PC;
 
 class UserController extends Controller {
@@ -40,11 +40,7 @@ class UserController extends Controller {
 
 		    return $record;
 		});
-		$logger->addInfo('My logger is now ready');
-		$message = 'message';
-		// Queue::pushOn('emails', new SendEmail($message));
-		Queue::push(new WriteLog($message));
-		PC::db($_SERVER);
+		$log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', 'select * from users;', '192.168.1.1'));
 
 		return view('admin.user.index');
 	}
