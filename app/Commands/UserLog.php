@@ -11,14 +11,32 @@ class UserLog extends Command implements SelfHandling, ShouldBeQueued {
 
 	use InteractsWithQueue, SerializesModels;
 
+	private $app_id, $user_id, $type, $object, $data, $sql, $ip;
+	private $log;
+
 	/**
 	 * Create a new command instance.
 	 *
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct($app_id, $user_id, $type = 'S', $object = '', $data = '', $sql = '', $ip = '')
 	{
-		//
+		$this->app_id = $app_id;
+		$this->user_id = $user_id;
+		$this->type = $type;
+		$this->object = $object;
+		$this->data = $data;
+		$this->sql = $sql;
+		$this->ip = $ip;
+		$this->log = array('app_id' => $app_id,
+							'user_id' => $user_id,
+							'type' => $type,
+							'object' => $object,
+							'data' => $data,
+							'sql' => $sql,
+							'ip' => $ip,
+							'created_at' => date("Y-m-d H:i:s")
+					);
 	}
 
 	/**
@@ -28,7 +46,7 @@ class UserLog extends Command implements SelfHandling, ShouldBeQueued {
 	 */
 	public function handle()
 	{
-		//
+		$user_log = \App\UserLog::create($this->log);
 	}
 
 }
