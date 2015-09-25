@@ -17,10 +17,10 @@ use Monolog\Handler\RedisHandler;
 use Cache;
 use Bus;
 use Queue;
-use App\Commands\SendEmail;
-use App\Commands\WriteLog;
 use App\Commands\UserLog;
+use App\Commands\SendEmail;
 use PC;
+use Mail;
 
 class UserController extends Controller {
 
@@ -45,6 +45,19 @@ class UserController extends Controller {
 		$ip = $ips[0];
 		$ips = implode(',', $ips);
 		$log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', 'select * from users;', $ip, $ips));
+		$message = 1223;
+		Queue::push(new SendEmail($message));
+		$data = array('id'=>1);
+		// Mail::raw('Text to e-mail', function($message)
+		// {
+			// $message->from('support@iat.net.cn', 'Laravel');
+
+			// $message->to('1329517386@qq.com')->cc('iatboy@163.com');
+		// });
+		// Mail::queue('emails.welcome', $data, function($message)
+		// {
+			// $message->to('1329517386@qq.com', 'John Smith')->subject('Welcome!');
+		// });
 
 		return view('admin.user.index');
 	}
