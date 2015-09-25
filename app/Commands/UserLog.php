@@ -40,7 +40,7 @@ class UserLog extends Command implements SelfHandling, ShouldBeQueued {
 	 */
 	public function handle()
 	{
-		echo '[', date('Y-m-d H:i:s'), ']', '[User Log]';
+		echo '[', date('Y-m-d H:i:s'), ']', '[User Log]...';
 		$user_log = \App\UserLog::create($this->log);
 		echo 'OK!';
 	}
