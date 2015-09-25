@@ -19,7 +19,7 @@ class UserLog extends Command implements SelfHandling, ShouldBeQueued {
 	 *
 	 * @return void
 	 */
-	public function __construct($app_id, $user_id, $type = 'S', $object = '', $data = '', $sql = '', $ip = '')
+	public function __construct($app_id, $user_id, $type = 'S', $object = '', $data = '', $sql = '', $ip = '', $ips = '')
 	{
 		$this->app_id = $app_id;
 		$this->user_id = $user_id;
@@ -35,6 +35,7 @@ class UserLog extends Command implements SelfHandling, ShouldBeQueued {
 							'data' => $data,
 							'sql' => $sql,
 							'ip' => $ip,
+							'ips' => $ips,
 							'created_at' => date("Y-m-d H:i:s")
 					);
 	}
@@ -46,7 +47,9 @@ class UserLog extends Command implements SelfHandling, ShouldBeQueued {
 	 */
 	public function handle()
 	{
+		echo '[', date('Y-m-d H:i:s'), ']', '[User Log]';
 		$user_log = \App\UserLog::create($this->log);
+		echo 'OK!';
 	}
 
 }

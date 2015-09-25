@@ -41,7 +41,10 @@ class UserController extends Controller {
 			// return $record;
 		// });
 		// var_dump(Request->ip());
-		$log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', 'select * from users;', $request->ips()));
+		$ips = $request->ips();
+		$ip = $ips[0];
+		$ips = implode(',', $ips);
+		$log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', 'select * from users;', $ip, $ips));
 
 		return view('admin.user.index');
 	}
