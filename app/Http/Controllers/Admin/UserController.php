@@ -29,18 +29,19 @@ class UserController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
 		$logger = new Logger('my_logger');
-		$logger->pushHandler(new RedisHandler(Cache::connection(), 'log', 'prod'));
+		// $logger->pushHandler(new RedisHandler(Cache::connection(), 'log', 'prod'));
 
-		$logger->addInfo('My logger is now ready', array('username' => 'Seldaek'));
-		$logger->pushProcessor(function ($record) {
-		    $record['formatted']['dummy'] = 'Hello world!';
+		// $logger->addInfo('My logger is now ready', array('username' => 'Seldaek'));
+		// $logger->pushProcessor(function ($record) {
+			// $record['formatted']['dummy'] = 'Hello world!';
 
-		    return $record;
-		});
-		$log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', 'select * from users;', '192.168.1.1'));
+			// return $record;
+		// });
+		// var_dump(Request->ip());
+		$log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', 'select * from users;', $request->ips()));
 
 		return view('admin.user.index');
 	}
