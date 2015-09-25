@@ -11,23 +11,16 @@ class UserLog extends Command implements SelfHandling, ShouldBeQueued {
 
 	use InteractsWithQueue, SerializesModels;
 
-	private $app_id, $user_id, $type, $object, $data, $sql, $ip;
 	private $log;
 
 	/**
-	 * Create a new command instance.
+	 * 用户日志
 	 *
+	 * @param 应用id， 用户id， 操作类型(A, D, U, S)， 操作对象， 操作数据， 操作sql， 用户ip， 代理服务器、路由等ip(逗号分割)
 	 * @return void
 	 */
 	public function __construct($app_id, $user_id, $type = 'S', $object = '', $data = '', $sql = '', $ip = '', $ips = '')
 	{
-		$this->app_id = $app_id;
-		$this->user_id = $user_id;
-		$this->type = $type;
-		$this->object = $object;
-		$this->data = $data;
-		$this->sql = $sql;
-		$this->ip = $ip;
 		$this->log = array('app_id' => $app_id,
 							'user_id' => $user_id,
 							'type' => $type,
