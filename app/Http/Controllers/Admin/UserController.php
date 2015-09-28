@@ -48,12 +48,6 @@ class UserController extends Controller {
 		$message = 1223;
 		Queue::push(new SendEmail($message));
 		$data = array('id'=>1);
-		// Mail::raw('Text to e-mail', function($message)
-		// {
-			// $message->from('support@iat.net.cn', 'Laravel');
-
-			// $message->to('1329517386@qq.com')->cc('iatboy@163.com');
-		// });
 		// Mail::queue('emails.welcome', $data, function($message)
 		// {
 			// $message->to('1329517386@qq.com', 'John Smith')->subject('Welcome!');
