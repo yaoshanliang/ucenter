@@ -40,7 +40,6 @@ class UserController extends Controller {
 
 			// return $record;
 		// });
-		// var_dump(Request->ip());
 		$ips = $request->ips();
 		$ip = $ips[0];
 		$ips = implode(',', $ips);
