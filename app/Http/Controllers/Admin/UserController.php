@@ -31,27 +31,6 @@ class UserController extends Controller {
 	 */
 	public function index(Request $request)
 	{
-		$logger = new Logger('my_logger');
-		// $logger->pushHandler(new RedisHandler(Cache::connection(), 'log', 'prod'));
-
-		// $logger->addInfo('My logger is now ready', array('username' => 'Seldaek'));
-		// $logger->pushProcessor(function ($record) {
-			// $record['formatted']['dummy'] = 'Hello world!';
-
-			// return $record;
-		// });
-		$ips = $request->ips();
-		$ip = $ips[0];
-		$ips = implode(',', $ips);
-		// $log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', 'select * from users;', $ip, $ips));
-		// $message = 1223;
-		// Queue::push(new SendEmail($message));
-		$data = array('id'=>1);
-		// Mail::queue('emails.welcome', $data, function($message)
-		// {
-			// $message->to('1329517386@qq.com', 'John Smith')->subject('Welcome!');
-		// });
-
 		return view('admin.user.index');
 	}
 
@@ -87,7 +66,6 @@ class UserController extends Controller {
 			$recordsFiltered = $recordsTotal;
 		}
 		$query_log = DB::getQueryLog();
-		// var_dump($query_log);
 		$ips = $request->ips();
 		$ip = $ips[0];
 		$ips = implode(',', $ips);
