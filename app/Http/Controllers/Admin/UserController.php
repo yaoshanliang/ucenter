@@ -91,7 +91,11 @@ class UserController extends Controller {
 		$ips = $request->ips();
 		$ip = $ips[0];
 		$ips = implode(',', $ips);
-		$log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', serialize($query_log), $ip, $ips));
+		foreach($query_log as $v) {
+			$query_log_sql[]  = $v['query'];
+		}
+		$query_log_sql = implode(';', $query_log_sql);
+		$log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', $query_log_sql, $ip, $ips));
 		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
 		if($jsonp) {
 		    echo $jsonp.'('.json_encode(array(
