@@ -43,9 +43,9 @@ class UserController extends Controller {
 		$ips = $request->ips();
 		$ip = $ips[0];
 		$ips = implode(',', $ips);
-		$log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', 'select * from users;', $ip, $ips));
-		$message = 1223;
-		Queue::push(new SendEmail($message));
+		// $log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', 'select * from users;', $ip, $ips));
+		// $message = 1223;
+		// Queue::push(new SendEmail($message));
 		$data = array('id'=>1);
 		// Mail::queue('emails.welcome', $data, function($message)
 		// {
@@ -55,8 +55,9 @@ class UserController extends Controller {
 		return view('admin.user.index');
 	}
 
-	public function lists()
+	public function lists(Request $request)
 	{
+		DB::enableQueryLog();
 		$columns = $_POST['columns'];
 		$order_column = $_POST['order']['0']['column'];//那一列排序，从0开始
 		$order_dir = $_POST['order']['0']['dir'];//ase desc 升序或者降序
@@ -85,6 +86,12 @@ class UserController extends Controller {
 				->toArray();
 			$recordsFiltered = $recordsTotal;
 		}
+		$query_log = DB::getQueryLog();
+		// var_dump($query_log);
+		$ips = $request->ips();
+		$ip = $ips[0];
+		$ips = implode(',', $ips);
+		$log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', serialize($query_log), $ip, $ips));
 		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
 		if($jsonp) {
 		    echo $jsonp.'('.json_encode(array(
