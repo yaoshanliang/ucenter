@@ -74,14 +74,17 @@ class UserController extends Controller {
 		}
 		$query_log_sql = implode(';', $query_log_sql);
 		$log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', $query_log_sql, $ip, $ips));
+		$return_data = array(
+							"draw" => intval($_POST['draw']),
+							"recordsTotal" => intval($recordsTotal),
+							"recordsFiltered" => intval($recordsFiltered),
+							"data" => $users
+						);
 		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
 		if($jsonp) {
-		    echo $jsonp.'('.json_encode(array(
-				"draw" => intval($_POST['draw']),
-				"recordsTotal" => intval($recordsTotal),
-				"recordsFiltered" => intval($recordsFiltered),
-				"data" => $users
-				),JSON_UNESCAPED_UNICODE) . ');';
+		    echo $jsonp . '(' . json_encode($return_data, JSON_UNESCAPED_UNICODE) . ');';
+		} else {
+		    echo json_encode($return_data, JSON_UNESCAPED_UNICODE);
 		}
 	}
 
