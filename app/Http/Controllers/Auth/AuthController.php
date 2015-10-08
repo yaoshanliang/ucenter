@@ -59,7 +59,12 @@ class AuthController extends Controller {
 			return $this->idsLogin($request);
 		}
 		$this->validate($request, ['username' => 'required', 'password' => 'required']);
-		$credentials = $request->only('username', 'password');
+		$request->email = $request->username;
+		// var_dump($request);exit;
+		// $credentials = $request->only('username', 'password');
+		$credentials = array('username' => $request->username, 'password' => $request->password);
+		$credentials = array('email' => $request->username, 'password' => $request->password);
+		$credentials = array('phone' => $request->username, 'password' => $request->password);
 		if (Auth::attempt($credentials, $request->has('remember'))) {
 			if (!Auth::user()->is_admin) {
 				return redirect()->guest('/home');
@@ -70,7 +75,7 @@ class AuthController extends Controller {
 		} else {
 			return redirect()->guest('auth/login')
 				->withInput()
-				->withErrors('用户名与密码不匹配，请重试！');
+				->withErrors('账户与密码不匹配，请重试！');
 		}
 	}
 
