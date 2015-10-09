@@ -59,12 +59,19 @@ class AuthController extends Controller {
 			return $this->idsLogin($request);
 		}
 		$this->validate($request, ['username' => 'required', 'password' => 'required']);
-		$request->email = $request->username;
-		// var_dump($request);exit;
-		// $credentials = $request->only('username', 'password');
+
+		$username = $request->username;
+		$password = $request->password;
+		$credentials = array();
+		if(strpos($username, '@') !== false) {
+			$credentials = array('email' => $username, 'password' => $password);
+		} elseif(preg_match('/^\d{11}$/', $username)) {
+			$credentials = array('phone' => $username, 'password' => $password);
+		}
+		if(!empty($credentials) && Auth::attempt($credentials, $request->has('remember'))) {
+			return redirect()->guest('/admin');
+		}
 		$credentials = array('username' => $request->username, 'password' => $request->password);
-		$credentials = array('email' => $request->username, 'password' => $request->password);
-		$credentials = array('phone' => $request->username, 'password' => $request->password);
 		if (Auth::attempt($credentials, $request->has('remember'))) {
 			if (!Auth::user()->is_admin) {
 				return redirect()->guest('/home');
