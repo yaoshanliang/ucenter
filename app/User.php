@@ -37,10 +37,4 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	use SoftDeletes;
 	protected $dates = ['deleted_at'];
-
-	public function roles()
-	{
-		return $this->belongsToMany('App\UserRole');
-	}
-
 }
