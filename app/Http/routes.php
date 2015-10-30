@@ -18,11 +18,12 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
+// Entrust::routeNeedsRole('admin/*', array('developer', 'admin'), null , false);
 Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth'], function() {
 	  Route::get('/', 'HomeController@index');
 	  Route::resource('user', 'AppController');
 });
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array('auth', 'permission')], function() {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array('auth', 'role')], function() {
 	  Route::get('/', 'AdminController@index');
 	  Route::resource('app', 'AppController');
 	  Route::resource('user', 'UserController');
