@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Role;
+use App\User;
+use App\Permission;
 class RoleController extends Controller {
 
 	/**
@@ -21,9 +23,21 @@ class RoleController extends Controller {
 		// $owner->title = 'Project Owner'; // optional
 		// $owner->description  = 'User is the owner of a given project'; // optional
 		// $owner->save();
-		$role = Role::find(12);
-		$role->delete();
+		// $role = Role::find(16);
+		// $role->delete();
 		// return view('admin.role.index');
+		$admin = Role::find(20);
+		// var_dump($admin);exit;
+		$user = User::find(5);
+		// $user->attachRole($admin);
+		$user->detachRole($admin);
+		$createPost = new Permission();
+		$createPost->name         = 'create-post';
+		$createPost->app_id         = 2;
+		$createPost->title = 'Create Posts'; // optional
+		$createPost->description  = 'create new blog posts'; // optional
+		// $createPost->save();
+		// $admin->attachPermission($createPost);
 	}
 
 	/**
