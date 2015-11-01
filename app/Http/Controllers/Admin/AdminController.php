@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\App;
 use App\Setting;
+use App\Role;
 use Redirect, Input, Auth;
 use Cache;
 class AdminController extends Controller {
