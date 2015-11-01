@@ -10,6 +10,8 @@ use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 use App\App;
+use Session;
+use Cache;
 class AuthController extends Controller {
 
 	/*
@@ -69,16 +71,17 @@ class AuthController extends Controller {
 			$credentials = array('phone' => $username, 'password' => $password);
 		}
 		if(!empty($credentials) && Auth::attempt($credentials, $request->has('remember'))) {
-			return redirect()->guest('/admin');
+			$this->initRole($request);
+			// var_dump(Auth::user()->id);
+			// exit;
+			 // var_dump(Session::all());
+			 // Session::put('key', 'value');
+			 // echo Session::get('key');
+			return redirect('/admin');
 		}
 		$credentials = array('username' => $request->username, 'password' => $request->password);
 		if (Auth::attempt($credentials, $request->has('remember'))) {
-			if (!Auth::user()->is_admin) {
-				return redirect()->guest('/home');
-		    } else {
-				return redirect()->guest('/admin');
-			}
-			return redirect()->guest('home');
+			return redirect()->guest('/admin');
 		} else {
 			return redirect()->guest('auth/login')
 				->withInput()
@@ -107,6 +110,28 @@ class AuthController extends Controller {
 				->withInput()
 				->withErrors('用户名与密码不匹配，请重试！');
 		}
+	}
+
+	private function initRole($request)
+	{
+		$roles_array = $request->user()->roles;
+		foreach($roles_array as $v) {
+			$apps[$v->app_id] = Cache::get('apps:' . $v->app_id, function() { $this->cacheApps(); });
+			$roles[$v->app_id][$v->id] = Cache::get('roles:' . $v->id, function() { $this->cacheRoles(); });
+		}
+		$current_app = Session::get('current_app', function() use ($apps) {
+			$first_app = reset($apps);
+			Session::put('current_app', $first_app);
+			return $first_app;
+		});
+		$current_role = Session::get('current_role', function() use ($roles, $current_app) {
+			$first_role = $roles[$current_app['id']];
+			Session::put('current_role', $first_role);
+			return $first_role;
+		});
+
+		Session::put('apps', $apps);
+		Session::put('roles', $apps);
 	}
 
 }
