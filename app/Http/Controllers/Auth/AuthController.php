@@ -4,6 +4,7 @@ use Input, Redirect;
 use Auth;
 use Crypt;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
@@ -12,6 +13,8 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use App\App;
 use Session;
 use Cache;
+use View;
+use Cookie;
 class AuthController extends Controller {
 
 	/*
@@ -55,7 +58,7 @@ class AuthController extends Controller {
 		return view('auth.login', ['app_info' => $app_info]);
 	}
 
-	public function postLogin(Request $request)
+	public function postLogin(Request $request, Response $response)
 	{
 		if($request->has('app')) {
 			return $this->idsLogin($request);
@@ -71,12 +74,14 @@ class AuthController extends Controller {
 			$credentials = array('phone' => $username, 'password' => $password);
 		}
 		if(!empty($credentials) && Auth::attempt($credentials, $request->has('remember'))) {
-			$this->initRole($request);
+			$this->initRole($request, $response);
 			// var_dump(Auth::user()->id);
 			// exit;
 			 // var_dump(Session::all());
 			 // Session::put('key', 'value');
 			 // echo Session::get('key');
+			// $current_app = Session::get('current_app');
+			// var_dump($current_app);exit;
 			return redirect('/admin');
 		}
 		$credentials = array('username' => $request->username, 'password' => $request->password);
@@ -112,7 +117,8 @@ class AuthController extends Controller {
 		}
 	}
 
-	private function initRole($request)
+
+	private function initRole($request, $response)
 	{
 		$roles_array = $request->user()->roles;
 		foreach($roles_array as $v) {
@@ -122,16 +128,19 @@ class AuthController extends Controller {
 		$current_app = Session::get('current_app', function() use ($apps) {
 			$first_app = reset($apps);
 			Session::put('current_app', $first_app);
+			Session::put('current_app_title', $first_app['title']);
+			Session::put('current_app_id', $first_app['id']);
 			return $first_app;
 		});
 		$current_role = Session::get('current_role', function() use ($roles, $current_app) {
 			$first_role = $roles[$current_app['id']];
 			Session::put('current_role', $first_role);
+			Session::put('current_role_title', $first_role[$current_app['id']]['title']);
+			Session::put('current_role_id', $first_role[$current_app['id']]['id']);
 			return $first_role;
 		});
 
 		Session::put('apps', $apps);
 		Session::put('roles', $apps);
 	}
-
 }
