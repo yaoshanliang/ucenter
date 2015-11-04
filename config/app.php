@@ -148,6 +148,7 @@ return [
 		'Chumper\Datatable\DatatableServiceProvider',
 		'Zizaco\Entrust\EntrustServiceProvider',
 		'PhpConsole\Laravel\ServiceProvider',
+		'App\Providers\ComposerServiceProvider',
 
 	],
 
