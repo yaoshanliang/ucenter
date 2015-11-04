@@ -10,11 +10,10 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
-use App\App;
 use Session;
 use Cache;
-use View;
-use Cookie;
+use Queue;
+use App\Commands\UserLog;
 class AuthController extends Controller {
 
 	/*
@@ -75,20 +74,16 @@ class AuthController extends Controller {
 		}
 		if(!empty($credentials) && Auth::attempt($credentials, $request->has('remember'))) {
 			$this->initRole($request, $response);
-			// var_dump(Auth::user()->id);
-			// exit;
-			 // var_dump(Session::all());
-			 // Session::put('key', 'value');
-			 // echo Session::get('key');
-			// $current_app = Session::get('current_app');
-			// var_dump($current_app);exit;
+			$this->loginLog($request, $credentials);
 			return redirect('/admin');
 		}
 		$credentials = array('username' => $request->username, 'password' => $request->password);
 		if (Auth::attempt($credentials, $request->has('remember'))) {
+			$this->initRole($request, $response);
+			$this->loginLog($request, $credentials);
 			return redirect()->guest('/admin');
 		} else {
-			return redirect()->guest('auth/login')
+			return redirect()->guest('/auth/login')
 				->withInput()
 				->withErrors('账户与密码不匹配，请重试！');
 		}
@@ -117,7 +112,7 @@ class AuthController extends Controller {
 		}
 	}
 
-
+	//初始化角色、应用、当前角色、当前应用
 	private function initRole($request, $response)
 	{
 		$roles_array = $request->user()->roles;
@@ -141,6 +136,15 @@ class AuthController extends Controller {
 		});
 
 		Session::put('apps', $apps);
-		Session::put('roles', $apps);
+		Session::put('roles', $roles);
+	}
+
+	//登录日志
+	private function loginLog($request, $credentials) {
+		$login_way = key($credentials) . ' : ' . current($credentials);
+		$ips = $request->ips();
+		$ip = $ips[0];
+		$ips = implode(',', $ips);
+		$log = Queue::push(new UserLog(1, Auth::user()->id, 'S', '登录', $login_way, '', $ip, $ips));
 	}
 }
