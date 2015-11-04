@@ -13,61 +13,28 @@
 				<!-- /input-group -->
 			</li>
 			<li>
-				<a href="/admin/index"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+				<a href="/admin/index"><i class="fa fa-dashboard fa-fw"></i> 控制板</a>
 			</li>
 			<li>
-				<a href="#"><i class="fa fa-table fa-fw"></i> Articles<span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li>
-						<a href="/admin/articles/index">All Articles</a>
-					</li>
-					<li>
-						<a href="/admin/articles/create">Add Article</a>
-					</li>
-					<li>
-						<a href="/admin/articles/trash">Articles Trash</a>
-					</li>
-				</ul>
-				<!-- /.nav-second-level -->
+				<a href="/admin/app"><i class="fa fa-table fa-fw"></i> 应用</a>
 			</li>
 			<li>
-				<a href="#"><i class="fa fa-book fa-fw"></i> Categorys<span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li>
-						<a href="/admin/categories/index">All Categorys</a>
-					</li>
-					<li>
-						<a href="/admin/categories/create">Add Category</a>
-					</li>
-				</ul>
-				<!-- /.nav-second-level -->
+				<a href="/admin/user"><i class="fa fa-book fa-fw"></i> 用户</a>
 			</li>
 			<li>
-				<a href="#"><i class="fa fa-tags fa-fw"></i> Tags<span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li>
-						<a href="/admin/tags/index">All Tags</a>
-					</li>
-					<li>
-						<a href="/admin/tags/create">Add Tag</a>
-					</li>
-				</ul>
-				<!-- /.nav-second-level -->
+				<a href="/admin/role"><i class="fa fa-tags fa-fw"></i> 角色</a>
 			</li>
 			<li>
-				<a href="#"><i class="fa fa-cog fa-fw"></i> Settings<span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li>
-						<a href="/admin/settings/index">Site Settings</a>
-					</li>
-					<li>
-						<a href="/admin/settings/user">User Settings</a>
-					</li>
-					<li>
-						<a href="/admin/setting/flush">Cache Flush</a>
-					</li>
-				</ul>
-				<!-- /.nav-second-level -->
+				<a href="/admin/file"><i class="fa fa-tags fa-fw"></i> 文件</a>
+			</li>
+			<li>
+				<a href="/admin/mail"><i class="fa fa-tags fa-fw"></i> 邮件</a>
+			</li>
+			<li>
+				<a href="/admin/message"><i class="fa fa-tags fa-fw"></i> 短信</a>
+			</li>
+			<li>
+				<a href="/admin/log"><i class="fa fa-cog fa-fw"></i> 日志</a>
 			</li>
 		</ul>
 	</div>
