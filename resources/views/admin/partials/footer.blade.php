@@ -1,6 +1,3 @@
-<!-- jQuery -->
-<script src="/admin-assets/js/jquery.min.js"></script>
-
 <!-- Bootstrap Core JavaScript -->
 <script src="/admin-assets/js/bootstrap.min.js"></script>
 
@@ -19,7 +16,6 @@
 <!-- icheck JavaScript -->
 <script src="/plugin/icheck/icheck.min.js"></script>
 
-<!-- iat JavaScript -->
 <script src="/admin-assets/js/iat.js"></script>
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <style>

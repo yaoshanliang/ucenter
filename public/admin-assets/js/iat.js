@@ -6,7 +6,7 @@
  */
 function showSuccessTip(tip, time){
 	var tip = arguments[0] || '操作成功';
-	var time = arguments[1] || 1.5;
+	var time = arguments[1] || 3;
 	var background = '#5cb85c';
 	var bordercolor = '#4cae4c';
 
@@ -20,7 +20,7 @@ function showSuccessTip(tip, time){
  */
 function showFailTip(tip, time){
 	var tip = arguments[0] || '操作失败';
-	var time = arguments[1] || 1.5;
+	var time = arguments[1] || 3;
 	var background = '#c9302c';
 	var bordercolor = '#ac2925';
 

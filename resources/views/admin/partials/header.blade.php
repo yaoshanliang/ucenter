@@ -17,6 +17,13 @@
 <link href="/admin-assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
 <link href="/plugin/icheck/skins/square/blue.css" rel="stylesheet">
+
+<!-- jQuery -->
+<script src="/admin-assets/js/jquery.min.js"></script>
+
+<!-- iat JavaScript -->
+<script src="/admin-assets/js/iat.js"></script>
+
 <meta name="_token" content="{{ csrf_token() }}"/>
 <style>
 table {
