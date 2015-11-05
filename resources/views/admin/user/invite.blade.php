@@ -2,26 +2,17 @@
 
 @section('content')
 <div class="panel panel-default">
-	<div class="panel-heading">新增 用户</div>
+	<div class="panel-heading">邀请 用户</div>
 	<div class="panel-body">
-		@if (count($errors) > 0)
-			<div class="alert alert-danger">
-				<strong>Whoops!</strong> There were some problems with your input.<br><br>
-				<ul>
-					@foreach ($errors->all() as $error)
-						<li>{{ $error }}</li>
-					@endforeach
-				</ul>
-			</div>
-		@endif
+        @include('errors.list')
 
-		<form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/user') }}">
+		<form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/user/invite') }}">
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 			<div class="form-group">
 				<label class="col-md-3 control-label">邮箱</label>
 				<div class="col-md-6">
-					<input type="text" class="form-control" name="app" value="{{ old('email') }}">
+					<input type="text" class="form-control" name="email" value="{{ old('email') }}">
 				</div>
 			</div>
 
