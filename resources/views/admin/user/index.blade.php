@@ -9,6 +9,8 @@
 		<div class="dataTable_wrapper">
 			<br />
 			<div class="input-group custom-search-form">
+				<a href="{{ URL('admin/user/invite') }}" class="btn btn-primary">邀请</a>
+				&nbsp;
 				<a href="{{ URL('admin/user/create') }}" class="btn btn-primary">新增</a>
 				&nbsp;
 				<a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return check_delete();'>删除</a>
