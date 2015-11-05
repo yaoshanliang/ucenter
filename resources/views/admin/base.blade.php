@@ -23,10 +23,8 @@
 
         <div id="page-wrapper">
 			<br />
-			@if (Session::has('message'))
-				<div class="alert alert-success">
-					{{ session('message') }}
-				</div>
+			@if (Session::has('success_message'))
+				<script>showSuccessTip('{{ session('success_message') }}');</script>
 			@endif
 
             @yield('content')
