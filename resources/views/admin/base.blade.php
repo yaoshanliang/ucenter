@@ -24,7 +24,7 @@
         <div id="page-wrapper">
 			<br />
 			@if (Session::has('success_message'))
-				<script>showSuccessTip('{{ session('success_message') }}');</script>
+				<script>showSuccessTip('{{ Session::pull('success_message') }}');</script>
 			@endif
 
             @yield('content')

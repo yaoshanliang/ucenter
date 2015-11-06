@@ -130,7 +130,7 @@ function initComplete() {
 	});
 }
 function check_delete(id) {
-	var ids =[];
+	var ids = [];
 	if(!id) {
         $('input[name="ids"]:checked').each(function(){ ids.push($(this).val()); });
 	} else {
