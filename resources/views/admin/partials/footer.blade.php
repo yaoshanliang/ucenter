@@ -53,6 +53,7 @@ function datatable_base() {
 				"t"+
 				"<'row'<'pull-left'l><'pull-left'i><'col-sm-6 pull-right'p>>",
 			"pagingType": "full_numbers",
+			"iDisplayLength": 8,
 			"lengthMenu": [[8, 25, 50, 100], [8, 25, 50, 100]],
 			"language": {
 				"processing" : "<img src='/images/loading.gif'>",
@@ -79,47 +80,27 @@ function datatable_base() {
 			}
 	} );
 }
-var datatable_id = $('#datatable_id').val();
 var table;
-    $(document).ready(function() {
-		datatable_base();
-        table = $('#' + datatable_id).DataTable({
-			//排序列
-			"columnDefs": [{
-				"orderable": false,//禁用排序
-				"targets": [0, 6]//指定的列
-			}],
-			"order": [5, 'desc'],
-
-			"ajax": {
-				"url": "/admin/user/lists",
-				"type": 'POST',
-				"dataType": 'jsonp',
-				"headers": {
-					'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-				},
+$(document).ready(function() {
+	datatable_base();
+    table = $('#' + datatable_id).DataTable({
+		//禁用排序列
+		"columnDefs": [{
+			"orderable": false,
+			"targets": columnDefs_targets
+		}],
+		//默认排序列
+		"order": order,
+		"ajax": {
+			"url": ajax_url,
+			"type": 'POST',
+			"dataType": 'jsonp',
+			"headers": {
+				'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
 			},
-			"columns": [
-				{
-					"data": "id",
-					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-						$(nTd).html("<input type='checkbox' id='" + sData + "' class='checkbox' name='ids' value='" + sData + "'>");
-					}
-				},
-				{"data": "username"},
-				{"data": "email"},
-				{"data": "phone"},
-				{"data": "created_at"},
-				{"data": "updated_at"},
-				{
-					"data": "id",
-					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-						$(nTd).html("<a href=/admin/user/" + sData + "/edit>编辑</a>" + " " +
-							"<a href='javascript:void(0);' onclick='return check_delete(" + sData + ");'>删除</a>");
-					}
-				},
-			],
-			"initComplete": initComplete
-		});
+		},
+		"columns": columns,
+		"initComplete": initComplete
+	});
 });
 </script>

@@ -8,7 +8,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" onClick="return submit_delete($('#datatable_id').val(), $('#delete_url').val(), $('#selected_ids').val());">确定</button>
+                <button type="button" class="btn btn-primary" onClick="return submit_delete(datatable_id, delete_url, $('#selected_ids').val());">确定</button>
             </div>
         </div>
         <!-- /.modal-content -->
