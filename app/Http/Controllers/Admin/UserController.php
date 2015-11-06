@@ -73,7 +73,7 @@ class UserController extends Controller {
 			$query_log_sql[]  = $v['query'];
 		}
 		$query_log_sql = implode(';', $query_log_sql);
-		$log = Queue::push(new UserLog(2, 5, 'S', '用户', 'admin', $query_log_sql, $ip, $ips));
+		// $log = Queue::push(new UserLog(1, Auth::user()->id, 'S', '用户', '', $query_log_sql, $ip, $ips));
 		$return_data = array(
 							"draw" => intval($_POST['draw']),
 							"recordsTotal" => intval($recordsTotal),
@@ -95,7 +95,41 @@ class UserController extends Controller {
 	 */
 	public function create()
 	{
-		//
+		return view('admin.user.create');
+	}
+
+	//邀请加入
+	public function getInvite()
+	{
+		return view('admin.user.invite');
+	}
+
+	public function postInvite(Request $request) {
+		$this->validate($request, [
+			'email' => 'required|email|unique:users',
+			'username' => 'required|min:3|unique:users',
+		]);
+
+		$token = hash_hmac('sha256', str_random(40), env('APP_KEY'));
+
+		//写入用户库
+		$user = User::create(array('username' => $request->username, 'email' => $request->email));
+
+		//写入密码重置
+		$password_reset = DB::table('password_resets')->insert(
+		    ['email' => $request->email, 'token' => $token, 'created_at' => date('Y-m-d H:i:s')]
+		);
+
+		//发送邀请邮件
+		$mail = Queue::push(new SendEmail('invite', '邀请入驻用户中心', $token, $request->email));
+
+		$log = Queue::push(new UserLog(1, Auth::user()->id, 'A', '邀请用户'));
+		if($user && $mail && $password_reset) {
+			session()->flash('success_message', '用户邀请成功');
+			return view('admin.user.invite');
+		} else {
+			return Redirect::back()->withInput()->withErrors('保存失败！');
+		}
 	}
 
 	/**
@@ -116,7 +150,7 @@ class UserController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		return view('admin.user.show');
 	}
 
 	/**
@@ -127,7 +161,7 @@ class UserController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		return view('admin.user.edit')->withUser(User::find($id));
 	}
 
 	/**
