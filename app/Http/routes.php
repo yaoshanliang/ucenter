@@ -25,11 +25,15 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth']
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array('auth', 'role')], function() {
 	  Route::get('/', 'AdminController@index');
-	  Route::resource('app', 'AppController');
-	  Route::resource('user', 'UserController');
-	  Route::resource('role', 'RoleController');
+	  Route::get('/user/index', 'UserController@index');
+	  Route::get('/user/appuser', 'UserController@appuser');
+	  Route::get('user/invite', 'UserController@getInvite');
+	  Route::post('user/invite', 'UserController@postInvite');
 	  Route::post('user/lists', 'UserController@lists');
 	  Route::post('user/delete', 'UserController@delete');
+	  Route::resource('user', 'UserController');
+	  Route::resource('app', 'AppController');
+	  Route::resource('role', 'RoleController');
 });
 Route::group(['prefix' => 'api', 'namespace' => 'Api','middleware' => 'guest'], function() {
 	  Route::get('/', 'ApiController@forbidden');
