@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests;
+use App\Http\Requests\AppRequest;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -39,25 +40,27 @@ class AppController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store(Request $request)
+	public function store(AppRequest $request)
 	{
-		$this->validate($request, [
-			'app' => 'required|unique:apps',
-			'app_name' => 'required',
-			'app_home_url' => 'required',
-			'app_login_url' => 'required',
-			'app_secret' => 'required'
-		]);
+		/*$this->validate($request, [
+			'name' => 'required|unique:apps',
+			'title' => 'required',
+			'home_url' => 'required|url',
+			'login_url' => 'required|url',
+			'secret' => 'required'
+		]);*/
 
-		$app = new App;
-		$app->app = Input::get('app');
-		$app->app_name = Input::get('app_name');
-		$app->app_home_url = Input::get('app_home_url');
-		$app->app_login_url = Input::get('app_login_url');
-		$app->app_secret = Input::get('app_secret');
+		$app = App::create(array('name' => $request->name,
+			'title' => $request->title,
+			'description' => $request->description,
+			'home_url' => $request->home_url,
+			'login_url' => $request->login_url,
+			'secret' => $request->secret,
+			'user_id' => Auth::user()->id
+		));
 
-		if ($app->save()) {
-			session()->flash('message', '应用添加成功');
+		if ($app) {
+			session()->flash('success_message', '应用添加成功');
 			return Redirect::to('admin/app');
 		} else {
 			return Redirect::back()->withInput()->withErrors('保存失败！');
@@ -81,7 +84,7 @@ class AppController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit(AppRequest $request, $id)
 	{
 		return view('admin.app.edit')->withApp(App::find($id));
 	}
@@ -92,25 +95,27 @@ class AppController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update(Request $request, $id)
+	public function update(AppRequest $request, $id)
 	{
 		$this->validate($request, [
-			'app' => 'required|unique:apps,app,'.$id.'',
-			'app_name' => 'required',
-			'app_home_url' => 'required',
-			'app_login_url' => 'required',
-			'app_secret' => 'required'
+			'name' => 'required|unique:apps,name,'.$id.'',
+			// 'title' => 'required',
+			// 'home_url' => 'required|url',
+			// 'login_url' => 'required|url',
+			// 'secret' => 'required'
 		]);
 
-		$app = App::find($id);
-		$app->app = Input::get('app');
-		$app->app_name = Input::get('app_name');
-		$app->app_home_url = Input::get('app_home_url');
-		$app->app_login_url = Input::get('app_login_url');
-		$app->app_secret = Input::get('app_secret');
+		$app = App::where('id', $id)->update(array('name' => $request->name,
+			'title' => $request->title,
+			'description' => $request->description,
+			'home_url' => $request->home_url,
+			'login_url' => $request->login_url,
+			'secret' => $request->secret,
+			'user_id' => Auth::user()->id
+		));
 
-		if ($app->save()) {
-			session()->flash('message', '应用修改成功');
+		if ($app) {
+			session()->flash('success_message', '应用修改成功');
 			return Redirect::to('admin/app');
 		} else {
 			return Redirect::back()->withInput()->withErrors('保存失败！');
