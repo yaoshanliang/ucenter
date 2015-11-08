@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\User;
+use App\UserRole;
 use Redirect, Input, Auth;
 use Illuminate\Pagination\Paginator;
 use App\Services\Helper;
@@ -15,11 +16,10 @@ use Monolog\Logger;
 use Monolog\Handler\RedisHandler;
 
 use Cache;
-use Bus;
 use Queue;
+use Session;
 use App\Commands\UserLog;
 use App\Commands\SendEmail;
-use PC;
 use Mail;
 
 class UserController extends Controller {
@@ -34,9 +34,19 @@ class UserController extends Controller {
 		return view('admin.user.index');
 	}
 
+	public function appuser(Request $request)
+	{
+		return view('admin.user.appuser');
+	}
+
 	public function lists(Request $request)
 	{
-		DB::enableQueryLog();
+		$app_user_ids = '';
+		if(isset($_GET['type']) && $_GET['type'] == 'appuser') {
+			$current_app_id = Session::get('current_app_id');
+			$app_user_ids = UserRole::where('app_id', '=', $current_app_id)->lists('user_id');
+		}
+		// DB::enableQueryLog();
 		$columns = $_POST['columns'];
 		$order_column = $_POST['order']['0']['column'];//那一列排序，从0开始
 		$order_dir = $_POST['order']['0']['dir'];//ase desc 升序或者降序
@@ -44,9 +54,16 @@ class UserController extends Controller {
 		$start = $_POST['start'];//从多少开始
 		$length = $_POST['length'];//数据长度
 		$fields = array('id', 'username', 'email', 'phone', 'created_at', 'updated_at');
-		$recordsTotal = User::count();
+		if(isset($_GET['type']) && $_GET['type'] == 'appuser') {
+			$recordsTotal = User::whereIn('id', $app_user_ids)->count();
+		} else {
+			$recordsTotal = User::count();
+		}
 		if(strlen($search)) {
-			$users = User::where(function ($query) use ($search) {
+			$users = User::where(function ($query) use ($search, $app_user_ids) {
+				if(isset($_GET['type']) && $_GET['type'] == 'appuser') {
+					$query->whereIn('id', $app_user_ids);
+				}
 				$query->where("username" , 'LIKE',  '%' . $search . '%')
 					->orWhere("email" , 'LIKE',  '%' . $search . '%')
 					->orWhere("phone" , 'LIKE',  '%' . $search . '%');
@@ -58,21 +75,25 @@ class UserController extends Controller {
 				->toArray();
 			$recordsFiltered = count($users);
 		} else {
-			$users = User::orderby($columns[$order_column]['data'], $order_dir)
+			$users = User::where(function ($query) use ($search, $app_user_ids) {
+				if(isset($_GET['type']) && $_GET['type'] == 'appuser') {
+					$query->whereIn('id', $app_user_ids);
+				}})
+				->orderby($columns[$order_column]['data'], $order_dir)
 				->skip($start)
 				->take($length)
 				->get($fields)
 				->toArray();
 			$recordsFiltered = $recordsTotal;
 		}
-		$query_log = DB::getQueryLog();
+		// $query_log = DB::getQueryLog();
 		$ips = $request->ips();
 		$ip = $ips[0];
 		$ips = implode(',', $ips);
-		foreach($query_log as $v) {
-			$query_log_sql[]  = $v['query'];
-		}
-		$query_log_sql = implode(';', $query_log_sql);
+		// foreach($query_log as $v) {
+			// $query_log_sql[]  = $v['query'];
+		// }
+		// $query_log_sql = implode(';', $query_log_sql);
 		// $log = Queue::push(new UserLog(1, Auth::user()->id, 'S', '用户', '', $query_log_sql, $ip, $ips));
 		$return_data = array(
 							"draw" => intval($_POST['draw']),
@@ -123,7 +144,10 @@ class UserController extends Controller {
 		//发送邀请邮件
 		$mail = Queue::push(new SendEmail('invite', '邀请入驻用户中心', $token, $request->email));
 
-		$log = Queue::push(new UserLog(1, Auth::user()->id, 'A', '邀请用户'));
+		$ips = $request->ips();
+		$ip = $ips[0];
+		$ips = implode(',', $ips);
+		$log = Queue::push(new UserLog(1, Auth::user()->id, 'A', '邀请用户', 'email：'. $request->email, '', $ip, $ips));
 		if($user && $mail && $password_reset) {
 			session()->flash('success_message', '用户邀请成功');
 			return view('admin.user.invite');
