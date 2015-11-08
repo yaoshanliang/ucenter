@@ -24,7 +24,7 @@
 <!-- iat JavaScript -->
 <script src="/admin-assets/js/iat.js"></script>
 
-<meta name="_token" content="{{ csrf_token() }}"/>
+<!--<meta name="_token" content="{{ csrf_token() }}"/>-->
 <style>
 table {
 	margin-top: 6px !important;

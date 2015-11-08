@@ -22,10 +22,10 @@
 				<a href="#"><i class="fa fa-book fa-fw"></i> 用 户<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
 					<li>
-                        <a href="/admin/user"> 用户总库</a>
+                        <a href="/admin/user/index"> 用户总库</a>
                     </li>
                     <li>
-                        <a href="/admin/appuser"> 接入用户</a>
+                        <a href="/admin/user/appuser"> 接入用户</a>
                     </li>
                 </ul>
 			</li>

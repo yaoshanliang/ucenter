@@ -96,7 +96,8 @@ $(document).ready(function() {
 			"type": 'POST',
 			"dataType": 'jsonp',
 			"headers": {
-				'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+				// 'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+				'X-CSRF-TOKEN': $('input[name="_token"]').val()
 			},
 		},
 		"columns": columns,
