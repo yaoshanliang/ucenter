@@ -22,35 +22,42 @@
 			<div class="form-group">
 				<label class="col-md-3 control-label">代号</label>
 				<div class="col-md-6">
-					<input type="text" class="form-control" name="app" value="{{ $app->app }}">
+					<input type="text" class="form-control" name="name" value="{{ $app->name }}">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-3 control-label">名称</label>
 				<div class="col-md-6">
-					<input type="text" class="form-control" name="app_name" value="{{ $app->app_name }}">
+					<input type="text" class="form-control" name="title" value="{{ $app->title }}">
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-md-3 control-label">描述</label>
+				<div class="col-md-6">
+					<input type="text" class="form-control" name="description" value="{{ $app->description }}">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-3 control-label">首页地址</label>
 				<div class="col-md-6">
-					<input type="text" class="form-control" name="app_home_url" value="{{ $app->app_home_url }}">
+					<input type="text" class="form-control" name="home_url" value="{{ $app->home_url }}">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-3 control-label">登录地址</label>
 				<div class="col-md-6">
-					<input type="text" class="form-control" name="app_login_url" value="{{ $app->app_login_url }}">
+					<input type="text" class="form-control" name="login_url" value="{{ $app->login_url }}">
 				</div>
 			</div>
 
 			<div class="form-group">
 				<label class="col-md-3 control-label">密钥</label>
 				<div class="col-md-6">
-					<input type="text" class="form-control" name="app_secret" value="{{ $app->app_secret }}">
+					<input type="text" class="form-control" name="secret" value="{{ $app->secret }}">
 				</div>
 			</div>
 
