@@ -68,7 +68,7 @@ function submit_delete(datatable_id, delete_url, delete_ids, tip_msg, tip_time) 
 		data: {'ids': delete_ids},
 		dataType: 'jsonp',
 		headers: {
-			'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+			'X-CSRF-TOKEN': $('input[name="_token"]').val()
 		},
 		success: function(data) {
 			if(data['status_code'] === 0) {
@@ -136,10 +136,24 @@ function check_delete(id) {
 	} else {
 		ids.push(id);
 	}
-	$('#selected_ids').attr('value', ids);
+	delete_ids = ids;
 	if(ids == '') {
 		$('#no_selected_modal').modal('show');
 	} else {
 		$('#confirm_delete_modal').modal('show');
+	}
+}
+function check_remove(id) {
+	var ids = [];
+	if(!id) {
+        $('input[name="ids"]:checked').each(function(){ ids.push($(this).val()); });
+	} else {
+		ids.push(id);
+	}
+	remove_ids = ids;
+	if(ids == '') {
+		$('#no_selected_modal').modal('show');
+	} else {
+		$('#confirm_remove_modal').modal('show');
 	}
 }
