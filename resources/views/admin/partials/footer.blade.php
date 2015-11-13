@@ -80,6 +80,7 @@ function datatable_base() {
 			}
 	} );
 }
+if(typeof(datatable_id) != "undefined") {
 var table;
 $(document).ready(function() {
 	datatable_base();
@@ -104,4 +105,5 @@ $(document).ready(function() {
 		"initComplete": initComplete
 	});
 });
+}
 </script>
