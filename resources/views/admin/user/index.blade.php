@@ -23,7 +23,6 @@
 			</div>
 			<form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/app') }}">
 				<input type="hidden" name="_token" value="{{ csrf_token() }}">
-				<input type="hidden" name="selected_ids" id="selected_ids">
 				<table class="table table-striped table-bordered table-hover" id="user_index" class="display" cellspacing="0" width="100%" border='0px'>
 					<thead>
 						<tr>
