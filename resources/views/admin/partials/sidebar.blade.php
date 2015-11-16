@@ -16,16 +16,28 @@
 				<a href="/admin/index"><i class="fa fa-dashboard fa-fw"></i> 控制板</a>
 			</li>
 			<li>
-                <a href="/admin/app"><i class="fa fa-bar-chart-o fa-fw"></i> 应 用</a>
+				@if ($app['name'] == 'ucenter')
+					<a href="##"><i class="fa fa-bar-chart-o fa-fw"></i> 应 用<span class="fa arrow"></span></a>
+					<ul class="nav nav-second-level">
+						<li>
+							<a href="/admin/app/index"> 应用总库</a>
+						</li>
+						<li>
+							<a href="/admin/app/app"> 接入应用</a>
+						</li>
+					</ul>
+				@else
+					<a href="/admin/app/app"><i class="fa fa-bar-chart-o fa-fw"></i> 应 用</a>
+				@endif
 			</li>
 			<li>
-				<a href="#"><i class="fa fa-book fa-fw"></i> 用 户<span class="fa arrow"></span></a>
+				<a href="###"><i class="fa fa-book fa-fw"></i> 用 户<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
 					<li>
                         <a href="/admin/user/index"> 用户总库</a>
                     </li>
                     <li>
-                        <a href="/admin/user/appuser"> 接入用户</a>
+                        <a href="/admin/user/app"> 接入用户</a>
                     </li>
                 </ul>
 			</li>
