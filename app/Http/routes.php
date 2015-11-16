@@ -18,7 +18,6 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 ]);
-// Entrust::routeNeedsRole('admin/*', array('developer', 'admin'), null , false);
 Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth'], function() {
 	  Route::get('/', 'HomeController@index');
 	  Route::resource('user', 'AppController');
@@ -26,14 +25,21 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth']
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array('auth', 'role')], function() {
 	  Route::get('/', 'AdminController@index');
 	  Route::get('/user/index', 'UserController@index');
-	  Route::get('/user/appuser', 'UserController@appuser');
+	  Route::get('/user/app', 'UserController@app');
 	  Route::get('user/invite', 'UserController@getInvite');
 	  Route::post('user/invite', 'UserController@postInvite');
 	  Route::post('user/lists', 'UserController@lists');
 	  Route::post('user/delete', 'UserController@delete');
+	  Route::post('user/remove', 'UserController@remove');
 	  Route::resource('user', 'UserController');
 	  Route::resource('app', 'AppController');
 	  Route::resource('role', 'RoleController');
+	  Route::get('app/{id}/edit', 'AppController@edit', function(Request $request)
+		  {
+		$id = $this->route('app');
+		return App::where('id', $id)->where('user_id', Auth::id())->exists();
+		  });
+	  Route::post('app/{id}/edit', 'AppController@update');
 });
 Route::group(['prefix' => 'api', 'namespace' => 'Api','middleware' => 'guest'], function() {
 	  Route::get('/', 'ApiController@forbidden');
