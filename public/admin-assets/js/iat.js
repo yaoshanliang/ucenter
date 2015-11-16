@@ -60,12 +60,19 @@ function showTip(tip, time, background, bordercolor) {
 	setTimeout(function(){$('div.tipsClass').fadeOut();}, (time * 1000));
 }
 
-function submit_delete(datatable_id, delete_url, delete_ids, tip_msg, tip_time) {
-	$('#confirm_delete_modal').modal('hide');
+function submit_datatable(type, datatable_id, url, ids, tip_msg, tip_time) {
+	switch(type) {
+		case 'delete':
+			$('#confirm_delete_modal').modal('hide');
+			break;
+		case 'remove':
+			$('#confirm_remove_modal').modal('hide');
+			break;
+	}
 	$.ajax({
-		url: delete_url,
+		url: url,
 		type: 'POST',
-		data: {'ids': delete_ids},
+		data: {'ids': ids},
 		dataType: 'jsonp',
 		headers: {
 			'X-CSRF-TOKEN': $('input[name="_token"]').val()
