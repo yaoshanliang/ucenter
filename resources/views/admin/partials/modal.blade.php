@@ -8,7 +8,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" onClick="return submit_delete(datatable_id, delete_url, delete_ids);">确定</button>
+                <button type="button" class="btn btn-primary" onClick="return submit_datatable('delete', datatable_id, delete_url, delete_ids);">确定</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -27,7 +27,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" onClick="return submit_remove(datatable_id, remove_url, remove_ids);">确定</button>
+                <button type="button" class="btn btn-primary" onClick="return submit_datatable('remove', datatable_id, remove_url, remove_ids);">确定</button>
             </div>
         </div>
         <!-- /.modal-content -->
