@@ -32,14 +32,20 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array(
 	  Route::post('user/delete', 'UserController@delete');
 	  Route::post('user/remove', 'UserController@remove');
 	  Route::resource('user', 'UserController');
+
+	  Route::get('/app/index', 'AppController@index');
+	  Route::get('/app/app', 'AppController@app');
+	  Route::post('/app/lists', 'AppController@lists');
+	  Route::post('/app/delete', 'AppController@delete');
 	  Route::resource('app', 'AppController');
+
 	  Route::resource('role', 'RoleController');
-	  Route::get('app/{id}/edit', 'AppController@edit', function(Request $request)
-		  {
-		$id = $this->route('app');
-		return App::where('id', $id)->where('user_id', Auth::id())->exists();
-		  });
-	  Route::post('app/{id}/edit', 'AppController@update');
+	  // Route::get('app/{id}/edit', 'AppController@edit', function(Request $request)
+		  // {
+		// $id = $this->route('app');
+		// return App::where('id', $id)->where('user_id', Auth::id())->exists();
+		  // });
+	  // Route::post('app/{id}/edit', 'AppController@update');
 });
 Route::group(['prefix' => 'api', 'namespace' => 'Api','middleware' => 'guest'], function() {
 	  Route::get('/', 'ApiController@forbidden');
