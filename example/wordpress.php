@@ -4,7 +4,7 @@ define('app', 'wordpress');//应用名称，需要申请
 define('app_secret', 'example_secret');//应用密钥，需要申请
 define('site_home', 'http://wordpress.iat.net.cn');//本站地址
 define('ucenter_home', 'http://ucenter.iat.net.cn');//用户中心地址
-define('ucenter_login_url', ucenter_home . '/auth/login');//用户中心登录地址
+define('ucenter_api_login', ucenter_home . '/api/login');//用户中心登录地址
 
 if(isset($_GET['token'])) {
     $data['action'] = 'login';
@@ -45,6 +45,6 @@ if(isset($_GET['token'])) {
     }
 }
 if(!isset($_GET['action'])) {
-	header('Location:' . ucenter_login_url . '?app=' . app);
+	header('Location:' . ucenter_api_login . '?app=' . app);
 	exit;
 }
