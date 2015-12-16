@@ -56,18 +56,16 @@ class LoginController extends Controller {
 		// });
 		$app_info = App::where('name', '=', $app)->first();
 		if($app != '' && is_null($app_info)) {
-			return view('auth.forbidden');
+			return view('api.auth.forbidden');
 		}
-		return view('auth.login', ['app_info' => $app_info]);
+		return view('api.auth.login', ['app_info' => $app_info]);
 	}
 
 	public function postLogin(Request $request, Response $response)
 	{
-		if($request->has('app')) {
-			return $this->idsLogin($request);
-		}
 		$this->validate($request, ['username' => 'required', 'password' => 'required']);
 
+		//对于带@和11位数字的，优先做email和phone处理，若失败则按username处理
 		$username = $request->username;
 		$password = $request->password;
 		$credentials = array();
@@ -76,28 +74,14 @@ class LoginController extends Controller {
 		} elseif(preg_match('/^\d{11}$/', $username)) {
 			$credentials = array('phone' => $username, 'password' => $password);
 		}
-		if(!empty($credentials) && Auth::attempt($credentials, $request->has('remember'))) {
-			$this->initRole($request, $response);
-			$this->loginLog($request, $credentials);
-			return redirect('/admin');
-		}
-		$credentials = array('username' => $request->username, 'password' => $request->password);
-		if (Auth::attempt($credentials, $request->has('remember'))) {
-			$this->initRole($request, $response);
-			$this->loginLog($request, $credentials);
-			return redirect()->guest('/admin');
+		if(!empty($credentials) && !Auth::validate($credentials, $request->has('remember'))) {
+			$credentials = array('username' => $username, 'password' => $password);
+			if(!Auth::validate($credentials, $request->has('remember'))) {
+				return redirect()->guest('/api/login?app=' . $request->app)
+					->withInput()
+					->withErrors('账户与密码不匹配，请重试！');
+			}
 		} else {
-			return redirect()->guest('/auth/login')
-				->withInput()
-				->withErrors('账户与密码不匹配，请重试！');
-		}
-	}
-
-	private function idsLogin($request)
-	{
-		$this->validate($request, ['username' => 'required', 'password' => 'required']);
-		$credentials = $request->only('username', 'password');
-		if(Auth::validate($credentials)) {
 			$app = $request->app;
 			$app_info = App::where('name', '=', $app)->first();
 
@@ -108,12 +92,14 @@ class LoginController extends Controller {
 			$token = Crypt::encrypt($token_array);
 			header('Location:' . $app_info['login_url'] . '?token=' . $token);
 			exit;
+				// $this->initRole($request, $response);
+				// $this->loginLog($request, $credentials);
+				// return redirect()->guest('/admin');
 		}
-		else{
-			return redirect()->guest('auth/login?app=' . $request->app)
-				->withInput()
-				->withErrors('用户名与密码不匹配，请重试！');
-		}
+	}
+
+	private function idsLogin($request)
+	{
 	}
 
 	//初始化角色、应用、当前角色、当前应用
