@@ -11,9 +11,13 @@ return [
 	 */
 
 	//basic
-	1 => 'Ok',
-	0 => 'Failed',
+	1 => 'Success',
+	0 => 'Failure',
 	403 => "Forbidden",
+
+	1001 => "Action field must be exist",
+	1002 => "Token invalid",
+	1003 => 'Token expired',
 
 	"accepted"             => "The :attribute must be accepted.",
 	"active_url"           => "The :attribute is not a valid URL.",

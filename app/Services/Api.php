@@ -28,9 +28,13 @@ class Api {
 			$msg = Lang::has('api.' . $code) ? trans('api.' . $code) : '';
 		}
 		if(empty($data)) {
-			return response()->json(array('code' => $code, 'msg' => $msg));
+			// return response()->json(array('code' => $code, 'msg' => $msg))->setCallback('callback');
+			header('Content-Type: application/json');
+			return json_encode(array('code' => $code, 'msg' => $msg));
 		} else {
-			return response()->json(array('code' => $code, 'msg' => $msg, 'data' => $data));
+			// return response()->json(array('code' => $code, 'msg' => $msg, 'data' => $data));
+			header('Content-Type: application/json');
+			return json_encode(array('code' => $code, 'msg' => $msg, 'data' => $data));
 		}
 	}
 }
