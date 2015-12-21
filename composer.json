@@ -14,10 +14,10 @@
 		"laravel/framework": "5.1.*",
 		"barryvdh/laravel-debugbar": "^2.0",
 		"predis/predis": "^1.0",
-		"chumper/datatable": "dev-develop",
 		"yaoshanliang/entrust": "dev-ucenter",
 		"ccampbell/chromephp": "^4.1",
-		"php-console/laravel-service-provider": "^5.1"
+		"php-console/laravel-service-provider": "^5.1",
+		"OpenSkill/Datatable": "^0.2.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",
