@@ -18,7 +18,9 @@
 		"ccampbell/chromephp": "^4.1",
 		"php-console/laravel-service-provider": "^5.1",
 		"OpenSkill/Datatable": "^0.2.0",
-		"dingo/api": "1.0.x@dev"
+		"dingo/api": "1.0.x@dev",
+		"tymon/jwt-auth": "^0.5.6",
+		"lucadegasperi/oauth2-server-laravel": "^5.1"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",
