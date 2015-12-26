@@ -145,10 +145,11 @@ return [
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
 		'Barryvdh\Debugbar\ServiceProvider',
-		'Chumper\Datatable\DatatableServiceProvider',
+		// 'Chumper\Datatable\DatatableServiceProvider',
 		'Zizaco\Entrust\EntrustServiceProvider',
 		// 'PhpConsole\Laravel\ServiceProvider',
 		'App\Providers\ComposerServiceProvider',
+		'Dingo\Api\Provider\LaravelServiceProvider',
 
 	],
 
