@@ -19,7 +19,7 @@ return [
     | the role if it is in a different namespace.
     |
     */
-    'role' => 'App\Role',
+    'role' => 'App\Model\Role',
 
     /*
     |--------------------------------------------------------------------------
