@@ -13,117 +13,33 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Session;
 use Cache;
 use Queue;
-use App\App;
+use App\Http\Model\App;
 use App\Jobs\UserLog;
 use App\Services\Api;
-use App\User;
+use App\Model\User;
 use App\Providers\OAuthServiceProvider;
 
 use Dingo\Api\Routing\Helpers;
 use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 class UserController extends Controller {
 
-	use Helpers;
-	public function me()
-	{
+    use Helpers;
 
-        $user_id = Authorizer::getResourceOwnerId();
-        $username = User::find($user_id);
-		return $this->response->array(compact('username', 'user_id'));
-	}
+    // 当前用户的id
+    private static $current_user_id;
 
-	public function getSelfInfo()
-	{
-		$user_id = 1000;
-		$username = 'admin';
-		return Api::json_return(1, '', compact('user_id', 'username'));
-		if(!isset($_GET['app'])) {
-			return view('api.auth.forbidden');
-		}
-		$app = $_GET['app'];
-		// $app_info = Cache::get($settings_prefix . $app, function() use ($app, $settings_prefix) {
-			// $setting = Setting::where('name', $app)->first(array('value'));
-			// Cache::forever($settings_prefix . $app, $setting['value']);
-			// return $setting['value'];
-		// });
-		$app_info = App::where('name', '=', $app)->first();
-		if($app != '' && is_null($app_info)) {
-			return view('api.auth.forbidden');
-		}
-		return view('api.auth.login', ['app_info' => $app_info]);
-	}
+    public function __construct() {
+        self::$current_user_id = (int)Authorizer::getResourceOwnerId();
+    }
 
-	public function postLogin(Request $request, Response $response)
-	{
-		$this->validate($request, ['username' => 'required', 'password' => 'required']);
+    // 获取用户信息，没有user_id参数时则为当前用户
+    public function getUserInfo(Request $request)
+    {
+        $user_id = empty($request->has('user_id')) ? self::$current_user_id : (int)$request->get('user_id');
+        $data = User::getUserInfo($user_id);
+        return $this->response->errorNotFound();
+        $code = 1 AND $message = array('SUCCESS' => '获取用户信息成功');
 
-		//对于带@和11位数字的，优先做email和phone处理，若失败则按username处理
-		$username = $request->username;
-		$password = $request->password;
-		$credentials = array();
-		if(strpos($username, '@') !== false) {
-			$credentials = array('email' => $username, 'password' => $password);
-		} elseif(preg_match('/^\d{11}$/', $username)) {
-			$credentials = array('phone' => $username, 'password' => $password);
-		}
-		if(!empty($credentials) && !Auth::validate($credentials, $request->has('remember'))) {
-			$credentials = array('username' => $username, 'password' => $password);
-			if(!Auth::validate($credentials, $request->has('remember'))) {
-				return redirect()->guest('/api/login?app=' . $request->app)
-					->withInput()
-					->withErrors('账户与密码不匹配，请重试！');
-			}
-		} else {
-			$app = $request->app;
-			$app_info = App::where('name', '=', $app)->first();
-
-			$token_array['username'] = $request->username;
-			$token_array['app'] = $app_info['app'];
-			$token_array['app_secret'] = $app_info['app_secret'];
-			$token_array['timestamp'] = time();
-			$access_token = Crypt::encrypt($token_array);
-
-			header('Location:' . $app_info['login_url'] . '?access_token=' . $access_token);
-			exit;
-				// $this->initRole($request, $response);
-				// $this->loginLog($request, $credentials);
-				// return redirect()->guest('/admin');
-		}
-	}
-
-	//初始化角色、应用、当前角色、当前应用
-	private function initRole($request, $response)
-	{
-		$roles_array = $request->user()->roles;
-		foreach($roles_array as $v) {
-			$apps[$v->app_id] = Cache::get('apps:' . $v->app_id, function() { $this->cacheApps(); });
-			$roles[$v->app_id][$v->id] = Cache::get('roles:' . $v->id, function() { $this->cacheRoles(); });
-		}
-		$current_app = Session::get('current_app', function() use ($apps) {
-			$first_app = reset($apps);
-			Session::put('current_app', $first_app);
-			Session::put('current_app_title', $first_app['title']);
-			Session::put('current_app_id', $first_app['id']);
-			return $first_app;
-		});
-		$current_role = Session::get('current_role', function() use ($roles, $current_app) {
-			$first_role = $roles[$current_app['id']];
-			Session::put('current_role', $first_role);
-			Session::put('current_role_title', $first_role[$current_app['id']]['title']);
-			Session::put('current_role_id', $first_role[$current_app['id']]['id']);
-			return $first_role;
-		});
-
-		Session::put('apps', $apps);
-		Session::put('roles', $roles);
-	}
-
-	//登录日志
-	private function loginLog($request, $credentials) {
-		$login_way = key($credentials) . ' : ' . current($credentials);
-		$ips = $request->ips();
-		$ip = $ips[0];
-		$ips = implode(',', $ips);
-		$log = Queue::push(new UserLog(1, Auth::user()->id, 'S', '登录', $login_way, '', $ip, $ips));
-	}
+        return $this->response->array(compact('code', 'message', 'data'));
+    }
 }
