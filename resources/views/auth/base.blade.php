@@ -33,8 +33,8 @@
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					@if (isset($app_info['app_name']))
-						<li><a href={{$app_info['app_home_url']}} target="_blank">{{$app_info['app_name']}}</a></li>
+					@if (isset($app_info['title']))
+						<li><a href={{$app_info['home_url']}} target="_blank">{{$app_info['title']}}</a></li>
 					@endif
 				</ul>
 

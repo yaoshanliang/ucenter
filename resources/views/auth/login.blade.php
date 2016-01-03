@@ -1,4 +1,4 @@
-@extends('app')
+@extends('auth.base')
 
 @section('content')
 <div class="container-fluid">
@@ -21,8 +21,8 @@
 					<form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/login') }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-						@if (isset($app_info['app']))
-							<input type="hidden" name="app" value="{{$app_info['app']}}">
+						@if (isset($app_info['name']))
+							<input type="hidden" name="app" value="{{$app_info['name']}}">
 						@endif
 
 						<div class="form-group">
