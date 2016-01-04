@@ -28,8 +28,9 @@ class Role {
 		$roles = 'developer|admin';//角色为developer或admin的才可以访问/admin
 		if ($this->auth->guest() || !$request->user()->hasRole(explode('|', $roles))) {
 			// abort(503);
-			return redirect('home');
+			return redirect('/home');
 		}
 		return $next($request);
 	}
+
 }
