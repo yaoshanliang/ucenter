@@ -9,5 +9,6 @@ class Role extends EntrustRole {
 	use EntrustRoleTrait;
 	use SoftDeletes;
 	protected $dates = ['deleted_at'];
+    protected $fillable = ['app_id', 'name', 'title', 'description'];
 
 }

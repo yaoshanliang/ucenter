@@ -41,9 +41,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     // 获取用户信息
     protected function getUserInfo($user_id) {
-        $user_info = Cache::get(env('CACHE_USERS_PREFIX') . $user_id, function() use ($user_id) {
+        $user_info = Cache::get(Config::get('cache.users') . $user_id, function() use ($user_id) {
             $user_info = User::findOrFail($user_id)->toArray();
-            Cache::forever(env('CACHE_USERS_PREFIX') . $user_id, $user_info);
+            Cache::forever(Config::get('cache.users') . $user_id, $user_info);
             return $user_info;
         });
         return $user_info;
