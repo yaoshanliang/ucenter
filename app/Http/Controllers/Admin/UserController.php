@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-use App\User;
-use App\UserRole;
+use App\Model\User;
+use App\Model\UserRole;
 use Redirect, Input, Auth;
 use Illuminate\Pagination\Paginator;
 use App\Services\Helper;
@@ -21,6 +21,7 @@ use Session;
 use App\Commands\UserLog;
 use App\Commands\SendEmail;
 use Mail;
+use Config;
 
 class UserController extends Controller {
 
@@ -29,18 +30,15 @@ class UserController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index(Request $request)
-	{
+	public function index(Request $request) {
 		return view('admin.user.index');
 	}
 
-	public function appuser(Request $request)
-	{
-		return view('admin.user.appuser');
+	public function app(Request $request) {
+		return view('admin.user.app');
 	}
 
-	public function lists(Request $request)
-	{
+	public function lists(Request $request) {
 		$app_user_ids = '';
 		if(isset($_GET['type']) && $_GET['type'] == 'appuser') {
 			$current_app_id = Session::get('current_app_id');
@@ -114,14 +112,12 @@ class UserController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
-	{
+	public function create() {
 		return view('admin.user.create');
 	}
 
 	//邀请加入
-	public function getInvite()
-	{
+	public function getInvite() {
 		return view('admin.user.invite');
 	}
 
@@ -161,8 +157,7 @@ class UserController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
+	public function store() {
 		//
 	}
 
@@ -172,8 +167,7 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
+	public function show($id) {
 		return view('admin.user.show');
 	}
 
@@ -183,9 +177,10 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
-	{
-		return view('admin.user.edit')->withUser(User::find($id));
+	public function edit($id) {
+        $dispatcher = app('Dingo\Api\Dispatcher');
+        $data = $dispatcher->get('api/user/user_info?user_id=1000&access_token=iblRrfFdctRVIxsuTzPDx5TgbGiAobhxjKItRPzO');
+		return view('admin.user.edit')->withUser($data['data']);
 	}
 
 	/**
@@ -194,8 +189,7 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
-	{
+	public function update($id) {
 		//
 	}
 
@@ -205,17 +199,15 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
-	{
+	public function destroy($id) {
 		//
 	}
 
 	//删除
-	public function delete()
-	{
+	public function delete() {
 		DB::beginTransaction();
-		try{
-			$ids = explode(',', $_POST['ids']);
+		try {
+			$ids = $_POST['ids'];
 			$result = User::whereIn('id', $ids)->delete();
 
 			DB::commit();
@@ -224,6 +216,22 @@ class UserController extends Controller {
 			DB::rollBack();
 			throw $e;
 			Helper::jsonp_return(1, '删除失败', array('deleted_num' => 0));
+		}
+	}
+
+	//从当前应用中移出用户
+	public function remove() {
+		DB::beginTransaction();
+		try {
+			$ids = $_POST['ids'];
+			$result = UserRole::where('app_id', Session::get('current_app_id'))->whereIn('user_id', $ids)->delete();
+
+			DB::commit();
+			Helper::jsonp_return(0, '移除成功', array('deleted_num' => $result));
+		} catch (Exception $e) {
+			DB::rollBack();
+			throw $e;
+			Helper::jsonp_return(1, '移除失败', array('deleted_num' => 0));
 		}
 	}
 }
