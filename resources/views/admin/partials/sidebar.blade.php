@@ -42,7 +42,34 @@
                 </ul>
 			</li>
 			<li>
-				<a href="/admin/role"><i class="fa fa-tags fa-fw"></i> 角 色</a>
+				@if ($app['name'] == 'ucenter')
+					<a href="###"><i class="fa fa-bar-chart-o fa-fw"></i> 角 色<span class="fa arrow"></span></a>
+					<ul class="nav nav-second-level">
+						<li>
+							<a href="/admin/role/index"> 角色总库</a>
+						</li>
+						<li>
+							<a href="/admin/role/app"> 接入角色</a>
+						</li>
+					</ul>
+				@else
+					<a href="/admin/role/app"><i class="fa fa-bar-chart-o fa-fw"></i> 角 色</a>
+				@endif
+			</li>
+			<li>
+				@if ($app['name'] == 'ucenter')
+					<a href="####"><i class="fa fa-bar-chart-o fa-fw"></i> 权 限<span class="fa arrow"></span></a>
+					<ul class="nav nav-second-level">
+						<li>
+							<a href="/admin/permission/index"> 权限总库</a>
+						</li>
+						<li>
+							<a href="/admin/permission/app"> 接入权限</a>
+						</li>
+					</ul>
+				@else
+					<a href="/admin/permission/app"><i class="fa fa-bar-chart-o fa-fw"></i> 权 限</a>
+				@endif
 			</li>
 			<li>
 				<a href="/admin/file"><i class="fa fa-tags fa-fw"></i> 文 件</a>

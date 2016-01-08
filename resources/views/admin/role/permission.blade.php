@@ -51,7 +51,7 @@
 var datatable_id = 'user_index';
 var columnDefs_targets = [0, 6];
 var order = [5, 'desc'];
-var ajax_url = '/admin/role/1/permission_lists';
+var ajax_url = '/admin/role/<?php echo $role_id; ?>/permission_lists';
 var remove_url = '/admin/role/remove';
 var columns = [{
 					"data": "id",

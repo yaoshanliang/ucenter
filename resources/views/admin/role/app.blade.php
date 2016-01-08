@@ -67,7 +67,7 @@ var columns = [{
 				{
 					"data": "id",
 					"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-						$(nTd).html("<a href=/admin/role/" + sData + "/edit>编辑</a>" + " " +
+						$(nTd).html("<a href=/admin/role/" + sData + "/permission>权限</a>" + " " + "<a href=/admin/role/" + sData + "/edit>编辑</a>" + " " +
 							"<a href='javascript:void(0);' onclick='return check_remove(" + sData + ");'>移除</a>");
 					}
 				}];
