@@ -27,18 +27,18 @@
 <!--<meta name="_token" content="{{ csrf_token() }}"/>-->
 <style>
 table {
-	margin-top: 6px !important;
+    margin-top: 6px !important;
 }
 .search {
-	float:right !important;
-	width:30% !important;
-	border-top-left-radius:4px !important;
-	border-bottom-left-radius:4px !important;
+    float:right !important;
+    width:30% !important;
+    border-top-left-radius:4px !important;
+    border-bottom-left-radius:4px !important;
 }
 
 .page .pagination{
-	margin-top: 0px;
-	margin-bottom: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 .checkbox, .radio {
   display: block;
@@ -52,23 +52,23 @@ border: none;
 }
 #myModal
 {
-	top:0px;
+    top:0px;
 }
 .modal-dialog {
-	margin-top: 0px;
-	width: 300px
+    margin-top: 0px;
+    width: 300px
 }
 .modal-content {
-	// border-radius: 4px;
-	border-top-left-radius: 0px;
-	border-top-right-radius: 0px;
-	border-bottom-right-radius: 4px;
-	border-bottom-left-radius: 4px;
+    // border-radius: 4px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
 }
 .modal-footer {
-	padding-top: 15px;
-	padding-right: 15px;
-	padding-bottom: 10px;
-	padding-left: 15px;
+    padding-top: 15px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+    padding-left: 15px;
 }
 </style>
