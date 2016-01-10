@@ -81,7 +81,19 @@
                 <a href="/admin/message"><i class="fa fa-tags fa-fw"></i> 短 信</a>
             </li>
             <li>
-                <a href="/admin/log"><i class="fa fa-cog fa-fw"></i> 日 志</a>
+                @if ($app['name'] == 'ucenter')
+                    <a href="####"><i class="fa fa-bar-chart-o fa-fw"></i> 日 志<span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li>
+                            <a href="/admin/userlog/index"> 日志总库</a>
+                        </li>
+                        <li>
+                            <a href="/admin/userlog/app"> 接入日志</a>
+                        </li>
+                    </ul>
+                @else
+                    <a href="/admin/userlog/app"><i class="fa fa-bar-chart-o fa-fw"></i> 日 志</a>
+                @endif
             </li>
         </ul>
     </div>
