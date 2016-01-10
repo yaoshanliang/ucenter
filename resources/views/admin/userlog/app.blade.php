@@ -4,7 +4,7 @@
 <div class="row">
 <div class="col-lg-12">
 <div class="panel panel-default">
-    <div class="panel-heading">用户管理</div>
+    <div class="panel-heading">用户日志</div>
     <div class="panel-body">
         <div class="dataTable_wrapper">
             <br />
@@ -24,7 +24,7 @@
                         <tr>
                             <td>用户名</td>
                             <td>类型</td>
-                            <td>对象</td>
+                            <td>说明</td>
                             <td>数据</td>
                             <td>ip</td>
                             <td>触发时间</td>
