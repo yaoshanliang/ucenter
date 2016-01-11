@@ -16,7 +16,7 @@
         </div>
     @endif
 
-    <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/app/'.$permission->id) }}">
+    <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/permission/'.$permission->id) }}">
         <input name="_method" type="hidden" value="PUT">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="form-group">
