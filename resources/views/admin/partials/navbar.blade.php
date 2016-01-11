@@ -1,10 +1,4 @@
 <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-    </button>
     <a class="navbar-brand" href={{ Cache::get('settings:site_url') }}>{{ Cache::get('settings:site_name') }}</a>
     <a class="navbar-brand" href={{ Cache::get('settings:site_url') }}/admin>{{ Cache::get('settings:site_sub_name') }}</a>
 </div>
@@ -12,19 +6,19 @@
 
 <ul class="nav navbar-nav navbar-right">
     <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Session::get('current_app_title') }} <span class="caret"></span></a>
+        <a class="dropdown-toggle" data-toggle="dropdown">{{ Session::get('current_app_title') }}<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
                 @foreach (Session::get('apps') as $app)
-                    <li><a>{{ $app['title'] }}</a></li>
+                    <li><a  href="javascript:void(0);" onclick="change_app('/api/app/setCurrentApp', {{ $app['id'] }});">{{ $app['title'] }}</a></li>
                     <li class="divider"></li>
                 @endforeach
             </ul>
     </li>
     <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Session::get('current_role_title') }} <span class="caret"></span></a>
+        <a class="dropdown-toggle" data-toggle="dropdown">{{ Session::get('current_role_title') }} <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
                 @foreach (Session::get('roles.' . Session::get('current_app_id')) as $role)
-                    <li><a>{{ $role['title'] }}</a></li>
+                    <li><a href="javascript:void(0);" onclick="change_role('/api/app/setCurrentRole', {{ $role['id'] }})">{{ $role['title'] }}</a></li>
                     <li class="divider"></li>
                 @endforeach
             </ul>
@@ -96,7 +90,7 @@
         <ul class="dropdown-menu dropdown-user">
             <li><a href="#"><i class="fa fa-user fa-fw"></i>个人信息</a>
             </li>
-            <li><a href="/admin/settings/index"><i class="fa fa-gear fa-fw"></i> Settings</a>
+            <li><a href="/admin/settings/index"><i class="fa fa-gear fa-fw"></i> 设置</a>
             </li>
             <li class="divider"></li>
             <li><a href="/auth/logout"><i class="fa fa-sign-out fa-fw"></i>退出</a>
