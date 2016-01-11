@@ -5,9 +5,11 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Model\Role;
 use App\Model\User;
 use App\Model\Permission;
+use App\Services\Helper;
 use Session;
 class PermissionController extends Controller {
 
@@ -178,9 +180,21 @@ class PermissionController extends Controller {
 		//
 	}
 
-	public static function getAllRoles()
+	public function delete()
 	{
-		$roles = Role::all();
-		return $roles;
+		DB::beginTransaction();
+		try {
+			$ids = $_POST['ids'];
+			// Auth::user()->can('delete-all-app');
+			$result = Permission::whereIn('id', $ids)->delete();
+
+            // DB::table('oauth_clients')->where('id', $id)->delete();
+			DB::commit();
+			Helper::jsonp_return(0, '删除成功', array('deleted_num' => $result));
+		} catch (Exception $e) {
+			DB::rollBack();
+			throw $e;
+			Helper::jsonp_return(1, '删除失败', array('deleted_num' => 0));
+		}
 	}
 }
