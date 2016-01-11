@@ -203,6 +203,7 @@ return [
     'formats' => [
 
         'json' => Dingo\Api\Http\Response\Format\Json::class,
+        'jsonp' => Dingo\Api\Http\Response\Format\Jsonp::class,
 
     ],
 
