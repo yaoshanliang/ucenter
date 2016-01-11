@@ -164,3 +164,52 @@ function check_remove(id) {
 		$('#confirm_remove_modal').modal('show');
 	}
 }
+
+function change_app(url, app_id) {
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: {'app_id': app_id, 'access_token':'iblRrfFdctRVIxsuTzPDx5TgbGiAobhxjKItRPzO'},
+		dataType: 'json',
+		headers: {
+			'X-CSRF-TOKEN': $('input[name="_token"]').val()
+		},
+		success: function(data) {
+            console.log(data);
+			if(data['code'] === 1) {
+                window.location.reload();
+				// $('#' + datatable_id).DataTable().draw(false);//保持分页
+				// showSuccessTip(tip_msg, tip_time);
+			} else {
+				// showFailTip(tip_msg, tip_time);
+			}
+		},
+		error: function() {
+			showFailTip(tip_msg, tip_time);
+		},
+	});
+}
+function change_role(url, role_id) {
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: {'role_id': role_id, 'access_token':'iblRrfFdctRVIxsuTzPDx5TgbGiAobhxjKItRPzO'},
+		dataType: 'json',
+		headers: {
+			'X-CSRF-TOKEN': $('input[name="_token"]').val()
+		},
+		success: function(data) {
+            console.log(data);
+			if(data['code'] === 1) {
+                window.location.reload();
+				// $('#' + datatable_id).DataTable().draw(false);//保持分页
+				// showSuccessTip(tip_msg, tip_time);
+			} else {
+				// showFailTip(tip_msg, tip_time);
+			}
+		},
+		error: function() {
+			showFailTip(tip_msg, tip_time);
+		},
+	});
+}
