@@ -5,9 +5,9 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-use App\App;
-use App\Setting;
-use App\Role;
+use App\Model\App;
+use App\Model\Setting;
+use App\Model\Role;
 use Redirect, Input, Auth;
 use Cache;
 use Session;

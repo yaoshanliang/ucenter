@@ -6,7 +6,6 @@
 	"type": "project",
 	"repositories": [
 		{"type": "composer", "url": "http://packagist.phpcomposer.com"},
-		{"type": "vcs", "url": "https://github.com/yaoshanliang/monolog"},
 	    {"packagist": false}
 	],
 	"require": {
