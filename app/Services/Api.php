@@ -28,13 +28,17 @@ class Api {
 			$msg = Lang::has('api.' . $code) ? trans('api.' . $code) : '';
 		}
 		if(empty($data)) {
-			// return response()->json(array('code' => $code, 'msg' => $msg))->setCallback('callback');
+			return response()->json(array('code' => $code, 'msg' => $msg));
 			header('Content-Type: application/json');
 			return json_encode(array('code' => $code, 'msg' => $msg));
 		} else {
-			// return response()->json(array('code' => $code, 'msg' => $msg, 'data' => $data));
+			return response()->json(array('code' => $code, 'msg' => $msg, 'data' => $data));
 			header('Content-Type: application/json');
 			return json_encode(array('code' => $code, 'msg' => $msg, 'data' => $data));
 		}
 	}
+
+    public static function apiReturn() {
+        return response()->json(compact('code', 'message', 'data'));
+    }
 }

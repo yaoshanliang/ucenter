@@ -13,7 +13,8 @@ use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Session;
 use Cache;
 use Queue;
-use App\Commands\UserLog;
+use App\Model\App;
+use App\Jobs\UserLog;
 class AuthController extends Controller {
 
 	/*
@@ -40,8 +41,8 @@ class AuthController extends Controller {
 	{
 		$this->auth = $auth;
 		$this->registrar = $registrar;
-
 		$this->middleware('guest', ['except' => 'getLogout']);
+
 	}
 
 	public function getLogin()
@@ -50,7 +51,12 @@ class AuthController extends Controller {
 			return view('auth.login');
 		}
 		$app = $_GET['app'];
-		$app_info = App::where('app', '=', $app)->first();
+		// $app_info = Cache::get($settings_prefix . $app, function() use ($app, $settings_prefix) {
+			// $setting = Setting::where('name', $app)->first(array('value'));
+			// Cache::forever($settings_prefix . $app, $setting['value']);
+			// return $setting['value'];
+		// });
+		$app_info = App::where('name', '=', $app)->first();
 		if($app != '' && is_null($app_info)) {
 			return view('auth.forbidden');
 		}
@@ -75,12 +81,18 @@ class AuthController extends Controller {
 		if(!empty($credentials) && Auth::attempt($credentials, $request->has('remember'))) {
 			$this->initRole($request, $response);
 			$this->loginLog($request, $credentials);
+                return redirect()->intended();
+            dd( $request->headers->get('referer'));
+            // dd(Redirect::back());
+            dd(URL::previous());exit;
+            dd( Request::header('referer'));
 			return redirect('/admin');
 		}
 		$credentials = array('username' => $request->username, 'password' => $request->password);
 		if (Auth::attempt($credentials, $request->has('remember'))) {
 			$this->initRole($request, $response);
 			$this->loginLog($request, $credentials);
+            return Redirect::back();
 			return redirect()->guest('/admin');
 		} else {
 			return redirect()->guest('/auth/login')
@@ -95,14 +107,14 @@ class AuthController extends Controller {
 		$credentials = $request->only('username', 'password');
 		if(Auth::validate($credentials)) {
 			$app = $request->app;
-			$app_info = App::where('app', '=', $app)->first();
+			$app_info = App::where('name', '=', $app)->first();
 
 			$token_array['username'] = $request->username;
 			$token_array['app'] = $app_info['app'];
 			$token_array['app_secret'] = $app_info['app_secret'];
 			$token_array['timestamp'] = time();
 			$token = Crypt::encrypt($token_array);
-			header('Location:' . $app_info['app_login_url'] . '?token=' . $token);
+			header('Location:' . $app_info['login_url'] . '?token=' . $token);
 			exit;
 		}
 		else{

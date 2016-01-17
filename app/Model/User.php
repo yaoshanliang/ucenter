@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Cache;
+use Config;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
 

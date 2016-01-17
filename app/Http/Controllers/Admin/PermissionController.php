@@ -11,6 +11,7 @@ use App\Model\User;
 use App\Model\Permission;
 use App\Services\Helper;
 use Session;
+use Redirect;
 class PermissionController extends Controller {
 
 	/**
@@ -60,7 +61,7 @@ class PermissionController extends Controller {
 		$search = $_POST['search']['value'];//获取前台传过来的过滤条件
 		$start = $_POST['start'];//从多少开始
 		$length = $_POST['length'];//数据长度
-		$fields = array('id', 'name', 'title', 'description', 'created_at', 'updated_at');
+		$fields = array('id', 'group_id', 'group_order_id', 'order_id', 'name', 'title', 'description', 'created_at', 'updated_at');
 		if(isset($_GET['type']) && $_GET['type'] == 'app') {
 			$recordsTotal = Permission::where('app_id', Session::get('current_app_id'))->count();
 		} else {
@@ -74,6 +75,7 @@ class PermissionController extends Controller {
 				->where("name" , 'LIKE',  '%' . $search . '%')
 				->orWhere("title" , 'LIKE',  '%' . $search . '%')
 				->orWhere("description" , 'LIKE',  '%' . $search . '%')
+                ->orderby("group_id", "desc")
 				->orderby($columns[$order_column]['data'], $order_dir)
 				->skip($start)
 				->take($length)
@@ -81,10 +83,12 @@ class PermissionController extends Controller {
 				->toArray();
 			$recordsFiltered = count($roles);
 		} else {
-			$roles = Permission::where(function ($query) use ($search) {
+            $roles = Permission::where(function ($query) use ($search) {
 				if(isset($_GET['type']) && $_GET['type'] == 'app') {
 					$query->where('app_id', Session::get('current_app_id'));
 				}})
+                ->where("group_id", "<>", 0)
+                ->orderby("group_id", "desc")
 				->orderby($columns[$order_column]['data'], $order_dir)
 				->skip($start)
 				->take($length)
@@ -92,6 +96,11 @@ class PermissionController extends Controller {
 				->toArray();
 			$recordsFiltered = $recordsTotal;
 		}
+            $roles = Permission::where(function ($query) use ($search) {
+				if(isset($_GET['type']) && $_GET['type'] == 'app') {
+					$query->where('app_id', Session::get('current_app_id'));
+				}})
+                ->where("group_id", "=", 0)
 		$return_data = array(
 							"draw" => intval($_POST['draw']),
 							"recordsTotal" => intval($recordsTotal),
@@ -155,7 +164,7 @@ class PermissionController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		return view('admin.permission.edit')->withPermission(Permission::find($id));
 	}
 
 	/**
@@ -164,8 +173,20 @@ class PermissionController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(Request $request, $id)
 	{
+        $permission = Permission::where('id', $id)->update(array(
+            'app_id' => Session::get('current_app_id'),
+            'name' => $request->name,
+			'title' => $request->title,
+			'description' => $request->description,
+		));
+		if ($permission) {
+			session()->flash('success_message', '权限修改成功');
+			return Redirect::to('/admin/permission/app');
+		} else {
+			return Redirect::back()->withInput()->withErrors('保存失败！');
+		}
 		//
 	}
 

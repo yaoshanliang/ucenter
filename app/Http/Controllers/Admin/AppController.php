@@ -11,6 +11,8 @@ use Redirect, Input, Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\Helper;
 use Queue;
+use App\Model\Role;
+use App\Model\Permission;
 use App\Jobs\UserLog;
 
 class AppController extends Controller {
@@ -137,6 +139,21 @@ class AppController extends Controller {
             'updated_at' => date('Y-m-d H:i:s')
         ));
 
+        $role = Role::create(array(
+            'app_id' => $app->id,
+            'name' => 'developer',
+			'title' => '开发者',
+			'description' => '开发者',
+		));
+
+        DB::table('user_role')->insert(array(
+            'user_id' => Auth::id(),
+            'app_id' => $app->id,
+            'role_id' => $role->id,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ));
+
 		$ips = $request->ips();
 		$ip = $ips[0];
 		$ips = implode(',', $ips);
@@ -224,10 +241,10 @@ class AppController extends Controller {
 		DB::beginTransaction();
 		try {
 			$ids = $_POST['ids'];
-			Auth::user()->can('delete-all-app');
+			// Auth::user()->can('delete-all-app');
 			$result = App::whereIn('id', $ids)->delete();
 
-            DB::table('oauth_clients')->where('id', $id)->delete();
+            DB::table('oauth_clients')->whereIn('id', $ids)->delete();
 			DB::commit();
 			Helper::jsonp_return(0, '删除成功', array('deleted_num' => $result));
 		} catch (Exception $e) {

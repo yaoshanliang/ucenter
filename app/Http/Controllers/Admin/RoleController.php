@@ -13,6 +13,7 @@ use App\Model\RolePermission;
 use App\Services\Helper;
 use Session;
 use Auth;
+use Redirect;
 class RoleController extends Controller {
 
 	/**
@@ -263,7 +264,7 @@ class RoleController extends Controller {
  	 */
  	public function edit($id)
 	{
-		//
+		return view('admin.role.edit')->withRole(Role::find($id));
 	}
 
 	/**
@@ -272,9 +273,20 @@ class RoleController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update(Request $request, $id)
 	{
-		//
+        $role = Role::where('id', $id)->update(array(
+            'app_id' => Session::get('current_app_id'),
+            'name' => $request->name,
+			'title' => $request->title,
+			'description' => $request->description,
+		));
+		if ($role) {
+			session()->flash('success_message', '角色修改成功');
+			return Redirect::to('/admin/role/app');
+		} else {
+			return Redirect::back()->withInput()->withErrors('保存失败！');
+		}
 	}
 
 	/**

@@ -29,6 +29,9 @@ class AppServiceProvider extends ServiceProvider {
 			'Illuminate\Contracts\Auth\Registrar',
 			'App\Services\Registrar'
 		);
+        // $this->app->make(['Dingo\Api\Exception\Handler', 'Dingo\Api\Contract\Debug\ExceptionHandler'])->register(function (ModelNotFoundException $e) {
+            // return abort(404);
+        // });
 	}
 
 }

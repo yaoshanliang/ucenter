@@ -1,10 +1,18 @@
 <?php namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
-use App\App;
+use App\Model\App;
 use Auth;
 
 class AppRequest extends Request {
+
+	private $id;
+
+	public function __construct()
+	{
+		// $this->id = $this->route('app');
+		// $this->id = $_GET['app'];
+	}
 
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -13,8 +21,12 @@ class AppRequest extends Request {
 	 */
 	public function authorize()
 	{
-		$id = $this->route('app');
-		return App::where('id', $id)->where('user_id', Auth::id())->exists();
+		$this->id = $this->route('app');
+		if($this->id) {
+			return App::where('id', $this->id)->where('user_id', Auth::id())->exists();
+		} else {
+			return true;
+		}
 	}
 
 	/**
@@ -24,13 +36,16 @@ class AppRequest extends Request {
 	 */
 	public function rules()
 	{
-		return [
-			// 'name' => 'required|unique:apps',
-			'title' => 'required',
-			'home_url' => 'required|url',
-			'login_url' => 'required|url',
-			'secret' => 'required'
-		];
+		if($_POST) {
+			return [
+				// 'name' => 'required|unique:apps',
+				'title' => 'required',
+				'home_url' => 'required|url',
+				'login_url' => 'required|url',
+				'secret' => 'required'
+			];
+		} else {
+			return [];
+		}
 	}
-
 }

@@ -10,6 +10,7 @@ use App\Setting;
 use App\Role;
 use Redirect, Input, Auth;
 use Cache;
+use Session;
 class AdminController extends Controller {
 
 	public function __construct()
@@ -25,6 +26,7 @@ class AdminController extends Controller {
 			});
 		}
 	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -32,7 +34,9 @@ class AdminController extends Controller {
 	 */
 	public function index()
 	{
-		return view('admin.index');
+        $apps = Session::get('apps');
+        $roles = Session::get('roles');
+		return view('admin.index')->with(compact('apps', 'roles'));
 	}
 
 	/**

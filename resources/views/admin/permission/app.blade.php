@@ -26,8 +26,9 @@
                     <thead>
                         <tr>
                             <td style="width:15px"><input class="checkbox" type="checkbox" name="id" id='checkAll'></td>
-                            <td>代号</td>
+                            <td>组</td>
                             <td>名称</td>
+                            <td>代号</td>
                             <td>描述</td>
                             <td>创建时间</td>
                             <td>更新时间</td>
@@ -50,7 +51,7 @@
 <script>
 var datatable_id = 'user_index';
 var columnDefs_targets = [0, 6];
-var order = [5, 'desc'];
+var order = [1, 'desc'];
 var ajax_url = '/admin/permission/lists?type=app';
 var delete_url = '/admin/permission/delete';
 var columns = [{
@@ -59,8 +60,9 @@ var columns = [{
                         $(nTd).html("<input type='checkbox' id='" + sData + "' class='checkbox' name='ids' value='" + sData + "'>");
                     }
                 },
-                {"data": "name"},
+                {"data": "group_id"},
                 {"data": "title"},
+                {"data": "name"},
                 {"data": "description"},
                 {"data": "created_at"},
                 {"data": "updated_at"},

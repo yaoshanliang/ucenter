@@ -18,8 +18,8 @@ use Monolog\Handler\RedisHandler;
 use Cache;
 use Queue;
 use Session;
-use App\Commands\UserLog;
-use App\Commands\SendEmail;
+use App\Jobs\UserLog;
+use App\Jobs\SendEmail;
 use Mail;
 use Config;
 
