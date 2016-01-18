@@ -56,31 +56,34 @@ class PermissionController extends Controller {
 		// }
 		// DB::enableQueryLog();
 		$columns = $_POST['columns'];
-		$order_column = $_POST['order']['0']['column'];//那一列排序，从0开始
+        $order_column = $_POST['order']['0']['column'];
+        if($columns[$order_column]['data'] == 'group_name') {//那一列排序，从0开始
+            $columns[$order_column]['data'] = 'group_id';
+        }
 		$order_dir = $_POST['order']['0']['dir'];//ase desc 升序或者降序
 		$search = $_POST['search']['value'];//获取前台传过来的过滤条件
 		$start = $_POST['start'];//从多少开始
 		$length = $_POST['length'];//数据长度
 		$fields = array('id', 'group_id', 'group_order_id', 'order_id', 'name', 'title', 'description', 'created_at', 'updated_at');
 		if(isset($_GET['type']) && $_GET['type'] == 'app') {
-			$recordsTotal = Permission::where('app_id', Session::get('current_app_id'))->count();
+			$recordsTotal = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', '<>', 0)->count();
 		} else {
-			$recordsTotal = Permission::count();
+			$recordsTotal = Permission::where('group_id', '<>', 0)->count();
 		}
 		if(strlen($search)) {
 			$roles = Permission::where(function ($query) use ($search) {
 				if(isset($_GET['type']) && $_GET['type'] == 'app') {
 					$query->where('app_id', Session::get('current_app_id'));
 				}})
+                ->where("group_id", "<>", 0)
 				->where("name" , 'LIKE',  '%' . $search . '%')
 				->orWhere("title" , 'LIKE',  '%' . $search . '%')
 				->orWhere("description" , 'LIKE',  '%' . $search . '%')
-                ->orderby("group_id", "desc")
 				->orderby($columns[$order_column]['data'], $order_dir)
 				->skip($start)
 				->take($length)
-				->get($fields)
-				->toArray();
+				->get($fields);
+				// ->toArray();
 			$recordsFiltered = count($roles);
 		} else {
             $roles = Permission::where(function ($query) use ($search) {
@@ -88,19 +91,16 @@ class PermissionController extends Controller {
 					$query->where('app_id', Session::get('current_app_id'));
 				}})
                 ->where("group_id", "<>", 0)
-                ->orderby("group_id", "desc")
 				->orderby($columns[$order_column]['data'], $order_dir)
 				->skip($start)
 				->take($length)
-				->get($fields)
-				->toArray();
+				->get($fields);
 			$recordsFiltered = $recordsTotal;
 		}
-            $roles = Permission::where(function ($query) use ($search) {
-				if(isset($_GET['type']) && $_GET['type'] == 'app') {
-					$query->where('app_id', Session::get('current_app_id'));
-				}})
-                ->where("group_id", "=", 0)
+        foreach($roles as $v) {
+            $v['group_name'] = $v->group->title;
+            unset($v['group']);
+        }
 		$return_data = array(
 							"draw" => intval($_POST['draw']),
 							"recordsTotal" => intval($recordsTotal),
@@ -121,7 +121,12 @@ class PermissionController extends Controller {
 	 * @return Response
 	 */
 	public function create() {
-		return view('admin.permission.create');
+        $groups = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', 0)->get(array('id', 'title'));
+		return view('admin.permission.create')->withGroups($groups);
+    }
+
+	public function createGroup() {
+		return view('admin.permission.createGroup');
 	}
 
 	/**
@@ -132,6 +137,7 @@ class PermissionController extends Controller {
 	public function store(Request $request) {
         $permission = Permission::create(array(
             'app_id' => Session::get('current_app_id'),
+            'group_id' => $request->group_id,
             'name' => $request->name,
 			'title' => $request->title,
 			'description' => $request->description,

@@ -52,6 +52,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array(
 
       Route::get('/permission/index', 'PermissionController@index');
       Route::get('/permission/app', 'PermissionController@app');
+      Route::get('/permission/createGroup', 'PermissionController@createGroup');
       Route::post('/permission/lists', 'PermissionController@lists');
       Route::post('/permission/delete', 'PermissionController@delete');
       Route::resource('/permission', 'PermissionController');
