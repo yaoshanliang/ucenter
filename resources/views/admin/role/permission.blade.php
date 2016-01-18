@@ -103,23 +103,44 @@ function fnFormatDetails(nTr, id) {
         // console.log(nTr);
             if(textStatus=="success"){  //转换格式 组合显示内容
                 var res = data;
-                var sOut = '<tr><td colspan=7><table width=100%>';
+                var sOut = '<tr role="row"><td colspan=7><table width=100%>';
                 for(var i=0;i<res.length;i++){
-                    sOut+='<tr class=' + id +'>';
-                    sOut+='<td></td>'
-                    sOut+='<td colspan=2><input class="checkbox" type="checkbox" name="id" id="checkAll"></input></td>'
+                    sOut+='<tr>';
+                    sOut+='<td>&nbsp;&nbsp;</td>';
+                    sOut+='<td><input class="checkbox" type="checkbox" name="id" id="select_permission" value=' + res[i].id + '></input></td>';
                     sOut+='<td class="details" colspan=2>'+res[i].title+'</td>';
-                    sOut+='</tr>'
+                    sOut+='<td class="details" colspan=2>'+res[i].name+'</td>';
+                    sOut+='<td class="details" colspan=2>'+res[i].description+'</td>';
+                    sOut+='</tr>';
                 }
                 sOut+='</table></td></tr>';
                 $(nTr).after(sOut);
                // oTable.fnOpen( nTr,sOut, 'details' );
            }
+$('input').iCheck({
+    checkboxClass: 'icheckbox_square-blue',
+    radioClass: 'iradio_square-red',
+    increaseArea: '20%' // optional
+});
 // console.log(sOut);
        },
        error: function(){//请求出错处理
            // oTable.fnOpen( nTr,'加载数据超时~', 'details' );
        }
+    });
+}
+$("#select_permission").click(function() {
+    if ($(this).is(":checked")) {
+        $("[name=items]:checkbox").attr("checked", true);
+    } else {
+        $("[name=items]:checkbox").attr("checked", false);
+    }
+});
+function select_or_unselect(type, id) {
+    $.ajax({
+        url: '/admin/permission/' + id + '/select',
+        dataType: 'json',
+        success: function() {},
     });
 }
 </script>
