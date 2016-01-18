@@ -119,6 +119,50 @@ class RoleController extends Controller {
     }
 
     public function permissionLists(Request $request, $id) {
+		$columns = $_POST['columns'];
+		$order_column = $_POST['order']['0']['column'];//那一列排序，从0开始
+		$order_dir = $_POST['order']['0']['dir'];//ase desc 升序或者降序
+		$search = $_POST['search']['value'];//获取前台传过来的过滤条件
+		$start = $_POST['start'];//从多少开始
+		$length = $_POST['length'];//数据长度
+		$fields = array('id', 'group_id', 'group_order_id', 'order_id', 'name', 'title', 'description', 'created_at', 'updated_at');
+		$recordsTotal = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', 0)->count();
+
+		if(strlen($search)) {
+            $roles = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', 0)
+                ->where(function ($query) use ($search) {
+                    $query->where("name" , 'LIKE',  '%' . $search . '%')
+				    ->orWhere("title" , 'LIKE',  '%' . $search . '%')
+				    ->orWhere("description" , 'LIKE',  '%' . $search . '%');
+                })
+				->orderby($columns[$order_column]['data'], $order_dir)
+				->skip($start)
+				->take($length)
+				->get($fields);
+			$recordsFiltered = count($roles);
+		} else {
+            $roles = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', 0)
+                ->orderby($columns[$order_column]['data'], $order_dir)
+                ->skip($start)
+                ->take($length)
+                ->get($fields);
+			$recordsFiltered = $recordsTotal;
+		}
+		$return_data = array(
+							"draw" => intval($_POST['draw']),
+							"recordsTotal" => intval($recordsTotal),
+							"recordsFiltered" => intval($recordsFiltered),
+							"data" => $roles
+						);
+		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
+		if($jsonp) {
+		    echo $jsonp . '(' . json_encode($return_data, JSON_UNESCAPED_UNICODE) . ');';
+		} else {
+		    echo json_encode($return_data, JSON_UNESCAPED_UNICODE);
+        }
+    }
+
+    public function permissionSelectedLists(Request $request, $id) {
 		$permission_ids = RolePermission::where('role_id', '=', $id)->lists('permission_id');
 		$columns = $_POST['columns'];
 		$order_column = $_POST['order']['0']['column'];//那一列排序，从0开始

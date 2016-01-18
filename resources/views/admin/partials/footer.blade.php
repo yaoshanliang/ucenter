@@ -39,6 +39,24 @@ div.dataTables_info {
      // display:none;
      // margin:0,4px,0,4px !important;
 }
+.dataTable .details {
+    background-color: #eee !important;
+}
+.dataTable .row-details {
+    margin-top: 3px;
+    display: inline-block;
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
+}
+.dataTable .row-details.row-details-close {
+    background: url("/admin-assets/images/datatable-row-openclose.png") no-repeat 0 0;
+}
+
+.dataTable .row-details.row-details-open {
+    background: url("/admin-assets/images/datatable-row-openclose.png") no-repeat 0 -23px !important;
+}
+
 </style>
 <script>
 $('input').iCheck({

@@ -11,6 +11,8 @@
             <div class="input-group custom-search-form">
                 <a href="{{ URL('admin/permission/create') }}" class="btn btn-primary">新增</a>
                 &nbsp;
+                <a href="{{ URL('admin/permission/createGroup') }}" class="btn btn-primary">新增分组</a>
+                &nbsp;
                 <a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return check_delete();'>删除</a>
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
                 <span class="input-group-btn">
@@ -26,7 +28,7 @@
                     <thead>
                         <tr>
                             <td style="width:15px"><input class="checkbox" type="checkbox" name="id" id='checkAll'></td>
-                            <td>组</td>
+                            <td>分组</td>
                             <td>名称</td>
                             <td>代号</td>
                             <td>描述</td>
@@ -70,7 +72,7 @@ var columns = [{
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                         $(nTd).html("<a href=/admin/permission/" + sData + "/edit>编辑</a>" + " " +
-                            "<a href='javascript:void(0);' onclick='return check_remove(" + sData + ");'>移除</a>");
+                            "<a href='javascript:void(0);' onclick='return check_delete(" + sData + ");'>删除</a>");
                     }
                 }];
 </script>

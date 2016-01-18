@@ -115,6 +115,11 @@ class PermissionController extends Controller {
         }
 
     }
+    public function getGroupPermissions(Request $request, $id) {
+        $permissions = Permission::where('group_id', $id)->get(array('id', 'name', 'title', 'description'))->toArray();
+
+        echo json_encode($permissions, JSON_UNESCAPED_UNICODE);
+    }
 	/**
 	 * Show the form for creating a new resource.
 	 *
@@ -137,13 +142,13 @@ class PermissionController extends Controller {
 	public function store(Request $request) {
         $permission = Permission::create(array(
             'app_id' => Session::get('current_app_id'),
-            'group_id' => $request->group_id,
+            'group_id' => is_null($request->group_id) ? 0 : $request->group_id,
             'name' => $request->name,
 			'title' => $request->title,
 			'description' => $request->description,
 		));
 		if ($permission) {
-			session()->flash('success_message', '权限添加成功');
+			session()->flash('success_message', '添加成功');
 			return redirect('/admin/permission/app');
 		} else {
 			return redirect()->back()->withInput()->withErrors('保存失败！');
