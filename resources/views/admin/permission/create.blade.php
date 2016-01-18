@@ -19,6 +19,17 @@
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
             <div class="form-group">
+                <label class="col-md-3 control-label">分组</label>
+                <div class="col-md-6">
+                    <select class="form-control" name="group_id">
+                        @foreach ($groups as $group)
+                            <option value="{{ $group->id }}">{{ $group->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <label class="col-md-3 control-label">代号</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control" name="name" value="{{ old('name') }}">

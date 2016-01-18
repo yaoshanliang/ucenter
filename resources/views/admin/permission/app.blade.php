@@ -50,7 +50,7 @@
 
 <script>
 var datatable_id = 'user_index';
-var columnDefs_targets = [0, 6];
+var columnDefs_targets = [0, 7];
 var order = [1, 'desc'];
 var ajax_url = '/admin/permission/lists?type=app';
 var delete_url = '/admin/permission/delete';
@@ -60,7 +60,7 @@ var columns = [{
                         $(nTd).html("<input type='checkbox' id='" + sData + "' class='checkbox' name='ids' value='" + sData + "'>");
                     }
                 },
-                {"data": "group_id"},
+                {"data": "group_name"},
                 {"data": "title"},
                 {"data": "name"},
                 {"data": "description"},
