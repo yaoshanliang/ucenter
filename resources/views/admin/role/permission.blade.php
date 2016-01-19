@@ -68,80 +68,75 @@ var columns = [{
                             "<a href='javascript:void(0);' onclick='return check_remove(" + sData + ");'>移除</a>");
                     }
                 }];
-$('.table').on('click', ' tbody td .row-details',
-   function() {
-       var nTr = $(this).parents('tr')[0];
-       if ($(this).hasClass("row-details-open")) //判断是否已打开
-       {
-           /* This row is already open - close it */
-           $(this).addClass("row-details-close").removeClass("row-details-open");
-            $(this).parents('tr').next()[0].remove();
-           // oTable.fnClose(nTr);
-       } else {
-           /* Open this row */
-           $(this).addClass("row-details-open").removeClass("row-details-close");
-           //  alert($(this).attr("data_id"));
-           //oTable.fnOpen( nTr,
-           // 调用方法显示详细信息 data_id为自定义属性 存放配置ID
-           fnFormatDetails(nTr, $(this).attr("data_id"));
-       }
-    });
 
-function fnFormatDetails(nTr, id) {
+$('.table').on('click', ' tbody td .row-details',
+    function() {
+        var nTr = $(this).parents('tr')[0];
+        if ($(this).hasClass("row-details-open")) {
+            $(this).addClass("row-details-close").removeClass("row-details-open");
+            $(this).parents('tr').next()[0].remove();
+        } else {
+            $(this).addClass("row-details-open").removeClass("row-details-close");
+            openDetails(nTr, $(this).attr("data_id"));
+        }
+    }
+);
+function openDetails(nTr, id) {
     $.ajax({
-        url: '/admin/permission/' + id + '/group_permissions',
-        data: {"pdataId":id},
+        url: '/admin/permission/' + id + '/groupPermissions',
         dataType: "json",
-        async: true,
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
-        beforeSend: function(xhr){//信息加载中
+
+        beforeSend: function(xhr) {
            // oTable.fnOpen( nTr, '<span id="configure_chart_loading"><img src="${pageContext.request.contextPath }/image/select2-spinner.gif"/>详细信息加载中...</span>', 'details' );
         },
-        success: function (data,textStatus){
-        // console.log(nTr);
-            if(textStatus=="success"){  //转换格式 组合显示内容
-                var res = data;
-                var sOut = '<tr role="row"><td colspan=7><table width=100%>';
-                for(var i=0;i<res.length;i++){
-                    sOut+='<tr>';
-                    sOut+='<td>&nbsp;&nbsp;</td>';
-                    sOut+='<td><input class="checkbox" type="checkbox" name="id" id="select_permission" value=' + res[i].id + '></input></td>';
-                    sOut+='<td class="details" colspan=2>'+res[i].title+'</td>';
-                    sOut+='<td class="details" colspan=2>'+res[i].name+'</td>';
-                    sOut+='<td class="details" colspan=2>'+res[i].description+'</td>';
-                    sOut+='</tr>';
+
+        success: function (data, textStatus) {
+            if(textStatus == "success"){  //转换格式 组合显示内容
+                var details = '<tr role="row"><td colspan=7><table width=100%>';
+                for (var i = 0; i < data.length; i++) {
+                    details += '<tr>';
+                    details += '<td>&nbsp;&nbsp;</td>';
+                    details += '<td><input class="checkbox" type="checkbox" name="id" value=' + data[i].id + '></input></td>';
+                    details += '<td class="details" colspan=2>' + data[i].title + '</td>';
+                    details += '<td class="details" colspan=2>' + data[i].name + '</td>';
+                    details += '<td class="details" colspan=2>' + data[i].description + '</td>';
+                    details += '</tr>';
                 }
-                sOut+='</table></td></tr>';
-                $(nTr).after(sOut);
-               // oTable.fnOpen( nTr,sOut, 'details' );
-           }
-$('input').iCheck({
-    checkboxClass: 'icheckbox_square-blue',
-    radioClass: 'iradio_square-red',
-    increaseArea: '20%' // optional
-});
-// console.log(sOut);
-       },
-       error: function(){//请求出错处理
+                details+='</table></td></tr>';
+                $(nTr).after(details);
+            }
+
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                increaseArea: '20%'
+            });
+            $('input').on('ifChecked', function(event){
+                selectOrUnselect('select', '<?php echo $role_id; ?>', $(this).val())
+            });
+            $('input').on('ifUnChecked', function(event){
+                selectOrUnselect('unselect', '<?php echo $role_id; ?>', $(this).val())
+            });
+        },
+
+        error: function(){//请求出错处理
            // oTable.fnOpen( nTr,'加载数据超时~', 'details' );
        }
     });
 }
-$("#select_permission").click(function() {
-    if ($(this).is(":checked")) {
-        $("[name=items]:checkbox").attr("checked", true);
+
+function selectOrUnselect(type, role_id, permission_id) {
+    if (type == 'select') {
+        $.getJSON('/admin/role/' + role_id + '/selectPermission/' + permission_id, function(data, status, xhr) {
+
+        });
     } else {
-        $("[name=items]:checkbox").attr("checked", false);
+        $.getJSON('/admin/role/' + id + '/unselectPermission/' + permission_id, function(data, status, xhr) {
+
+        });
     }
-});
-function select_or_unselect(type, id) {
-    $.ajax({
-        url: '/admin/permission/' + id + '/select',
-        dataType: 'json',
-        success: function() {},
-    });
 }
 </script>
 @endsection
