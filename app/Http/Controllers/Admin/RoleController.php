@@ -333,6 +333,9 @@ class RoleController extends Controller {
 		}
 	}
 
+    public function selectPermission(Request $request, $id, $permission_id)
+    {
+    }
 	/**
 	 * Remove the specified resource from storage.
 	 *
