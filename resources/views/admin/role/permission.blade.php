@@ -116,7 +116,7 @@ function openDetails(nTr, id) {
             $('input').on('ifChecked', function(event){
                 selectOrUnselect('select', '<?php echo $role_id; ?>', $(this).val())
             });
-            $('input').on('ifUnChecked', function(event){
+            $('input').on('ifUnchecked', function(event){
                 selectOrUnselect('unselect', '<?php echo $role_id; ?>', $(this).val())
             });
         },
@@ -128,15 +128,14 @@ function openDetails(nTr, id) {
 }
 
 function selectOrUnselect(type, role_id, permission_id) {
-    if (type == 'select') {
-        $.getJSON('/admin/role/' + role_id + '/selectPermission/' + permission_id, function(data, status, xhr) {
-
-        });
-    } else {
-        $.getJSON('/admin/role/' + id + '/unselectPermission/' + permission_id, function(data, status, xhr) {
-
-        });
-    }
+    var type = {'type': type};
+    $.getJSON('/admin/role/' + role_id + '/selectOrUnselectPermission/' + permission_id, type, function(data, status, xhr) {
+        if (1 == data.code) {
+            showSuccessTip(data.message, 1);
+        } else {
+            showFailTip(data.message, 1);
+        }
+    });
 }
 </script>
 @endsection

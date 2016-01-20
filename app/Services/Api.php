@@ -23,18 +23,18 @@ class Api {
 	 * @param  int $code, string $msg, array $data
 	 * @return jsonp格式字符串
 	 */
-	public static function json_return($code, $msg = '', $data = array()) {
-		if(empty($msg)) {
-			$msg = Lang::has('api.' . $code) ? trans('api.' . $code) : '';
+	public static function json_return($code, $message = '', $data = array()) {
+		if(empty($message)) {
+			$message = Lang::has('api.' . $code) ? trans('api.' . $code) : '';
 		}
 		if(empty($data)) {
-			return response()->json(array('code' => $code, 'msg' => $msg));
+			return response()->json(array('code' => $code, 'message' => $message));
 			header('Content-Type: application/json');
-			return json_encode(array('code' => $code, 'msg' => $msg));
+			return json_encode(array('code' => $code, 'message' => $message));
 		} else {
-			return response()->json(array('code' => $code, 'msg' => $msg, 'data' => $data));
+			return response()->json(array('code' => $code, 'message' => $message, 'data' => $data));
 			header('Content-Type: application/json');
-			return json_encode(array('code' => $code, 'msg' => $msg, 'data' => $data));
+			return json_encode(array('code' => $code, 'message' => $message, 'data' => $data));
 		}
 	}
 

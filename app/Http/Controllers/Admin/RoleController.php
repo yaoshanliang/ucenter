@@ -11,6 +11,7 @@ use App\Model\User;
 use App\Model\Permission;
 use App\Model\RolePermission;
 use App\Services\Helper;
+use App\Services\Api;
 use Session;
 use Auth;
 use Redirect;
@@ -333,8 +334,22 @@ class RoleController extends Controller {
 		}
 	}
 
-    public function selectPermission(Request $request, $id, $permission_id)
+    public function selectOrUnselectPermission(Request $request, $id, $permission_id)
     {
+        if ($request->type == 'select') {
+            $rs = DB::table('role_permission')->insert(array(
+                'role_id' => $id,
+                'permission_id' => $permission_id,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ));
+            $type = '选中权限';
+        } else {
+            $rs = DB::table('role_permission')->where('role_id', $id)->where('permission_id', $permission_id)->delete();
+            $type = '取消权限';
+        }
+
+        return empty($rs) ? Api::json_return(0, $type . '失败') : Api::json_return(1, $type . '成功');
     }
 	/**
 	 * Remove the specified resource from storage.
