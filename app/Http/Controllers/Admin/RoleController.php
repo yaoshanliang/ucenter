@@ -94,7 +94,7 @@ class RoleController extends Controller {
 		return view('admin.role.permission')->with(array('role_id' => $id));
     }
     public function permissionSelected($id) {
-		return view('admin.role.permission')->with(array('role_id' => $id));
+		return view('admin.role.permissionSelected')->with(array('role_id' => $id));
     }
     public function permissionEdit($id) {
 		return view('admin.role.permissionEdit')->with(array('role_id' => $id));
@@ -162,11 +162,14 @@ class RoleController extends Controller {
 		$permission_ids = RolePermission::where('role_id', '=', $id)->lists('permission_id');
 		$columns = $_POST['columns'];
 		$order_column = $_POST['order']['0']['column'];//那一列排序，从0开始
+        if($columns[$order_column]['data'] == 'group_name') {//那一列排序，从0开始
+            $columns[$order_column]['data'] = 'group_id';
+        }
 		$order_dir = $_POST['order']['0']['dir'];//ase desc 升序或者降序
 		$search = $_POST['search']['value'];//获取前台传过来的过滤条件
 		$start = $_POST['start'];//从多少开始
 		$length = $_POST['length'];//数据长度
-		$fields = array('id', 'name', 'title', 'description', 'created_at', 'updated_at');
+		$fields = array('id', 'group_id', 'name', 'title', 'description', 'created_at', 'updated_at');
 		$recordsTotal = Permission::whereIn('id', $permission_ids)->count();
 
 		if(strlen($search)) {
@@ -181,18 +184,20 @@ class RoleController extends Controller {
 				->orderby($columns[$order_column]['data'], $order_dir)
 				->skip($start)
 				->take($length)
-				->get($fields)
-				->toArray();
+				->get($fields);
 			$recordsFiltered = count($roles);
 		} else {
 			$roles = Permission::whereIn('id', $permission_ids)
 				->orderby($columns[$order_column]['data'], $order_dir)
 				->skip($start)
 				->take($length)
-				->get($fields)
-				->toArray();
+				->get($fields);
 			$recordsFiltered = $recordsTotal;
 		}
+        foreach($roles as $v) {
+            $v['group_name'] = $v->group->title;
+            unset($v['group']);
+        }
 		$return_data = array(
 							"draw" => intval($_POST['draw']),
 							"recordsTotal" => intval($recordsTotal),
