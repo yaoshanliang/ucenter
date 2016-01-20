@@ -42,7 +42,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array(
 
       Route::get('/role/index', 'RoleController@index');
       Route::get('/role/app', 'RoleController@app');
+      // Route::get('/role/{id}/permission', ['as' => 'role.permission'], 'RoleController@permission');
       Route::get('/role/{id}/permission', 'RoleController@permission');
+      Route::get('/role/{id}/permissionSelected', 'RoleController@permissionSelected');
       Route::get('/role/{id}/permissionEdit', 'RoleController@permissionEdit');
       Route::post('/role/lists', 'RoleController@lists');
       Route::post('/role/{id}/permission_lists', 'RoleController@permissionLists')->where('id', '[0-9]+');

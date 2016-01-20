@@ -9,6 +9,8 @@
         <div class="dataTable_wrapper">
             <br />
             <div class="input-group custom-search-form">
+            <a href='/admin/role/<?php echo $role_id; ?>/permissionSelected' class="btn btn-primary">已拥有权限列表</a>
+                &nbsp;
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button">
@@ -22,7 +24,7 @@
                 <table class="table table-striped table-bordered table-hover" id="user_index" class="display" cellspacing="0" width="100%" border='0px'>
                     <thead>
                         <tr>
-                            <td style="width:15px"><input class="checkbox" type="checkbox" name="id" id='checkAll'></td>
+                            <td style="width:15px"></td>
                             <td>分组</td>
                             <td>代号</td>
                             <td>描述</td>
@@ -97,7 +99,7 @@ function openDetails(nTr, id) {
             if (textStatus == "success") {
                 var details = '<tr role="row"><td colspan=7><table width=100%>';
                 if(data.length == 0) {
-                    details += '<tr><td>&nbsp;&nbsp;</td><td>无数据</td></tr>';
+                    details += '<tr><td></td><td>无数据</td></tr>';
                 } else {
                     for (var i = 0; i < data.length; i++) {
                         details += '<tr>';
@@ -110,7 +112,7 @@ function openDetails(nTr, id) {
                         details += '<td class="details" colspan=2>' + data[i].title + '</td>';
                         details += '<td class="details" colspan=2>' + data[i].name + '</td>';
                         details += '<td class="details" colspan=2>' + data[i].description + '</td>';
-                        details += '</tr><tr style="margin-top: 5px;"></tr>';
+                        details += '</tr><tr><td>&nbsp;</td></tr>';
                     }
                 }
                 details+='</table></td></tr>';

@@ -93,6 +93,9 @@ class RoleController extends Controller {
     public function permission($id) {
 		return view('admin.role.permission')->with(array('role_id' => $id));
     }
+    public function permissionSelected($id) {
+		return view('admin.role.permission')->with(array('role_id' => $id));
+    }
     public function permissionEdit($id) {
 		return view('admin.role.permissionEdit')->with(array('role_id' => $id));
     }
@@ -338,7 +341,7 @@ class RoleController extends Controller {
             $type = '选中权限';
         } else {
             $rs = DB::table('role_permission')->where('role_id', $id)->where('permission_id', $permission_id)->delete();
-            $type = '取消权限';
+            $type = '移除权限';
         }
 
         return empty($rs) ? Api::json_return(0, $type . '失败') : Api::json_return(1, $type . '成功');
