@@ -83,7 +83,7 @@ $('.table').on('click', ' tbody td .row-details',
 );
 function openDetails(nTr, id) {
     $.ajax({
-        url: '/admin/permission/' + id + '/groupPermissions',
+        url: '/admin/role/<?php echo $role_id; ?>/permissionGroup/' + id,
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()

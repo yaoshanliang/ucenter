@@ -10,9 +10,10 @@ class Permission extends EntrustPermission {
     public function group() {
          return $this->hasOne('App\Model\Permission', 'id', 'group_id');
     }
-    // public function belongsgroup() {
-         // return $this->belongsTo('App\Model\Permission', 'group_id', 'id');
-    // }
+
+    public function role() {
+        return $this->belongsTo('App\Model\Permission', 'group_id', 'id');
+    }
 
 
 }

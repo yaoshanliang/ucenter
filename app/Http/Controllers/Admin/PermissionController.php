@@ -115,11 +115,6 @@ class PermissionController extends Controller {
         }
 
     }
-    public function getGroupPermissions(Request $request, $id) {
-        $permissions = Permission::where('group_id', $id)->get(array('id', 'name', 'title', 'description'))->toArray();
-
-        echo json_encode($permissions, JSON_UNESCAPED_UNICODE);
-    }
 	/**
 	 * Show the form for creating a new resource.
 	 *

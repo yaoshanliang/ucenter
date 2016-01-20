@@ -47,6 +47,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array(
       Route::post('/role/lists', 'RoleController@lists');
       Route::post('/role/{id}/permission_lists', 'RoleController@permissionLists')->where('id', '[0-9]+');
       Route::post('/role/{id}/permission_edit_lists', 'RoleController@permissionEditLists')->where('id', '[0-9]+');
+      Route::get('/role/{role_id}/permissionGroup/{permission_id}', 'RoleController@permissionGroup')->where('role_id', '[0-9]+')->where('permission_id', '[0-9]+');
       Route::get('/role/{id}/selectOrUnselectPermission/{permission_id}', 'RoleController@selectOrUnselectPermission')->where('id', '[0-9]+');
       Route::post('/role/delete', 'RoleController@delete');
       Route::resource('role', 'RoleController');

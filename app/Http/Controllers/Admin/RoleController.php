@@ -23,28 +23,6 @@ class RoleController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		return view('admin.role.index');
-		// $owner = new Role();
-		// $owner->app_id = 2;
-		// $owner->name         = 'owner';
-		// $owner->title = 'Project Owner'; // optional
-		// $owner->description  = 'User is the owner of a given project'; // optional
-		// $owner->save();
-		// $role = Role::find(16);
-		// $role->delete();
-		// return view('admin.role.index');
-		$admin = Role::find(20);
-		// var_dump($admin);exit;
-		$user = User::find(5);
-		// $user->attachRole($admin);
-		$user->detachRole($admin);
-		$createPost = new Permission();
-		$createPost->name         = 'create-post';
-		$createPost->app_id         = 2;
-		$createPost->title = 'Create Posts'; // optional
-		$createPost->description  = 'create new blog posts'; // optional
-		// $createPost->save();
-		// $admin->attachPermission($createPost);
 	}
 
 	public function app(Request $request) {
@@ -119,6 +97,11 @@ class RoleController extends Controller {
 		return view('admin.role.permissionEdit')->with(array('role_id' => $id));
     }
 
+    public function permissionGroup(Request $request, $role_id, $permission_id) {
+        $permissions = Permission::where('group_id', $permission_id)->get(array('id', 'name', 'title', 'description'))->toArray();
+
+        echo json_encode($permissions, JSON_UNESCAPED_UNICODE);
+    }
     public function permissionLists(Request $request, $id) {
 		$columns = $_POST['columns'];
 		$order_column = $_POST['order']['0']['column'];//那一列排序，从0开始
