@@ -96,18 +96,22 @@ function openDetails(nTr, id) {
         success: function (data, textStatus) {
             if (textStatus == "success") {
                 var details = '<tr role="row"><td colspan=7><table width=100%>';
-                for (var i = 0; i < data.length; i++) {
-                    details += '<tr>';
-                    details += '<td>&nbsp;&nbsp;</td>';
-                    if (data[i].checked) {
-                        details += '<td><input class="checkbox" type="checkbox" name="id" checked="checked" value=' + data[i].id + '></input></td>';
-                    } else {
-                        details += '<td><input class="checkbox" type="checkbox" name="id" value=' + data[i].id + '></input></td>';
+                if(data.length == 0) {
+                    details += '<tr><td>&nbsp;&nbsp;</td><td>无数据</td></tr>';
+                } else {
+                    for (var i = 0; i < data.length; i++) {
+                        details += '<tr>';
+                        details += '<td>&nbsp;&nbsp;</td>';
+                        if (data[i].checked) {
+                            details += '<td><input class="checkbox" type="checkbox" name="id" checked="checked" value=' + data[i].id + '></input></td>';
+                        } else {
+                            details += '<td><input class="checkbox" type="checkbox" name="id" value=' + data[i].id + '></input></td>';
+                        }
+                        details += '<td class="details" colspan=2>' + data[i].title + '</td>';
+                        details += '<td class="details" colspan=2>' + data[i].name + '</td>';
+                        details += '<td class="details" colspan=2>' + data[i].description + '</td>';
+                        details += '</tr><tr style="margin-top: 5px;"></tr>';
                     }
-                    details += '<td class="details" colspan=2>' + data[i].title + '</td>';
-                    details += '<td class="details" colspan=2>' + data[i].name + '</td>';
-                    details += '<td class="details" colspan=2>' + data[i].description + '</td>';
-                    details += '</tr><tr style="margin-top: 5px;"></tr>';
                 }
                 details+='</table></td></tr>';
                 $(nTr).after(details);
