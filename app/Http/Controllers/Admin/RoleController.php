@@ -100,6 +100,15 @@ class RoleController extends Controller {
     public function permissionGroup(Request $request, $role_id, $permission_id) {
         $permissions = Permission::where('group_id', $permission_id)->get(array('id', 'name', 'title', 'description'))->toArray();
 
+        $role_permissions = DB::table('role_permission')->where('role_id', $role_id)->lists('permission_id');
+        foreach($permissions as &$v) {
+            if (in_array($v['id'], $role_permissions)) {
+                $v['checked'] = 1;
+            } else {
+                $v['checked'] = 0;
+            }
+        }
+
         echo json_encode($permissions, JSON_UNESCAPED_UNICODE);
     }
     public function permissionLists(Request $request, $id) {
