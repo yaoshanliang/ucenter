@@ -73,12 +73,12 @@ function submit_datatable(type, datatable_id, url, ids, tip_msg, tip_time) {
 		url: url,
 		type: 'POST',
 		data: {'ids': ids},
-		dataType: 'jsonp',
+		dataType: 'json',
 		headers: {
 			'X-CSRF-TOKEN': $('input[name="_token"]').val()
 		},
 		success: function(data) {
-			if(data['status_code'] === 0) {
+			if(data['code'] === 1) {
 				$('#' + datatable_id).DataTable().draw(false);//保持分页
 				showSuccessTip(tip_msg, tip_time);
 			} else {
