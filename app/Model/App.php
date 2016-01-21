@@ -13,14 +13,15 @@ class App extends Model {
     public function scopeWhereSearch($query, $request, $fields = array())
     {
 		if (strlen($request->search['value'])) {
-            foreach ($fields as $k => $v) {
-                if ($k == 0) {
-			        $query->where($v, 'LIKE',  '%' . $request->search['value'] . '%');
-                } else {
-                    $query->orWhere($v, 'LIKE',  '%' . $request->search['value'] . '%');
+            $query->where(function ($query) use ($request, $fields) {
+                foreach ($fields as $k => $v) {
+                    if ($k == 0) {
+			            $query->where($v, 'LIKE',  '%' . $request->search['value'] . '%');
+                    } else {
+                        $query->orWhere($v, 'LIKE',  '%' . $request->search['value'] . '%');
+                    }
                 }
-
-            }
+            });
         }
         return $query;
     }
