@@ -14,6 +14,7 @@ use Queue;
 use App\Model\Role;
 use App\Model\Permission;
 use App\Jobs\UserLog;
+use App\Services\Api;
 
 class AppController extends Controller {
 
@@ -27,45 +28,25 @@ class AppController extends Controller {
 		$fields = array('id', 'name', 'title', 'user_id', 'created_at', 'updated_at');
         $searchFields = array('name', 'title');
 
-        $users = App::where('user_id', Auth::id())
-            ->whereSearch($request, $searchFields)
-            ->orderByArray($request)
+        $data = App::where('user_id', Auth::id())
+            ->whereDataTables($request, $searchFields)
+            ->orderByDataTables($request)
 			->skip($request->start)
 			->take($request->length)
 			->get($fields)
-			->toArray();
-		$recordsFiltered = count($users);
+            ->toArray();
+        $draw = (int)$request->draw;
+		$recordsFiltered = count($data);
 		$recordsTotal = App::where('user_id', Auth::id())->count();
 
-		$return_data = array(
-            'draw' => intval($request->draw),
-			'recordsTotal' => intval($recordsTotal),
-			'recordsFiltered' => intval($recordsFiltered),
-			'data' => $users
-		);
-		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
-		if($jsonp) {
-		    echo $jsonp . '(' . json_encode($return_data, JSON_UNESCAPED_UNICODE) . ');';
-		} else {
-		    echo json_encode($return_data, JSON_UNESCAPED_UNICODE);
-		}
+        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
 	}
 
-	/**
-	 * Show the form for creating a new resource.
-	 *
-	 * @return Response
-	 */
 	public function create()
 	{
 		return view('admin.app.create');
 	}
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
 	public function store(AppRequest $request)
 	{
 		/*$this->validate($request, [
@@ -86,7 +67,7 @@ class AppController extends Controller {
 		));
 
         // 接入oauth_clients
-        DB::table('oauth_clients')->insert(array(
+        $oauth_client = DB::table('oauth_clients')->insert(array(
             'id' => $request->name,
             'secret' => $request->secret,
             'name' => $request->title,
@@ -94,6 +75,7 @@ class AppController extends Controller {
             'updated_at' => date('Y-m-d H:i:s')
         ));
 
+        // 默认开发者角色
         $role = Role::create(array(
             'app_id' => $app->id,
             'name' => 'developer',
@@ -101,7 +83,7 @@ class AppController extends Controller {
 			'description' => '开发者',
 		));
 
-        DB::table('user_role')->insert(array(
+        $user_role = DB::table('user_role')->insert(array(
             'user_id' => Auth::id(),
             'app_id' => $app->id,
             'role_id' => $role->id,
@@ -109,82 +91,55 @@ class AppController extends Controller {
             'updated_at' => date('Y-m-d H:i:s')
         ));
 
-		$ips = $request->ips();
-		$ip = $ips[0];
-		$ips = implode(',', $ips);
-		$log = Queue::push(new UserLog(1, Auth::id(), 'A', '新增应用', 'name : ' . $request->name . '; title : ' . $request->title, '', $ip, $ips));
-		if ($app) {
+		// $log = Queue::push(new UserLog(1, Auth::id(), 'A', '新增应用', 'name : ' . $request->name . '; title : ' . $request->title, '', $ip, $ips));
+		if ($app && $oauth_client && $role && $user_role) {
 			session()->flash('success_message', '应用添加成功');
-			return Redirect::to('/admin/app/app');
+			return Redirect::to('/admin/app');
 		} else {
 			return Redirect::back()->withInput()->withErrors('保存失败！');
 		}
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function show($id)
 	{
-		//
 	}
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function edit(AppRequest $request, $id)
 	{
 		return view('admin.app.edit')->withApp(App::find($id));
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function update(AppRequest $request, $id)
 	{
 		$this->validate($request, [
 			'name' => 'required|unique:apps,name,'.$id.'',
 		]);
 
-		$app = App::where('id', $id)->update(array('name' => $request->name,
+        $app = App::where('id', $id)->update(array(
+            'name' => $request->name,
 			'title' => $request->title,
 			'description' => $request->description,
 			'home_url' => $request->home_url,
 			'login_url' => $request->login_url,
 			'secret' => $request->secret,
-			'user_id' => Auth::user()->id
+			'user_id' => Auth::id()
 		));
 
-        DB::table('oauth_clients')->where('id', $id)->update(array(
+        $oauth_client = DB::table('oauth_clients')->where('id', $id)->update(array(
             'id' => $request->name,
             'secret' => $request->secret,
             'name' => $request->title,
             'updated_at' => date('Y-m-d H:i:s')
         ));
 
-		if ($app) {
+		if ($app && $oauth_client) {
 			session()->flash('success_message', '应用修改成功');
-			return Redirect::to('/admin/app/app');
+			return Redirect::to('/admin/app');
 		} else {
 			return Redirect::back()->withInput()->withErrors('保存失败！');
 		}
 	}
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function destroy($id)
 	{
 		return false;
@@ -201,11 +156,11 @@ class AppController extends Controller {
 
             DB::table('oauth_clients')->whereIn('id', $ids)->delete();
 			DB::commit();
-			Helper::jsonp_return(0, '删除成功', array('deleted_num' => $result));
+			return Api::jsonReturn(1, '删除成功', array('deleted_num' => $result));
 		} catch (Exception $e) {
 			DB::rollBack();
 			throw $e;
-			Helper::jsonp_return(1, '删除失败', array('deleted_num' => 0));
+			return Api::jsonReturn(0, '删除失败', array('deleted_num' => 0));
 		}
 	}
 

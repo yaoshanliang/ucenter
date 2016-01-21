@@ -113,7 +113,7 @@ $(document).ready(function() {
         "ajax": {
             "url": ajax_url,
             "type": 'POST',
-            "dataType": 'jsonp',
+            "dataType": 'json',
             "headers": {
                 'X-CSRF-TOKEN': $('input[name="_token"]').val()
             },

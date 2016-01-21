@@ -1,13 +1,14 @@
 <?php namespace App\Services;
 use Illuminate\Support\Facades\Lang;
-class Api {
+class Api
+{
 	/**
 	 * 返回jsonp格式数据
 	 *
 	 * @param  string $status_code, string $status_msg, array $status_data
 	 * @return jsonp格式字符串
 	 */
-	public static function jsonp_return($status_code, $status_msg, $status_data = array()) {
+	public static function jsonpReturn($status_code, $status_msg, $status_data = array()) {
 		$data['status_code'] = $status_code;
 		$data['status_msg'] = $status_msg;
 		$data['status_data'] = $status_data;
@@ -21,9 +22,9 @@ class Api {
 	 * 返回json格式数据
 	 *
 	 * @param  int $code, string $msg, array $data
-	 * @return jsonp格式字符串
+	 * @return json格式字符串
 	 */
-	public static function json_return($code, $message = '', $data = array()) {
+	public static function jsonReturn($code, $message = '', $data = array()) {
 		if(empty($message)) {
 			$message = Lang::has('api.' . $code) ? trans('api.' . $code) : '';
 		}
@@ -40,5 +41,10 @@ class Api {
 
     public static function apiReturn() {
         return response()->json(compact('code', 'message', 'data'));
+    }
+
+    public static function dataTablesReturn($data)
+    {
+        return response()->json($data);
     }
 }
