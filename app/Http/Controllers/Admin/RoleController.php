@@ -23,6 +23,7 @@ class RoleController extends Controller {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		return view('admin.role.index');
 	}
 
 	public function app(Request $request) {
