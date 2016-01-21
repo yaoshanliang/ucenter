@@ -17,77 +17,32 @@ use App\Jobs\UserLog;
 
 class AppController extends Controller {
 
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
 	public function index()
 	{
 		return view('admin.app.index');
 	}
 
-	public function app()
-	{
-		return view('admin.app.app');
-	}
-
 	public function lists(Request $request)
 	{
-		$user_id = Auth::id();
-		$columns = $_POST['columns'];
-		$order_column = $_POST['order']['0']['column'];
-		$order_dir = $_POST['order']['0']['dir'];
-		$search = $_POST['search']['value'];
-		$start = $_POST['start'];
-		$length = $_POST['length'];
 		$fields = array('id', 'name', 'title', 'user_id', 'created_at', 'updated_at');
-		if(isset($_GET['type']) && $_GET['type'] == 'app') {
-			$recordsTotal = App::where('user_id', $user_id)->count();
-		} else {
-			$recordsTotal = App::count();
-		}
-		if(strlen($search)) {
-			$users = App::where(function ($query) use ($search, $user_id) {
-				if(isset($_GET['type']) && $_GET['type'] == 'app') {
-					$query->where('user_id', $user_id);
-				}
-				$query->where("name" , 'LIKE',  '%' . $search . '%')
-					->orWhere("title" , 'LIKE',  '%' . $search . '%');
-				})
-				->orderby($columns[$order_column]['data'], $order_dir)
-				->skip($start)
-				->take($length)
-				->get($fields)
-				->toArray();
-			$recordsFiltered = count($users);
-		} else {
-			$users = App::where(function ($query) use ($search, $user_id) {
-				if(isset($_GET['type']) && $_GET['type'] == 'app') {
-					$query->where('user_id', $user_id);
-				}})
-				->orderby($columns[$order_column]['data'], $order_dir)
-				->skip($start)
-				->take($length)
-				->get($fields)
-				->toArray();
-			$recordsFiltered = $recordsTotal;
-		}
-		// $query_log = DB::getQueryLog();
-		$ips = $request->ips();
-		$ip = $ips[0];
-		$ips = implode(',', $ips);
-		// foreach($query_log as $v) {
-			// $query_log_sql[]  = $v['query'];
-		// }
-		// $query_log_sql = implode(';', $query_log_sql);
-		// $log = Queue::push(new UserLog(1, Auth::user()->id, 'S', '用户', '', $query_log_sql, $ip, $ips));
+        $searchFields = array('name', 'title');
+
+        $users = App::where('user_id', Auth::id())
+            ->whereSearch($request, $searchFields)
+            ->orderByArray($request)
+			->skip($request->start)
+			->take($request->length)
+			->get($fields)
+			->toArray();
+		$recordsFiltered = count($users);
+		$recordsTotal = App::where('user_id', Auth::id())->count();
+
 		$return_data = array(
-							"draw" => intval($_POST['draw']),
-							"recordsTotal" => intval($recordsTotal),
-							"recordsFiltered" => intval($recordsFiltered),
-							"data" => $users
-						);
+            'draw' => intval($request->draw),
+			'recordsTotal' => intval($recordsTotal),
+			'recordsFiltered' => intval($recordsFiltered),
+			'data' => $users
+		);
 		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
 		if($jsonp) {
 		    echo $jsonp . '(' . json_encode($return_data, JSON_UNESCAPED_UNICODE) . ');';
