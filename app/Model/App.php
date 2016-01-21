@@ -9,4 +9,27 @@ class App extends Model {
 	use SoftDeletes;
 	protected $dates = ['deleted_at'];
 	protected $fillable = ['name', 'title', 'description', 'home_url', 'login_url', 'secret', 'user_id'];
+
+    public function scopeWhereSearch($query, $request, $fields = array())
+    {
+		if (strlen($request->search['value'])) {
+            foreach ($fields as $k => $v) {
+                if ($k == 0) {
+			        $query->where($v, 'LIKE',  '%' . $request->search['value'] . '%');
+                } else {
+                    $query->orWhere($v, 'LIKE',  '%' . $request->search['value'] . '%');
+                }
+
+            }
+        }
+        return $query;
+    }
+
+    public function scopeOrderByArray($query, $request)
+    {
+        foreach ($request->order as $k => $v) {
+            $query->orderBy($request->columns[$v['column']]['data'], $v['dir']);
+        }
+        return $query;
+    }
 }
