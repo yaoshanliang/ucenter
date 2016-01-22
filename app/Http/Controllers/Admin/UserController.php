@@ -47,11 +47,35 @@ class UserController extends Controller
 			->get($fields)
             ->toArray();
         $draw = (int)$request->draw;
-		$recordsFiltered = count($data);
 		$recordsTotal = User::whereIn('id', $userIdsArray)->count();
+		$recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
 
         return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
 	}
+
+    // 用户总库
+    public function all(Request $request)
+    {
+		return view('admin.user.all');
+	}
+
+    public function allLists(Request $request)
+    {
+		$fields = array('id', 'username', 'email', 'phone', 'created_at', 'updated_at');
+        $searchFields = array('username', 'email', 'phone');
+
+        $data = User::whereDataTables($request, $searchFields)
+            ->orderByDataTables($request)
+			->skip($request->start)
+			->take($request->length)
+			->get($fields)
+            ->toArray();
+        $draw = (int)$request->draw;
+		$recordsTotal = User::count();
+		$recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
+
+        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+    }
 
     public function create()
     {

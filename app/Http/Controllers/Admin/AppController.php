@@ -47,14 +47,21 @@ class AppController extends Controller {
 		return view('admin.app.create');
 	}
 
-	public function store(AppRequest $request)
+	public function store(Request $request)
 	{
+		$this->validate($request, array(
+            'name' => 'required|unique:apps',
+			'title' => 'required',
+			'home_url' => 'required|url',
+			'login_url' => 'required|url',
+			'secret' => 'required'
+        ));
+
 		$app = App::create(array('name' => $request->name,
 			'title' => $request->title,
 			'description' => $request->description,
 			'home_url' => $request->home_url,
 			'login_url' => $request->login_url,
-			'secret' => $request->secret,
 			'user_id' => Auth::id()
 		));
 
@@ -98,14 +105,22 @@ class AppController extends Controller {
 
 	public function edit(AppRequest $request, $id)
 	{
-		return view('admin.app.edit')->withApp(App::find($id));
+        $app = App::find($id);
+        $client = DB::table('oauth_clients')->find($app->name);
+        $app->secret = $client->secret;
+
+		return view('admin.app.edit')->withApp($app);
 	}
 
-	public function update(AppRequest $request, $id)
+	public function update(Request $request, $id)
 	{
-		$this->validate($request, [
+		$this->validate($request, array(
 			'name' => 'required|unique:apps,name,'.$id.'',
-		]);
+			'title' => 'required',
+			'home_url' => 'required|url',
+			'login_url' => 'required|url',
+			'secret' => 'required'
+        ));
 
         $app = App::where('id', $id)->update(array(
             'name' => $request->name,
@@ -113,11 +128,10 @@ class AppController extends Controller {
 			'description' => $request->description,
 			'home_url' => $request->home_url,
 			'login_url' => $request->login_url,
-			'secret' => $request->secret,
 			'user_id' => Auth::id()
 		));
 
-        $oauth_client = DB::table('oauth_clients')->where('id', $id)->update(array(
+        $oauth_client = DB::table('oauth_clients')->where('id', $request->old_name)->update(array(
             'id' => $request->name,
             'secret' => $request->secret,
             'name' => $request->title,
