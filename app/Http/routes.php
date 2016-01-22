@@ -36,6 +36,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array(
       Route::post('/user/lists', 'UserController@lists');
       Route::post('/user/delete', 'UserController@delete');
       Route::post('/user/remove', 'UserController@remove');
+      Route::get('/user/all', 'UserController@all');
+      Route::post('/user/allLists', 'UserController@allLists');
       Route::resource('user', 'UserController');
 
       // role
