@@ -9,6 +9,8 @@
         <div class="dataTable_wrapper">
             <br />
             <div class="input-group custom-search-form">
+                <a href="{{ URL('admin/user/all') }}" class="btn btn-primary">用户总库</a>
+                &nbsp;
                 <a href="{{ URL('admin/user/invite') }}" class="btn btn-primary">邀请</a>
                 &nbsp;
                 <a href="{{ URL('admin/user/create') }}" class="btn btn-primary">新增</a>

@@ -23,6 +23,7 @@
                 <label class="col-md-3 control-label">代号</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control" name="name" value="{{ $app->name }}">
+                    <input type="hidden" class="form-control" name="old_name" value="{{ $app->name }}">
                 </div>
             </div>
 
@@ -56,8 +57,11 @@
 
             <div class="form-group">
                 <label class="col-md-3 control-label">密钥</label>
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <input type="text" class="form-control" name="secret" value="{{ $app->secret }}">
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-default" onclick="generateSecret();">生成</button>
                 </div>
             </div>
 

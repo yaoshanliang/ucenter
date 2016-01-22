@@ -55,8 +55,11 @@
 
             <div class="form-group">
                 <label class="col-md-3 control-label">密钥</label>
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <input type="text" class="form-control" name="secret" value="{{ old('secret') }}">
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-default" onclick="generateSecret();">生成</button>
                 </div>
             </div>
 
@@ -70,4 +73,7 @@
         </form>
     </div>
 </div>
+<script>
+generateSecret();
+</script>
 @endsection

@@ -4,11 +4,16 @@
 <div class="row">
 <div class="col-lg-12">
 <div class="panel panel-default">
-    <div class="panel-heading">用户管理</div>
+    <div class="panel-heading">用户总库</div>
     <div class="panel-body">
         <div class="dataTable_wrapper">
             <br />
             <div class="input-group custom-search-form">
+                <a href="{{ URL('admin/user/invite') }}" class="btn btn-primary">批量接入当前应用</a>
+                &nbsp;
+                <a href="{{ URL('admin/user/create') }}" class="btn btn-primary">新增</a>
+                &nbsp;
+                <a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return check_delete();'>删除</a>
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button">
@@ -16,9 +21,8 @@
                     </button>
                 </span>
             </div>
-            <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/user/appuser') }}">
+            <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/app') }}">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="hidden" name="selected_ids" id="selected_ids">
                 <table class="table table-striped table-bordered table-hover" id="user_index" class="display" cellspacing="0" width="100%" border='0px'>
                     <thead>
                         <tr>
@@ -48,8 +52,8 @@
 var datatable_id = 'user_index';
 var columnDefs_targets = [0, 6];
 var order = [5, 'desc'];
-var ajax_url = '/admin/user/lists?type=appuser';
-var remove_url = '/admin/user/remove';
+var ajax_url = '/admin/user/allLists';
+var delete_url = '/admin/user/delete';
 var columns = [{
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
@@ -65,7 +69,7 @@ var columns = [{
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                         $(nTd).html("<a href=/admin/user/" + sData + "/edit>编辑</a>" + " " +
-                            "<a href='javascript:void(0);' onclick='return check_remove(" + sData + ");'>移除</a>");
+                            "<a href='javascript:void(0);' onclick='return check_delete(" + sData + ");'>删除</a>");
                     }
                 }];
 </script>
