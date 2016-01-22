@@ -165,6 +165,9 @@ function check_remove(id) {
 	}
 }
 
+function generateSecret() {
+    $("input[name='secret']").val(Math.random().toString(36).substr(2));
+}
 function change_app(url, app_id) {
 	$.ajax({
 		url: url,
