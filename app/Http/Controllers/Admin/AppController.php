@@ -49,14 +49,6 @@ class AppController extends Controller {
 
 	public function store(AppRequest $request)
 	{
-		/*$this->validate($request, [
-			'name' => 'required|unique:apps',
-			'title' => 'required',
-			'home_url' => 'required|url',
-			'login_url' => 'required|url',
-			'secret' => 'required'
-		]);*/
-
 		$app = App::create(array('name' => $request->name,
 			'title' => $request->title,
 			'description' => $request->description,
@@ -145,7 +137,7 @@ class AppController extends Controller {
 		return false;
 	}
 
-	//删除
+	// 删除
 	public function delete()
 	{
 		DB::beginTransaction();
@@ -163,5 +155,4 @@ class AppController extends Controller {
 			return Api::jsonReturn(0, '删除失败', array('deleted_num' => 0));
 		}
 	}
-
 }
