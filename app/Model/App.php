@@ -1,9 +1,11 @@
-<?php namespace App\Model;
+<?php
+namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Model\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class App extends Model {
+class App extends Model
+{
 	protected $table = 'apps';
 
 	use SoftDeletes;

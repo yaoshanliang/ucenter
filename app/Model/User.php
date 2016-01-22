@@ -1,7 +1,8 @@
-<?php namespace App\Model;
+<?php
+namespace App\Model;
 
+use App\Model\Model;
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
@@ -11,7 +12,8 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Cache;
 use Config;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+{
 
     use Authenticatable, CanResetPassword;
     use EntrustUserTrait;
