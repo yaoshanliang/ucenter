@@ -9,7 +9,7 @@
         <div class="dataTable_wrapper">
             <br />
             <div class="input-group custom-search-form">
-                <a href="{{ URL('admin/app/create') }}" class="btn btn-primary">新增</a>
+                <a href="{{ URL('admin/app/create') }}" class="btn btn-primary">新增应用</a>
                 &nbsp;
                 <a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return check_delete();'>删除</a>
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
@@ -25,8 +25,8 @@
                     <thead>
                         <tr>
                             <td style="width:15px"><input class="checkbox" type="checkbox" name="id" id='checkAll'></td>
-                            <td>代号</td>
                             <td>名称</td>
+                            <td>代号</td>
                             <td>创建者</td>
                             <td>创建时间</td>
                             <td>更新时间</td>
@@ -58,8 +58,8 @@ var columns = [{
                         $(nTd).html("<input type='checkbox' id='" + sData + "' class='checkbox' name='ids' value='" + sData + "'>");
                     }
                 },
-                {"data": "name"},
                 {"data": "title"},
+                {"data": "name"},
                 {"data": "user_id"},
                 {"data": "created_at"},
                 {"data": "updated_at"},
