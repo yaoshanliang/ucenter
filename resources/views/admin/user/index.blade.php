@@ -55,7 +55,7 @@ var datatable_id = 'user_index';
 var columnDefs_targets = [0, 6];
 var order = [5, 'desc'];
 var ajax_url = '/admin/user/lists';
-var delete_url = '/admin/user/delete';
+var remove_url = '/admin/user/remove';
 var columns = [{
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
@@ -70,8 +70,11 @@ var columns = [{
                 {
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html("<a href=/admin/user/" + sData + "/edit>编辑</a>" + " " +
-                            "<a href='javascript:void(0);' onclick='return check_delete(" + sData + ");'>删除</a>");
+                        $(nTd).html(
+                            "<a href=/admin/user/" + sData + "/show>详细</a>" + " " +
+                            "<a href=/admin/user/" + sData + "/edit>编辑</a>" + " " +
+                            "<a href='javascript:void(0);' onclick='return check_remove(" + sData + ");'>移除</a>"
+                        );
                     }
                 }];
 </script>
