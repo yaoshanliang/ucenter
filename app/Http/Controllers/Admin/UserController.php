@@ -143,35 +143,43 @@ class UserController extends Controller
     {
 	}
 
+    public function join(Request $request)
+    {
+		$ids = $request->ids;
+		$result = User::whereIn('id', $ids)->delete();
+    }
+
 	// 删除
-	public function delete() {
+    public function delete()
+    {
 		DB::beginTransaction();
 		try {
 			$ids = $_POST['ids'];
 			$result = User::whereIn('id', $ids)->delete();
 
 			DB::commit();
-			Helper::jsonp_return(0, '删除成功', array('deleted_num' => $result));
+			return Api::jsonReturn(1, '删除成功', array('deleted_num' => $result));
 		} catch (Exception $e) {
 			DB::rollBack();
 			throw $e;
-			Helper::jsonp_return(1, '删除失败', array('deleted_num' => 0));
+			return Api::jsonReturn(0, '删除失败', array('deleted_num' => 0));
 		}
 	}
 
 	// 从当前应用中移出用户
-	public function remove() {
+    public function remove()
+    {
 		DB::beginTransaction();
 		try {
 			$ids = $_POST['ids'];
 			$result = UserRole::where('app_id', Session::get('current_app_id'))->whereIn('user_id', $ids)->delete();
 
 			DB::commit();
-			Helper::jsonp_return(0, '移除成功', array('deleted_num' => $result));
+			return Api::jsonReturn(1, '移除成功', array('deleted_num' => $result));
 		} catch (Exception $e) {
 			DB::rollBack();
 			throw $e;
-			Helper::jsonp_return(1, '移除失败', array('deleted_num' => 0));
+			return Api::jsonReturn(0, '移除失败', array('deleted_num' => 0));
 		}
 	}
 }

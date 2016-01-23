@@ -23,51 +23,52 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth']
       Route::resource('user', 'AppController');
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array('auth', 'role')], function() {
-      Route::get('/index', 'AdminController@index');
+    Route::get('/', function() { return Redirect::to('/admin/index'); });
+    Route::get('/index', 'AdminController@index');
 
-      // app
-      Route::post('/app/lists', 'AppController@lists');
-      Route::post('/app/delete', 'AppController@delete');
-      Route::resource('app', 'AppController');
+   // app
+    Route::post('/app/lists', 'AppController@lists');
+    Route::post('/app/delete', 'AppController@delete');
+    Route::resource('app', 'AppController');
 
-      // user
-      Route::get('/user/invite', 'UserController@getInvite');
-      Route::post('/user/invite', 'UserController@postInvite');
-      Route::post('/user/lists', 'UserController@lists');
-      Route::post('/user/delete', 'UserController@delete');
-      Route::post('/user/remove', 'UserController@remove');
-      Route::get('/user/all', 'UserController@all');
-      Route::post('/user/allLists', 'UserController@allLists');
-      Route::resource('user', 'UserController');
+    // user
+    Route::get('/user/invite', 'UserController@getInvite');
+    Route::post('/user/invite', 'UserController@postInvite');
+    Route::post('/user/lists', 'UserController@lists');
+    Route::post('/user/delete', 'UserController@delete');
+    Route::post('/user/remove', 'UserController@remove');
+    Route::get('/user/all', 'UserController@all');
+    Route::post('/user/allLists', 'UserController@allLists');
+    Route::resource('/user', 'UserController');
 
-      // role
-      Route::post('/role/lists', 'RoleController@lists');
-      Route::post('/role/delete', 'RoleController@delete');
-      Route::get('/role/{id}/permission', 'RoleController@permission')->where('id', '[0-9]+');
-      Route::post('/role/{id}/permissionLists', 'RoleController@permissionLists')->where('id', '[0-9]+');
-      Route::get('/role/{id}/permissionSelected', 'RoleController@permissionSelected')->where('id', '[0-9]+');
-      Route::post('/role/{id}/permissionSelectedLists', 'RoleController@permissionSelectedLists');
-      Route::get('/role/{id}/permissionGroup/{permission_id}', 'RoleController@permissionGroup')->where('id', '[0-9]+')->where('permission_id', '[0-9]+');
-      Route::get('/role/{id}/selectOrUnselectPermission/{permission_id}', 'RoleController@selectOrUnselectPermission')->where('id', '[0-9]+')->where('permission_id', '[0-9]+');
-      Route::resource('role', 'RoleController');
+    // role
+    Route::post('/role/lists', 'RoleController@lists');
+    Route::post('/role/delete', 'RoleController@delete');
+    Route::get('/role/{id}/permission', 'RoleController@permission')->where('id', '[0-9]+');
+    Route::post('/role/{id}/permissionLists', 'RoleController@permissionLists')->where('id', '[0-9]+');
+    Route::get('/role/{id}/permissionSelected', 'RoleController@permissionSelected')->where('id', '[0-9]+');
+    Route::post('/role/{id}/permissionSelectedLists', 'RoleController@permissionSelectedLists');
+    Route::get('/role/{id}/permissionGroup/{permission_id}', 'RoleController@permissionGroup')->where('id', '[0-9]+')->where('permission_id', '[0-9]+');
+    Route::get('/role/{id}/selectOrUnselectPermission/{permission_id}', 'RoleController@selectOrUnselectPermission')->where('id', '[0-9]+')->where('permission_id', '[0-9]+');
+    Route::resource('role', 'RoleController');
 
-      // permission
-      Route::post('/permission/lists', 'PermissionController@lists');
-      Route::post('/permission/delete', 'PermissionController@delete');
-      Route::get('/permission/createGroup', 'PermissionController@createGroup');
-      // Route::get('/permission/{id}/groupPermissions', 'PermissionController@getGroupPermissions');
-      Route::resource('/permission', 'PermissionController');
+    // permission
+    Route::post('/permission/lists', 'PermissionController@lists');
+    Route::post('/permission/delete', 'PermissionController@delete');
+    Route::get('/permission/createGroup', 'PermissionController@createGroup');
+    // Route::get('/permission/{id}/groupPermissions', 'PermissionController@getGroupPermissions');
+    Route::resource('/permission', 'PermissionController');
 
-      // userlog
-      Route::post('/userlog/lists', 'UserLogController@lists');
-      Route::post('/userlog/delete', 'UserLogController@delete');
-      Route::resource('/userlog', 'UserLogController');
-      // Route::get('app/{id}/edit', 'AppController@edit', function(Request $request)
-          // {
-        // $id = $this->route('app');
-        // return App::where('id', $id)->where('user_id', Auth::id())->exists();
-          // });
-      // Route::post('app/{id}/edit', 'AppController@update');
+    // userlog
+    Route::post('/userlog/lists', 'UserLogController@lists');
+    Route::post('/userlog/delete', 'UserLogController@delete');
+    Route::resource('/userlog', 'UserLogController');
+    // Route::get('app/{id}/edit', 'AppController@edit', function(Request $request)
+    // {
+    // $id = $this->route('app');
+    // return App::where('id', $id)->where('user_id', Auth::id())->exists();
+    // });
+    // Route::post('app/{id}/edit', 'AppController@update');
 });
 $api = app('api.router');
 $api->version('v1', function ($api) {
