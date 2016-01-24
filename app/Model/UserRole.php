@@ -1,8 +1,9 @@
-<?php namespace App\Model;
+<?php
+namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Model\Model;
 
-class UserRole extends Model {
-
+class UserRole extends Model
+{
 	protected $table = 'user_role';
 }
