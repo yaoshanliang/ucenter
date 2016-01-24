@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Model\Role;
 use App\Model\User;
+use App\Model\UserRole;
 use App\Model\Permission;
 use App\Model\RolePermission;
 use App\Services\Helper;
@@ -15,80 +16,30 @@ use App\Services\Api;
 use Session;
 use Auth;
 use Redirect;
-class RoleController extends Controller {
-
-	/**
-	 * Display a listing of the resource.
-	 *
-	 * @return Response
-	 */
-	public function index(Request $request) {
+class RoleController extends Controller
+{
+    public function index(Request $request)
+    {
 		return view('admin.role.index');
 	}
 
-	public function app(Request $request) {
-		return view('admin.role.app');
-	}
-
-	public function lists(Request $request) {
-		$app_user_ids = '';
-		// if(isset($_GET['type']) && $_GET['type'] == 'app') {
-			// $current_app_id = Session::get('current_app_id');
-			// $app_user_ids = Role::where('app_id', '=', $current_app_id)->lists('id');
-		// }
-		// DB::enableQueryLog();
-		$columns = $_POST['columns'];
-		$order_column = $_POST['order']['0']['column'];//那一列排序，从0开始
-		$order_dir = $_POST['order']['0']['dir'];//ase desc 升序或者降序
-		$search = $_POST['search']['value'];//获取前台传过来的过滤条件
-		$start = $_POST['start'];//从多少开始
-		$length = $_POST['length'];//数据长度
+    public function lists(Request $request)
+    {
 		$fields = array('id', 'name', 'title', 'description', 'created_at', 'updated_at');
-		if(isset($_GET['type']) && $_GET['type'] == 'app') {
-			$recordsTotal = Role::where('app_id', Session::get('current_app_id'))->count();
-		} else {
-			$recordsTotal = Role::count();
-		}
-		if(strlen($search)) {
-			$roles = Role::where(function ($query) use ($search) {
-				if(isset($_GET['type']) && $_GET['type'] == 'app') {
-					$query->where('app_id', Session::get('current_app_id'));
-				}
-				$query->where("name" , 'LIKE',  '%' . $search . '%')
-					->orWhere("title" , 'LIKE',  '%' . $search . '%')
-					->orWhere("description" , 'LIKE',  '%' . $search . '%');
-				})
-				->orderby($columns[$order_column]['data'], $order_dir)
-				->skip($start)
-				->take($length)
-				->get($fields)
-				->toArray();
-			$recordsFiltered = count($roles);
-		} else {
-			$roles = Role::where(function ($query) use ($search) {
-				if(isset($_GET['type']) && $_GET['type'] == 'app') {
-					$query->where('app_id', Session::get('current_app_id'));
-				}})
-				->orderby($columns[$order_column]['data'], $order_dir)
-				->skip($start)
-				->take($length)
-				->get($fields)
-				->toArray();
-			$recordsFiltered = $recordsTotal;
-		}
-		$return_data = array(
-							"draw" => intval($_POST['draw']),
-							"recordsTotal" => intval($recordsTotal),
-							"recordsFiltered" => intval($recordsFiltered),
-							"data" => $roles
-						);
-		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
-		if($jsonp) {
-		    echo $jsonp . '(' . json_encode($return_data, JSON_UNESCAPED_UNICODE) . ');';
-		} else {
-		    echo json_encode($return_data, JSON_UNESCAPED_UNICODE);
-        }
+        $searchFields = array('name', 'title', 'description');
 
+        $data = Role::where('app_id', Session::get('current_app_id'))
+            ->whereDataTables($request, $searchFields)
+            ->orderByDataTables($request)
+			->skip($request->start)
+			->take($request->length)
+			->get($fields)
+            ->toArray();
+        $draw = (int)$request->draw;
+		$recordsTotal = Role::where('app_id', Session::get('current_app_id'))->count();
+		$recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
+
+        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
     public function permission($id) {

@@ -36,8 +36,8 @@ class AppController extends Controller {
 			->get($fields)
             ->toArray();
         $draw = (int)$request->draw;
-		$recordsFiltered = count($data);
 		$recordsTotal = App::where('user_id', Auth::id())->count();
+		$recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
 
         return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
 	}
