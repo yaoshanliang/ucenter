@@ -47,4 +47,13 @@
         </form>
     </div>
 </div>
+<script>
+$("input[name='email']").keyup(function() {
+        var characters = $("input[name='email']").val();
+        if (characters.indexOf("\@") == -1) {
+            $("input[name='username']").val($("input[name='email']").val());
+        }
+    }
+);
+</script>
 @endsection

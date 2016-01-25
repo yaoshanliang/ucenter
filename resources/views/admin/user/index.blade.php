@@ -52,7 +52,7 @@
 
 <script>
 var datatable_id = 'user_index';
-var columnDefs_targets = [0, 6];
+var columnDefs_targets = [0, 4, 6];
 var order = [5, 'desc'];
 var ajax_url = '/admin/user/lists';
 var remove_url = '/admin/user/remove';
@@ -70,8 +70,9 @@ var columns = [{
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                         var roles = '';
                         $.each(sData, function() {
-                            roles += this.title;
+                            roles += this.title + ' | ';
                         });
+                        roles = roles.substr(0, roles.length - 2);
                         $(nTd).html(roles);
                     }
                 },
