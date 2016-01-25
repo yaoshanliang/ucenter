@@ -50,6 +50,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return $user_info;
         });
         return $user_info;
+    }
 
+    public function scopeRoles($query, $user_id)
+    {
+        return $this->belongsToMany('App\Model\Role', 'user_role', 'user_id', 'role_id');
     }
 }
