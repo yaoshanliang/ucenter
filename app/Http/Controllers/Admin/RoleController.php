@@ -121,6 +121,11 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
+		$this->validate($request, array(
+            'name' => 'required|unique:roles,name,,,app_id,' . Session::get('current_app_id'),// Usage see:/vendor/laravel/framework/src/Illuminate/Validation/DatabasePresenceVerifier.php
+			'title' => 'required',
+        ));
+
         $role = Role::create(array(
             'app_id' => Session::get('current_app_id'),
             'name' => $request->name,
@@ -129,7 +134,7 @@ class RoleController extends Controller
  		));
  		if ($role) {
  			session()->flash('success_message', '角色添加成功');
- 			return redirect('/admin/role/app');
+ 		    return redirect('/admin/role');
  		} else {
  			return redirect()->back()->withInput()->withErrors('保存失败！');
  		}
@@ -147,6 +152,11 @@ class RoleController extends Controller
 
 	public function update(Request $request, $id)
 	{
+		$this->validate($request, array(
+            'name' => 'required|unique:roles,name,' . $id . ',id,app_id,' . Session::get('current_app_id'),
+			'title' => 'required',
+        ));
+
         $role = Role::where('id', $id)->update(array(
             'app_id' => Session::get('current_app_id'),
             'name' => $request->name,
@@ -155,7 +165,7 @@ class RoleController extends Controller
 		));
 		if ($role) {
 			session()->flash('success_message', '角色修改成功');
-			return Redirect::to('/admin/role/app');
+			return Redirect::to('/admin/role');
 		} else {
 			return Redirect::back()->withInput()->withErrors('保存失败！');
 		}
@@ -194,11 +204,11 @@ class RoleController extends Controller
 
             // DB::table('oauth_clients')->where('id', $id)->delete();
 			DB::commit();
-			return Api::jsonpReturn(1, '删除成功', array('deleted_num' => $result));
+			return Api::jsonReturn(1, '删除成功', array('deleted_num' => $result));
 		} catch (Exception $e) {
 			DB::rollBack();
 			throw $e;
-			return Api::jsonpReturn(0, '删除失败', array('deleted_num' => 0));
+			return Api::jsonReturn(0, '删除失败', array('deleted_num' => 0));
 		}
 	}
 }

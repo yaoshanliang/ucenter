@@ -9,6 +9,9 @@
         <div class="dataTable_wrapper">
             <br />
             <div class="input-group custom-search-form">
+                <a href="{{ URL('admin/role/create') }}" class="btn btn-primary">新增角色</a>
+                &nbsp;
+                <a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return check_delete();'>删除角色</a>
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button">

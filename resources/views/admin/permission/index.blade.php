@@ -9,6 +9,10 @@
         <div class="dataTable_wrapper">
             <br />
             <div class="input-group custom-search-form">
+                <a href="{{ URL('admin/permission/create') }}" class="btn btn-primary">新增</a>
+                &nbsp;
+                <a href="{{ URL('admin/permission/createGroup') }}" class="btn btn-primary">新增分组</a>
+                &nbsp;
                 <a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return check_delete();'>删除</a>
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
                 <span class="input-group-btn">
@@ -47,8 +51,8 @@
 
 <script>
 var datatable_id = 'user_index';
-var columnDefs_targets = [0, 6];
-var order = [1, 'desc'];
+var columnDefs_targets = [0, 7];
+var order = [6, 'desc'];
 var ajax_url = '/admin/permission/lists';
 var delete_url = '/admin/role/delete';
 var columns = [{
