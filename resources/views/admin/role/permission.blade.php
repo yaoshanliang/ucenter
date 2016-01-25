@@ -50,7 +50,7 @@
 var datatable_id = 'user_index';
 var columnDefs_targets = [0, 6];
 var order = [5, 'desc'];
-var ajax_url = '/admin/role/<?php echo $role_id; ?>/permission_lists';
+var ajax_url = '/admin/role/<?php echo $role_id; ?>/permissionLists';
 var remove_url = '/admin/role/remove';
 var columns = [{
                     "data": "id",
@@ -96,7 +96,8 @@ function openDetails(nTr, id) {
         },
 
         success: function (data, textStatus) {
-            if (textStatus == "success") {
+            if (data.code === 1) {
+                data = data.data;
                 var details = '<tr role="row"><td colspan=7><table width=100%>';
                 if(data.length == 0) {
                     details += '<tr><td></td><td>无数据</td></tr>';

@@ -42,17 +42,34 @@ class RoleController extends Controller
         return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
-    public function permission($id) {
+    // 当前角色的权限分组
+    public function permission($id)
+    {
 		return view('admin.role.permission')->with(array('role_id' => $id));
     }
-    public function permissionSelected($id) {
-		return view('admin.role.permissionSelected')->with(array('role_id' => $id));
-    }
-    public function permissionEdit($id) {
-		return view('admin.role.permissionEdit')->with(array('role_id' => $id));
+
+    public function permissionLists(Request $request, $id)
+    {
+		$fields = array('id', 'name', 'title', 'description', 'created_at', 'updated_at');
+        $searchFields = array('name', 'title', 'description');
+
+        $data = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', 0)
+            ->whereDataTables($request, $searchFields)
+            ->orderByDataTables($request)
+			->skip($request->start)
+			->take($request->length)
+			->get($fields)
+            ->toArray();
+        $draw = (int)$request->draw;
+		$recordsTotal = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', 0)->count();
+		$recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
+
+        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
-    public function permissionGroup(Request $request, $role_id, $permission_id) {
+    // 获取当前权限分组里的权限
+    public function permissionGroup(Request $request, $role_id, $permission_id)
+    {
         $permissions = Permission::where('group_id', $permission_id)->get(array('id', 'name', 'title', 'description'))->toArray();
 
         $role_permissions = DB::table('role_permission')->where('role_id', $role_id)->lists('permission_id');
@@ -64,172 +81,49 @@ class RoleController extends Controller
             }
         }
 
-        echo json_encode($permissions, JSON_UNESCAPED_UNICODE);
-    }
-    public function permissionLists(Request $request, $id) {
-		$columns = $_POST['columns'];
-		$order_column = $_POST['order']['0']['column'];//那一列排序，从0开始
-		$order_dir = $_POST['order']['0']['dir'];//ase desc 升序或者降序
-		$search = $_POST['search']['value'];//获取前台传过来的过滤条件
-		$start = $_POST['start'];//从多少开始
-		$length = $_POST['length'];//数据长度
-		$fields = array('id', 'group_id', 'group_order_id', 'order_id', 'name', 'title', 'description', 'created_at', 'updated_at');
-		$recordsTotal = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', 0)->count();
-
-		if(strlen($search)) {
-            $roles = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', 0)
-                ->where(function ($query) use ($search) {
-                    $query->where("name" , 'LIKE',  '%' . $search . '%')
-				    ->orWhere("title" , 'LIKE',  '%' . $search . '%')
-				    ->orWhere("description" , 'LIKE',  '%' . $search . '%');
-                })
-				->orderby($columns[$order_column]['data'], $order_dir)
-				->skip($start)
-				->take($length)
-				->get($fields);
-			$recordsFiltered = count($roles);
-		} else {
-            $roles = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', 0)
-                ->orderby($columns[$order_column]['data'], $order_dir)
-                ->skip($start)
-                ->take($length)
-                ->get($fields);
-			$recordsFiltered = $recordsTotal;
-		}
-		$return_data = array(
-							"draw" => intval($_POST['draw']),
-							"recordsTotal" => intval($recordsTotal),
-							"recordsFiltered" => intval($recordsFiltered),
-							"data" => $roles
-						);
-		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
-		if($jsonp) {
-		    echo $jsonp . '(' . json_encode($return_data, JSON_UNESCAPED_UNICODE) . ');';
-		} else {
-		    echo json_encode($return_data, JSON_UNESCAPED_UNICODE);
-        }
+        return Api::jsonReturn(1, '获取权限成功', $permissions);
     }
 
-    public function permissionSelectedLists(Request $request, $id) {
-		$permission_ids = RolePermission::where('role_id', '=', $id)->lists('permission_id');
-		$columns = $_POST['columns'];
-		$order_column = $_POST['order']['0']['column'];//那一列排序，从0开始
-        if($columns[$order_column]['data'] == 'group_name') {//那一列排序，从0开始
-            $columns[$order_column]['data'] = 'group_id';
-        }
-		$order_dir = $_POST['order']['0']['dir'];//ase desc 升序或者降序
-		$search = $_POST['search']['value'];//获取前台传过来的过滤条件
-		$start = $_POST['start'];//从多少开始
-		$length = $_POST['length'];//数据长度
+    // 当前角色已拥有权限列表
+    public function permissionSelected($id)
+    {
+		return view('admin.role.permissionSelected')->with(array('role_id' => $id));
+    }
+
+    public function permissionSelectedLists(Request $request, $id)
+    {
+		$permissionIdsArray = RolePermission::where('role_id', $id)->lists('permission_id');
+
 		$fields = array('id', 'group_id', 'name', 'title', 'description', 'created_at', 'updated_at');
-		$recordsTotal = Permission::whereIn('id', $permission_ids)->count();
+        $searchFields = array('name', 'title', 'description');
 
-		if(strlen($search)) {
-			$roles = Permission::where(function ($query) use ($permission_ids) {
-					$query->whereIn('id', $permission_ids);
-                })
-                ->where(function ($query) use ($search) {
-                    $query->where("name" , 'LIKE',  '%' . $search . '%')
-				    ->orWhere("title" , 'LIKE',  '%' . $search . '%')
-				    ->orWhere("description" , 'LIKE',  '%' . $search . '%');
-                })
-				->orderby($columns[$order_column]['data'], $order_dir)
-				->skip($start)
-				->take($length)
-				->get($fields);
-			$recordsFiltered = count($roles);
-		} else {
-			$roles = Permission::whereIn('id', $permission_ids)
-				->orderby($columns[$order_column]['data'], $order_dir)
-				->skip($start)
-				->take($length)
-				->get($fields);
-			$recordsFiltered = $recordsTotal;
-		}
-        foreach($roles as $v) {
+        $data = Permission::whereIn('id', $permissionIdsArray)
+            ->whereDataTables($request, $searchFields)
+            ->orderByDataTables($request)
+			->skip($request->start)
+			->take($request->length)
+			->get($fields);
+        foreach($data as $v) {
             $v['group_name'] = $v->group->title;
             unset($v['group']);
         }
-		$return_data = array(
-							"draw" => intval($_POST['draw']),
-							"recordsTotal" => intval($recordsTotal),
-							"recordsFiltered" => intval($recordsFiltered),
-							"data" => $roles
-						);
-		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
-		if($jsonp) {
-		    echo $jsonp . '(' . json_encode($return_data, JSON_UNESCAPED_UNICODE) . ');';
-		} else {
-		    echo json_encode($return_data, JSON_UNESCAPED_UNICODE);
-        }
+        $draw = (int)$request->draw;
+		$recordsTotal = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', 0)->count();
+		$recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
+
+        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
-    public function permissionEditLists(Request $request, $id) {
-		$permission_ids = RolePermission::where('role_id', '=', $id)->lists('permission_id');
-		$columns = $_POST['columns'];
-		$order_column = $_POST['order']['0']['column'];//那一列排序，从0开始
-		$order_dir = $_POST['order']['0']['dir'];//ase desc 升序或者降序
-		$search = $_POST['search']['value'];//获取前台传过来的过滤条件
-		$start = $_POST['start'];//从多少开始
-		$length = $_POST['length'];//数据长度
-		$fields = array('id', 'name', 'title', 'description', 'created_at', 'updated_at');
-		$recordsTotal = Permission::whereIn('id', $permission_ids)->count();
-
-		if(strlen($search)) {
-			$roles = Permission::where(function ($query) use ($permission_ids) {
-					$query->whereIn('id', $permission_ids);
-                })
-                ->where(function ($query) use ($search) {
-                    $query->where("name" , 'LIKE',  '%' . $search . '%')
-				    ->orWhere("title" , 'LIKE',  '%' . $search . '%')
-				    ->orWhere("description" , 'LIKE',  '%' . $search . '%');
-                })
-				->orderby($columns[$order_column]['data'], $order_dir)
-				->skip($start)
-				->take($length)
-				->get($fields)
-				->toArray();
-			$recordsFiltered = count($roles);
-		} else {
-			$roles = Permission::whereIn('id', $permission_ids)
-				->orderby($columns[$order_column]['data'], $order_dir)
-				->skip($start)
-				->take($length)
-				->get($fields)
-				->toArray();
-			$recordsFiltered = $recordsTotal;
-		}
-		$return_data = array(
-							"draw" => intval($_POST['draw']),
-							"recordsTotal" => intval($recordsTotal),
-							"recordsFiltered" => intval($recordsFiltered),
-							"data" => $roles
-						);
-		$jsonp = preg_match('/^[$A-Z_][0-9A-Z_$]*$/i', $_GET['callback']) ? $_GET['callback'] : false;
-		if($jsonp) {
-		    echo $jsonp . '(' . json_encode($return_data, JSON_UNESCAPED_UNICODE) . ');';
-		} else {
-		    echo json_encode($return_data, JSON_UNESCAPED_UNICODE);
-        }
-    }
- 	/**
- 	 * Show the form for creating a new resource.
- 	 *
- 	 * @return Response
- 	 */
- 	public function create() {
+    public function create()
+    {
  		return view('admin.role.create');
  	}
 
- 	/**
- 	 * Store a newly created resource in storage.
- 	 *
- 	 * @return Response
- 	 */
- 	public function store(Request $request) {
-         $role = Role::create(array(
-             'app_id' => Session::get('current_app_id'),
-             'name' => $request->name,
+    public function store(Request $request)
+    {
+        $role = Role::create(array(
+            'app_id' => Session::get('current_app_id'),
+            'name' => $request->name,
  			'title' => $request->title,
  			'description' => $request->description,
  		));
@@ -239,37 +133,18 @@ class RoleController extends Controller
  		} else {
  			return redirect()->back()->withInput()->withErrors('保存失败！');
  		}
- 		//
  	}
 
- 	/**
- 	 * Display the specified resource.
- 	 *
- 	 * @param  int  $id
- 	 * @return Response
- 	 */
  	public function show($id)
  	{
  		//
  	}
 
- 	/**
- 	 * Show the form for editing the specified resource.
- 	 *
- 	 * @param  int  $id
- 	 * @return Response
- 	 */
  	public function edit($id)
 	{
 		return view('admin.role.edit')->withRole(Role::find($id));
 	}
 
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
 	public function update(Request $request, $id)
 	{
         $role = Role::where('id', $id)->update(array(
@@ -301,14 +176,9 @@ class RoleController extends Controller
             $type = '移除权限';
         }
 
-        return empty($rs) ? Api::json_return(0, $type . '失败') : Api::json_return(1, $type . '成功');
+        return empty($rs) ? Api::jsonReturn(0, $type . '失败') : Api::jsonReturn(1, $type . '成功');
     }
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+
 	public function destroy($id)
 	{
 		//
@@ -324,11 +194,11 @@ class RoleController extends Controller
 
             // DB::table('oauth_clients')->where('id', $id)->delete();
 			DB::commit();
-			Helper::jsonp_return(0, '删除成功', array('deleted_num' => $result));
+			return Api::jsonpReturn(1, '删除成功', array('deleted_num' => $result));
 		} catch (Exception $e) {
 			DB::rollBack();
 			throw $e;
-			Helper::jsonp_return(1, '删除失败', array('deleted_num' => 0));
+			return Api::jsonpReturn(0, '删除失败', array('deleted_num' => 0));
 		}
 	}
 }
