@@ -32,7 +32,7 @@
                             <td>用户名</td>
                             <td>邮箱</td>
                             <td>手机</td>
-                            <td>创建时间</td>
+                            <td>角色</td>
                             <td>更新时间</td>
                             <td>操作</td>
                         </tr>
@@ -65,7 +65,16 @@ var columns = [{
                 {"data": "username"},
                 {"data": "email"},
                 {"data": "phone"},
-                {"data": "created_at"},
+                {
+                    "data": "roles",
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        var roles = '';
+                        $.each(sData, function() {
+                            roles += this.title;
+                        });
+                        $(nTd).html(roles);
+                    }
+                },
                 {"data": "updated_at"},
                 {
                     "data": "id",

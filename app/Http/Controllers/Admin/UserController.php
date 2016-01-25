@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Model\User;
+use App\Model\Role;
 use App\Model\UserRole;
 use Redirect, Input, Auth;
 use Illuminate\Pagination\Paginator;
@@ -40,12 +41,14 @@ class UserController extends Controller
         $searchFields = array('username', 'email', 'phone');
 
         $data = User::whereIn('id', $userIdsArray)
+            ->with(['roles' => function($query) {
+                $query->where('roles.app_id', Session::get('current_app_id'));
+            }])
             ->whereDataTables($request, $searchFields)
             ->orderByDataTables($request)
 			->skip($request->start)
 			->take($request->length)
-			->get($fields)
-            ->toArray();
+			->get($fields);
         $draw = (int)$request->draw;
 		$recordsTotal = User::whereIn('id', $userIdsArray)->count();
 		$recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
@@ -85,15 +88,17 @@ class UserController extends Controller
 	// 邀请加入
     public function getInvite()
     {
-		return view('admin.user.invite');
+		$roles = Role::where('app_id', Session::get('current_app_id'))->get(array('id', 'title'));
+		return view('admin.user.invite')->withRoles($roles);
 	}
 
     public function postInvite(Request $request)
     {
-		$this->validate($request, [
+		$this->validate($request, array(
 			'email' => 'required|email|unique:users',
 			'username' => 'required|min:3|unique:users',
-		]);
+			'role_id' => 'required',
+	    ));
 
 		$token = hash_hmac('sha256', str_random(40), env('APP_KEY'));
 
@@ -107,12 +112,19 @@ class UserController extends Controller
             'created_at' => date('Y-m-d H:i:s')
         ));
 
+        // 写入用户角色
+        $user_role = UserRole::create(array(
+            'app_id' => Session::get('current_app_id'),
+            'user_id' => $user->id,
+            'role_id' => $request->role_id,
+        ));
+
 		// 发送邀请邮件
 		$mail = Queue::push(new SendEmail('invite', '邀请入驻用户中心', $token, $request->email));
 
-		if ($user && $password_reset && $mail) {
+		if ($user && $password_reset && $user_role && $mail) {
 			session()->flash('success_message', '用户邀请成功');
-			return view('admin.user.invite');
+			return Redirect::to('/admin/user/invite');
 		} else {
 			return Redirect::back()->withInput()->withErrors('保存失败！');
 		}

@@ -27,6 +27,17 @@
             </div>
 
             <div class="form-group">
+                <label class="col-md-3 control-label">角色</label>
+                <div class="col-md-6">
+                    <select class="form-control" name="role_id">
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->id }}">{{ $role->title }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
                 <div class="col-md-2 col-md-offset-3">
                     <button type="submit" class="btn btn-primary">
                         邀请加入
