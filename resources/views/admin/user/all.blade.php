@@ -11,9 +11,6 @@
             <div class="input-group custom-search-form">
                 <a href="{{ URL('admin/user/invite') }}" class="btn btn-primary">批量接入当前应用</a>
                 &nbsp;
-                <a href="{{ URL('admin/user/create') }}" class="btn btn-primary">新增</a>
-                &nbsp;
-                <a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return check_delete();'>删除</a>
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button">
@@ -32,6 +29,7 @@
                             <td>手机</td>
                             <td>创建时间</td>
                             <td>更新时间</td>
+                            <td>状态</td>
                             <td>操作</td>
                         </tr>
                     </thead>
@@ -66,10 +64,25 @@ var columns = [{
                 {"data": "created_at"},
                 {"data": "updated_at"},
                 {
+                    "data": "status",
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        $(nTd).html(sData);
+                    }
+                },
+                {
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html("<a href=/admin/user/" + sData + "/edit>编辑</a>" + " " +
-                            "<a href='javascript:void(0);' onclick='return check_delete(" + sData + ");'>删除</a>");
+                        $(nTd).html(
+                            '<div class="btn-group">' +
+                                '<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">' +
+                                'Actions<span class="caret"></span>' +
+                                '</button>' +
+                                '<ul class="dropdown-menu pull-right" role="menu">' +
+                                    '<li><a href="javascript:void(0)">Action</a></li>' +
+                                    '<li><a href="javascript:void(0)">Action</a></li>' +
+                                '<ul>' +
+                            '</div>'
+                        );
                     }
                 }];
 </script>
