@@ -13,8 +13,6 @@
                 &nbsp;
                 <a href="{{ URL('admin/user/invite') }}" class="btn btn-primary">邀请</a>
                 &nbsp;
-                <a href="{{ URL('admin/user/create') }}" class="btn btn-primary">新增</a>
-                &nbsp;
                 <a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return check_delete();'>删除</a>
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
                 <span class="input-group-btn">
@@ -81,6 +79,15 @@ var columns = [{
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                         $(nTd).html(
+                            '<div class="btn-group">' +
+                                '<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">' +
+                                '角色<span class="caret"></span>' +
+                                '</button>' +
+                                '<ul class="dropdown-menu pull-right" role="menu">' +
+                                    '<li><a href="javascript:void(0)">Action</a></li>' +
+                                    '<li><a href="javascript:void(0)">Action</a></li>' +
+                                '<ul>' +
+                            '</div>' +
                             "<a href=/admin/user/" + sData + "/show>详细</a>" + " " +
                             "<a href=/admin/user/" + sData + "/edit>编辑</a>" + " " +
                             "<a href='javascript:void(0);' onclick='return check_remove(" + sData + ");'>移除</a>"
