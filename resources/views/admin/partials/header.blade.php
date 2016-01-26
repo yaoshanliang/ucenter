@@ -54,18 +54,18 @@ border: none;
 {
     top:0px;
 }
-.modal-dialog {
+.modal-dialog-confirm {
     margin-top: 0px;
     width: 300px
 }
-.modal-content {
+.modal-content-confirm {
     // border-radius: 4px;
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;
 }
-.modal-footer {
+.modal-footer-confirm {
     padding-top: 15px;
     padding-right: 15px;
     padding-bottom: 10px;
