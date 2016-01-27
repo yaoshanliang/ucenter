@@ -80,73 +80,33 @@
 </div>
 <!-- /.modal -->
 <script>
-/*
-var datatable_id = 'role_index';
-var columnDefs_targets = [0];
-var order = [4, 'desc'];
-var ajax_url = '/admin/role/lists';
-var remove_url = '/admin/user/remove';
-var columns = [{
-                    "data": "id",
-                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html("<input type='checkbox' id='" + sData + "' class='checkbox' name='ids' value='" + sData + "'>");
-                    }
-                },
-                {"data": "title"},
-                {"data": "name"},
-                {"data": "description"},
-                {"data": "updated_at"},
-                ];
-
-if(typeof(datatable_id) != "undefined") {
-var table;
-$(document).ready(function() {
-    datatable_base();
-    // table = $('table.display').DataTable();
-    table = $('#' + datatable_id).DataTable({
-    // table = $('table.display').DataTable({
-        //禁用排序列
-        "columnDefs": [{
-            "orderable": false,
-            "targets": columnDefs_targets
-        }],
-        //默认排序列
-        "order": order,
-        "ajax": {
-            "url": ajax_url,
-            "type": 'POST',
-            "dataType": 'json',
-            "headers": {
-                'X-CSRF-TOKEN': $('input[name="_token"]').val()
-            },
-        },
-        "columns": columns,
-        "initComplete": initComplete
-    });
-    table.on( 'draw.dt', function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            increaseArea: '20%' // optional
-        });
-    });
-    $("#choose_role_modal").on('hidden.bs.modal', function (table) {
-        $('#' + 'user_index').DataTable().draw(false);
-    })
-});
-}
-*/
+$("#choose_role_modal").on('hidden.bs.modal', function (table) {
+    $('#' + 'user_index').DataTable().draw(false);
+})
 function choose_role(user_id, table) {
-    // var ajax_url = '/admin/role/lists';
-    // $("#role_index").DataTable().ajax.url(ajax_url).load();
     $.getJSON('/admin/user/' + user_id + '/roles', function(data) {
         if (data.code === 1) {
             data = data.data;
             console.log(nTr);
+            var html;
             for (var i = 0; i < data.length; i++) {
-                console.log(data[i]);
+                html += '<tr>';
+                if (data[i].checked) {
+                    html += '<td><input class="checkbox" type="checkbox" name="id" checked="checked" value=' + data[i].id + '></input></td>';
+                } else {
+                    html += '<td><input class="checkbox" type="checkbox" name="id" value="' + data[i].id + '"></input></td>';
+                }
+                html += '<td>' + data[i].title + '</td>';
+                html += '<td>' + data[i].name + '</td>';
+                html += '<td>' + data[i].description + '</td>';
+                html += '<td>' + data[i].updated_at + '</td>';
             }
-            var nTr = $("#role_index_tbody").append('11');
+            var nTr = $("#role_index_tbody").html(html);
         }
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            increaseArea: '20%' // optional
+        });
     });
     $("#choose_role_modal").modal('show');
 }

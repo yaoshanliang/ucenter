@@ -208,8 +208,7 @@ class UserController extends Controller
     // 角色
     public function roles($user_id)
     {
-        $roles = Role::where('app_id', Session::get('current_app_id'))->get(array('id', 'name', 'title', 'description'))->toArray();
-
+        $roles = Role::where('app_id', Session::get('current_app_id'))->get(array('id', 'name', 'title', 'description', 'updated_at'))->toArray();
         $userRoles = UserRole::where('app_id', Session::get('current_app_id'))->where('user_id', $user_id)->lists('role_id')->toArray();
 
         foreach ($roles as &$v) {
