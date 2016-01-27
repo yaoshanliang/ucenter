@@ -204,4 +204,22 @@ class UserController extends Controller
             return Api::jsonReturn(0, '移除失败', array('deleted_num' => 0));
         }
     }
+
+    // 角色
+    public function roles($user_id)
+    {
+        $roles = Role::where('app_id', Session::get('current_app_id'))->get(array('id', 'name', 'title', 'description'))->toArray();
+
+        $userRoles = UserRole::where('app_id', Session::get('current_app_id'))->where('user_id', $user_id)->lists('role_id')->toArray();
+
+        foreach ($roles as &$v) {
+            if (in_array($v['id'], $userRoles)) {
+                $v['checked'] = 1;
+            } else {
+                $v['checked'] = 0;
+            }
+        }
+
+        return Api::jsonReturn(1, '获取成功', $roles);
+    }
 }

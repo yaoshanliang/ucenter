@@ -104,6 +104,7 @@ $(document).ready(function() {
     datatable_base();
     table = $('#' + datatable_id).DataTable({
         //禁用排序列
+        "sServerMethod": "POST",
         "columnDefs": [{
             "orderable": false,
             "targets": columnDefs_targets
