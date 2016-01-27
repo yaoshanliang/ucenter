@@ -87,24 +87,91 @@ var columns = [{
                     }
                 }];
 
-function choose_role() {
-$("#choose_role_modal").modal('show');
+function choose_role(user_id) {
+var datatable_id = 'role_index';
+var columnDefs_targets = [0];
+var order = [4, 'desc'];
+var ajax_url = '/admin/role/lists';
+var remove_url = '/admin/user/remove';
+var columns = [{
+                    "data": "id",
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        $(nTd).html("<input type='checkbox' id='" + sData + "' class='checkbox' name='ids' value='" + sData + "'>");
+                    }
+                },
+                {"data": "title"},
+                {"data": "name"},
+                {"data": "description"},
+                {"data": "updated_at"},
+                ];
+
+    // $.getJSON('/admin/role/lists', function(data) {
+        // console.log(data);
+
+    // });
+if(typeof(datatable_id) != "undefined") {
+var table;
+$(document).ready(function() {
+    // datatable_base();
+    table = $('#' + datatable_id).DataTable({
+        //禁用排序列
+        "columnDefs": [{
+            "orderable": false,
+            "targets": columnDefs_targets
+        }],
+        //默认排序列
+        "order": order,
+        "ajax": {
+            "url": ajax_url,
+            "type": 'POST',
+            "dataType": 'json',
+            "headers": {
+                'X-CSRF-TOKEN': $('input[name="_token"]').val()
+            },
+        },
+        "columns": columns,
+        "initComplete": initComplete
+    });
+});
+}
+    table.on( 'draw.dt', function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+    $("#choose_role_modal").modal('show');
+    $("#choose_role_modal").on('hidden.bs.modal', function (table) {
+        $('#' + 'user_index').DataTable().draw(false);
+    })
 
 }
 </script>
 <!-- Modal -->
 <div class="modal fade" id="choose_role_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="width:700px;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h5 class="modal-title" id="myModalLabel">确定移除吗？</h5>
+                <h5 class="modal-title" id="myModalLabel">角色管理</h5>
             </div>
             <div class="modal-body">
+                <table class="table table-striped table-bordered table-hover" id="role_index" class="display" cellspacing="0" width="100%" border='0px'>
+                    <thead>
+                        <tr>
+                            <td style="width:15px"></td>
+                            <td>名称</td>
+                            <td>代号</td>
+                            <td>描述</td>
+                            <td>更新时间</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" onClick="return submit_datatable('remove', datatable_id, remove_url, remove_ids);">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div>
         <!-- /.modal-content -->
