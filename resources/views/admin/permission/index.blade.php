@@ -9,7 +9,7 @@
         <div class="dataTable_wrapper">
             <br />
             <div class="input-group custom-search-form">
-                <a href="{{ URL('admin/permission/create') }}" class="btn btn-primary">新增</a>
+                <a href="{{ URL('admin/permission/create') }}" class="btn btn-primary">新增权限</a>
                 &nbsp;
                 <a href="{{ URL('admin/permission/createGroup') }}" class="btn btn-primary">新增分组</a>
                 &nbsp;

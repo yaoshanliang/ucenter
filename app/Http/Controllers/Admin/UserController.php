@@ -76,9 +76,9 @@ class UserController extends Controller
         $roles = UserRole::where('app_id', Session::get('current_app_id'))->lists('user_id')->toArray();
         foreach ($data as $k => $v) {
             if (in_array($v['id'], $roles)) {
-                $v['status'] = '<p class="text-success">已接入</p>';
+                $v['status'] = 1;
             } else {
-                $v['status'] = '<p class="text-danger">未接入</p>';
+                $v['status'] = 0;
             }
         }
 

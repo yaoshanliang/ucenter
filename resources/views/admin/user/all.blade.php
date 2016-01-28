@@ -110,7 +110,11 @@ var columns = [{
                 {
                     "data": "status",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html(sData);
+                        if (sData == 1) {
+                            $(nTd).html('<span class="text-success">已接入</span>');
+                        } else {
+                            $(nTd).html('<span class="text-danger">未接入</span>');
+                        }
                     }
                 },
                 {
