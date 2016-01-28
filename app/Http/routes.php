@@ -40,6 +40,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array(
     Route::get('/user/all', 'UserController@all');
     Route::post('/user/allLists', 'UserController@allLists');
     Route::get('/user/{id}/roles', 'UserController@roles');
+    Route::get('/user/{id}/selectOrUnselectRole/{role_id}', 'UserController@selectOrUnselectRole')->where('id', '[0-9]+')->where('role_id', '[0-9]+');
     Route::resource('/user', 'UserController');
 
     // role

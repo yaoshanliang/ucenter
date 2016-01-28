@@ -49,7 +49,7 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="choose_role_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="width:700px;">
+    <div class="modal-dialog" style="width:700px; margin-top:40px;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -80,14 +80,10 @@
 </div>
 <!-- /.modal -->
 <script>
-$("#choose_role_modal").on('hidden.bs.modal', function (table) {
-    $('#' + 'user_index').DataTable().draw(false);
-})
-function choose_role(user_id, table) {
+function choose_role(user_id) {
     $.getJSON('/admin/user/' + user_id + '/roles', function(data) {
         if (data.code === 1) {
             data = data.data;
-            console.log(nTr);
             var html;
             for (var i = 0; i < data.length; i++) {
                 html += '<tr>';
@@ -107,8 +103,24 @@ function choose_role(user_id, table) {
             checkboxClass: 'icheckbox_square-blue',
             increaseArea: '20%' // optional
         });
+        $('input').on('ifChecked', function(event){
+            selectOrUnselect('select', user_id, $(this).val())
+        });
+        $('input').on('ifUnchecked', function(event){
+            selectOrUnselect('unselect', user_id, $(this).val())
+        });
     });
     $("#choose_role_modal").modal('show');
+}
+function selectOrUnselect(type, user_id, role_id) {
+    var type = {'type': type};
+    $.getJSON('/admin/user/' + user_id + '/selectOrUnselectRole/' + role_id, type, function(data, status, xhr) {
+        if (1 == data.code) {
+            showSuccessTip(data.message, 1);
+        } else {
+            showFailTip(data.message, 1);
+        }
+    });
 }
 </script>
 <script>
@@ -149,5 +161,10 @@ var columns = [{
                         );
                     }
                 }];
+
+// 绑定模态框关闭后重绘事件
+$("#choose_role_modal").on('hidden.bs.modal', function (table) {
+    $('#' + datatable_id).DataTable().draw(false);
+})
 </script>
 @endsection

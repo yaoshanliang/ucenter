@@ -205,7 +205,7 @@ class UserController extends Controller
         }
     }
 
-    // 角色
+    // 当前用户的角色
     public function roles($user_id)
     {
         $roles = Role::where('app_id', Session::get('current_app_id'))->get(array('id', 'name', 'title', 'description', 'updated_at'))->toArray();
@@ -220,5 +220,26 @@ class UserController extends Controller
         }
 
         return Api::jsonReturn(1, '获取成功', $roles);
+    }
+
+    // 勾选或取消勾选角色
+    public function selectOrUnselectRole(Request $request, $id, $role_id)
+    {
+        if ($request->type == 'select') {
+            $rs = UserRole::create(array(
+                'user_id' => $id,
+                'role_id' => $role_id,
+                'app_id' => Session::get('current_app_id')
+            ));
+            $type = '选中角色';
+        } else {
+            $rs = UserRole::where('user_id', $id)
+                ->where('role_id', $role_id)
+                ->where('app_id', Session::get('current_app_id'))
+                ->delete();
+            $type = '移除角色';
+        }
+
+        return empty($rs) ? Api::jsonReturn(0, $type . '失败') : Api::jsonReturn(1, $type . '成功');
     }
 }
