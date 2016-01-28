@@ -20,7 +20,7 @@ Route::controllers([
 ]);
 Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth'], function() {
       Route::get('/', 'HomeController@index');
-      Route::resource('user', 'AppController');
+      // Route::resource('user', 'AppController');
 });
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array('auth', 'role')], function() {
     Route::get('/', function() { return Redirect::to('/admin/index'); });

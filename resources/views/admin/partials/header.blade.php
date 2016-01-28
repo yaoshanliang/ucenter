@@ -22,6 +22,8 @@
 <script src="/admin-assets/js/jquery.min.js"></script>
 
 <!-- iat JavaScript -->
+<script src="/admin-assets/js/select2.min.js"></script>
+<link href="/admin-assets/css/select2.min.css" rel="stylesheet">
 <script src="/admin-assets/js/iat.js"></script>
 
 <!--<meta name="_token" content="{{ csrf_token() }}"/>-->
