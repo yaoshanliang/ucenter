@@ -97,6 +97,7 @@ function initComplete() {
 		radioClass: 'iradio_square-red',
 		increaseArea: '20%' // optional
 	});
+    $(".select2").select2();
 	//行列高亮
 	var lastIdx = null;
 	$('#' + datatable_id + ' tbody')
@@ -110,7 +111,7 @@ function initComplete() {
 	.on( 'mouseleave', function () {
 		$( table.cells().nodes() ).removeClass( 'highlight' );
 	})
-	table.on( 'draw.dt', function () {
+	table.on( 'draw', function () {
 		$('input').iCheck({
 			checkboxClass: 'icheckbox_square-blue',
 			radioClass: 'iradio_square-red',
@@ -123,6 +124,7 @@ function initComplete() {
 			$('input').iCheck('uncheck');
 		});
 		$('#checkAll').iCheck('uncheck');
+        $(".select2").select2();
 	} );
 	//全选全不选
 	$('#checkAll').on('ifChecked', function(event){
