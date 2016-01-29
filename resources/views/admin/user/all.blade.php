@@ -4,7 +4,12 @@
 <div class="row">
 <div class="col-lg-12">
 <div class="panel panel-default">
-    <div class="panel-heading">用户总库</div>
+    <div class="panel-heading">用户总库
+        <div class="pull-right">
+            <a href="/admin/user"><i class="fa fa-user"></i> 用 户 </a> /
+            用户总库
+        </div>
+    </div>
     <div class="panel-body">
         <div class="dataTable_wrapper">
             <br />
