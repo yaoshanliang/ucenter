@@ -45,7 +45,8 @@ class RoleController extends Controller
     // 当前角色的权限分组
     public function permission($id)
     {
-		return view('admin.role.permission')->with(array('role_id' => $id));
+        $role = Role::find($id);
+		return view('admin.role.permission')->withRole($role);
     }
 
     public function permissionLists(Request $request, $id)
