@@ -4,12 +4,19 @@
 <div class="row">
 <div class="col-lg-12">
 <div class="panel panel-default">
-    <div class="panel-heading">权限管理</div>
+    <div class="panel-heading">权限管理&emsp;&emsp;
+        当前角色:<span class="text-success">{{ $role->title }}</span>
+        <div class="pull-right">
+            <a href="/admin/role"><i class="fa fa-eye"></i> 角 色 </a> /
+            权限
+        </div>
+    </div>
     <div class="panel-body">
+
         <div class="dataTable_wrapper">
             <br />
             <div class="input-group custom-search-form">
-            <a href='/admin/role/<?php echo $role_id; ?>/permissionSelected' class="btn btn-primary">已拥有权限列表</a>
+            <a href='/admin/role/<?php echo $role->id; ?>/permissionSelected' class="btn btn-primary">已拥有权限列表</a>
                 &nbsp;
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
                 <span class="input-group-btn">
@@ -50,7 +57,7 @@
 var datatable_id = 'user_index';
 var columnDefs_targets = [0, 6];
 var order = [5, 'desc'];
-var ajax_url = '/admin/role/<?php echo $role_id; ?>/permissionLists';
+var ajax_url = '/admin/role/<?php echo $role->id; ?>/permissionLists';
 var remove_url = '/admin/role/remove';
 var columns = [{
                     "data": "id",
@@ -85,7 +92,7 @@ $('.table').on('click', ' tbody td .row-details',
 );
 function openDetails(nTr, id) {
     $.ajax({
-        url: '/admin/role/<?php echo $role_id; ?>/permissionGroup/' + id,
+        url: '/admin/role/<?php echo $role->id; ?>/permissionGroup/' + id,
         dataType: "json",
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
@@ -125,10 +132,10 @@ function openDetails(nTr, id) {
                 increaseArea: '20%'
             });
             $('input').on('ifChecked', function(event){
-                selectOrUnselect('select', '<?php echo $role_id; ?>', $(this).val())
+                selectOrUnselect('select', '<?php echo $role->id; ?>', $(this).val())
             });
             $('input').on('ifUnchecked', function(event){
-                selectOrUnselect('unselect', '<?php echo $role_id; ?>', $(this).val())
+                selectOrUnselect('unselect', '<?php echo $role->id; ?>', $(this).val())
             });
         },
 

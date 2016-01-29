@@ -4,7 +4,11 @@
 <div class="row">
 <div class="col-lg-12">
 <div class="panel panel-default">
-    <div class="panel-heading">角色管理</div>
+    <div class="panel-heading">角色管理
+        <div class="pull-right">
+            <i class="fa fa-eye"></i> 角 色
+        </div>
+    </div>
     <div class="panel-body">
         <div class="dataTable_wrapper">
             <br />

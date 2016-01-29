@@ -2,7 +2,12 @@
 
 @section('content')
 <div class="panel panel-default">
-    <div class="panel-heading">新增 权限分组</div>
+    <div class="panel-heading">新增权限分组
+        <div class="pull-right">
+            <a href="/admin/permission"><i class="fa fa-key"></i> 权 限 </a> /
+            新增权限分组
+        </div>
+    </div>
     <div class="panel-body">
         @if (count($errors) > 0)
             <div class="alert alert-danger">

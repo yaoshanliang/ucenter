@@ -4,7 +4,11 @@
 <div class="row">
 <div class="col-lg-12">
 <div class="panel panel-default">
-    <div class="panel-heading">权限管理</div>
+    <div class="panel-heading">权限管理
+        <div class="pull-right">
+            <i class="fa fa-key"></i> 权 限
+        </div>
+    </div>
     <div class="panel-body">
         <div class="dataTable_wrapper">
             <br />
@@ -70,7 +74,7 @@ var columns = [{
                 {
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html("<a href=/admin/user/" + sData + "/edit>编辑</a>" + " " +
+                        $(nTd).html("<a href=/admin/permission/" + sData + "/edit>编辑</a>" + " " +
                             "<a href='javascript:void(0);' onclick='return check_delete(" + sData + ");'>删除</a>");
                     }
                 }];

@@ -2,7 +2,12 @@
 
 @section('content')
 <div class="panel panel-default">
-    <div class="panel-heading">编辑 接入角色</div>
+    <div class="panel-heading">编辑角色
+        <div class="pull-right">
+            <a href="/admin/role"><i class="fa fa-eye"></i> 角 色 </a> /
+            编辑角色
+        </div>
+    </div>
     <div class="panel-body">
 
     @if (count($errors) > 0)

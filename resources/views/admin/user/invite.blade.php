@@ -2,7 +2,12 @@
 
 @section('content')
 <div class="panel panel-default">
-    <div class="panel-heading">邀请 用户</div>
+    <div class="panel-heading">邀请用户
+        <div class="pull-right">
+            <a href="/admin/user"><i class="fa fa-user"></i> 用 户 </a> /
+            邀请用户
+        </div>
+    </div>
     <div class="panel-body">
         @include('errors.list')
 
