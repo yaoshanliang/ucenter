@@ -37,7 +37,7 @@
                 <a href="/admin/message"><i class="fa fa-tags fa-fw"></i> 短 信</a>
             </li>
             <li>
-                <a href="/admin/userlog/"><i class="fa fa-bar-chart-o fa-fw"></i> 日 志</a>
+                <a href="/admin/userlog"><i class="fa fa-bar-chart-o fa-fw"></i> 日 志</a>
             </li>
         </ul>
     </div>

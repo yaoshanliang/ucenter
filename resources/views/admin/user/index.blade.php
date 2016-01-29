@@ -4,7 +4,12 @@
 <div class="row">
 <div class="col-lg-12">
 <div class="panel panel-default">
-    <div class="panel-heading">用户管理</div>
+    <div class="panel-heading">用户管理
+        <div class="pull-right">
+            <a href="/admin"><i class="fa fa-dashboard"></i> Dashboard</a> /
+            <i class="fa fa-bar-chart-o"></i> Charts
+        </div>
+    </div>
     <div class="panel-body">
         <div class="dataTable_wrapper">
             <br />
