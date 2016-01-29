@@ -13,31 +13,31 @@
                 <!-- /input-group -->
             </li>
             <li>
-                <a href="/admin/index"><i class="fa fa-dashboard fa-fw"></i> 控制板</a>
+                <a href="/admin/index"><i class="fa fa-home fa-fw"></i> 控制板</a>
             </li>
             <li>
-                <a href="/admin/app"><i class="fa fa-bar-chart-o fa-fw"></i> 应 用</a>
+                <a href="/admin/app"><i class="fa fa-th fa-fw"></i> 应 用</a>
             </li>
             <li>
-                <a href="/admin/user"><i class="fa fa-book fa-fw"></i> 用 户</a>
+                <a href="/admin/user"><i class="fa fa-user fa-fw"></i> 用 户</a>
             </li>
             <li>
-                <a href="/admin/role"><i class="fa fa-bar-chart-o fa-fw"></i> 角 色</a>
+                <a href="/admin/role"><i class="fa fa-eye fa-fw"></i> 角 色</a>
             </li>
             <li>
-                <a href="/admin/permission"><i class="fa fa-bar-chart-o fa-fw"></i> 权 限</a>
+                <a href="/admin/permission"><i class="fa fa-key fa-fw"></i> 权 限</a>
             </li>
             <li>
-                <a href="/admin/file"><i class="fa fa-tags fa-fw"></i> 文 件</a>
+                <a href="/admin/file"><i class="fa fa-file-o fa-fw"></i> 文 件</a>
             </li>
             <li>
-                <a href="/admin/mail"><i class="fa fa-tags fa-fw"></i> 邮 件</a>
+                <a href="/admin/mail"><i class="fa fa-envelope-o fa-fw"></i> 邮 件</a>
             </li>
             <li>
-                <a href="/admin/message"><i class="fa fa-tags fa-fw"></i> 短 信</a>
+                <a href="/admin/message"><i class="fa fa-comments-o fa-fw"></i> 短 信</a>
             </li>
             <li>
-                <a href="/admin/userlog"><i class="fa fa-bar-chart-o fa-fw"></i> 日 志</a>
+                <a href="/admin/userlog"><i class="fa fa-file-text-o fa-fw"></i> 日 志</a>
             </li>
         </ul>
     </div>
