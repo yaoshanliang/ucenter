@@ -58,8 +58,16 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array(
     Route::post('/permission/lists', 'PermissionController@lists');
     Route::post('/permission/delete', 'PermissionController@delete');
     Route::get('/permission/createGroup', 'PermissionController@createGroup');
-    // Route::get('/permission/{id}/groupPermissions', 'PermissionController@getGroupPermissions');
     Route::resource('/permission', 'PermissionController');
+
+    // file
+    Route::resource('/file', 'FileController');
+
+    // mail
+    Route::resource('/mail', 'MailController');
+
+    // message
+    Route::resource('/message', 'MessageController');
 
     // userlog
     Route::post('/userlog/lists', 'UserLogController@lists');
