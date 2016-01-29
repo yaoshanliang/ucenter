@@ -28,7 +28,16 @@ $(function() {
 
     var url = window.location;
     var element = $('ul.nav a').filter(function() {
-        return this.href == url || url.href.indexOf(this.href) == 0;
+        url_temp = url.href;
+        href = this.href;
+        if (url_temp.substr(url_temp.length - 1, 1) != '/') {
+            url_temp += '/';
+        }
+        if (href.substr(href.length - 1, 1) != '/') {
+            href += '/';
+        }
+        return this.href == url || url_temp.indexOf(href) == 0;
+        // return this.href == url || url.href.indexOf(this.href) == 0;
     }).addClass('active').parent().parent().addClass('in').parent();
     if (element.is('li')) {
         element.addClass('active');
