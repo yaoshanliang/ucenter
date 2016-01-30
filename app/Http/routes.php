@@ -12,18 +12,16 @@
 */
 
 Route::get('/', 'WelcomeController@index');
-Route::get('auth/login/url/{url}', [
-    'middleware' => 'guest', 'as' => 'login', 'uses' => 'Auth\AuthController@loginUrl']);
 Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
 Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth'], function() {
       Route::get('/', 'HomeController@index');
-      // Route::resource('user', 'AppController');
 });
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin','middleware' => array('auth', 'role')], function() {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array('auth', 'role')], function() {
     Route::get('/', function() { return Redirect::to('/admin/index'); });
+    Route::get('/forbidden', 'AdminController@forbidden');
     Route::get('/index', 'AdminController@index');
 
    // app
