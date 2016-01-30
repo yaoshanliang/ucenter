@@ -2,7 +2,12 @@
 
 @section('content')
 <div class="panel panel-default">
-    <div class="panel-heading">编辑 接入应用</div>
+    <div class="panel-heading">编辑应用
+        <div class="pull-right">
+            <a href="/admin/app"><i class="fa fa-th"></i> 应 用</a> /
+            编辑应用
+        </div>
+    </div>
     <div class="panel-body">
 
     @if (count($errors) > 0)
