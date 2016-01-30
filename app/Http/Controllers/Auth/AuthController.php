@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\Model\User;
@@ -15,6 +14,7 @@ use Cache;
 use Session;
 use Queue;
 use App\Jobs\UserLog;
+use App\Model\UserRole;
 
 class AuthController extends Controller
 {
@@ -73,53 +73,31 @@ class AuthController extends Controller
 
 	public function getLogin()
 	{
-		if(!isset($_GET['app'])) {
-			return view('auth.login');
-		}
-		$app = $_GET['app'];
-		// $app_info = Cache::get($settings_prefix . $app, function() use ($app, $settings_prefix) {
-			// $setting = Setting::where('name', $app)->first(array('value'));
-			// Cache::forever($settings_prefix . $app, $setting['value']);
-			// return $setting['value'];
-		// });
-		$app_info = App::where('name', '=', $app)->first();
-		if($app != '' && is_null($app_info)) {
-			return view('auth.forbidden');
-		}
-		return view('auth.login', ['app_info' => $app_info]);
+		return view('auth.login');
 	}
 
 	public function postLogin(Request $request, Response $response)
 	{
-		if($request->has('app')) {
-			return $this->idsLogin($request);
-		}
 		$this->validate($request, ['username' => 'required', 'password' => 'required']);
 
 		$username = $request->username;
 		$password = $request->password;
 		$credentials = array();
-		if(strpos($username, '@') !== false) {
+		if (strpos($username, '@') !== false) {
 			$credentials = array('email' => $username, 'password' => $password);
-		} elseif(preg_match('/^\d{11}$/', $username)) {
+		} elseif (preg_match('/^\d{11}$/', $username)) {
 			$credentials = array('phone' => $username, 'password' => $password);
 		}
-		if(!empty($credentials) && Auth::attempt($credentials, $request->has('remember'))) {
+		if (!empty($credentials) && Auth::attempt($credentials, $request->has('remember'))) {
 			$this->initRole($request, $response);
 			$this->loginLog($request, $credentials);
-                return redirect()->intended();
-            dd( $request->headers->get('referer'));
-            // dd(Redirect::back());
-            dd(URL::previous());exit;
-            dd( Request::header('referer'));
-			return redirect('/admin');
+            return redirect()->intended();
 		}
 		$credentials = array('username' => $request->username, 'password' => $request->password);
 		if (Auth::attempt($credentials, $request->has('remember'))) {
 			$this->initRole($request, $response);
 			$this->loginLog($request, $credentials);
-            return Redirect::back();
-			return redirect()->guest('/admin');
+            return redirect()->intended();
 		} else {
 			return redirect()->guest('/auth/login')
 				->withInput()
@@ -127,50 +105,27 @@ class AuthController extends Controller
 		}
 	}
 
-	private function idsLogin($request)
+	// 初始化角色、应用、当前角色、当前应用
+	private function initRole(Request $request, Response $response)
 	{
-		$this->validate($request, ['username' => 'required', 'password' => 'required']);
-		$credentials = $request->only('username', 'password');
-		if(Auth::validate($credentials)) {
-			$app = $request->app;
-			$app_info = App::where('name', '=', $app)->first();
-
-			$token_array['username'] = $request->username;
-			$token_array['app'] = $app_info['app'];
-			$token_array['app_secret'] = $app_info['app_secret'];
-			$token_array['timestamp'] = time();
-			$token = Crypt::encrypt($token_array);
-			header('Location:' . $app_info['login_url'] . '?token=' . $token);
-			exit;
+        $rolesArray = UserRole::where('user_id', Auth::id())->get(array('app_id', 'role_id'))->toArray();
+		foreach ($rolesArray as $v) {
+			$apps[$v['app_id']] = Cache::get('apps:' . $v['app_id'], function() { $this->cacheApps(); });
+			$roles[$v['app_id']][$v['role_id']] = Cache::get('roles:' . $v['role_id'], function() { $this->cacheRoles(); });
 		}
-		else{
-			return redirect()->guest('auth/login?app=' . $request->app)
-				->withInput()
-				->withErrors('用户名与密码不匹配，请重试！');
-		}
-	}
-
-	//初始化角色、应用、当前角色、当前应用
-	private function initRole($request, $response)
-	{
-		$roles_array = $request->user()->roles;
-		foreach($roles_array as $v) {
-			$apps[$v->app_id] = Cache::get('apps:' . $v->app_id, function() { $this->cacheApps(); });
-			$roles[$v->app_id][$v->id] = Cache::get('roles:' . $v->id, function() { $this->cacheRoles(); });
-		}
-		$current_app = Session::get('current_app', function() use ($apps) {
-			$first_app = reset($apps);
-			Session::put('current_app', $first_app);
-			Session::put('current_app_title', $first_app['title']);
-			Session::put('current_app_id', $first_app['id']);
-			return $first_app;
+		$currentApp = Session::get('current_app', function() use ($apps) {
+			$firstApp = reset($apps);
+			Session::put('current_app', $firstApp);
+			Session::put('current_app_title', $firstApp['title']);
+			Session::put('current_app_id', $firstApp['id']);
+			return $firstApp;
 		});
-		$current_role = Session::get('current_role', function() use ($roles, $current_app) {
-			$first_role = $roles[$current_app['id']];
-			Session::put('current_role', $first_role);
-			Session::put('current_role_title', $first_role[$current_app['id']]['title']);
-			Session::put('current_role_id', $first_role[$current_app['id']]['id']);
-			return $first_role;
+		$currentRole = Session::get('current_role', function() use ($roles, $currentApp) {
+			$firstRole = $roles[$currentApp['id']];
+			Session::put('current_role', $firstRole);
+			Session::put('current_role_title', $firstRole[$currentApp['id']]['title']);
+			Session::put('current_role_id', $firstRole[$currentApp['id']]['id']);
+			return $firstRole;
 		});
 
 		Session::put('apps', $apps);
