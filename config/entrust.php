@@ -75,4 +75,5 @@ return [
     */
     'role_user_table' => 'user_role',
 
+    'admin_role' => ['developer', 'admin'],
 ];
