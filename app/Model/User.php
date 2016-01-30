@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Cache;
 use Config;
+use Session;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -56,4 +57,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->belongsToMany('App\Model\Role', 'user_role', 'user_id', 'role_id');
     }
+    public function roles()
+    {
+        $instance = $this->belongsToMany('App\Model\Role', 'user_role', 'user_id', 'role_id');
+        $instance->wherePivot('app_id', Session::get('current_app_id'));
+        return $instance;
+    }
+
 }
