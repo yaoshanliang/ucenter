@@ -16,7 +16,6 @@
 <!-- icheck JavaScript -->
 <script src="/plugin/icheck/icheck.min.js"></script>
 
-<script src="/admin-assets/js/iat.js"></script>
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <style>
 td.highlight {

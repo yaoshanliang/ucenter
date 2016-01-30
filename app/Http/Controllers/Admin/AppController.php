@@ -18,52 +18,52 @@ use App\Services\Api;
 
 class AppController extends Controller {
 
-	public function index()
-	{
-		return view('admin.app.index');
-	}
+    public function index()
+    {
+        return view('admin.app.index');
+    }
 
-	public function lists(Request $request)
-	{
-		$fields = array('id', 'name', 'title', 'user_id', 'created_at', 'updated_at');
+    public function lists(Request $request)
+    {
+        $fields = array('id', 'name', 'title', 'user_id', 'created_at', 'updated_at');
         $searchFields = array('name', 'title');
 
         $data = App::where('user_id', Auth::id())
             ->whereDataTables($request, $searchFields)
             ->orderByDataTables($request)
-			->skip($request->start)
-			->take($request->length)
-			->get($fields)
+            ->skip($request->start)
+            ->take($request->length)
+            ->get($fields)
             ->toArray();
         $draw = (int)$request->draw;
-		$recordsTotal = App::where('user_id', Auth::id())->count();
-		$recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
+        $recordsTotal = App::where('user_id', Auth::id())->count();
+        $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
 
         return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
-	}
+    }
 
-	public function create()
-	{
-		return view('admin.app.create');
-	}
+    public function create()
+    {
+        return view('admin.app.create');
+    }
 
-	public function store(Request $request)
-	{
-		$this->validate($request, array(
+    public function store(Request $request)
+    {
+        $this->validate($request, array(
             'name' => 'required|unique:apps',
-			'title' => 'required',
-			'home_url' => 'required|url',
-			'login_url' => 'required|url',
-			'secret' => 'required'
+            'title' => 'required',
+            'home_url' => 'required|url',
+            'login_url' => 'required|url',
+            'secret' => 'required'
         ));
 
-		$app = App::create(array('name' => $request->name,
-			'title' => $request->title,
-			'description' => $request->description,
-			'home_url' => $request->home_url,
-			'login_url' => $request->login_url,
-			'user_id' => Auth::id()
-		));
+        $app = App::create(array('name' => $request->name,
+            'title' => $request->title,
+            'description' => $request->description,
+            'home_url' => $request->home_url,
+            'login_url' => $request->login_url,
+            'user_id' => Auth::id()
+        ));
 
         // 接入oauth_clients
         $oauth_client = DB::table('oauth_clients')->insert(array(
@@ -78,9 +78,9 @@ class AppController extends Controller {
         $role = Role::create(array(
             'app_id' => $app->id,
             'name' => 'developer',
-			'title' => '开发者',
-			'description' => '开发者',
-		));
+            'title' => '开发者',
+            'description' => '开发者',
+        ));
 
         $user_role = DB::table('user_role')->insert(array(
             'user_id' => Auth::id(),
@@ -90,46 +90,56 @@ class AppController extends Controller {
             'updated_at' => date('Y-m-d H:i:s')
         ));
 
-		// $log = Queue::push(new UserLog(1, Auth::id(), 'A', '新增应用', 'name : ' . $request->name . '; title : ' . $request->title, '', $ip, $ips));
-		if ($app && $oauth_client && $role && $user_role) {
-			session()->flash('success_message', '应用添加成功');
-			return Redirect::to('/admin/app');
-		} else {
-			return Redirect::back()->withInput()->withErrors('保存失败！');
-		}
-	}
+        // 勾选访客角色
+       if ($request->role) {
+            $role = Role::create(array(
+                'app_id' => $app->id,
+                'name' => 'guest',
+                'title' => '访客',
+                'description' => '访客'
+            ));
+       }
 
-	public function show($id)
-	{
-	}
+        // $log = Queue::push(new UserLog(1, Auth::id(), 'A', '新增应用', 'name : ' . $request->name . '; title : ' . $request->title, '', $ip, $ips));
+        if ($app && $oauth_client && $role && $user_role) {
+            session()->flash('success_message', '应用添加成功');
+            return Redirect::to('/admin/app');
+        } else {
+            return Redirect::back()->withInput()->withErrors('保存失败！');
+        }
+    }
 
-	public function edit(AppRequest $request, $id)
-	{
+    public function show($id)
+    {
+    }
+
+    public function edit(AppRequest $request, $id)
+    {
         $app = App::find($id);
         $client = DB::table('oauth_clients')->find($app->name);
         $app->secret = $client->secret;
 
-		return view('admin.app.edit')->withApp($app);
-	}
+        return view('admin.app.edit')->withApp($app);
+    }
 
-	public function update(Request $request, $id)
-	{
-		$this->validate($request, array(
-			'name' => 'required|unique:apps,name,'.$id.'',
-			'title' => 'required',
-			'home_url' => 'required|url',
-			'login_url' => 'required|url',
-			'secret' => 'required'
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, array(
+            'name' => 'required|unique:apps,name,'.$id.'',
+            'title' => 'required',
+            'home_url' => 'required|url',
+            'login_url' => 'required|url',
+            'secret' => 'required'
         ));
 
         $app = App::where('id', $id)->update(array(
             'name' => $request->name,
-			'title' => $request->title,
-			'description' => $request->description,
-			'home_url' => $request->home_url,
-			'login_url' => $request->login_url,
-			'user_id' => Auth::id()
-		));
+            'title' => $request->title,
+            'description' => $request->description,
+            'home_url' => $request->home_url,
+            'login_url' => $request->login_url,
+            'user_id' => Auth::id()
+        ));
 
         $oauth_client = DB::table('oauth_clients')->where('id', $request->old_name)->update(array(
             'id' => $request->name,
@@ -138,35 +148,35 @@ class AppController extends Controller {
             'updated_at' => date('Y-m-d H:i:s')
         ));
 
-		if ($app && $oauth_client) {
-			session()->flash('success_message', '应用修改成功');
-			return Redirect::to('/admin/app');
-		} else {
-			return Redirect::back()->withInput()->withErrors('保存失败！');
-		}
-	}
+        if ($app && $oauth_client) {
+            session()->flash('success_message', '应用修改成功');
+            return Redirect::to('/admin/app');
+        } else {
+            return Redirect::back()->withInput()->withErrors('保存失败！');
+        }
+    }
 
-	public function destroy($id)
-	{
-		return false;
-	}
+    public function destroy($id)
+    {
+        return false;
+    }
 
-	// 删除
-	public function delete()
-	{
-		DB::beginTransaction();
-		try {
-			$ids = $_POST['ids'];
-			// Auth::user()->can('delete-all-app');
-			$result = App::whereIn('id', $ids)->delete();
+    // 删除
+    public function delete()
+    {
+        DB::beginTransaction();
+        try {
+            $ids = $_POST['ids'];
+            // Auth::user()->can('delete-all-app');
+            $result = App::whereIn('id', $ids)->delete();
 
             DB::table('oauth_clients')->whereIn('id', $ids)->delete();
-			DB::commit();
-			return Api::jsonReturn(1, '删除成功', array('deleted_num' => $result));
-		} catch (Exception $e) {
-			DB::rollBack();
-			throw $e;
-			return Api::jsonReturn(0, '删除失败', array('deleted_num' => 0));
-		}
-	}
+            DB::commit();
+            return Api::jsonReturn(1, '删除成功', array('deleted_num' => $result));
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw $e;
+            return Api::jsonReturn(0, '删除失败', array('deleted_num' => 0));
+        }
+    }
 }

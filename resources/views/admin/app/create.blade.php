@@ -64,6 +64,13 @@
             </div>
 
             <div class="form-group">
+                <div class="col-md-3 control-label">
+                    <input type="checkbox" name="role" checked="checked"></input>
+                </div>
+                <label class="col-md-5" style="padding-top:7px; font-weight:100">创建访客(guest)角色</label>
+            </div>
+
+            <div class="form-group">
                 <div class="col-md-2 col-md-offset-3">
                     <button type="submit" class="btn btn-primary">
                         新增
