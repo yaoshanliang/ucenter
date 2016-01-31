@@ -167,10 +167,10 @@ class AppController extends Controller {
         DB::beginTransaction();
         try {
             $ids = $_POST['ids'];
-            // Auth::user()->can('delete-all-app');
+            $appNames = App::whereIn('id', $ids)->lists('name');
             $result = App::whereIn('id', $ids)->delete();
 
-            DB::table('oauth_clients')->whereIn('id', $ids)->delete();
+            DB::table('oauth_clients')->whereIn('id', $appNames)->delete();
             DB::commit();
             return Api::jsonReturn(1, '删除成功', array('deleted_num' => $result));
         } catch (Exception $e) {
