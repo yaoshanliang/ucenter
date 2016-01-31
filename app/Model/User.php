@@ -57,10 +57,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         return $this->belongsToMany('App\Model\Role', 'user_role', 'user_id', 'role_id');
     }
+
+    // important! 当前应用、当前角色，hasRole/can/ability调用
     public function roles()
     {
         $instance = $this->belongsToMany('App\Model\Role', 'user_role', 'user_id', 'role_id');
         $instance->wherePivot('app_id', Session::get('current_app_id'));
+        $instance->wherePivot('role_id', Session::get('current_role_id'));
         return $instance;
     }
 
