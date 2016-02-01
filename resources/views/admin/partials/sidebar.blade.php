@@ -15,9 +15,13 @@
             <li>
                 <a href="/admin/index"><i class="fa fa-home fa-fw"></i> 控制板</a>
             </li>
-            <li>
-                <a href="/admin/app"><i class="fa fa-th fa-fw"></i> 应 用</a>
-            </li>
+
+            @if ((Session::get('current_role'))['name'] == 'developer')
+                <li>
+                    <a href="/admin/app"><i class="fa fa-th fa-fw"></i> 应 用</a>
+                </li>
+            @endif
+
             <li>
                 <a href="/admin/user"><i class="fa fa-user fa-fw"></i> 用 户</a>
             </li>

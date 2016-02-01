@@ -17,7 +17,7 @@
 
             @include('admin.partials.navbar')
 
-            @include('admin.partials.sidebar', ['app' => Cache::get(env('CACHE_APPS_PREFIX') . Session::get('current_app_id'))])
+            @include('admin.partials.sidebar')
 
         </nav>
 
