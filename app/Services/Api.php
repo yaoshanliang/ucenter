@@ -24,11 +24,11 @@ class Api
 	 * @param  int $code, string $msg, array $data
 	 * @return json格式字符串
 	 */
-	public static function jsonReturn($code, $message = '', $data = array()) {
+	public static function jsonReturn($code, $message = '', $data = null) {
 		if(empty($message)) {
 			$message = Lang::has('api.' . $code) ? trans('api.' . $code) : '';
 		}
-		if(empty($data)) {
+		if(is_null($data)) {
 			return response()->json(array('code' => $code, 'message' => $message));
 			header('Content-Type: application/json');
 			return json_encode(array('code' => $code, 'message' => $message));
