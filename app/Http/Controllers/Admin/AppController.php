@@ -44,7 +44,9 @@ class AppController extends Controller {
 
     public function create()
     {
-        return view('admin.app.create');
+        if (Auth::user()->can('create-app')) {
+            return view('admin.app.create');
+        }
     }
 
     public function store(Request $request)

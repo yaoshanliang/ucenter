@@ -5,6 +5,7 @@ use Closure;
 use Session;
 use Config;
 use Auth;
+use Request;
 
 class Permission
 {
@@ -18,7 +19,7 @@ class Permission
     public function handle($request, Closure $next)
     {
         if (Auth::user()->can('create-app')) {
-            dd(1);
+            // dd(1);
         }
         $currentRole = Session::get('current_role');
         if (!in_array($currentRole['name'], Config::get('entrust.admin_role'))) {

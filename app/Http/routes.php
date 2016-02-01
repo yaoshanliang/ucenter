@@ -19,7 +19,7 @@ Route::controllers([
 Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth'], function() {
       Route::get('/', 'HomeController@index');
 });
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array('auth', 'role')], function() {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array('auth', 'role', 'permission')], function() {
     Route::get('/', function() { return Redirect::to('/admin/index'); });
     Route::get('/forbidden', 'AdminController@forbidden');
     Route::get('/index', 'AdminController@index');

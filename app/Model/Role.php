@@ -3,6 +3,7 @@ namespace App\Model;
 
 use Zizaco\Entrust\EntrustRole;
 use Zizaco\Entrust\Traits\EntrustRoleTrait;
+use Session;
 
 class Role extends EntrustRole
 {
@@ -32,5 +33,11 @@ class Role extends EntrustRole
             $query->orderBy($post['columns'][$v['column']]['data'], $v['dir']);
         }
         return $query;
+    }
+
+    public function perms()
+    {
+        $instance = $this->belongsToMany('App\Model\Permission', 'role_permission', 'role_id', 'permission_id');
+        return $instance;
     }
 }
