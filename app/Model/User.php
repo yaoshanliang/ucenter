@@ -53,9 +53,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $user_info;
     }
 
-    public function scopeRoles($query, $user_id)
+    // public function scopeRoles($query, $user_id)
+    // {
+        // return $this->belongsToMany('App\Model\Role', 'user_role', 'user_id', 'role_id');
+    // }
+
+    public function appRoles()
     {
-        return $this->belongsToMany('App\Model\Role', 'user_role', 'user_id', 'role_id');
+        $instance = $this->belongsToMany('App\Model\Role', 'user_role', 'user_id', 'role_id');
+        $instance->wherePivot('app_id', Session::get('current_app_id'));
+        return $instance;
     }
 
     // important! 当前应用、当前角色，hasRole/can/ability调用

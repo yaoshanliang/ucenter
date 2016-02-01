@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Model\User;
 use App\Model\Role;
 use App\Model\UserRole;
+use App\Model\App;
 use Redirect, Input, Auth;
 use Illuminate\Pagination\Paginator;
 use App\Services\Helper;
@@ -41,7 +42,7 @@ class UserController extends Controller
         $searchFields = array('username', 'email', 'phone');
 
         $data = User::whereIn('id', $userIdsArray)
-            ->with(['roles' => function($query) {
+            ->with(['appRoles' => function($query) {
                 $query->where('roles.app_id', Session::get('current_app_id'));
             }])
             ->whereDataTables($request, $searchFields)
@@ -98,7 +99,7 @@ class UserController extends Controller
     // 邀请加入
     public function getInvite()
     {
-        $roles = Role::where('app_id', Session::get('current_app_id'))->get(array('id', 'title'));
+        $roles = Role::where('app_id', Session::get('current_app_id'))->where('name', '<>', 'developer')->get(array('id', 'title'));
         return view('admin.user.invite')->withRoles($roles);
     }
 
@@ -165,18 +166,15 @@ class UserController extends Controller
     {
     }
 
-    public function join(Request $request)
-    {
-        $ids = $request->ids;
-        $result = User::whereIn('id', $ids)->delete();
-    }
-
     // 删除
     public function delete()
     {
         DB::beginTransaction();
         try {
             $ids = $_POST['ids'];
+            if (in_array(Auth::id(), $ids)) {
+                return Api::jsonReturn(0, '删除失败, 不允许删除自己', array('deleted_num' => 0));
+            }
             $result = User::whereIn('id', $ids)->delete();
 
             DB::commit();
@@ -194,6 +192,13 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             $ids = $_POST['ids'];
+            $app = App::find(Session::get('current_app_id'))->toArray();
+            if (in_array($app['user_id'], $ids)) {
+                return Api::jsonReturn(0, '移除失败, 不允许移除创建者', array('deleted_num' => 0));
+            }
+            if (in_array(Auth::id(), $ids)) {
+                return Api::jsonReturn(0, '移除失败, 不允许移除自己', array('deleted_num' => 0));
+            }
             $result = UserRole::where('app_id', Session::get('current_app_id'))->whereIn('user_id', $ids)->delete();
 
             DB::commit();
@@ -225,6 +230,10 @@ class UserController extends Controller
     // 勾选或取消勾选角色
     public function selectOrUnselectRole(Request $request, $id, $role_id)
     {
+        if (Role::where('id', $role_id)->where('name', 'developer')->exists()) {
+            return Api::jsonReturn(0, '开发者角色限制');
+        }
+
         if ($request->type == 'select') {
             $rs = UserRole::create(array(
                 'user_id' => $id,

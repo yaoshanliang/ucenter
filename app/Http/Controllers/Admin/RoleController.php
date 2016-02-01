@@ -1,4 +1,5 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php
+namespace App\Http\Controllers\Admin;
 
 use Zizaco\Entrust\EntrustPermission;
 use App\Http\Requests;
@@ -200,10 +201,12 @@ class RoleController extends Controller
 		DB::beginTransaction();
 		try {
 			$ids = $_POST['ids'];
-			// Auth::user()->can('delete-all-app');
+            $role = Role::where('app_id', Session::get('current_app_id'))->where('name', 'developer')->first()->toArray();
+            if (in_array($role['id'], $ids)) {
+			    return Api::jsonReturn(0, '开发者不允许删除');
+            }
 			$result = Role::whereIn('id', $ids)->delete();
 
-            // DB::table('oauth_clients')->where('id', $id)->delete();
 			DB::commit();
 			return Api::jsonReturn(1, '删除成功', array('deleted_num' => $result));
 		} catch (Exception $e) {

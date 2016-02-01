@@ -80,9 +80,9 @@ function submit_datatable(type, datatable_id, url, ids, tip_msg, tip_time) {
         success: function(data) {
             if(data['code'] === 1) {
                 $('#' + datatable_id).DataTable().draw(false);//保持分页
-                showSuccessTip(tip_msg, tip_time);
+                showSuccessTip(data['message']);
             } else {
-                showFailTip(tip_msg, tip_time);
+                showFailTip(data['message']);
             }
         },
         error: function() {
