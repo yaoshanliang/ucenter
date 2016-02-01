@@ -29,10 +29,9 @@ class Role
      * @param  $roles
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $roles)
     {
-        $currentRole = Session::get('current_role');
-        if (!in_array($currentRole['name'], Config::get('entrust.admin_role'))) {
+        if (!$request->user()->hasRole(explode('|', $roles))) {
             if (!Request::is('admin/forbidden')) {
                 return redirect('/admin/forbidden');
             }
