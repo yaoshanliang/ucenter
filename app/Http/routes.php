@@ -19,64 +19,74 @@ Route::controllers([
 Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth'], function() {
       Route::get('/', 'HomeController@index');
 });
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array('auth', 'role', 'permission')], function() {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array('auth', 'role:developer|admin')], function() {
     Route::get('/', function() { return Redirect::to('/admin/index'); });
     Route::get('/forbidden', 'AdminController@forbidden');
     Route::get('/index', 'AdminController@index');
 
-   // app
-    Route::post('/app/lists', 'AppController@lists');
-    Route::post('/app/delete', 'AppController@delete');
-    Route::resource('app', 'AppController');
+    // app，require developer role
+    Route::group(['prefix' => 'app', 'middleware' => 'role:developer'], function() {
+        Route::post('/lists', 'AppController@lists');
+        Route::post('/delete', 'AppController@delete');
+        Route::resource('/', 'AppController');
+    });
 
     // user
-    Route::get('/user/invite', 'UserController@getInvite');
-    Route::post('/user/invite', 'UserController@postInvite');
-    Route::post('/user/lists', 'UserController@lists');
-    Route::post('/user/delete', 'UserController@delete');
-    Route::post('/user/remove', 'UserController@remove');
-    Route::get('/user/all', 'UserController@all');
-    Route::post('/user/allLists', 'UserController@allLists');
-    Route::get('/user/{id}/roles', 'UserController@roles');
-    Route::get('/user/{id}/selectOrUnselectRole/{role_id}', 'UserController@selectOrUnselectRole')->where('id', '[0-9]+')->where('role_id', '[0-9]+');
-    Route::resource('/user', 'UserController');
+    Route::group(['prefix' => 'user'], function(){
+        Route::get('/invite', 'UserController@getInvite');
+        Route::post('/invite', 'UserController@postInvite');
+        Route::post('/lists', 'UserController@lists');
+        Route::post('/delete', 'UserController@delete');
+        Route::post('/remove', 'UserController@remove');
+        Route::get('/all', 'UserController@all');
+        Route::post('/allLists', 'UserController@allLists');
+        Route::get('/{id}/roles', 'UserController@roles');
+        Route::get('/{id}/selectOrUnselectRole/{role_id}', 'UserController@selectOrUnselectRole')->where('id', '[0-9]+')->where('role_id', '[0-9]+');
+        Route::resource('/', 'UserController');
+    });
 
     // role
-    Route::post('/role/lists', 'RoleController@lists');
-    Route::post('/role/delete', 'RoleController@delete');
-    Route::get('/role/{id}/permission', 'RoleController@permission')->where('id', '[0-9]+');
-    Route::post('/role/{id}/permissionLists', 'RoleController@permissionLists')->where('id', '[0-9]+');
-    Route::get('/role/{id}/permissionSelected', 'RoleController@permissionSelected')->where('id', '[0-9]+');
-    Route::post('/role/{id}/permissionSelectedLists', 'RoleController@permissionSelectedLists');
-    Route::get('/role/{id}/permissionGroup/{permission_id}', 'RoleController@permissionGroup')->where('id', '[0-9]+')->where('permission_id', '[0-9]+');
-    Route::get('/role/{id}/selectOrUnselectPermission/{permission_id}', 'RoleController@selectOrUnselectPermission')->where('id', '[0-9]+')->where('permission_id', '[0-9]+');
-    Route::resource('role', 'RoleController');
+    Route::group(['prefix' => 'role'], function(){
+        Route::post('/lists', 'RoleController@lists');
+        Route::post('/delete', 'RoleController@delete');
+        Route::get('/{id}/permission', 'RoleController@permission')->where('id', '[0-9]+');
+        Route::post('/{id}/permissionLists', 'RoleController@permissionLists')->where('id', '[0-9]+');
+        Route::get('/{id}/permissionSelected', 'RoleController@permissionSelected')->where('id', '[0-9]+');
+        Route::post('/{id}/permissionSelectedLists', 'RoleController@permissionSelectedLists');
+        Route::get('/{id}/permissionGroup/{permission_id}', 'RoleController@permissionGroup')->where('id', '[0-9]+')->where('permission_id', '[0-9]+');
+        Route::get('/{id}/selectOrUnselectPermission/{permission_id}', 'RoleController@selectOrUnselectPermission')->where('id', '[0-9]+')->where('permission_id', '[0-9]+');
+        Route::resource('/', 'RoleController');
+    });
 
     // permission
-    Route::post('/permission/lists', 'PermissionController@lists');
-    Route::post('/permission/delete', 'PermissionController@delete');
-    Route::get('/permission/createGroup', 'PermissionController@createGroup');
-    Route::resource('/permission', 'PermissionController');
+    Route::group(['prefix' => 'permission'], function(){
+        Route::post('/lists', 'PermissionController@lists');
+        Route::post('/delete', 'PermissionController@delete');
+        Route::get('/createGroup', 'PermissionController@createGroup');
+        Route::resource('/', 'PermissionController');
+    });
 
     // file
-    Route::resource('/file', 'FileController');
+    Route::group(['prefix' => 'file'], function(){
+        Route::resource('/', 'FileController');
+    });
 
     // mail
-    Route::resource('/mail', 'MailController');
+    Route::group(['prefix' => 'mail'], function(){
+        Route::resource('/', 'MailController');
+    });
 
     // message
-    Route::resource('/message', 'MessageController');
+    Route::group(['prefix' => 'message'], function(){
+        Route::resource('/', 'MessageController');
+    });
 
     // userlog
-    Route::post('/userlog/lists', 'UserLogController@lists');
-    Route::post('/userlog/delete', 'UserLogController@delete');
-    Route::resource('/userlog', 'UserLogController');
-    // Route::get('app/{id}/edit', 'AppController@edit', function(Request $request)
-    // {
-    // $id = $this->route('app');
-    // return App::where('id', $id)->where('user_id', Auth::id())->exists();
-    // });
-    // Route::post('app/{id}/edit', 'AppController@update');
+    Route::group(['prefix' => 'userlog'], function(){
+        Route::post('/lists', 'UserLogController@lists');
+        Route::post('/delete', 'UserLogController@delete');
+        Route::resource('/', 'UserLogController');
+    });
 });
 $api = app('api.router');
 $api->version('v1', function ($api) {
