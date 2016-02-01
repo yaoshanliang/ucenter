@@ -62,10 +62,14 @@ function choose_role(user_id) {
             var html;
             for (var i = 0; i < data.length; i++) {
                 html += '<tr>';
-                if (data[i].checked) {
-                    html += '<td><input class="checkbox" type="checkbox" name="id" checked="checked" value=' + data[i].id + '></input></td>';
+                if (data[i].name == 'developer') {
+                    html += '<td></td>';
                 } else {
-                    html += '<td><input class="checkbox" type="checkbox" name="id" value="' + data[i].id + '"></input></td>';
+                    if (data[i].checked) {
+                        html += '<td><input class="checkbox" type="checkbox" name="id" checked="checked" value=' + data[i].id + '></input></td>';
+                    } else {
+                        html += '<td><input class="checkbox" type="checkbox" name="id" value="' + data[i].id + '"></input></td>';
+                    }
                 }
                 html += '<td>' + data[i].title + '</td>';
                 html += '<td>' + data[i].name + '</td>';
@@ -115,7 +119,7 @@ var columns = [{
                 {"data": "email"},
                 {"data": "phone"},
                 {
-                    "data": "roles",
+                    "data": "app_roles",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                         var roles = '';
                         $.each(sData, function() {
