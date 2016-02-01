@@ -10,12 +10,6 @@ class AppRequest extends Request
 {
     private $id;
 
-    public function __construct()
-    {
-        // $this->id = $this->route('app');
-        // $this->id = $_GET['app'];
-    }
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -23,7 +17,7 @@ class AppRequest extends Request
      */
     public function authorize()
     {
-        $this->id = $this->route('app');
+        $this->id = $this->route('id');
         if ($this->id) {
             return App::where('id', $this->id)->where('user_id', Auth::id())->exists();
         } else {

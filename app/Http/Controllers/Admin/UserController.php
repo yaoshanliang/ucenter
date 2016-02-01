@@ -194,10 +194,10 @@ class UserController extends Controller
             $ids = $_POST['ids'];
             $app = App::find(Session::get('current_app_id'))->toArray();
             if (in_array($app['user_id'], $ids)) {
-                return Api::jsonReturn(0, '移除失败, 不允许移除创建者', array('deleted_num' => 0));
+                return Api::jsonReturn(0, '移除失败, 不允许移除创建者');
             }
             if (in_array(Auth::id(), $ids)) {
-                return Api::jsonReturn(0, '移除失败, 不允许移除自己', array('deleted_num' => 0));
+                return Api::jsonReturn(0, '移除失败, 不允许移除自己');
             }
             $result = UserRole::where('app_id', Session::get('current_app_id'))->whereIn('user_id', $ids)->delete();
 
@@ -213,7 +213,10 @@ class UserController extends Controller
     // 当前用户的角色
     public function roles($user_id)
     {
-        $roles = Role::where('app_id', Session::get('current_app_id'))->get(array('id', 'name', 'title', 'description', 'updated_at'))->toArray();
+        $roles = Role::where('app_id', Session::get('current_app_id'))
+            ->where('name', '<>', 'developer')
+            ->get(array('id', 'name', 'title', 'description', 'updated_at'))
+            ->toArray();
         $userRoles = UserRole::where('app_id', Session::get('current_app_id'))->where('user_id', $user_id)->lists('role_id')->toArray();
 
         foreach ($roles as &$v) {

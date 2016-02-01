@@ -28,8 +28,9 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array
     Route::group(['prefix' => 'app', 'middleware' => 'role:developer'], function() {
         Route::post('/lists', 'AppController@lists');
         Route::post('/delete', 'AppController@delete');
-        Route::resource('/', 'AppController');
+        // Route::resource('', 'AppController');
     });
+    Route::resource('/app', 'AppController');
 
     // user
     Route::group(['prefix' => 'user'], function(){
@@ -42,8 +43,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array
         Route::post('/allLists', 'UserController@allLists');
         Route::get('/{id}/roles', 'UserController@roles');
         Route::get('/{id}/selectOrUnselectRole/{role_id}', 'UserController@selectOrUnselectRole')->where('id', '[0-9]+')->where('role_id', '[0-9]+');
-        Route::resource('/', 'UserController');
     });
+    Route::resource('/user', 'UserController');
 
     // role
     Route::group(['prefix' => 'role'], function(){
@@ -55,38 +56,38 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array
         Route::post('/{id}/permissionSelectedLists', 'RoleController@permissionSelectedLists');
         Route::get('/{id}/permissionGroup/{permission_id}', 'RoleController@permissionGroup')->where('id', '[0-9]+')->where('permission_id', '[0-9]+');
         Route::get('/{id}/selectOrUnselectPermission/{permission_id}', 'RoleController@selectOrUnselectPermission')->where('id', '[0-9]+')->where('permission_id', '[0-9]+');
-        Route::resource('/', 'RoleController');
     });
+    Route::resource('/role', 'RoleController');
 
     // permission
     Route::group(['prefix' => 'permission'], function(){
         Route::post('/lists', 'PermissionController@lists');
         Route::post('/delete', 'PermissionController@delete');
         Route::get('/createGroup', 'PermissionController@createGroup');
-        Route::resource('/', 'PermissionController');
     });
+    Route::resource('/permission', 'PermissionController');
 
     // file
     Route::group(['prefix' => 'file'], function(){
-        Route::resource('/', 'FileController');
     });
+    Route::resource('/file', 'FileController');
 
     // mail
     Route::group(['prefix' => 'mail'], function(){
-        Route::resource('/', 'MailController');
     });
+    Route::resource('/mail', 'MailController');
 
     // message
     Route::group(['prefix' => 'message'], function(){
-        Route::resource('/', 'MessageController');
     });
+    Route::resource('/message', 'MessageController');
 
     // userlog
     Route::group(['prefix' => 'userlog'], function(){
         Route::post('/lists', 'UserLogController@lists');
         Route::post('/delete', 'UserLogController@delete');
-        Route::resource('/', 'UserLogController');
     });
+    Route::resource('/userlog', 'UserLogController');
 });
 $api = app('api.router');
 $api->version('v1', function ($api) {

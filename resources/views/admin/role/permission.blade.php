@@ -37,7 +37,6 @@
                             <td>描述</td>
                             <td>创建时间</td>
                             <td>更新时间</td>
-                            <td>操作</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,7 +54,7 @@
 
 <script>
 var datatable_id = 'user_index';
-var columnDefs_targets = [0, 6];
+var columnDefs_targets = [0];
 var order = [5, 'desc'];
 var ajax_url = '/admin/role/<?php echo $role->id; ?>/permissionLists';
 var remove_url = '/admin/role/remove';
@@ -70,13 +69,7 @@ var columns = [{
                 {"data": "description"},
                 {"data": "created_at"},
                 {"data": "updated_at"},
-                {
-                    "data": "id",
-                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html("<a href=/admin/role/" + sData + "/permission>权限</a>" + " " + "<a href=/admin/role/" + sData + "/edit>编辑</a>" + " " +
-                            "<a href='javascript:void(0);' onclick='return check_remove(" + sData + ");'>移除</a>");
-                    }
-                }];
+                ];
 
 $('.table').on('click', ' tbody td .row-details',
     function() {
