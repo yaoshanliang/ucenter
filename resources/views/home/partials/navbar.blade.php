@@ -1,6 +1,6 @@
 <div class="navbar-header">
     <a class="navbar-brand" href={{ Cache::get(Config::get('cache.settings') . 'site_url') }}>{{ Cache::get(Config::get('cache.settings') . 'site_name') }}</a>
-    <a class="navbar-brand" href={{ Cache::get(Config::get('cache.settings') . 'site_url') }}/admin>{{ Cache::get(Config::get('cache.settings') . 'site_admin_name') }}</a>
+    <a class="navbar-brand" href={{ Cache::get(Config::get('cache.settings') . 'site_url') }}/home>{{ Cache::get(Config::get('cache.settings') . 'site_home_name') }}</a>
 </div>
 <!-- /.navbar-header -->
 
