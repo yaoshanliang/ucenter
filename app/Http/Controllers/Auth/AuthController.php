@@ -13,6 +13,7 @@ use Auth;
 use Cache;
 use Session;
 use Queue;
+use Config;
 use App\Jobs\UserLog;
 use App\Model\UserRole;
 
@@ -110,8 +111,8 @@ class AuthController extends Controller
     {
         $rolesArray = UserRole::where('user_id', Auth::id())->get(array('app_id', 'role_id'))->toArray();
         foreach ($rolesArray as $v) {
-            $apps[$v['app_id']] = Cache::get('apps:' . $v['app_id'], function() { $this->cacheApps(); });
-            $roles[$v['app_id']][$v['role_id']] = Cache::get('roles:' . $v['role_id'], function() { $this->cacheRoles(); });
+            $apps[$v['app_id']] = Cache::get(Config::get('cache.apps') . $v['app_id'], function() use ($v) { return $this->cacheApps($v['app_id']); });
+            $roles[$v['app_id']][$v['role_id']] = Cache::get(Config::get('cache.roles') . $v['role_id'], function() use ($v) { return $this->cacheRoles($v['role_id']); });
         }
         $currentApp = Session::get('current_app', function() use ($apps) {
             $firstApp = reset($apps);

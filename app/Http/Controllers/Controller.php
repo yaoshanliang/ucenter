@@ -12,7 +12,7 @@ abstract class Controller extends BaseController {
 
     use DispatchesCommands, ValidatesRequests;
 
-    function cacheApps() {
+    function cacheApps($app_id) {
         $appsArray = App::all();
         foreach($appsArray as $v) {
             $apps[$v['id']] = Cache::get(Config::get('cache.apps') . $v['id'], function() use ($v) {
@@ -21,9 +21,10 @@ abstract class Controller extends BaseController {
                 return $cacheData;
             });
         }
+        return $apps[$app_id];
     }
 
-    function cacheRoles() {
+    function cacheRoles($role_id) {
         $rolesArray = Role::all();
         foreach($rolesArray as $v) {
             $roles[$v['id']] = Cache::get(Config::get('cache.roles') . $v['id'], function() use ($v) {
@@ -32,5 +33,6 @@ abstract class Controller extends BaseController {
                 return $cacheData;
             });
         }
+        return $roles[$role_id];
     }
 }
