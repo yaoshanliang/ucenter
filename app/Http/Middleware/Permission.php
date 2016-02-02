@@ -18,15 +18,6 @@ class Permission
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->can('create-app')) {
-            // dd(1);
-        }
-        $currentRole = Session::get('current_role');
-        if (!in_array($currentRole['name'], Config::get('entrust.admin_role'))) {
-            if (!Request::is('admin/forbidden')) {
-                return redirect('/admin/forbidden');
-            }
-        }
         return $next($request);
     }
 }

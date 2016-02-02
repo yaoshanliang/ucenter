@@ -63,6 +63,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array
     Route::group(['prefix' => 'permission'], function(){
         Route::post('/lists', 'PermissionController@lists');
         Route::post('/delete', 'PermissionController@delete');
+        Route::get('/group', 'PermissionController@group');
+        Route::post('/groupLists', 'PermissionController@groupLists');
         Route::get('/createGroup', 'PermissionController@createGroup');
     });
     Route::resource('/permission', 'PermissionController');

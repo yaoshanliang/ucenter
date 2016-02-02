@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use Zizaco\Entrust\EntrustPermission;
 use App\Http\Requests;
+use App\Http\Requests\PermissionRequest;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -54,6 +55,30 @@ class PermissionController extends Controller
 		return view('admin.permission.createGroup');
 	}
 
+    public function group()
+    {
+		return view('admin.permission.group');
+    }
+
+    public function groupLists(Request $request)
+    {
+		$fields = array('id', 'name', 'title', 'description', 'created_at', 'updated_at');
+        $searchFields = array('name', 'title', 'description');
+
+        $data = Permission::where('app_id', Session::get('current_app_id'))
+            ->where('group_id', 0)
+            ->whereDataTables($request, $searchFields)
+            ->orderByDataTables($request)
+			->skip($request->start)
+			->take($request->length)
+			->get($fields);
+        $draw = (int)$request->draw;
+		$recordsTotal = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', 0)->count();
+		$recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
+
+        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+    }
+
     public function store(Request $request)
     {
         $permission = Permission::create(array(
@@ -65,7 +90,11 @@ class PermissionController extends Controller
 		));
 		if ($permission) {
 			session()->flash('success_message', '添加成功');
-			return redirect('/admin/permission');
+            if ($request->group_id) {
+			    return redirect('/admin/permission');
+            } else {
+			    return redirect('/admin/permission/group');
+            }
 		} else {
 			return redirect()->back()->withInput()->withErrors('保存失败！');
 		}
@@ -77,12 +106,12 @@ class PermissionController extends Controller
 		//
 	}
 
-	public function edit($id)
+	public function edit(PermissionRequest $request, $id)
 	{
 		return view('admin.permission.edit')->withPermission(Permission::find($id));
 	}
 
-	public function update(Request $request, $id)
+	public function update(PermissionRequest $request, $id)
 	{
         $permission = Permission::where('id', $id)->update(array(
             'app_id' => Session::get('current_app_id'),
@@ -92,7 +121,11 @@ class PermissionController extends Controller
 		));
 		if ($permission) {
 			session()->flash('success_message', '权限修改成功');
-			return Redirect::to('/admin/permission/app');
+            if ($request->group_id) {
+			    return redirect('/admin/permission');
+            } else {
+			    return redirect('/admin/permission/group');
+            }
 		} else {
 			return Redirect::back()->withInput()->withErrors('保存失败！');
 		}
@@ -109,16 +142,20 @@ class PermissionController extends Controller
 		DB::beginTransaction();
 		try {
 			$ids = $_POST['ids'];
-			// Auth::user()->can('delete-all-app');
+            $permissions = Permission::whereIn('id', $ids)->lists('app_id')->toArray();
+            if (!in_array(Session::get('current_app_id'), $permissions)) {
+                return Api::jsonReturn(0, '不允许删除');
+            }
+            $role = Role::where('app_id', Session::get('current_app_id'))->where('name', 'developer')->first()->toArray();
 			$result = Permission::whereIn('id', $ids)->delete();
+            Permission::whereIn('group_id', $ids)->delete();
 
-            // DB::table('oauth_clients')->where('id', $id)->delete();
 			DB::commit();
-			Helper::jsonp_return(0, '删除成功', array('deleted_num' => $result));
+			return Api::jsonReturn(1, '删除成功', array('deleted_num' => $result));
 		} catch (Exception $e) {
 			DB::rollBack();
 			throw $e;
-			Helper::jsonp_return(1, '删除失败', array('deleted_num' => 0));
+			return Api::jsonReturn(0, '删除失败', array('deleted_num' => 0));
 		}
 	}
 }

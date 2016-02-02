@@ -18,6 +18,7 @@ use App\Services\Api;
 use Session;
 use Auth;
 use Redirect;
+
 class RoleController extends Controller
 {
     public function index(Request $request)
@@ -51,7 +52,7 @@ class RoleController extends Controller
         return view('admin.role.permission')->withRole(Role::find($id));
     }
 
-    public function permissionLists(Request $request, $id)
+    public function permissionLists(RoleRequest $request, $id)
     {
         $fields = array('id', 'name', 'title', 'description', 'created_at', 'updated_at');
         $searchFields = array('name', 'title', 'description');
@@ -71,7 +72,7 @@ class RoleController extends Controller
     }
 
     // 获取当前权限分组里的权限
-    public function permissionGroup(Request $request, $role_id, $permission_id)
+    public function permissionGroup(RoleRequest $request, $role_id, $permission_id)
     {
         $permissions = Permission::where('group_id', $permission_id)->get(array('id', 'name', 'title', 'description'))->toArray();
 
@@ -88,12 +89,12 @@ class RoleController extends Controller
     }
 
     // 当前角色已拥有权限列表
-    public function permissionSelected($id)
+    public function permissionSelected(RoleRequest $request, $id)
     {
-        return view('admin.role.permissionSelected')->with(array('role_id' => $id));
+        return view('admin.role.permissionSelected')->withRole(Role::find($id));
     }
 
-    public function permissionSelectedLists(Request $request, $id)
+    public function permissionSelectedLists(RoleRequest $request, $id)
     {
         $permissionIdsArray = RolePermission::where('role_id', $id)->lists('permission_id');
 
@@ -153,7 +154,7 @@ class RoleController extends Controller
         return view('admin.role.edit')->withRole(Role::find($id));
     }
 
-    public function update(Request $request, $id)
+    public function update(RoleRequest $request, $id)
     {
         $this->validate($request, array(
             'name' => 'required|unique:roles,name,' . $id . ',id,app_id,' . Session::get('current_app_id'),
@@ -174,7 +175,7 @@ class RoleController extends Controller
         }
     }
 
-    public function selectOrUnselectPermission(Request $request, $id, $permission_id)
+    public function selectOrUnselectPermission(RoleRequest $request, $id, $permission_id)
     {
         if ($request->type == 'select') {
             $rs = DB::table('role_permission')->insert(array(
@@ -202,6 +203,10 @@ class RoleController extends Controller
         DB::beginTransaction();
         try {
             $ids = $_POST['ids'];
+            $roles = Role::whereIn('id', $ids)->lists('app_id')->toArray();
+            if (!in_array(Session::get('current_app_id'), $roles)) {
+                return Api::jsonReturn(0, '不允许删除');
+            }
             $role = Role::where('app_id', Session::get('current_app_id'))->where('name', 'developer')->first()->toArray();
             if (in_array($role['id'], $ids)) {
                 return Api::jsonReturn(0, '开发者不允许删除');
