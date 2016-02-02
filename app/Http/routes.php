@@ -16,9 +16,24 @@ Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
+
 Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth'], function() {
-      Route::get('/', 'HomeController@index');
+    Route::get('/', 'HomeController@index');
+    Route::get('/index', 'HomeController@index');
+
+    // user
+    Route::group(['prefix' => 'user'], function(){
+    });
+    Route::resource('/user', 'UserController');
+
+    // app
+    Route::group(['prefix' => 'app'], function(){
+        Route::post('/lists', 'AppController@lists');
+        Route::post('/remove', 'AppController@remove');
+    });
+    Route::resource('/app', 'AppController');
 });
+
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array('auth', 'role:developer|admin')], function() {
     Route::get('/', function() { return Redirect::to('/admin/index'); });
     Route::get('/forbidden', 'AdminController@forbidden');
