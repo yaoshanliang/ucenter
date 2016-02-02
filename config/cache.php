@@ -81,4 +81,5 @@ return [
     'apps' => 'apps:',
     'roles' => 'roles:',
     'users' =>'users:',
+    'settings' =>'settings:',
 ];
