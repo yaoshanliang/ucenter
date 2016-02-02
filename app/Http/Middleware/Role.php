@@ -33,7 +33,7 @@ class Role
     {
         if (!$request->user()->hasRole(explode('|', $roles))) {
             if (!Request::is('admin/forbidden')) {
-                return redirect('/admin/forbidden');
+                return redirect('/home/index');
             }
         }
         return $next($request);
