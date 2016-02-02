@@ -5,7 +5,8 @@
     <div class="panel-heading">新增权限分组
         <div class="pull-right">
             <a href="/admin/permission"><i class="fa fa-key"></i> 权 限 </a> /
-            新增权限分组
+            <a href="/admin/permission/group">权限分组</a> /
+            新增分组
         </div>
     </div>
     <div class="panel-body">

@@ -15,7 +15,7 @@
             <div class="input-group custom-search-form">
                 <a href="{{ URL('admin/permission/create') }}" class="btn btn-primary">新增权限</a>
                 &nbsp;
-                <a href="{{ URL('admin/permission/createGroup') }}" class="btn btn-primary">新增分组</a>
+                <a href="{{ URL('admin/permission/group') }}" class="btn btn-primary">权限分组</a>
                 &nbsp;
                 <a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return check_delete();'>删除</a>
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
@@ -58,7 +58,7 @@ var datatable_id = 'user_index';
 var columnDefs_targets = [0, 7];
 var order = [6, 'desc'];
 var ajax_url = '/admin/permission/lists';
-var delete_url = '/admin/role/delete';
+var delete_url = '/admin/permission/delete';
 var columns = [{
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {

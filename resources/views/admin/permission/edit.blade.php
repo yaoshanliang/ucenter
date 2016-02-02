@@ -24,6 +24,7 @@
     <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/permission/'.$permission->id) }}">
         <input name="_method" type="hidden" value="PUT">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="group_id" value="{{ $permission->group_id }}">
             <div class="form-group">
                 <label class="col-md-3 control-label">代号</label>
                 <div class="col-md-6">
