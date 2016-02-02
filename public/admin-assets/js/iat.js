@@ -154,10 +154,14 @@ function check_delete(id) {
 }
 function check_remove(id) {
     var ids = [];
-    if(!id) {
+    if (!id) {
         $('input[name="ids"]:checked').each(function(){ ids.push($(this).val()); });
     } else {
-        ids.push(id);
+        if (typeof(id) == 'object') {
+            ids = id;
+        } else {
+            ids.push(id);
+        }
     }
     remove_ids = ids;
     if(ids == '') {
