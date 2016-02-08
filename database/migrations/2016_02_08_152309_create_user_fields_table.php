@@ -12,7 +12,7 @@ class CreateUserFieldsTable extends Migration {
      */
     public function up()
     {
-        Schema::table('user_fields', function(Blueprint $table)
+        Schema::create('user_fields', function(Blueprint $table)
         {
             $table->increments('id');
             $table->string('name')->unique();

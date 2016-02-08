@@ -12,7 +12,7 @@ class CreateUserInfoTable extends Migration {
      */
     public function up()
     {
-        Schema::table('user_info', function(Blueprint $table)
+        Schema::create('user_info', function(Blueprint $table)
         {
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigned();
