@@ -52,6 +52,7 @@
 </div>
 </div>
 
+@include('admin.partials.modal.remove')
 @include('admin.partials.modal.role')
 
 <script>

@@ -50,6 +50,8 @@
 </div>
 </div>
 
+@include('admin.partials.modal.delete')
+
 <script>
 var datatable_id = 'app_index';
 var columnDefs_targets = [0, 6];
