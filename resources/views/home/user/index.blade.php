@@ -27,23 +27,29 @@
         <div class="form-group">
             <div class="col-md-4">
                 <label class="col-md-3 control-label">用户名</label>
-                <div class="col-md-1">
-                    <p class="form-control-static">{{ $user->username }}</p>
-                </div>
+                <p class="form-control-static">{{ $user['username'] }}</p>
             </div>
             <div class="col-md-4">
                 <label class="col-md-3 control-label">邮箱</label>
-                <div class="col-md-1">
-                    <p class="form-control-static">{{ $user->email }}</p>
-                </div>
+                <p class="form-control-static">{{ $user['email'] }}</p>
             </div>
             <div class="col-md-4">
                 <label class="col-md-3 control-label">手机</label>
-                <div class="col-md-1">
-                    <p class="form-control-static">{{ $user->phone }}</p>
-                </div>
+                <p class="form-control-static">{{ $user['phone'] }}</p>
             </div>
         </div>
+        @foreach ($user['details'] as $v)
+            @if (@$i % 3 == 0)
+                <div class="form-group">
+            @endif
+            <div class="col-md-4">
+                <label class="col-md-3 control-label">{{ $v['title'] }}</label>
+                <p class="form-control-static">{{ $v['value'] }}</p>
+            </div>
+            @if (@$i++ % 3 == 2)
+                </div>
+            @endif
+        @endforeach
     </form>
     </div>
     <!-- /.panel-body -->
