@@ -148,7 +148,8 @@ class UserController extends Controller
 
     public function show($id)
     {
-        return view('admin.user.show');
+        $user = Cache::get(Config::get('cache.users') . $id);
+        return view('admin.user.show')->withUser($user);
     }
 
     public function edit($id)

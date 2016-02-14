@@ -131,7 +131,7 @@ var columns = [{
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                         $(nTd).html(
                             "<a href='javascript:void(0);' onclick='return choose_role(" + sData + ");'>角色</a>" + " " +
-                            "<a href=/admin/user/" + sData + "/show>详细</a>" + " " +
+                            "<a href=/admin/user/" + sData + ">详细</a>" + " " +
                             "<a href=/admin/user/" + sData + "/edit>编辑</a>" + " " +
                             "<a href='javascript:void(0);' onclick='return check_remove(" + sData + ");'>移除</a>"
                         );
