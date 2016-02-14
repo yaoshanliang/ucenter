@@ -10,12 +10,8 @@ use App\Model\User;
 use App\Model\Role;
 use App\Model\UserRole;
 use App\Model\App;
+use App\Model\UserFields;
 use Redirect, Input, Auth;
-use Illuminate\Pagination\Paginator;
-use App\Services\Helper;
-
-use Monolog\Logger;
-use Monolog\Handler\RedisHandler;
 
 use Cache;
 use Queue;
@@ -25,6 +21,7 @@ use App\Jobs\SendEmail;
 use Mail;
 use Config;
 use App\Services\Api;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -91,6 +88,30 @@ class UserController extends Controller
         return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
+    // 用户信息字段
+    public function fields(Request $request)
+    {
+        return view('admin.user.fields');
+    }
+
+    public function fieldsLists(Request $request)
+    {
+        $fields = array('id', 'name', 'title', 'type', 'description', 'created_at', 'updated_at');
+        $searchFields = array('name', 'title', 'type');
+
+        $data = UserFields::whereDataTables($request, $searchFields)
+            ->orderByDataTables($request)
+            ->skip($request->start)
+            ->take($request->length)
+            ->get($fields);
+
+        $draw = (int)$request->draw;
+        $recordsTotal = UserFields::count();
+        $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
+
+        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+    }
+
     public function create()
     {
         return view('admin.user.create');
@@ -146,7 +167,7 @@ class UserController extends Controller
         //
     }
 
-    public function show($id)
+    public function show(UserRequest $request, $id)
     {
         $user = Cache::get(Config::get('cache.users') . $id);
         return view('admin.user.show')->withUser($user);

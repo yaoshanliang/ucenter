@@ -89,7 +89,8 @@ var columns = [{
                         for (var i = 0; i < sData.length; i++) {
                             ids.push(sData[i]['id']);
                         }
-                        $(nTd).html("<a href='javascript:void(0);' onclick='return check_remove([" + ids + "]);'>取消接入</a>");
+                        $(nTd).html("");
+                        // $(nTd).html("<a href='javascript:void(0);' onclick='return check_remove([" + ids + "]);'>取消接入</a>");
                     }
                 }];
 </script>
