@@ -15,6 +15,9 @@ use App\Model\Role;
 use App\Model\Permission;
 use App\Jobs\UserLog;
 use App\Services\Api;
+use Cache;
+use Config;
+use Session;
 
 class AppController extends Controller {
 
@@ -178,5 +181,31 @@ class AppController extends Controller {
             throw $e;
             return Api::jsonReturn(0, '删除失败', array('deleted_num' => 0));
         }
+    }
+
+    public function setCurrentApp(Request $request)
+    {
+        $app = Cache::get(Config::get('cache.apps') . $request->app_id);
+		Session::put('current_app', $app);
+		Session::put('current_app_title', $app['title']);
+		Session::put('current_app_id', $app['id']);
+
+        $roles = Session::get('roles');
+        $role = reset($roles[$app['id']]);
+		Session::put('current_role', $role);
+		Session::put('current_role_title', $role['title']);
+		Session::put('current_role_id', $role['id']);
+
+        return Api::jsonReturn(1, '切换应用成功');
+    }
+
+    public function setCurrentRole(Request $request)
+    {
+        $role = Cache::get(Config::get('cache.roles') . $request->role_id);
+		Session::put('current_role', $role);
+		Session::put('current_role_title', $role['title']);
+		Session::put('current_role_id', $role['id']);
+
+        return Api::jsonReturn(1, '切换角色成功');
     }
 }

@@ -9,7 +9,7 @@
         <a  href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Session::get('current_app_title') }}<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
                 @foreach (Session::get('apps') as $app)
-                    <li><a  href="javascript:void(0);" onclick="change_app('/api/app/setCurrentApp', {{ $app['id'] }});">{{ $app['title'] }}</a></li>
+                    <li><a  href="javascript:void(0);" onclick="change_app('/admin/app/setCurrentApp', {{ $app['id'] }});">{{ $app['title'] }}</a></li>
                     <li class="divider"></li>
                 @endforeach
             </ul>
@@ -18,7 +18,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Session::get('current_role_title') }} <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
                 @foreach (Session::get('roles.' . Session::get('current_app_id')) as $role)
-                    <li><a href="javascript:void(0);" onclick="change_role('/api/app/setCurrentRole', {{ $role['id'] }})">{{ $role['title'] }}</a></li>
+                    <li><a href="javascript:void(0);" onclick="change_role('/admin/app/setCurrentRole', {{ $role['id'] }})">{{ $role['title'] }}</a></li>
                     <li class="divider"></li>
                 @endforeach
             </ul>

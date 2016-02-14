@@ -9,7 +9,7 @@
         <a  href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Session::get('current_app_title') }}<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
                 @foreach (Session::get('apps') as $app)
-                    <li><a  href="javascript:void(0);" onclick="change_app('/api/app/setCurrentApp', {{ $app['id'] }});">{{ $app['title'] }}</a></li>
+                    <li><a href="javascript:void(0);" onclick="change_app('/home/app/setCurrentApp', {{ $app['id'] }});">{{ $app['title'] }}</a></li>
                     <li class="divider"></li>
                 @endforeach
             </ul>
@@ -18,7 +18,7 @@
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Session::get('current_role_title') }} <span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
                 @foreach (Session::get('roles.' . Session::get('current_app_id')) as $role)
-                    <li><a href="javascript:void(0);" onclick="change_role('/api/app/setCurrentRole', {{ $role['id'] }})">{{ $role['title'] }}</a></li>
+                    <li><a href="javascript:void(0);" onclick="change_role('/home/app/setCurrentRole', {{ $role['id'] }})">{{ $role['title'] }}</a></li>
                     <li class="divider"></li>
                 @endforeach
             </ul>
@@ -88,7 +88,7 @@
             <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-user">
-            <li><a href="#"><i class="fa fa-user fa-fw"></i>个人信息</a>
+            <li><a href="/home/user"><i class="fa fa-user fa-fw"></i>个人信息</a>
             </li>
             <li><a href="/admin/settings/index"><i class="fa fa-gear fa-fw"></i> 设置</a>
             </li>

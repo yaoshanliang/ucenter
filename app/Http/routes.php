@@ -30,6 +30,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth']
     Route::group(['prefix' => 'app'], function(){
         Route::post('/lists', 'AppController@lists');
         Route::post('/remove', 'AppController@remove');
+        Route::post('/setCurrentApp', 'AppController@setCurrentApp');
+        Route::post('/setCurrentRole', 'AppController@setCurrentRole');
     });
     Route::resource('/app', 'AppController');
 });
@@ -43,7 +45,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array
     Route::group(['prefix' => 'app', 'middleware' => 'role:developer'], function() {
         Route::post('/lists', 'AppController@lists');
         Route::post('/delete', 'AppController@delete');
-        // Route::resource('', 'AppController');
+        Route::post('/setCurrentApp', 'AppController@setCurrentApp');
+        Route::post('/setCurrentRole', 'AppController@setCurrentRole');
     });
     Route::resource('/app', 'AppController');
 
@@ -56,6 +59,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array
         Route::post('/remove', 'UserController@remove');
         Route::get('/all', 'UserController@all');
         Route::post('/allLists', 'UserController@allLists');
+        Route::get('/fields', 'UserController@fields');
+        Route::post('/fieldsLists', 'UserController@fieldsLists');
         Route::get('/{id}/roles', 'UserController@roles');
         Route::get('/{id}/selectOrUnselectRole/{role_id}', 'UserController@selectOrUnselectRole')->where('id', '[0-9]+')->where('role_id', '[0-9]+');
     });
