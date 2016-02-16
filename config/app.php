@@ -153,6 +153,8 @@ return [
         'Dingo\Api\Provider\LaravelServiceProvider',
         'LucaDegasperi\OAuth2Server\Storage\FluentStorageServiceProvider',
         'LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider',
+        'Toplan\PhpSms\PhpSmsServiceProvider',
+        'Toplan\Sms\SmsManagerServiceProvider',
 
     ],
 
@@ -205,6 +207,8 @@ return [
         'Datatable' => 'Chumper\Datatable\Facades\DatatableFacade',
         'Entrust'   => 'Zizaco\Entrust\EntrustFacade',
         'Authorizer' => 'LucaDegasperi\OAuth2Server\Facades\Authorizer',
+        'PhpSms'    => 'Toplan\PhpSms\Facades\Sms',
+        'SmsManager' => 'Toplan\Sms\Facades\SmsManager',
     ],
 
 ];
