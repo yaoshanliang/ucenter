@@ -1,6 +1,7 @@
 @extends('auth.base')
 
 @section('content')
+<script src="//captcha.luosimao.com/static/js/api.js"></script>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
@@ -40,6 +41,14 @@
 						</div>
 
 						<div class="form-group">
+							<label class="col-md-4 control-label">验证</label>
+							<div class="col-md-5">
+                                <div class="l-captcha" data-site-key="e43e27fb1cbfa3953165e0eba7556985" data-width="100%" data-callback="getResponse"></div>
+                                <input type="hidden" id="lc-captcha-response" name="luotest_response" value="">
+							</div>
+						</div>
+
+						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<div class="checkbox">
 									<label>
@@ -62,4 +71,9 @@
 		</div>
 	</div>
 </div>
+<script>
+function getResponse(resp){
+     console.log(resp);  // resp 即验证成功后获取的值
+}
+</script>
 @endsection
