@@ -66,8 +66,7 @@ function sendCode() {
     }
 
     $.ajax({
-        // url: '/api/sms/sendCode',
-        url: '/api/user/user_info',
+        url: '/api/sms/send_code',
         data: {'phone': phone, 'access_token': 'test'},
         dataType: 'json',
         headers: {
