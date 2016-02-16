@@ -122,8 +122,7 @@ $api->version('v1', function ($api) {
 $api->version('v1', ['middleware' => 'oauth'], function ($api) {
     $api->get('user/self_info', 'App\Http\Controllers\Api\V1\UserController@me');
     $api->get('user/user_info', 'App\Http\Controllers\Api\V1\UserController@getUserInfo');
-    $api->post('app/setCurrentApp', 'App\Http\Controllers\Api\V1\AppController@setCurrentApp');
-    $api->post('app/setCurrentRole', 'App\Http\Controllers\Api\V1\AppController@setCurrentRole');
+    $api->get('sms/send_code', 'App\Http\Controllers\Api\V1\SmsController@sendCode');
     // $api->get('me', ['scopes' => 'read_user_data', function () {
             // Only access tokens with the "read_user_data" scope will be given access.
     // }]);
