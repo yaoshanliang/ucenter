@@ -114,6 +114,34 @@ function confirmEditUsername() {
             return false;
         },
     });
+}
+function confirmEditEmail() {
+    var email = $('input[name="email"]').val();
+    if (email.length == 0) {
+        showFailTip('请输入新邮箱');
+        return false;
+    }
+    $.ajax({
+        url: '/api/user/edit',
+        data: {'email': email, 'access_token': 'test'},
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        },
+        success: function(data) {
+            if(data['code'] === 1) {
+                showSuccessTip(data['message']);
+                window.location.reload();
+            } else {
+                showFailTip(data['message']);
+                return false;
+            }
+        },
+        error: function(data) {
+            showFailTip(data['message']);
+            return false;
+        },
+    });
 
 }
 function sendCode() {
@@ -208,18 +236,18 @@ function validateCode() {
                 <h5 class="modal-title" id="myModalLabel">修改用户名</h5>
             </div>
             <div class="modal-body">
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <input type="text" class="form-control" name="username" placeholder="新用户名">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" name="username" placeholder="新用户名">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary btn-block" onClick="return confirmEditUsername();">确认</button>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <button type="button" class="btn btn-primary btn-block" onClick="return confirmEditUsername();">确认</button>
-                    </div>
-                </div>
-            </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -240,18 +268,18 @@ function validateCode() {
                 <h5 class="modal-title" id="myModalLabel">修改邮箱</h5>
             </div>
             <div class="modal-body">
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <input type="text" class="form-control" name="username" placeholder="新邮箱">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" name="email" placeholder="新邮箱">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary btn-block" onClick="return confirmEditEmail();">确认</button>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <button type="button" class="btn btn-primary btn-block" onClick="return confirmEditEmail();">确认</button>
-                    </div>
-                </div>
-            </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -272,26 +300,26 @@ function validateCode() {
                 <h5 class="modal-title" id="myModalLabel">绑定手机</h5>
             </div>
             <div class="modal-body">
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <input type="text" class="form-control" name="phone" placeholder="手机号">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" name="phone" placeholder="手机号">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="code" placeholder="验证码">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="button" id="send_code" class="btn btn-outline btn-success" onClick="return sendCode();" value="发送验证码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary btn-block" onClick="return validateCode();">确认</button>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-8">
-                        <input type="text" class="form-control" name="code" placeholder="验证码">
-                    </div>
-                    <div class="col-md-4">
-                        <input type="button" id="send_code" class="btn btn-outline btn-success" onClick="return sendCode();" value="发送验证码">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <button type="button" class="btn btn-primary btn-block" onClick="return validateCode();">确认</button>
-                    </div>
-                </div>
-            </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>

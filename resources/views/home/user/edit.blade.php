@@ -45,7 +45,7 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-9">
                         <button type="submit" class="btn btn-primary">确认</button>
-                        <button type="button" class="btn btn-primary pull-right" onclick="javascript:window.location.href='/home/user'">取消</button>
+                        <button type="button" class="btn btn-primary pull-right" onclick="javascript:window.location.href='/home/user'">返回</button>
                     </div>
                 </div>
             </div>
