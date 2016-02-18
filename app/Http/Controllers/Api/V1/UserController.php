@@ -38,17 +38,25 @@ class UserController extends Controller
         return $this->response->array(compact('code', 'message', 'data'));
     }
 
+    // 更新用户信息
     public function edit(Request $request)
     {
         $user = Cache::get(Config::get('cache.users') . self::$currentUserId);
         foreach ($request->all() as $k => $v) {
             switch ($k) {
                 case 'username' :
-                    $validator = Validator::make(array($k => $request->$k), ['username' => 'required|unique:users,username,'.self::$currentUserId.'']);
+                    $validator = Validator::make(array($k => $request->$k), ['username' => 'required|unique:users,username,'.self::$currentUserId]);
                     break;
 
                 case 'email' :
-                    $validator = Validator::make(array($k => $request->$k), ['email' => 'required|email|unique:users,email,'.self::$currentUserId.'']);
+                    $validator = Validator::make(array($k => $request->$k), ['email' => 'required|email|unique:users,email,'.self::$currentUserId]);
+                    break;
+
+                case 'phone' :
+                    Validator::extend('validate_code', function($attribute, $value, $parameters) {
+                        return Cache::get(Config::get('cache.sms.validated') . $value) ? true : false;
+                    });
+                    $validator = Validator::make(array($k => $request->$k), ['phone' => 'required|size:11|unique:users,phone,'.self::$currentUserId.'|validate_code'], ['validate_code' => '手机号验证失败']);
                     break;
 
                 default :
@@ -71,6 +79,7 @@ class UserController extends Controller
                 switch ($k) {
                     case 'username' :
                     case 'email' :
+                    case 'phone' :
                         if ($user[$k] != $request->$k) {
                             $result = User::where('id', self::$currentUserId)->update(array($k => $request->$k));
                             $user[$k] = $request->$k;
@@ -89,9 +98,11 @@ class UserController extends Controller
             }
         }
 
-        // 更新cache
         if (isset($isEdit)) {
+
+            // 更新cache
             Cache::forever(Config::get('cache.users') . self::$currentUserId, $user);
+
             return $this->response->array(array('code' => 1, 'message' => '修改成功', 'data' => $user));
         } else {
             return $this->response->array(array('code' => 0, 'message' => '未做修改'));
