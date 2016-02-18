@@ -145,7 +145,7 @@ function sendCode() {
     }
 
     $.ajax({
-        url: '/api/sms/send_code',
+        url: '/api/sms/sendCode',
         data: {'phone': phone, 'access_token': 'test'},
         dataType: 'json',
         headers: {
@@ -199,7 +199,7 @@ function validateCode() {
         return false;
     }
     $.ajax({
-        url: '/api/sms/validate_code',
+        url: '/api/sms/validateCode',
         data: {'phone': phone, 'code': code, 'access_token': 'test'},
         dataType: 'json',
         headers: {
