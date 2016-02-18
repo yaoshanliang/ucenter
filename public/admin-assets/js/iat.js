@@ -36,7 +36,7 @@ function showTip(tip, time, background, bordercolor) {
     var windowWidth = document.documentElement.clientWidth;
     var height = 10;
     var width = 200;
-    var tipsDiv = '<div class="tipsClass">' + tip + '</div>div>';
+    var tipsDiv = '<div class="tipsClass">' + tip + '</div>';
 
     $('body').append(tipsDiv);
     $('div.tipsClass').css({
@@ -57,7 +57,7 @@ function showTip(tip, time, background, bordercolor) {
         'color': '#fff',
         'opacity': '0.8'
     }).show();
-    setTimeout(function(){$('div.tipsClass').fadeOut();}, (time * 1000));
+    setTimeout(function(){$('div.tipsClass').fadeOut(); $('div.tipsClass').remove()}, (time * 1000));
 }
 
 function submit_datatable(type, datatable_id, url, ids, tip_msg, tip_time) {
