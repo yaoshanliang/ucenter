@@ -87,15 +87,36 @@ function editEmail() {
 function bindPhone() {
     $('#bind_phone').modal('show');
 }
-function confirmEditUsername() {
-    var username = $('input[name="username"]').val();
-    if (username.length == 0) {
-        showFailTip('请输入新用户名');
-        return false;
+function confirmEdit(field) {
+    switch (field) {
+        case 'username' :
+            var value = $('input[name="username"]').val();
+            if (value.length == 0) {
+                showFailTip('请输入新用户名');
+                return false;
+            }
+        break;
+        case 'email' :
+            var value = $('input[name="email"]').val();
+            if (value.length == 0) {
+                showFailTip('请输入新邮箱');
+                return false;
+            }
+        break;
+        case 'phone' :
+            var value = $('input[name="phone"]').val();
+            if (value.length == 0) {
+                showFailTip('请输入新手机号');
+                return false;
+            }
+        break;
     }
+    var data = {};
+    data[field] = value;
+    data['access_token'] = 'test';
     $.ajax({
         url: '/api/user/edit',
-        data: {'username': username, 'access_token': 'test'},
+        data: data,
         dataType: 'json',
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
@@ -115,35 +136,7 @@ function confirmEditUsername() {
         },
     });
 }
-function confirmEditEmail() {
-    var email = $('input[name="email"]').val();
-    if (email.length == 0) {
-        showFailTip('请输入新邮箱');
-        return false;
-    }
-    $.ajax({
-        url: '/api/user/edit',
-        data: {'email': email, 'access_token': 'test'},
-        dataType: 'json',
-        headers: {
-            'X-CSRF-TOKEN': $('input[name="_token"]').val()
-        },
-        success: function(data) {
-            if(data['code'] === 1) {
-                showSuccessTip(data['message']);
-                window.location.reload();
-            } else {
-                showFailTip(data['message']);
-                return false;
-            }
-        },
-        error: function(data) {
-            showFailTip(data['message']);
-            return false;
-        },
-    });
 
-}
 function sendCode() {
     var phone = $('input[name="phone"]').val();
     if (phone.length != 11) {
@@ -201,20 +194,20 @@ function validateCode() {
         return false;
     }
     var code = $('input[name="code"]').val();
-    if (code.length != 6) {
-        showFailTip('验证码不合法');
+    if (code == '') {
+        showFailTip('验证码必填');
         return false;
     }
     $.ajax({
-        url: url,
-        data: {'phone': phone, 'code': code},
+        url: '/api/sms/validate_code',
+        data: {'phone': phone, 'code': code, 'access_token': 'test'},
         dataType: 'json',
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         success: function(data) {
             if(data['code'] === 1) {
-                showSuccessTip(data['message']);
+                confirmEdit('phone');
             } else {
                 showFailTip(data['message']);
                 return false;
@@ -244,7 +237,7 @@ function validateCode() {
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <button type="button" class="btn btn-primary btn-block" onClick="return confirmEditUsername();">确认</button>
+                            <button type="button" class="btn btn-primary btn-block" onClick="return confirmEdit('username');">确认</button>
                         </div>
                     </div>
                 </div>
@@ -276,7 +269,7 @@ function validateCode() {
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <button type="button" class="btn btn-primary btn-block" onClick="return confirmEditEmail();">确认</button>
+                            <button type="button" class="btn btn-primary btn-block" onClick="return confirmEdit('email');">确认</button>
                         </div>
                     </div>
                 </div>
