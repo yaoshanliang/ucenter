@@ -35,8 +35,6 @@
     </div>
     <!-- /#wrapper -->
 
-	@include('home.partials.modal')
-
 	@include('home.partials.footer')
 	@yield('footer')
 </body>
