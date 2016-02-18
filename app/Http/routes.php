@@ -17,12 +17,14 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 
-Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth'], function() {
+Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth', 'csrf'], function() {
     Route::get('/', 'HomeController@index');
     Route::get('/index', 'HomeController@index');
 
     // user
     Route::group(['prefix' => 'user'], function(){
+        Route::get('/edit', 'UserController@edit');
+        // Route::post('/edit', 'UserController@postEdit');
     });
     Route::resource('/user', 'UserController');
 
@@ -36,7 +38,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth']
     Route::resource('/app', 'AppController');
 });
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array('auth', 'role:developer|admin')], function() {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array('auth', 'csrf', 'role:developer|admin')], function() {
     Route::get('/', function() { return Redirect::to('/admin/index'); });
     Route::get('/forbidden', 'AdminController@forbidden');
     Route::get('/index', 'AdminController@index');
@@ -112,54 +114,16 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array
     Route::resource('/userlog', 'UserLogController');
 });
 $api = app('api.router');
-$api->version('v1', function ($api) {
-    $api->post('authenticate', 'App\Http\Controllers\Api\V1\AuthenticateController@authenticate');
-    $api->get('me', 'App\Http\Controllers\Api\V1\UserController@me');
-    // $api->get('api/me', 'App\Http\Controllers\Api\V1\UserController@me');
-    // $api->post('auth/login', 'App\Http\Controllers\Api\V1\AuthenticateController@authenticate');
-});
-
 $api->version('v1', ['middleware' => 'oauth'], function ($api) {
-    $api->get('user/self_info', 'App\Http\Controllers\Api\V1\UserController@me');
-    $api->get('user/user_info', 'App\Http\Controllers\Api\V1\UserController@getUserInfo');
-    $api->get('sms/send_code', 'App\Http\Controllers\Api\V1\SmsController@sendCode');
+    $api->get('user/getUserInfo', 'App\Http\Controllers\Api\V1\UserController@getUserInfo');
+    $api->get('user/edit', 'App\Http\Controllers\Api\V1\UserController@edit');
+    $api->get('sms/sendCode', 'App\Http\Controllers\Api\V1\SmsController@sendCode');
+    $api->get('sms/validateCode', 'App\Http\Controllers\Api\V1\SmsController@validateCode');
     // $api->get('me', ['scopes' => 'read_user_data', function () {
             // Only access tokens with the "read_user_data" scope will be given access.
     // }]);
 });
-// Route::get('oauth/authorize', ['as' => 'oauth.authorize.get', 'middleware' => ['check-authorization-params', 'auth'], function() {
-Route::get('oauth/authorize', ['as' => 'oauth.authorize.get', 'middleware' => ['auth', 'check-authorization-params'], function() {
-   $authParams = Authorizer::getAuthCodeRequestParams();
-
-   $formParams = array_except($authParams,'client');
-
-   $formParams['client_id'] = $authParams['client']->getId();
-
-   $formParams['scope'] = implode(config('oauth2.scope_delimiter'), array_map(function ($scope) {
-          return $scope->getId();
-      }, $authParams['scopes']));
-
-   return View::make('oauth.authorize', ['params' => $formParams, 'client' => $authParams['client']]);
-}]);
-Route::post('oauth/authorize', ['as' => 'oauth.authorize.post', 'middleware' => ['csrf', 'check-authorization-params', 'auth'], function() {
-
-    $params = Authorizer::getAuthCodeRequestParams();
-    $params['user_id'] = Auth::user()->id;
-    $redirectUri = '/';
-
-    // If the user has allowed the client to access its data, redirect back to the client with an auth code.
-    if (Request::has('approve')) {
-        $redirectUri = Authorizer::issueAuthCode('user', $params['user_id'], $params);
-    }
-
-    // If the user has denied the client to access its data, redirect back to the client with an error message.
-    if (Request::has('deny')) {
-        $redirectUri = Authorizer::authCodeRequestDeniedRedirectUri();
-    }
-
-    return Redirect::to($redirectUri);
-}]);
-Route::post('oauth/access_token', function() {
-    return Response::json(array('code' => 1, 'message' => '获取access_token成功', 'data' => Authorizer::issueAccessToken()));
-});
+Route::post('api/oauth/getAccessToken', 'Api\V1\OauthController@getAccessToken');
+Route::get('oauth/authorize', ['as' => 'oauth.authorize.get', 'middleware' => ['check-authorization-params', 'auth'], 'uses' => 'Oauth\OauthController@getAuthorize']);
+Route::post('oauth/authorize', ['as' => 'oauth.authorize.post', 'middleware' => ['csrf', 'check-authorization-params', 'auth'], 'uses' => 'Oauth\OauthController@postAuthorize']);
 // $dispatcher = app('Dingo\Api\Dispatcher');
