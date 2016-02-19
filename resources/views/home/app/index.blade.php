@@ -49,7 +49,8 @@
 <script>
 var datatable_id = 'app_index';
 var columnDefs_targets = [0, 3, 4, 5];
-var order = [0, 'desc'];
+// var order = [0, 'desc'];
+var order = [];
 var ajax_url = '/home/app/lists';
 var remove_url = '/home/app/remove';
 var columns = [{
