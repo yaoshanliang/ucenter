@@ -82,4 +82,9 @@ return [
     'roles' => 'roles:',
     'users' =>'users:',
     'settings' =>'settings:',
+    // 'sms' =>'sms:',
+    'sms' => [
+        'code' => 'sms:code:',
+        'validated' => 'sms:validated:'
+    ],
 ];
