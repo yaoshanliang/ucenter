@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "49acb2c6b941d7b4fa283b750b1a2c95",
-    "content-hash": "ef1ef159e5321cee153fdb304095cf7c",
+    "hash": "311f97dfe5c84d4d767c138f53b8139d",
+    "content-hash": "0e8945f28d63096f0abe8f89bb276ce3",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -1721,6 +1721,62 @@
             "time": "2015-10-29 01:31:31"
         },
         {
+            "name": "php-curl-class/php-curl-class",
+            "version": "4.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-curl-class/php-curl-class.git",
+                "reference": "dce9acb7a27f98b5040cfa9b3aa36da4a7ff3004"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "http://packagist.phpcomposer.com/files/php-curl-class/php-curl-class/dce9acb7a27f98b5040cfa9b3aa36da4a7ff3004.zip",
+                "reference": "dce9acb7a27f98b5040cfa9b3aa36da4a7ff3004",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Curl\\": "src/Curl/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Unlicense"
+            ],
+            "authors": [
+                {
+                    "name": "Zach Borboa"
+                }
+            ],
+            "description": "PHP Curl Class is an object-oriented wrapper of the PHP cURL extension.",
+            "homepage": "https://github.com/php-curl-class/php-curl-class",
+            "keywords": [
+                "api",
+                "class",
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "json",
+                "php",
+                "requests",
+                "rest",
+                "restful",
+                "web service",
+                "xml"
+            ],
+            "time": "2016-01-31 12:32:31"
+        },
+        {
             "name": "phpdocumentor/reflection-docblock",
             "version": "2.0.4",
             "source": {
@@ -3150,6 +3206,50 @@
                 "environment"
             ],
             "time": "2015-05-30 15:59:26"
+        },
+        {
+            "name": "yaoshanliang/phpsms",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yaoshanliang/phpsms.git",
+                "reference": "995d600f9f90d11e2a0e2eb2dfd255decb022723"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "http://packagist.phpcomposer.com/files/yaoshanliang/phpsms/995d600f9f90d11e2a0e2eb2dfd255decb022723.zip",
+                "reference": "995d600f9f90d11e2a0e2eb2dfd255decb022723",
+                "shasum": ""
+            },
+            "require": {
+                "toplan/laravel-sms": "~2.2.6"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "Yaoshanliang\\PhpSms\\": [
+                        "src/agents/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "iat",
+                    "email": "i@iat.net.cn",
+                    "homepage": "http://iat.net.cn",
+                    "role": "Developer"
+                }
+            ],
+            "description": "sms for php",
+            "keywords": [
+                "php",
+                "sms"
+            ],
+            "time": "2016-02-21 11:36:47"
         },
         {
             "name": "zizaco/entrust",
@@ -5100,7 +5200,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "dingo/api": 20,
-        "zizaco/entrust": 20
+        "zizaco/entrust": 20,
+        "yaoshanliang/phpsms": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
