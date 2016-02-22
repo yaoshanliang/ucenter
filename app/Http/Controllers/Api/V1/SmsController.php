@@ -36,10 +36,15 @@ class SmsController extends Controller
 
         $code = rand(100000, 999999);
         Cache::put(Config::get('cache.sms.code') . $phone, $code, 5);
-        // PhpSms::queue(false);
-        // PhpSms::make()->to('18896581232')->content('【签名】这是短信内容...')->send();
-        // PhpSms::make()->to('18896581232')->template('Luosimao', 'xxx')->data(['12345', 5])->send();
-        return $this->response->array(array('code' => 1, 'message' => '发送成功'));
+        PhpSms::queue(false);
+        $result = PhpSms::make()->to('18896581232')->content('您好，您的验证码是：' . $code)->send();
+
+        if ( true === $result['success']) {
+            return $this->response->array(array('code' => 1, 'message' => '发送成功'));
+        } else {
+            return $this->response->array(array('code' => 0, 'message' => '发送失败', 'data' => $result['logs']));
+        }
+
     }
 
     // 验证验证码
