@@ -12,10 +12,12 @@ use Illuminate\Http\Response;
 use Auth;
 use Cache;
 use Session;
+use Cookie;
 use Queue;
 use Config;
 use App\Jobs\UserLog;
 use App\Model\UserRole;
+use Curl\Curl;
 
 class AuthController extends Controller
 {
@@ -74,12 +76,35 @@ class AuthController extends Controller
 
     public function getLogin()
     {
-        return view('auth.login');
+        return view('auth.login')->with(array('loginFailed' => Cookie::get('login_failed')));
+    }
+
+    // 螺丝帽人机验证
+    // link:https://luosimao.com/docs/api/56
+    private function checkCaptcha($response)
+    {
+        if (!is_null($response)) {
+            if ($response != '') {
+                $curl = new Curl();
+                $result = $curl->post('https://captcha.luosimao.com/api/site_verify', array(
+                    'api_key' => env('CAPTCHA_API_KEY'),
+                    'response' => $response,
+                ));
+                return ('success') == $result->res ? true : false;
+            }
+            return false;
+        }
     }
 
     public function postLogin(Request $request, Response $response)
     {
         $this->validate($request, ['username' => 'required', 'password' => 'required']);
+
+        if (false === $this->checkCaptcha($request->luotest_response)) {
+            return redirect()->guest('/auth/login')
+                ->withInput()
+                ->withErrors('人机验证未通过，请重试！');
+        }
 
         $username = $request->username;
         $password = $request->password;
@@ -100,6 +125,7 @@ class AuthController extends Controller
             $this->loginLog($request, $credentials);
             return redirect()->intended();
         } else {
+            Cookie::queue('login_failed', 1, 3);
             return redirect()->guest('/auth/login')
                 ->withInput()
                 ->withErrors('账户与密码不匹配，请重试！');
@@ -131,6 +157,7 @@ class AuthController extends Controller
 
         Session::put('apps', $apps);
         Session::put('roles', $roles);
+        $this->cacheUsers();
     }
 
     //登录日志
