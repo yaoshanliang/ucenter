@@ -74,12 +74,12 @@
                             <script>
                             var obj = new WxLogin({
                                 id: "login_container",
-                                appid: "<?php echo env('AppID'); ?>",
+                                appid: "<?php echo env('WECHAT_APPID'); ?>",
                                 scope: "snsapi_login",
-                                redirect_uri: "/auth/wechatCallback",
-                                state: "",
+                                redirect_uri: "<?php echo url('oauth/wechatCallback'); ?>",
+                                state: "<?php echo md5(time());?>",
                                 style: "",
-                                href: "/css/wechat.css"
+                                href: "<?php echo asset('/css/wechat.css'); ?>"
                             });
                             </script>
                         </div>
