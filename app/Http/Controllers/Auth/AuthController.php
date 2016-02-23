@@ -18,6 +18,7 @@ use Config;
 use App\Jobs\UserLog;
 use App\Model\UserRole;
 use Curl\Curl;
+use EasyWeChat\Foundation\Application;
 
 class AuthController extends Controller
 {
@@ -74,26 +75,10 @@ class AuthController extends Controller
         ]);
     }
 
-    public function getLogin()
+    public function getLogin(Request $request, Application $wechat)
     {
+        $wechat->oauth->redirect();
         return view('auth.login')->with(array('loginFailed' => Cookie::get('login_failed')));
-    }
-
-    // 螺丝帽人机验证
-    // link:https://luosimao.com/docs/api/56
-    private function checkCaptcha($response)
-    {
-        if (!is_null($response)) {
-            if ($response != '') {
-                $curl = new Curl();
-                $result = $curl->post('https://captcha.luosimao.com/api/site_verify', array(
-                    'api_key' => env('CAPTCHA_API_KEY'),
-                    'response' => $response,
-                ));
-                return ('success') == $result->res ? true : false;
-            }
-            return false;
-        }
     }
 
     public function postLogin(Request $request, Response $response)
@@ -115,21 +100,58 @@ class AuthController extends Controller
             $credentials = array('phone' => $username, 'password' => $password);
         }
         if (!empty($credentials) && Auth::attempt($credentials, $request->has('remember'))) {
-            $this->initRole($request, $response);
-            $this->loginLog($request, $credentials);
+            $this->afterLogin($request, $response, $credentials);
             return redirect()->intended();
         }
         $credentials = array('username' => $request->username, 'password' => $request->password);
         if (Auth::attempt($credentials, $request->has('remember'))) {
-            $this->initRole($request, $response);
-            $this->loginLog($request, $credentials);
+            $this->afterLogin($request, $response, $credentials);
             return redirect()->intended();
         } else {
-            Cookie::queue('login_failed', 1, 3);
+            Cookie::queue('login_failed', 1, 3);// 登陆失败记录，显示人机验证
             return redirect()->guest('/auth/login')
                 ->withInput()
                 ->withErrors('账户与密码不匹配，请重试！');
         }
+    }
+
+    // 螺丝帽人机验证
+    // link:https://luosimao.com/docs/api/56
+    private function checkCaptcha($response)
+    {
+        if (!is_null($response)) {
+            if ($response != '') {
+                $curl = new Curl();
+                $result = $curl->post('https://captcha.luosimao.com/api/site_verify', array(
+                    'api_key' => env('CAPTCHA_API_KEY'),
+                    'response' => $response,
+                ));
+                return ('success') == $result->res ? true : false;
+            }
+            return false;
+        }
+    }
+
+    // 微信登陆之后的回调
+    public function wechatCallback(Application $wechat, Request $request, Response $response)
+    {
+        $wechatUser = $wechat->oauth->user()->toArray();
+        $user = User::where('openid', $wechatUser['id'])->first();
+        if (empty($user)) {
+            return redirect()->guest('/auth/login')
+                ->withErrors('当前微信未绑定账户，请用账号登陆！');
+        }
+        Auth::login($user);
+        $this->afterLogin($request, $response, array('wechat' => $wechatUser['nickname']));
+
+        return redirect()->intended();
+    }
+
+    // 登陆之后的操作
+    private function afterLogin(Request $request, Response $response, $credentials)
+    {
+        $this->initRole($request, $response);
+        $this->loginLog($request, $credentials);
     }
 
     // 初始化角色、应用、当前角色、当前应用
@@ -160,12 +182,13 @@ class AuthController extends Controller
         $this->cacheUsers();
     }
 
-    //登录日志
+    // 登录日志
     private function loginLog($request, $credentials) {
-        $login_way = key($credentials) . ' : ' . current($credentials);
+        $loginWay = key($credentials) . ' : ' . current($credentials);
         $ips = $request->ips();
         $ip = $ips[0];
         $ips = implode(',', $ips);
-        $log = Queue::push(new UserLog(1, Auth::user()->id, 'S', '登录', $login_way, '', $ip, $ips));
+        $log = Queue::push(new UserLog(1, Auth::id(), 'S', '登录', $loginWay, '', $ip, $ips));
     }
+
 }
