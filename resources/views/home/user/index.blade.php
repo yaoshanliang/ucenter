@@ -45,6 +45,20 @@
                 </p>
             </div>
         </div>
+        <div class="form-group">
+            <div class="col-md-4">
+                <label class="col-md-3 control-label">微信</label>
+                <p class="form-control-static">{{ $wechat['nickname'] }}
+                    <button type="button" class="btn btn-outline btn-primary btn-xs" onclick="bindWechat();">
+                        @if (empty($wechat))
+                            绑定
+                        @else
+                            修改
+                        @endif
+                    </button>
+                </p>
+            </div>
+        </div>
     </form>
     </div>
     <!-- /.panel-body -->
@@ -86,6 +100,20 @@ function editEmail() {
 }
 function bindPhone() {
     $('#bind_phone').modal('show');
+}
+function bindWechat() {
+    $.getScript('http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js',function(){
+        var obj = new WxLogin({
+            id: "wechat_container",
+            appid: "<?php echo env('WECHAT_APPID'); ?>",
+            scope: "snsapi_login, snsapi_userinfo",
+            redirect_uri: "<?php echo urlencode(url('home/user/wechatCallback')); ?>",
+            state: "<?php echo md5(time()); ?>",
+            style: "",
+            href: ""
+        });
+    });
+    $('#bind_wechat').modal('show');
 }
 function confirmEdit(field) {
     switch (field) {
@@ -310,6 +338,33 @@ function validateCode() {
                     <div class="form-group">
                         <div class="col-md-12">
                             <button type="button" class="btn btn-primary btn-block" onClick="return validateCode();">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="bind_wechat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:600px; margin-top:40px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5 class="modal-title" id="myModalLabel">绑定微信</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-offset-3">
+                            <div id="wechat_container"></div>
                         </div>
                     </div>
                 </div>
