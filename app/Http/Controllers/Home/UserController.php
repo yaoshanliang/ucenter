@@ -10,14 +10,18 @@ use Config;
 use Illuminate\Http\Request;
 use App\Model\UserFields;
 use App\Model\UserInfo;
+use App\Model\UserWechat;
 use App\Http\Requests\UserFieldsRequest;
+use EasyWeChat\Foundation\Application;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Application $wechat)
     {
         $user = Cache::get(Config::get('cache.users') . Auth::id());
-        return view('home.user.index')->withUser($user);
+        $wechat->oauth->redirect();
+        $wechat = Cache::get(Config::get('cache.wechat.openid') . (Cache::get(Config::get('cache.wechat.user_id') . Auth::id())));
+        return view('home.user.index')->withUser($user)->withWechat($wechat);
     }
 
     // 编辑个人信息
@@ -63,5 +67,38 @@ class UserController extends Controller
         } else {
             return redirect()->back()->withInput()->withErrors('保存失败！');
         }
+    }
+
+    // 微信扫描绑定之后的回调
+    public function wechatCallback(Application $wechat)
+    {
+        $wechatUser = $wechat->oauth->user()->toArray();
+        $wechatUser = $wechatUser['original'];
+        $data = array('user_id' => Auth::id(),
+            'unionid' => $wechatUser['unionid'],
+            'openid' => $wechatUser['openid'],
+            'nickname' => $wechatUser['nickname'],
+            'sex' => $wechatUser['sex'],
+            'language' => $wechatUser['language'],
+            'city' => $wechatUser['city'],
+            'province' => $wechatUser['province'],
+            'country' => $wechatUser['country'],
+            'headimgurl' => $wechatUser['headimgurl'],
+        );
+
+        // 已绑定则修改，未绑定则新增
+        $exists = UserWechat::where('user_id', Auth::id())->exists();
+        if ($exists) {
+            UserWechat::where('user_id', Auth::id())->update($data);
+        } else {
+            UserWechat::create($data);
+        }
+
+        // 更新cache
+        Cache::forever(Config::get('cache.wechat.openid') . $data['openid'], $data);
+        Cache::forever(Config::get('cache.wechat.user_id') . $data['user_id'], $data['openid']);
+
+        session()->flash('success_message', '绑定成功');
+        return redirect('/home/user');
     }
 }

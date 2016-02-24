@@ -142,6 +142,8 @@ class AuthController extends Controller
                 ->withErrors('当前微信未绑定账户，请用账号登陆！');
         }
         Auth::login($user);
+        // dd($wechatUser);
+        // dd($wechat->user->get($wechatUser['id']));
         $this->afterLogin($request, $response, array('wechat' => $wechatUser['nickname']));
 
         return redirect()->intended();
