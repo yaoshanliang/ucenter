@@ -136,14 +136,12 @@ class AuthController extends Controller
     public function wechatCallback(Application $wechat, Request $request, Response $response)
     {
         $wechatUser = $wechat->oauth->user()->toArray();
-        $user = User::where('openid', $wechatUser['id'])->first();
+        $user = Cache::get(Config::get('cache.wechat.openid') . $wechatUser['id']);
         if (empty($user)) {
             return redirect()->guest('/auth/login')
                 ->withErrors('当前微信未绑定账户，请用账号登陆！');
         }
-        Auth::login($user);
-        // dd($wechatUser);
-        // dd($wechat->user->get($wechatUser['id']));
+        Auth::loginUsingId($user['user_id']);
         $this->afterLogin($request, $response, array('wechat' => $wechatUser['nickname']));
 
         return redirect()->intended();
