@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Model\App;
 use App\Model\Role;
 use App\Model\User;
+use App\Model\UserWechat;
 use Cache;
 use Config;
 use DB;
@@ -68,5 +69,15 @@ abstract class Controller extends BaseController
         foreach($users as $v) {
             Cache::forever(Config::get('cache.users') . $v['user_id'], $v);
         }
+    }
+
+    function cacheWechat()
+    {
+        $usersArray = UserWechat::get(array('user_id', 'unionid', 'openid', 'nickname', 'sex', 'language', 'city', 'province', 'country', 'headimgurl'));
+        foreach ($usersArray as $v) {
+            Cache::forever(Config::get('cache.wechat.openid') . $v['openid'], $v);
+            Cache::forever(Config::get('cache.wechat.user_id') . $v['user_id'], $v['openid']);
+        }
+
     }
 }
