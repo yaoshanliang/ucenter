@@ -24,17 +24,17 @@
                         <div class="col-md-3">
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-5">
                         <div class="form-group">
                             <label class="col-md-2 control-label">账户</label>
-                            <div class="col-md-9">
+                            <div class="col-md-10">
                                 <input type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="用户名/邮箱/手机">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-2 control-label">密码</label>
-                            <div class="col-md-9">
+                            <div class="col-md-10">
                                 <input type="password" class="form-control" name="password">
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                         <script src="//captcha.luosimao.com/static/js/api.js"></script>
                         <div class="form-group">
                             <label class="col-md-2 control-label">验证</label>
-                            <div class="col-md-9">
+                            <div class="col-md-10">
                                 <div class="l-captcha" data-site-key="{{ env('CAPTCHA_SITE_KEY') }}" data-width="100%"></div>
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                                 redirect_uri: "<?php echo urlencode(url('oauth/wechatCallback')); ?>",
                                 state: "<?php echo md5(time()); ?>",
                                 style: "",
-                                href: "<?php echo asset('/css/wechat.css'); ?>"
+                                // href: "<?php echo asset('/css/wechat.css'); ?>"
                             });
                             </script>
                         </div>
