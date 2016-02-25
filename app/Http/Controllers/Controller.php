@@ -12,10 +12,14 @@ use App\Model\UserWechat;
 use Cache;
 use Config;
 use DB;
+use Dingo\Api\Routing\Helpers;
+use Auth;
+
 abstract class Controller extends BaseController
 {
 
     use DispatchesCommands, ValidatesRequests;
+    use Helpers;
 
     function cacheApps($app_id)
     {
@@ -78,6 +82,31 @@ abstract class Controller extends BaseController
             Cache::forever(Config::get('cache.wechat.openid') . $v['openid'], $v);
             Cache::forever(Config::get('cache.wechat.user_id') . $v['user_id'], $v['openid']);
         }
+    }
 
+    public function accessToken()
+    {
+        // $authCode = $this->api->get('api/oauth/getAuthCode?client_id=' . env('client_id') . '&response_type=code&redirect_uri=' . urlencode(env('redirect_uri')));
+        if (!($accessToken = Cache::get(Config::get('cache.api.access_token') . Auth::id()))) {
+            $authCode = $this->api
+                ->with(['client_id' => env('client_id'), 'response_type' => 'code', 'redirect_uri' => env('redirect_uri')])
+                ->get('api/oauth/getAuthCode');
+            $accessToken = $this->api
+                ->with(['client_id' => env('client_id'), 'client_secret' => env('client_secret'),
+                    'grant_type' => 'authorization_code', 'redirect_uri' => env('redirect_uri'), 'code' => $authCode])
+                ->post('api/oauth/getAccessToken');
+            $accessToken = $accessToken['data'];
+            $accessToken['timestamp'] = time();
+            Cache::put(Config::get('cache.api.access_token') . Auth::id(), $accessToken, $accessToken['expires_in'] / 60);
+        } elseif ( time() - $accessToken['timestamp'] < 10 * 60) {
+            $accessToken = $this->api
+                ->with(['client_id' => env('client_id'), 'client_secret' => env('client_secret'),
+                    'grant_type' => 'refresh_token', 'refresh_token' => $accessToken['refresh_token']])
+                ->post('api/oauth/getAccessToken');
+            $accessToken = $accessToken['data'];
+            $accessToken['timestamp'] = time();
+            Cache::put(Config::get('cache.api.access_token') . Auth::id(), $accessToken, $accessToken['expires_in'] / 60);
+        }
+        return $accessToken['access_token'];
     }
 }
