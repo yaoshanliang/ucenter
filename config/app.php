@@ -155,6 +155,7 @@ return [
         'LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider',
         'Toplan\PhpSms\PhpSmsServiceProvider',
         'Toplan\Sms\SmsManagerServiceProvider',
+        Overtrue\LaravelWechat\ServiceProvider::class,
 
     ],
 
@@ -209,6 +210,7 @@ return [
         'Authorizer' => 'LucaDegasperi\OAuth2Server\Facades\Authorizer',
         'PhpSms'    => 'Toplan\PhpSms\Facades\Sms',
         'SmsManager' => 'Toplan\Sms\Facades\SmsManager',
+        'Wechat' => 'Overtrue\LaravelWechat\Facade',
     ],
 
 ];

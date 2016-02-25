@@ -152,6 +152,7 @@ class AuthController extends Controller
     {
         $this->initRole($request, $response);
         $this->loginLog($request, $credentials);
+        $this->accessToken();
     }
 
     // 初始化角色、应用、当前角色、当前应用

@@ -82,9 +82,16 @@ return [
     'roles' => 'roles:',
     'users' =>'users:',
     'settings' =>'settings:',
-    // 'sms' =>'sms:',
     'sms' => [
         'code' => 'sms:code:',
-        'validated' => 'sms:validated:'
+        'validated' => 'sms:validated:',
+        'count' => 'sms:count:',
+    ],
+    'wechat' => [
+        'openid' => 'wechat:openid:',
+        'user_id' => 'wechat:user_id:'
+    ],
+    'api' => [
+        'access_token' => 'api:access_token:'
     ],
 ];

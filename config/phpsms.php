@@ -35,8 +35,12 @@ return [
      * ]
      *
      */
+    'whiteList' => ['18896581232', '18862237850'],
+
     'enable' => [
-        'Log',
+        'Chuanglan' => '20 backup',
+        // 'Luosimao' => '20 backup',
+        // 'Log' => '0 backup',
     ],
 
     /*
@@ -121,11 +125,11 @@ return [
         'Luosimao' => [
             // 短信 API key
             // 在管理中心->短信->触发发送下查看
-            'apikey' => 'your api key',
+            'apikey' => env('SMS_LUOSIMAO_APIKEY'),
 
             // 语言验证 API key
             // 在管理中心->语音->语音验证下查看
-            'voiceApikey' => 'your voice api key',
+            'voiceApikey' => env('SMS_LUOSIMAO_VOICEAPIKEY'),
         ],
 
         /*
@@ -161,6 +165,23 @@ return [
 
             //语音验证码播放次数
             'times' => 3,
+        ],
+
+        /*
+         * ----------------------------------
+         * Chuanglan
+         * 创蓝
+         * ----------------------------------
+         */
+        'Chuanglan' => [
+            // 账号
+            'apiAccount' => env('SMS_CHUANGLAN_ACCOUNT'),
+
+            // 密码
+            'apiPassword' => env('SMS_CHUANGLAN_PASSWORD'),
+
+            // 代理器
+            'agentClass' => 'Yaoshanliang\PhpSms\ChuanglanAgent',
         ],
     ],
 ];

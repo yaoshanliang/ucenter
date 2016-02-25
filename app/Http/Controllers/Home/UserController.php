@@ -22,12 +22,12 @@ class UserController extends Controller
     {
         self::$currentAccessToken = parent::accessToken();
     }
+
     public function index(Application $wechat)
     {
         $user = Cache::get(Config::get('cache.users') . Auth::id());
         $wechat->oauth->redirect();
         $wechat = Cache::get(Config::get('cache.wechat.openid') . (Cache::get(Config::get('cache.wechat.user_id') . Auth::id())));
-        // return view('home.user.index')->withUser($user)->withWechat($wechat)->withAccessToken(self::$currentAccessToken);
         return view('home.user.index')->with(['user' => $user, 'wechat' => $wechat, 'accessToken' => self::$currentAccessToken]);
     }
 

@@ -65,7 +65,7 @@ return [
      * codeLength: 验证码长度
      * codeValidTime: 验证码有效时间长度，单位为分钟(minutes)
      */
-    'verifySmsContent' => '【your app signature】亲爱的用户，您的验证码是%s。有效期为%s分钟，请尽快验证',
+    'verifySmsContent' => '【' . env('SITE_NAME') . '】亲爱的用户，您的验证码是%s。有效期为%s分钟，请尽快验证',
 
     'codeLength' => 5,
 

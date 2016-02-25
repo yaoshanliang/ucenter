@@ -16,6 +16,8 @@ Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
+// Route::get('/auth/wechatCallback', 'Auth\AuthController@wechatCallback');
+// Route::post('api/oauth/getAccessToken', 'Api\V1\OauthController@getAccessToken');
 
 Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth', 'csrf'], function() {
     Route::get('/', 'HomeController@index');
@@ -24,6 +26,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth',
     // user
     Route::group(['prefix' => 'user'], function(){
         Route::get('/edit', 'UserController@edit');
+        Route::get('/wechatCallback', 'UserController@wechatCallback');
         // Route::post('/edit', 'UserController@postEdit');
     });
     Route::resource('/user', 'UserController');
@@ -123,7 +126,12 @@ $api->version('v1', ['middleware' => 'oauth'], function ($api) {
             // Only access tokens with the "read_user_data" scope will be given access.
     // }]);
 });
+
+// Route::post('api/api/accessToken', 'Api\V1\ApiController@accessToken');
 Route::post('api/oauth/getAccessToken', 'Api\V1\OauthController@getAccessToken');
-Route::get('oauth/authorize', ['as' => 'oauth.authorize.get', 'middleware' => ['check-authorization-params', 'auth'], 'uses' => 'Oauth\OauthController@getAuthorize']);
-Route::post('oauth/authorize', ['as' => 'oauth.authorize.post', 'middleware' => ['csrf', 'check-authorization-params', 'auth'], 'uses' => 'Oauth\OauthController@postAuthorize']);
+Route::get('api/oauth/getAuthCode', ['middleware' => ['check-authorization-params'], 'uses' => 'Api\V1\OauthController@getAuthCode']);
+
+Route::get('/oauth/authorize', ['as' => 'oauth.authorize.get', 'middleware' => ['check-authorization-params', 'auth'], 'uses' => 'Oauth\OauthController@getAuthorize']);
+Route::post('/oauth/authorize', ['as' => 'oauth.authorize.post', 'middleware' => ['csrf', 'check-authorization-params', 'auth'], 'uses' => 'Oauth\OauthController@postAuthorize']);
+Route::get('/oauth/wechatCallback', 'Auth\AuthController@wechatCallback');
 // $dispatcher = app('Dingo\Api\Dispatcher');
