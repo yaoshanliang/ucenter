@@ -4,28 +4,28 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "311f97dfe5c84d4d767c138f53b8139d",
-    "content-hash": "0e8945f28d63096f0abe8f89bb276ce3",
+    "hash": "0898f23033673b006223a10bb1089391",
+    "content-hash": "ec279641884830684421164741e4e74d",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v2.1.1",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "974fd16e328ca851a081449100d9509af59cf0ff"
+                "reference": "13b7058d2120c8d5af7f1ada21b7c44dd87b666a"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/barryvdh/laravel-debugbar/974fd16e328ca851a081449100d9509af59cf0ff.zip",
-                "reference": "974fd16e328ca851a081449100d9509af59cf0ff",
+                "url": "http://packagist.phpcomposer.com/files/barryvdh/laravel-debugbar/13b7058d2120c8d5af7f1ada21b7c44dd87b666a.zip",
+                "reference": "13b7058d2120c8d5af7f1ada21b7c44dd87b666a",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "~5.0.17|5.1.*|5.2.*",
+                "illuminate/support": "5.1.*|5.2.*",
                 "maximebf/debugbar": "~1.11.0",
-                "php": ">=5.4.0",
-                "symfony/finder": "~2.6|~3.0"
+                "php": ">=5.5.9",
+                "symfony/finder": "~2.7|~3.0"
             },
             "type": "library",
             "extra": {
@@ -59,7 +59,7 @@
                 "profiler",
                 "webprofiler"
             ],
-            "time": "2015-12-22 06:22:38"
+            "time": "2016-02-17 08:32:21"
         },
         {
             "name": "ccampbell/chromephp",
@@ -220,12 +220,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/dingo/api.git",
-                "reference": "fb22a2489d380d153c8d67056ce0461129a72dcb"
+                "reference": "9bf29beb501613d0eee342ac3e962113debddbce"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/dingo/api/fb22a2489d380d153c8d67056ce0461129a72dcb.zip",
-                "reference": "fb22a2489d380d153c8d67056ce0461129a72dcb",
+                "url": "http://packagist.phpcomposer.com/files/dingo/api/9bf29beb501613d0eee342ac3e962113debddbce.zip",
+                "reference": "9bf29beb501613d0eee342ac3e962113debddbce",
                 "shasum": ""
             },
             "require": {
@@ -288,7 +288,7 @@
                 "laravel",
                 "restful"
             ],
-            "time": "2016-02-08 01:26:45"
+            "time": "2016-02-19 06:03:41"
         },
         {
             "name": "dingo/blueprint",
@@ -447,6 +447,76 @@
             "time": "2015-08-31 12:32:49"
         },
         {
+            "name": "doctrine/cache",
+            "version": "v1.6.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/cache.git",
+                "reference": "f8af318d14bdb0eff0336795b428b547bd39ccb6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "http://packagist.phpcomposer.com/files/doctrine/cache/f8af318d14bdb0eff0336795b428b547bd39ccb6.zip",
+                "reference": "f8af318d14bdb0eff0336795b428b547bd39ccb6",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~5.5|~7.0"
+            },
+            "conflict": {
+                "doctrine/common": ">2.2,<2.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8|~5.0",
+                "predis/predis": "~1.0",
+                "satooshi/php-coveralls": "~0.6"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.6.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\Common\\Cache\\": "lib/Doctrine/Common/Cache"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Roman Borschel",
+                    "email": "roman@code-factory.org"
+                },
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de"
+                },
+                {
+                    "name": "Guilherme Blanco",
+                    "email": "guilhermeblanco@gmail.com"
+                },
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com"
+                },
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com"
+                }
+            ],
+            "description": "Caching library offering an object-oriented API for many cache backends",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "cache",
+                "caching"
+            ],
+            "time": "2015-12-31 16:37:02"
+        },
+        {
             "name": "doctrine/inflector",
             "version": "v1.1.0",
             "source": {
@@ -566,6 +636,177 @@
                 "parser"
             ],
             "time": "2014-09-09 13:34:57"
+        },
+        {
+            "name": "guzzlehttp/guzzle",
+            "version": "6.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/guzzle.git",
+                "reference": "c6851d6e48f63b69357cbfa55bca116448140e0c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "http://packagist.phpcomposer.com/files/guzzle/guzzle/c6851d6e48f63b69357cbfa55bca116448140e0c.zip",
+                "reference": "c6851d6e48f63b69357cbfa55bca116448140e0c",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/promises": "~1.0",
+                "guzzlehttp/psr7": "~1.1",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "phpunit/phpunit": "~4.0",
+                "psr/log": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.1-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/functions_include.php"
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Guzzle is a PHP HTTP client library",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "rest",
+                "web service"
+            ],
+            "time": "2015-11-23 00:47:50"
+        },
+        {
+            "name": "guzzlehttp/promises",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/promises.git",
+                "reference": "b1e1c0d55f8083c71eda2c28c12a228d708294ea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "http://packagist.phpcomposer.com/files/guzzle/promises/b1e1c0d55f8083c71eda2c28c12a228d708294ea.zip",
+                "reference": "b1e1c0d55f8083c71eda2c28c12a228d708294ea",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Promise\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Guzzle promises library",
+            "keywords": [
+                "promise"
+            ],
+            "time": "2015-10-15 22:28:00"
+        },
+        {
+            "name": "guzzlehttp/psr7",
+            "version": "1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/psr7.git",
+                "reference": "2e89629ff057ebb49492ba08e6995d3a6a80021b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "http://packagist.phpcomposer.com/files/guzzle/psr7/2e89629ff057ebb49492ba08e6995d3a6a80021b.zip",
+                "reference": "2e89629ff057ebb49492ba08e6995d3a6a80021b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "psr/http-message": "~1.0"
+            },
+            "provide": {
+                "psr/http-message-implementation": "1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Psr7\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "PSR-7 message implementation",
+            "keywords": [
+                "http",
+                "message",
+                "stream",
+                "uri"
+            ],
+            "time": "2016-02-18 21:54:00"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -714,16 +955,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.1.29",
+            "version": "v5.1.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "7e7ba568ffbc8f3f00778f2e8f41fb92127944fd"
+                "reference": "d899fbda59bf3ffcde11a9b443c01043b76f40b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/laravel/framework/7e7ba568ffbc8f3f00778f2e8f41fb92127944fd.zip",
-                "reference": "7e7ba568ffbc8f3f00778f2e8f41fb92127944fd",
+                "url": "http://packagist.phpcomposer.com/files/laravel/framework/d899fbda59bf3ffcde11a9b443c01043b76f40b3.zip",
+                "reference": "d899fbda59bf3ffcde11a9b443c01043b76f40b3",
                 "shasum": ""
             },
             "require": {
@@ -739,7 +980,7 @@
                 "nesbot/carbon": "~1.19",
                 "paragonie/random_compat": "~1.1",
                 "php": ">=5.5.9",
-                "psy/psysh": "0.6.*",
+                "psy/psysh": "0.7.*",
                 "swiftmailer/swiftmailer": "~5.1",
                 "symfony/console": "2.7.*",
                 "symfony/css-selector": "2.7.*",
@@ -838,7 +1079,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2016-02-02 14:56:40"
+            "time": "2016-02-24 15:13:21"
         },
         {
             "name": "league/event",
@@ -892,16 +1133,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.16",
+            "version": "1.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "183e1a610664baf6dcd6fceda415baf43cbdc031"
+                "reference": "02f5b6c9a8b9278c8381e3361e7bd9d641c740ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/thephpleague/flysystem/183e1a610664baf6dcd6fceda415baf43cbdc031.zip",
-                "reference": "183e1a610664baf6dcd6fceda415baf43cbdc031",
+                "url": "http://packagist.phpcomposer.com/files/thephpleague/flysystem/02f5b6c9a8b9278c8381e3361e7bd9d641c740ca.zip",
+                "reference": "02f5b6c9a8b9278c8381e3361e7bd9d641c740ca",
                 "shasum": ""
             },
             "require": {
@@ -914,8 +1155,7 @@
                 "ext-fileinfo": "*",
                 "mockery/mockery": "~0.9",
                 "phpspec/phpspec": "^2.2",
-                "phpspec/prophecy-phpunit": "~1.0",
-                "phpunit/phpunit": "~4.8"
+                "phpunit/phpunit": "~4.8 || ~5.0"
             },
             "suggest": {
                 "ext-fileinfo": "Required for MimeType",
@@ -972,7 +1212,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2015-12-19 20:16:43"
+            "time": "2016-02-19 15:35:38"
         },
         {
             "name": "league/fractal",
@@ -1359,56 +1599,6 @@
             "time": "2016-01-26 21:23:30"
         },
         {
-            "name": "namshi/jose",
-            "version": "5.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/namshi/jose.git",
-                "reference": "8c7eba486f74c014ea1d8faedafe5109a31ea95b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/namshi/jose/8c7eba486f74c014ea1d8faedafe5109a31ea95b.zip",
-                "reference": "8c7eba486f74c014ea1d8faedafe5109a31ea95b",
-                "shasum": ""
-            },
-            "require": {
-                "lib-openssl": "*",
-                "php": ">=5.3.3",
-                "phpseclib/phpseclib": "~0.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.5",
-                "satooshi/php-coveralls": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Namshi\\JOSE": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alessandro Nadalin",
-                    "email": "alessandro.nadalin@gmail.com"
-                }
-            ],
-            "description": "JSON Object Signing and Encryption library for PHP.",
-            "keywords": [
-                "JSON Web Signature",
-                "JSON Web Token",
-                "JWS",
-                "json",
-                "jwt",
-                "token"
-            ],
-            "time": "2015-06-29 05:41:44"
-        },
-        {
             "name": "nesbot/carbon",
             "version": "1.21.0",
             "source": {
@@ -1561,6 +1751,153 @@
             "time": "2016-01-18 01:21:17"
         },
         {
+            "name": "overtrue/laravel-wechat",
+            "version": "3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overtrue/laravel-wechat.git",
+                "reference": "b272e8372b8292cd7fe133da9de52edb1ee3da95"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "http://packagist.phpcomposer.com/files/overtrue/laravel-wechat/b272e8372b8292cd7fe133da9de52edb1ee3da95.zip",
+                "reference": "b272e8372b8292cd7fe133da9de52edb1ee3da95",
+                "shasum": ""
+            },
+            "require": {
+                "overtrue/wechat": "~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Overtrue\\LaravelWechat\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "overtrue",
+                    "email": "anzhengchao@gmail.com"
+                }
+            ],
+            "description": "微信 SDK for Laravel",
+            "keywords": [
+                "laravel",
+                "sdk",
+                "wechat",
+                "weixin"
+            ],
+            "time": "2016-02-17 12:53:08"
+        },
+        {
+            "name": "overtrue/socialite",
+            "version": "1.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overtrue/socialite.git",
+                "reference": "397cb38625728cf8839a08728e162219e41b99e6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "http://packagist.phpcomposer.com/files/overtrue/socialite/397cb38625728cf8839a08728e162219e41b99e6.zip",
+                "reference": "397cb38625728cf8839a08728e162219e41b99e6",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~5.0|~6.0",
+                "php": ">=5.4.0",
+                "symfony/http-foundation": "~2.8|~2.7|~3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Overtrue\\Socialite\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "overtrue",
+                    "email": "anzhengchao@gmail.com"
+                }
+            ],
+            "description": "A collection of OAuth 2 packages that extracts from laravel/socialite.",
+            "keywords": [
+                "login",
+                "oauth",
+                "qq",
+                "social",
+                "wechat",
+                "weibo"
+            ],
+            "time": "2016-02-22 03:53:49"
+        },
+        {
+            "name": "overtrue/wechat",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overtrue/wechat.git",
+                "reference": "285e55151d1baf00184794be8eddfa285a4b8082"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "http://packagist.phpcomposer.com/files/overtrue/wechat/285e55151d1baf00184794be8eddfa285a4b8082.zip",
+                "reference": "285e55151d1baf00184794be8eddfa285a4b8082",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/cache": "~1.4",
+                "ext-mcrypt": "*",
+                "ext-openssl": "*",
+                "monolog/monolog": "^1.17",
+                "overtrue/socialite": ">=1.0.7",
+                "php": ">=5.5.0",
+                "pimple/pimple": "~3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0@dev",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EasyWeChat\\": "src/"
+                },
+                "files": [
+                    "src/Payment/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "overtrue",
+                    "email": "anzhengchao@gmail.com"
+                }
+            ],
+            "description": "微信SDK",
+            "keywords": [
+                "sdk",
+                "wechat",
+                "weixin",
+                "weixin-sdk"
+            ],
+            "time": "2016-02-22 15:54:13"
+        },
+        {
             "name": "paragonie/random_compat",
             "version": "v1.2.0",
             "source": {
@@ -1671,16 +2008,16 @@
         },
         {
             "name": "php-console/php-console",
-            "version": "3.1.5",
+            "version": "3.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barbushin/php-console.git",
-                "reference": "50236f71d80f983d232683d5d61ba1994d40c3de"
+                "reference": "07801c32ea32e4d57ddf1c6b9cf98ff7f2982542"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/barbushin/php-console/50236f71d80f983d232683d5d61ba1994d40c3de.zip",
-                "reference": "50236f71d80f983d232683d5d61ba1994d40c3de",
+                "url": "http://packagist.phpcomposer.com/files/barbushin/php-console/07801c32ea32e4d57ddf1c6b9cf98ff7f2982542.zip",
+                "reference": "07801c32ea32e4d57ddf1c6b9cf98ff7f2982542",
                 "shasum": ""
             },
             "require": {
@@ -1718,7 +2055,7 @@
                 "google chrome",
                 "php"
             ],
-            "time": "2015-10-29 01:31:31"
+            "time": "2016-02-19 16:00:24"
         },
         {
             "name": "php-curl-class/php-curl-class",
@@ -1826,102 +2163,50 @@
             "time": "2015-02-03 12:10:50"
         },
         {
-            "name": "phpseclib/phpseclib",
-            "version": "0.3.10",
+            "name": "pimple/pimple",
+            "version": "v3.0.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "d15bba1edcc7c89e09cc74c5d961317a8b947bf4"
+                "url": "https://github.com/silexphp/Pimple.git",
+                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/phpseclib/phpseclib/d15bba1edcc7c89e09cc74c5d961317a8b947bf4.zip",
-                "reference": "d15bba1edcc7c89e09cc74c5d961317a8b947bf4",
+                "url": "http://packagist.phpcomposer.com/files/silexphp/Pimple/a30f7d6e57565a2e1a316e1baf2a483f788b258a.zip",
+                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.0.0"
-            },
-            "require-dev": {
-                "phing/phing": "~2.7",
-                "phpunit/phpunit": "~4.0",
-                "sami/sami": "~2.0",
-                "squizlabs/php_codesniffer": "~1.5"
-            },
-            "suggest": {
-                "ext-gmp": "Install the GMP (GNU Multiple Precision) extension in order to speed up arbitrary precision integer arithmetic operations.",
-                "ext-mcrypt": "Install the Mcrypt extension in order to speed up a wide variety of cryptographic operations.",
-                "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP < 4.3.3."
+                "php": ">=5.3.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.3-dev"
+                    "dev-master": "3.0.x-dev"
                 }
             },
             "autoload": {
                 "psr-0": {
-                    "Crypt": "phpseclib/",
-                    "File": "phpseclib/",
-                    "Math": "phpseclib/",
-                    "Net": "phpseclib/",
-                    "System": "phpseclib/"
-                },
-                "files": [
-                    "phpseclib/Crypt/Random.php"
-                ]
+                    "Pimple": "src/"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "include-path": [
-                "phpseclib/"
-            ],
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "Jim Wigginton",
-                    "email": "terrafrost@php.net",
-                    "role": "Lead Developer"
-                },
-                {
-                    "name": "Patrick Monnerat",
-                    "email": "pm@datasphere.ch",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Andreas Fischer",
-                    "email": "bantu@phpbb.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Hans-Jürgen Petrich",
-                    "email": "petrich@tronic-media.com",
-                    "role": "Developer"
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
-            "description": "PHP Secure Communications Library - Pure-PHP implementations of RSA, AES, SSH2, SFTP, X.509 etc.",
-            "homepage": "http://phpseclib.sourceforge.net",
+            "description": "Pimple, a simple Dependency Injection Container",
+            "homepage": "http://pimple.sensiolabs.org",
             "keywords": [
-                "BigInteger",
-                "aes",
-                "asn.1",
-                "asn1",
-                "blowfish",
-                "crypto",
-                "cryptography",
-                "encryption",
-                "rsa",
-                "security",
-                "sftp",
-                "signature",
-                "signing",
-                "ssh",
-                "twofish",
-                "x.509",
-                "x509"
+                "container",
+                "dependency injection"
             ],
-            "time": "2015-01-28 21:50:33"
+            "time": "2015-09-11 15:10:35"
         },
         {
             "name": "predis/predis",
@@ -1974,6 +2259,55 @@
             "time": "2015-07-30 18:34:15"
         },
         {
+            "name": "psr/http-message",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-message.git",
+                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "http://packagist.phpcomposer.com/files/php-fig/http-message/85d63699f0dbedb190bbd4b0d2b9dc707ea4c298.zip",
+                "reference": "85d63699f0dbedb190bbd4b0d2b9dc707ea4c298",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Message\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP messages",
+            "keywords": [
+                "http",
+                "http-message",
+                "psr",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "time": "2015-05-04 20:22:00"
+        },
+        {
             "name": "psr/log",
             "version": "1.0.0",
             "source": {
@@ -2013,16 +2347,16 @@
         },
         {
             "name": "psy/psysh",
-            "version": "v0.6.1",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bobthecow/psysh.git",
-                "reference": "0f04df0b23663799a8941fae13cd8e6299bde3ed"
+                "reference": "1573b36948a32bdaf43db525edf5e95d5a08ed06"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/bobthecow/psysh/0f04df0b23663799a8941fae13cd8e6299bde3ed.zip",
-                "reference": "0f04df0b23663799a8941fae13cd8e6299bde3ed",
+                "url": "http://packagist.phpcomposer.com/files/bobthecow/psysh/1573b36948a32bdaf43db525edf5e95d5a08ed06.zip",
+                "reference": "1573b36948a32bdaf43db525edf5e95d5a08ed06",
                 "shasum": ""
             },
             "require": {
@@ -2081,7 +2415,7 @@
                 "interactive",
                 "shell"
             ],
-            "time": "2015-11-12 16:18:56"
+            "time": "2016-02-20 16:27:05"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -3099,69 +3433,6 @@
             "time": "2015-12-31 05:25:17"
         },
         {
-            "name": "tymon/jwt-auth",
-            "version": "0.5.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tymondesigns/jwt-auth.git",
-                "reference": "f70842d94a548f1457114dd57b6c0b9bf94ba13c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/tymondesigns/jwt-auth/f70842d94a548f1457114dd57b6c0b9bf94ba13c.zip",
-                "reference": "f70842d94a548f1457114dd57b6c0b9bf94ba13c",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/http": "~5.0",
-                "illuminate/support": "~5.0",
-                "namshi/jose": "5.0.*",
-                "nesbot/carbon": "~1.0",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "illuminate/auth": "~5.0",
-                "illuminate/console": "~5.0",
-                "illuminate/database": "~5.0",
-                "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "4.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-develop": "0.5-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Tymon\\JWTAuth\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sean Tymon",
-                    "email": "tymon148@gmail.com",
-                    "homepage": "http://tymondesigns.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "JSON Web Token Authentication for Laravel 4 and 5",
-            "homepage": "https://github.com/tymondesigns/jwt-auth",
-            "keywords": [
-                "Authentication",
-                "JSON Web Token",
-                "auth",
-                "jwt",
-                "laravel",
-                "tymon"
-            ],
-            "time": "2015-11-24 20:02:19"
-        },
-        {
             "name": "vlucas/phpdotenv",
             "version": "v1.1.1",
             "source": {
@@ -3213,12 +3484,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yaoshanliang/phpsms.git",
-                "reference": "995d600f9f90d11e2a0e2eb2dfd255decb022723"
+                "reference": "3b35f062a4f149f9aea6061be9f97a1b24c7a17d"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/yaoshanliang/phpsms/995d600f9f90d11e2a0e2eb2dfd255decb022723.zip",
-                "reference": "995d600f9f90d11e2a0e2eb2dfd255decb022723",
+                "url": "http://packagist.phpcomposer.com/files/yaoshanliang/phpsms/3b35f062a4f149f9aea6061be9f97a1b24c7a17d.zip",
+                "reference": "3b35f062a4f149f9aea6061be9f97a1b24c7a17d",
                 "shasum": ""
             },
             "require": {
@@ -3249,7 +3520,7 @@
                 "php",
                 "sms"
             ],
-            "time": "2016-02-21 11:36:47"
+            "time": "2016-02-22 01:34:36"
         },
         {
             "name": "zizaco/entrust",
@@ -3320,116 +3591,6 @@
         }
     ],
     "packages-dev": [
-        {
-            "name": "caouecs/laravel4-lang",
-            "version": "2.0.32",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/caouecs/Laravel-lang.git",
-                "reference": "3200e4d429f30a2deaa9bc1385b22051d572a7b5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/caouecs/Laravel-lang/3200e4d429f30a2deaa9bc1385b22051d572a7b5.zip",
-                "reference": "3200e4d429f30a2deaa9bc1385b22051d572a7b5",
-                "shasum": ""
-            },
-            "require-dev": {
-                "fabpot/php-cs-fixer": "^1.10"
-            },
-            "suggest": {
-                "overtrue/laravel-lang": "Command to add languages in your project"
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "caouecs",
-                    "email": "caouecs@caouecs.net"
-                }
-            ],
-            "description": "Languages for Laravel",
-            "keywords": [
-                "lang",
-                "languages",
-                "laravel",
-                "lpm"
-            ],
-            "time": "2016-02-10 07:18:29"
-        },
-        {
-            "name": "doctrine/cache",
-            "version": "v1.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/doctrine/cache.git",
-                "reference": "f8af318d14bdb0eff0336795b428b547bd39ccb6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/doctrine/cache/f8af318d14bdb0eff0336795b428b547bd39ccb6.zip",
-                "reference": "f8af318d14bdb0eff0336795b428b547bd39ccb6",
-                "shasum": ""
-            },
-            "require": {
-                "php": "~5.5|~7.0"
-            },
-            "conflict": {
-                "doctrine/common": ">2.2,<2.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.8|~5.0",
-                "predis/predis": "~1.0",
-                "satooshi/php-coveralls": "~0.6"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.6.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Doctrine\\Common\\Cache\\": "lib/Doctrine/Common/Cache"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Roman Borschel",
-                    "email": "roman@code-factory.org"
-                },
-                {
-                    "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de"
-                },
-                {
-                    "name": "Guilherme Blanco",
-                    "email": "guilhermeblanco@gmail.com"
-                },
-                {
-                    "name": "Jonathan Wage",
-                    "email": "jonwage@gmail.com"
-                },
-                {
-                    "name": "Johannes Schmitt",
-                    "email": "schmittjoh@gmail.com"
-                }
-            ],
-            "description": "Caching library offering an object-oriented API for many cache backends",
-            "homepage": "http://www.doctrine-project.org",
-            "keywords": [
-                "cache",
-                "caching"
-            ],
-            "time": "2015-12-31 16:37:02"
-        },
         {
             "name": "doctrine/collections",
             "version": "v1.3.0",
@@ -3696,7 +3857,7 @@
         },
         {
             "name": "illuminate/config",
-            "version": "v5.1.28",
+            "version": "v5.1.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/config.git",
@@ -3741,7 +3902,7 @@
         },
         {
             "name": "illuminate/console",
-            "version": "v5.1.28",
+            "version": "v5.1.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/console.git",
@@ -3792,7 +3953,7 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v5.1.28",
+            "version": "v5.1.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
@@ -3835,7 +3996,7 @@
         },
         {
             "name": "illuminate/contracts",
-            "version": "v5.1.28",
+            "version": "v5.1.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
@@ -3877,16 +4038,16 @@
         },
         {
             "name": "illuminate/database",
-            "version": "v5.1.28",
+            "version": "v5.1.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "508d4dca412f7645a4e5ae97a2ee0f3cf836550f"
+                "reference": "30866aef5b44460e3a7eee8246bfea2f0ef875a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/illuminate/database/508d4dca412f7645a4e5ae97a2ee0f3cf836550f.zip",
-                "reference": "508d4dca412f7645a4e5ae97a2ee0f3cf836550f",
+                "url": "http://packagist.phpcomposer.com/files/illuminate/database/30866aef5b44460e3a7eee8246bfea2f0ef875a2.zip",
+                "reference": "30866aef5b44460e3a7eee8246bfea2f0ef875a2",
                 "shasum": ""
             },
             "require": {
@@ -3933,20 +4094,20 @@
                 "orm",
                 "sql"
             ],
-            "time": "2015-12-30 23:14:26"
+            "time": "2016-02-17 17:29:27"
         },
         {
             "name": "illuminate/filesystem",
-            "version": "v5.1.28",
+            "version": "v5.1.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/filesystem.git",
-                "reference": "a1cc4b69d9cde4e8617506fa84576c4197ca0cf0"
+                "reference": "9371a2893ef759b585f27d7c3bf8e2b54268ec46"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/illuminate/filesystem/a1cc4b69d9cde4e8617506fa84576c4197ca0cf0.zip",
-                "reference": "a1cc4b69d9cde4e8617506fa84576c4197ca0cf0",
+                "url": "http://packagist.phpcomposer.com/files/illuminate/filesystem/9371a2893ef759b585f27d7c3bf8e2b54268ec46.zip",
+                "reference": "9371a2893ef759b585f27d7c3bf8e2b54268ec46",
                 "shasum": ""
             },
             "require": {
@@ -3983,11 +4144,11 @@
             ],
             "description": "The Illuminate Filesystem package.",
             "homepage": "http://laravel.com",
-            "time": "2015-12-20 15:51:01"
+            "time": "2016-02-16 14:02:58"
         },
         {
             "name": "illuminate/http",
-            "version": "v5.1.28",
+            "version": "v5.1.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/http.git",
@@ -4033,7 +4194,7 @@
         },
         {
             "name": "illuminate/pipeline",
-            "version": "v5.1.28",
+            "version": "v5.1.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/pipeline.git",
@@ -4077,16 +4238,16 @@
         },
         {
             "name": "illuminate/routing",
-            "version": "v5.1.28",
+            "version": "v5.1.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/routing.git",
-                "reference": "68f48707bc7e0dd6d19e2f383a923a66a3356566"
+                "reference": "cd1ce2992a1499c255d70cf571d15b3280c75ca5"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/illuminate/routing/68f48707bc7e0dd6d19e2f383a923a66a3356566.zip",
-                "reference": "68f48707bc7e0dd6d19e2f383a923a66a3356566",
+                "url": "http://packagist.phpcomposer.com/files/illuminate/routing/cd1ce2992a1499c255d70cf571d15b3280c75ca5.zip",
+                "reference": "cd1ce2992a1499c255d70cf571d15b3280c75ca5",
                 "shasum": ""
             },
             "require": {
@@ -4127,11 +4288,11 @@
             ],
             "description": "The Illuminate Routing package.",
             "homepage": "http://laravel.com",
-            "time": "2015-12-19 22:27:14"
+            "time": "2016-01-25 22:51:21"
         },
         {
             "name": "illuminate/session",
-            "version": "v5.1.28",
+            "version": "v5.1.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/session.git",
@@ -4181,16 +4342,16 @@
         },
         {
             "name": "illuminate/support",
-            "version": "v5.1.28",
+            "version": "v5.1.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "8d62c6e1064d3013609ccc9ab6221efd86c31403"
+                "reference": "96e4fa331ed8bad83314a6bdb26a998970a0d8c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/illuminate/support/8d62c6e1064d3013609ccc9ab6221efd86c31403.zip",
-                "reference": "8d62c6e1064d3013609ccc9ab6221efd86c31403",
+                "url": "http://packagist.phpcomposer.com/files/illuminate/support/96e4fa331ed8bad83314a6bdb26a998970a0d8c2.zip",
+                "reference": "96e4fa331ed8bad83314a6bdb26a998970a0d8c2",
                 "shasum": ""
             },
             "require": {
@@ -4231,7 +4392,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "http://laravel.com",
-            "time": "2015-12-28 21:10:29"
+            "time": "2016-02-15 19:41:59"
         },
         {
             "name": "phpspec/php-diff",
