@@ -141,7 +141,7 @@ function confirmEdit(field) {
     }
     var data = {};
     data[field] = value;
-    data['access_token'] = 'test';
+    data['access_token'] = "<?php echo $accessToken; ?>";
     $.ajax({
         url: '/api/user/edit',
         data: data,
@@ -174,7 +174,7 @@ function sendCode() {
 
     $.ajax({
         url: '/api/sms/sendCode',
-        data: {'phone': phone, 'access_token': 'test'},
+        data: {'phone': phone, 'access_token': "<?php echo $accessToken; ?>"},
         dataType: 'json',
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
@@ -228,7 +228,7 @@ function validateCode() {
     }
     $.ajax({
         url: '/api/sms/validateCode',
-        data: {'phone': phone, 'code': code, 'access_token': 'test'},
+        data: {'phone': phone, 'code': code, 'access_token': "<?php echo $accessToken; ?>"},
         dataType: 'json',
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
