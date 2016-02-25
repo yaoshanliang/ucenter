@@ -75,6 +75,7 @@ abstract class Controller extends BaseController
         }
     }
 
+    // 缓存微信
     function cacheWechat()
     {
         $usersArray = UserWechat::get(array('user_id', 'unionid', 'openid', 'nickname', 'sex', 'language', 'city', 'province', 'country', 'headimgurl'));
@@ -84,27 +85,35 @@ abstract class Controller extends BaseController
         }
     }
 
+    // 获取access_token并缓存，失效时重新请求，即将过期时刷新
     public function accessToken()
     {
-        // $authCode = $this->api->get('api/oauth/getAuthCode?client_id=' . env('client_id') . '&response_type=code&redirect_uri=' . urlencode(env('redirect_uri')));
         if (!($accessToken = Cache::get(Config::get('cache.api.access_token') . Auth::id()))) {
+
+            // 获取授权码
             $authCode = $this->api
                 ->with(['client_id' => env('client_id'), 'response_type' => 'code', 'redirect_uri' => env('redirect_uri')])
                 ->get('api/oauth/getAuthCode');
+
+            // 获取access_token
             $accessToken = $this->api
                 ->with(['client_id' => env('client_id'), 'client_secret' => env('client_secret'),
                     'grant_type' => 'authorization_code', 'redirect_uri' => env('redirect_uri'), 'code' => $authCode])
                 ->post('api/oauth/getAccessToken');
             $accessToken = $accessToken['data'];
             $accessToken['timestamp'] = time();
+
             Cache::put(Config::get('cache.api.access_token') . Auth::id(), $accessToken, $accessToken['expires_in'] / 60);
         } elseif ( time() - $accessToken['timestamp'] < 10 * 60) {
+
+            // 刷新access_token
             $accessToken = $this->api
                 ->with(['client_id' => env('client_id'), 'client_secret' => env('client_secret'),
                     'grant_type' => 'refresh_token', 'refresh_token' => $accessToken['refresh_token']])
                 ->post('api/oauth/getAccessToken');
             $accessToken = $accessToken['data'];
             $accessToken['timestamp'] = time();
+
             Cache::put(Config::get('cache.api.access_token') . Auth::id(), $accessToken, $accessToken['expires_in'] / 60);
         }
         return $accessToken['access_token'];
