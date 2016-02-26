@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\ApiController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
@@ -16,22 +17,14 @@ use App\Model\UserInfo;
 use Dingo\Api\Routing\Helpers;
 use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     use Helpers;
-
-    // 当前用户的id
-    private static $currentUserId;
-
-    public function __construct()
-    {
-        self::$currentUserId = (int)Authorizer::getResourceOwnerId();
-    }
 
     // 获取用户信息，没有user_id参数时则为当前用户
     public function getUserInfo(Request $request)
     {
-        $userId = empty($request->has('user_id')) ? self::$currentUserId : (int)$request->get('user_id');
+        $userId = empty($request->has('user_id')) ? parent::$currentUserId : (int)$request->get('user_id');
         $data = Cache::get(Config::get('cache.users') . $userId);
         $code = 1 AND $message = '获取用户信息成功';
 
@@ -41,22 +34,22 @@ class UserController extends Controller
     // 更新用户信息
     public function edit(Request $request)
     {
-        $user = Cache::get(Config::get('cache.users') . self::$currentUserId);
+        $user = Cache::get(Config::get('cache.users') . parent::$currentUserId);
         foreach ($request->all() as $k => $v) {
             switch ($k) {
                 case 'username' :
-                    $validator = Validator::make(array($k => $request->$k), ['username' => 'required|unique:users,username,'.self::$currentUserId]);
+                    $validator = Validator::make(array($k => $request->$k), ['username' => 'required|unique:users,username,'.parent::$currentUserId]);
                     break;
 
                 case 'email' :
-                    $validator = Validator::make(array($k => $request->$k), ['email' => 'required|email|unique:users,email,'.self::$currentUserId]);
+                    $validator = Validator::make(array($k => $request->$k), ['email' => 'required|email|unique:users,email,'.parent::$currentUserId]);
                     break;
 
                 case 'phone' :
                     Validator::extend('validate_code', function($attribute, $value, $parameters) {
                         return Cache::get(Config::get('cache.sms.validated') . $value) ? true : false;
                     });
-                    $validator = Validator::make(array($k => $request->$k), ['phone' => 'required|size:11|unique:users,phone,'.self::$currentUserId.'|validate_code'], ['validate_code' => '手机号验证失败']);
+                    $validator = Validator::make(array($k => $request->$k), ['phone' => 'required|size:11|unique:users,phone,'.parent::$currentUserId.'|validate_code'], ['validate_code' => '手机号验证失败']);
                     break;
 
                 default :
@@ -81,7 +74,7 @@ class UserController extends Controller
                     case 'email' :
                     case 'phone' :
                         if ($user[$k] != $request->$k) {
-                            $result = User::where('id', self::$currentUserId)->update(array($k => $request->$k));
+                            $result = User::where('id', parent::$currentUserId)->update(array($k => $request->$k));
                             $user[$k] = $request->$k;
                             $isEdit = true;
                         }
@@ -89,7 +82,7 @@ class UserController extends Controller
 
                     default :
                         if (isset($user['details'][$k]) && $user['details'][$k]['value'] != $request->$k) {
-                            $result = UserInfo::where('user_id', self::$currentUserId)->where('field_id', $userFieldsArray['id'])->update(array('value' => $request->$k));
+                            $result = UserInfo::where('user_id', parent::$currentUserId)->where('field_id', $userFieldsArray['id'])->update(array('value' => $request->$k));
                             $user['details'][$k]['value'] = $request->$k;
                             $isEdit = true;
                         }
@@ -101,7 +94,7 @@ class UserController extends Controller
         if (isset($isEdit)) {
 
             // 更新cache
-            Cache::forever(Config::get('cache.users') . self::$currentUserId, $user);
+            Cache::forever(Config::get('cache.users') . parent::$currentUserId, $user);
 
             return $this->response->array(array('code' => 1, 'message' => '修改成功', 'data' => $user));
         } else {
