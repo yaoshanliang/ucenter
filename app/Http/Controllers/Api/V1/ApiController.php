@@ -13,7 +13,12 @@ class ApiController extends Controller
 {
     use Helpers;
 
-    private static $currentUserId;
+    protected static $currentUserId;
+
+    public function __construct()
+    {
+        self::$currentUserId = (int)Authorizer::getResourceOwnerId();
+    }
 
 }
 

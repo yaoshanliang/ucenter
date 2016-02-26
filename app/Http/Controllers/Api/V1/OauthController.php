@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Authorizer;
 use Dingo\Api\Routing\Helpers;
+use Auth;
 
 class OauthController extends Controller
 {
@@ -24,7 +25,7 @@ class OauthController extends Controller
         $formParams['scope'] = implode(config('oauth2.scope_delimiter'), array_map(function ($scope) {
             return $scope->getId();
         }, $authParams['scopes']));
-        $params['user_id'] = 1000;
+        $params['user_id'] = Auth::id();//需要登陆
 
         $redirectUri = Authorizer::issueAuthCode('user', $params['user_id'], $params);
 

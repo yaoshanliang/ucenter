@@ -91,28 +91,23 @@ class AuthController extends Controller
                 ->withErrors('人机验证未通过，请重试！');
         }
 
-        $username = $request->username;
-        $password = $request->password;
-        $credentials = array();
-        if (strpos($username, '@') !== false) {
-            $credentials = array('email' => $username, 'password' => $password);
-        } elseif (preg_match('/^\d{11}$/', $username)) {
-            $credentials = array('phone' => $username, 'password' => $password);
-        }
-        if (!empty($credentials) && Auth::attempt($credentials, $request->has('remember'))) {
-            $this->afterLogin($request, $response, $credentials);
-            return redirect()->intended();
-        }
-        $credentials = array('username' => $request->username, 'password' => $request->password);
-        if (Auth::attempt($credentials, $request->has('remember'))) {
-            $this->afterLogin($request, $response, $credentials);
-            return redirect()->intended();
-        } else {
-            Cookie::queue('login_failed', 1, 3);// 登陆失败记录，显示人机验证
+        // 验证密码
+        if (false === ($userId = $this->verifyPassword($request->username, $request->password, $credentials = array()))) {
+
+            // 登陆失败记录，用于人机验证
+            Cookie::queue('login_failed', 1, 3);
+
             return redirect()->guest('/auth/login')
                 ->withInput()
                 ->withErrors('账户与密码不匹配，请重试！');
         }
+
+        Auth::loginUsingId($userId);
+
+        // 登陆之后的操作
+        $this->afterLogin($request, $response, $credentials);
+
+        return redirect()->intended();
     }
 
     // 螺丝帽人机验证
@@ -192,4 +187,22 @@ class AuthController extends Controller
         $log = Queue::push(new UserLog(1, Auth::id(), 'S', '登录', $loginWay, '', $ip, $ips));
     }
 
+    // 验证密码
+    public function verifyPassword($username, $password, $credentials = array())
+    {
+        if (false !== strpos($username, '@')) {
+            $credentials = array('email' => $username, 'password' => $password);
+        } elseif (preg_match('/^\d{11}$/', $username)) {
+            $credentials = array('phone' => $username, 'password' => $password);
+        }
+        if (!empty($credentials) && Auth::once($credentials)) {
+            return Auth::id();
+        }
+        $credentials = array('username' => $username, 'password' => $password);
+        if (Auth::once($credentials)) {
+            return Auth::id();
+        }
+
+        return false;
+    }
 }

@@ -116,22 +116,19 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array
     });
     Route::resource('/userlog', 'UserLogController');
 });
+
 $api = app('api.router');
 $api->version('v1', ['middleware' => 'oauth'], function ($api) {
     $api->get('user/getUserInfo', 'App\Http\Controllers\Api\V1\UserController@getUserInfo');
     $api->get('user/edit', 'App\Http\Controllers\Api\V1\UserController@edit');
     $api->get('sms/sendCode', 'App\Http\Controllers\Api\V1\SmsController@sendCode');
     $api->get('sms/validateCode', 'App\Http\Controllers\Api\V1\SmsController@validateCode');
-    // $api->get('me', ['scopes' => 'read_user_data', function () {
-            // Only access tokens with the "read_user_data" scope will be given access.
-    // }]);
 });
 
-// Route::post('api/api/accessToken', 'Api\V1\ApiController@accessToken');
 Route::post('api/oauth/getAccessToken', 'Api\V1\OauthController@getAccessToken');
 Route::get('api/oauth/getAuthCode', ['middleware' => ['check-authorization-params'], 'uses' => 'Api\V1\OauthController@getAuthCode']);
 
 Route::get('/oauth/authorize', ['as' => 'oauth.authorize.get', 'middleware' => ['check-authorization-params', 'auth'], 'uses' => 'Oauth\OauthController@getAuthorize']);
 Route::post('/oauth/authorize', ['as' => 'oauth.authorize.post', 'middleware' => ['csrf', 'check-authorization-params', 'auth'], 'uses' => 'Oauth\OauthController@postAuthorize']);
 Route::get('/oauth/wechatCallback', 'Auth\AuthController@wechatCallback');
-// $dispatcher = app('Dingo\Api\Dispatcher');
+Route::post('/oauth/verifyPassword', 'Auth\AuthController@verifyPassword');
