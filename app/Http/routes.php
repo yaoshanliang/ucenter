@@ -12,12 +12,12 @@
 */
 
 Route::get('/', 'WelcomeController@index');
-Route::controllers([
-    'auth' => 'Auth\AuthController',
-    'password' => 'Auth\PasswordController',
-]);
-// Route::get('/auth/wechatCallback', 'Auth\AuthController@wechatCallback');
-// Route::post('api/oauth/getAccessToken', 'Api\V1\OauthController@getAccessToken');
+Route::group(['middleware' => 'csrf'], function() {
+    Route::controllers([
+        'auth' => 'Auth\AuthController',
+        'password' => 'Auth\PasswordController',
+    ]);
+});
 
 Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => 'auth', 'csrf'], function() {
     Route::get('/', 'HomeController@index');
