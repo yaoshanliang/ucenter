@@ -20,6 +20,7 @@
 
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/register') }}">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="access_token" value="{{ $accessToken }}">
 
                         <div class="form-group">
                             <label class="col-md-4 control-label">手机号</label>
@@ -66,4 +67,6 @@
         </div>
     </div>
 </div>
+<script src="{{ asset('/admin-assets/js/iat.js') }}"></script>
+<script src="{{ asset('/js/sms.js') }}"></script>
 @endsection

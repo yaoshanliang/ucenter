@@ -62,7 +62,7 @@
                         <div class="form-group">
                             <div class="col-md-offset-2">
                                 <button type="submit" class="btn btn-primary">登录</button>
-                                <a class="btn btn-link" href="{{ url('/password/email') }}">忘记密码</a>
+                                <a class="btn btn-link" href="{{ url('/password/phone') }}">忘记密码</a>
                                 <a class="btn btn-link" href="{{ url('/auth/register') }}">注册账户</a>
                             </div>
                         </div>
