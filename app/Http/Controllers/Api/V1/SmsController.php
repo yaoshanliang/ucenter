@@ -90,14 +90,19 @@ class SmsController extends Controller
             return array('code' => 0, 'message' => '手机号不合法');
         }
 
-        $count = Cache::get(Config::get('cache.sms.count') . self::$currentUserId);
+        // 手机号和用户id两种方式计数
+        $count = empty(self::$currentUserId) ? Cache::get(Config::get('cache.sms.count.phone') . $request->phone) :
+            Cache::get(Config::get('cache.sms.count.user_id') . self::$currentUserId);
+
         if (is_null($count)) {
-            Cache::put(Config::get('cache.sms.count') . self::$currentUserId, 1, 60);
+            empty(self::$currentUserId) ? Cache::put(Config::get('cache.sms.count.phone') . $request->phone, 1, 60) :
+                Cache::put(Config::get('cache.sms.count.user_id') . self::$currentUserId, 1, 60);
         } else {
             if (!in_array($request->phone, Config::get('phpsms.whiteList')) && $count > 3) {
                 return array('code' => 0, 'message' => '超过每小时三次限制');
             }
-            Cache::put(Config::get('cache.sms.count') . self::$currentUserId, ++$count, 60);
+            empty(self::$currentUserId) ? Cache::put(Config::get('cache.sms.count.phone') . $request->phone, ++$count, 60) :
+                Cache::put(Config::get('cache.sms.count.user_id') . self::$currentUserId, ++$count, 60);
         }
 
         return array('code' => 1, 'message' => '');

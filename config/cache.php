@@ -85,7 +85,10 @@ return [
     'sms' => [
         'code' => 'sms:code:',
         'validated' => 'sms:validated:',
-        'count' => 'sms:count:',
+        'count' => [
+            'user_id' => 'sms:count:user_id:',
+            'phone' => 'sms:count:phone:',
+        ]
     ],
     'wechat' => [
         'openid' => 'wechat:openid:',

@@ -148,6 +148,7 @@ class AuthController extends Controller
     {
         $this->initRole($request, $response);
         $this->loginLog($request, $credentials);
+        $this->cacheWechat();
         $this->accessToken();
     }
 
