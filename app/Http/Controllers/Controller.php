@@ -47,7 +47,7 @@ abstract class Controller extends BaseController
         return $roles[$role_id];
     }
 
-    function cacheUsers()
+    function cacheUsers($user_id = 0)
     {
         // 用户详细信息字段
         $userFieldsArray = DB::table('user_fields')->get(array('id', 'name', 'title', 'description'));
@@ -56,7 +56,12 @@ abstract class Controller extends BaseController
         }
 
         // 用户基本信息，初始化详细信息
-        $usersArray = User::get(array('id', 'username', 'email', 'phone'))->toArray();
+        $usersArray = User::where(function ($query) use ($user_id) {
+                if ($user_id) {
+                    $query->where('id', $user_id);
+                }
+            })
+            ->get(array('id', 'username', 'email', 'phone'))->toArray();
         foreach ($usersArray as $v) {
             $users[$v['id']] = array('user_id' => $v['id'], 'username' => $v['username'], 'email' => $v['email'], 'phone' => $v['phone']);
             foreach ($userFields as $value) {
@@ -65,7 +70,13 @@ abstract class Controller extends BaseController
         }
 
         // 用户详细信息
-        $userInfoArray = DB::table('user_info')->get(array('user_id', 'field_id', 'value'));
+        $userInfoArray = DB::table('user_info')
+            ->where(function ($query) use ($user_id) {
+                if ($user_id) {
+                    $query->where('id', $user_id);
+                }
+            })
+            ->get(array('user_id', 'field_id', 'value'));
         foreach ($userInfoArray as $v) {
             $users[$v->user_id]['details'][$userFields[$v->field_id]['name']]['value'] = $v->value;
         }

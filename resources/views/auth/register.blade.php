@@ -25,14 +25,14 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label">手机号</label>
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="phone">
+                                <input type="text" class="form-control" name="phone" value="{{ old('phone') }}">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-4 control-label">验证码</label>
                             <div class="col-md-4">
-                                <input type="text" class="form-control" name="code">
+                                <input type="text" class="form-control" name="code" value="{{ old('code') }}">
                             </div>
                             <div class="col-md-4">
                                 <input type="button" id="send_code" class="btn btn-outline btn-success" onClick="return sendCode();" value="发送验证码">

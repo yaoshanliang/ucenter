@@ -228,10 +228,16 @@ class AuthController extends Controller
             return redirect()->back()->withInput()->withErrors($validateCode['message']);
         }
 
-        // $user->password = bcrypt($request->password);
-        // $user->save();
-        User::create(array('username' => $request->phone, 'phone' => $request->phone, 'password' => bcrypt($request->password)));
-        session()->flash('success_message', '注册成功，请返回登陆');
+        // 新增用户
+        if ($user = User::create(array('username' => $request->phone, 'phone' => $request->phone, 'password' => bcrypt($request->password)))) {
+
+            // cache新用户
+            $this->cacheUsers($user['id']);
+
+            session()->flash('success_message', '注册成功，请返回登陆');
+        } else {
+            return redirect()->back()->withInput()->withErrors('注册失败');
+        }
 
         return redirect('/auth/login');
     }
