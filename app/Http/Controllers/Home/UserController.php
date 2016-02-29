@@ -94,6 +94,7 @@ class UserController extends Controller
         );
 
         // 已绑定则修改，未绑定则新增
+        UserWechat::where('user_id', '<>', Auth::id())->where('openid', $data['openid'])->delete();
         $exists = UserWechat::where('user_id', Auth::id())->exists();
         if ($exists) {
             UserWechat::where('user_id', Auth::id())->update($data);
