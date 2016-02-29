@@ -205,4 +205,34 @@ class AuthController extends Controller
 
         return false;
     }
+
+    // 注册
+    public function getRegister()
+    {
+        return view('auth.register')->with(['accessToken' => parent::accessTokenByClientCredentials()]);
+    }
+
+    public function postRegister(Request $request)
+    {
+        $this->validate($request, [
+            'phone' => 'required|unique:users,phone',
+            'code' => 'required',
+            'password' => 'required|confirmed|min:6',
+        ]);
+
+        // 验证验证码
+        $validateCode = $this->api
+            ->with(['phone' => $request->phone, 'code' => $request->code, 'access_token' => $request->access_token])
+            ->get('api/sms/validateCode');
+        if (1 !== $validateCode['code']) {
+            return redirect()->back()->withInput()->withErrors($validateCode['message']);
+        }
+
+        // $user->password = bcrypt($request->password);
+        // $user->save();
+        User::create(array('username' => $request->phone, 'phone' => $request->phone, 'password' => bcrypt($request->password)));
+        session()->flash('success_message', '注册成功，请返回登陆');
+
+        return redirect('/auth/login');
+    }
 }

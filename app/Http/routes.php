@@ -118,10 +118,10 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array
 });
 
 $api = app('api.router');
-$api->version('v1', ['middleware' => 'oauth'], function ($api) {
+$api->version('v1', ['middleware' => ['oauth']], function ($api) {
     $api->get('user/getUserInfo', 'App\Http\Controllers\Api\V1\UserController@getUserInfo');
     $api->get('user/edit', 'App\Http\Controllers\Api\V1\UserController@edit');
-    $api->get('sms/sendCode', 'App\Http\Controllers\Api\V1\SmsController@sendCode');
+    $api->get('sms/sendCode', ['middleware' => ['oauth'], 'uses' => 'App\Http\Controllers\Api\V1\SmsController@sendCode']);
     $api->get('sms/validateCode', 'App\Http\Controllers\Api\V1\SmsController@validateCode');
 });
 

@@ -118,4 +118,15 @@ abstract class Controller extends BaseController
         }
         return $accessToken['access_token'];
     }
+
+    // ClientCredentialsGrant，用于未登陆时获取的access_token
+    public function accessTokenByClientCredentials()
+    {
+        $accessToken = $this->api
+            ->with(['client_id' => env('client_id'), 'client_secret' => env('client_secret'),
+                'grant_type' => 'client_credentials'])
+            ->post('api/oauth/getAccessToken');
+
+        return $accessToken['data']['access_token'];
+    }
 }
