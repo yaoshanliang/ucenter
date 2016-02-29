@@ -13,6 +13,8 @@
     <form class="form-horizontal" role="form" method="POST" action="">
         <input name="_method" type="hidden" value="PUT">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="access_token" value="{{ $accessToken }}">
+
         <div class="form-group">
             <div class="col-md-4">
                 <label class="col-md-3 control-label">用户名</label>
@@ -91,6 +93,7 @@
 </div>
 </div>
 </div>
+<script src="{{ asset('/js/sms.js') }}"></script>
 <script>
 function editUsername() {
     $('#edit_username').modal('show');
