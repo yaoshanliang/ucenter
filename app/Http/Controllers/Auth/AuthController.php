@@ -15,6 +15,7 @@ use Session;
 use Cookie;
 use Queue;
 use Config;
+use DB;
 use App\Jobs\UserLog;
 use App\Model\UserRole;
 use Curl\Curl;
@@ -233,6 +234,24 @@ class AuthController extends Controller
 
             // cache新用户
             $this->cacheUsers($user['id']);
+
+            // 增加默认角色
+            $appRole = DB::table('apps')
+                ->where('apps.name', env('DEFAULT_APP'))
+                ->join('roles', 'apps.id', '=', 'roles.app_id')
+                ->where('roles.name', env('DEFAULT_ROLE'))
+                ->select('apps.id as app_id', 'roles.id as role_id')
+                ->first();
+            if (empty($appRole)) {
+                return redirect()->back()->withInput()->withErrors('默认角色不存在，请联系管理员');
+            }
+            $userRole = DB::table('user_role')->insert(array(
+                'user_id' => $user['id'],
+                'app_id' => $appRole->app_id,
+                'role_id' => $appRole->role_id,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ));
 
             session()->flash('success_message', '注册成功，请返回登陆');
         } else {
