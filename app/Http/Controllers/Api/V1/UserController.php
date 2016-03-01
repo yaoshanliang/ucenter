@@ -26,9 +26,12 @@ class UserController extends ApiController
     {
         $userId = empty($request->has('user_id')) ? parent::$currentUserId : (int)$request->get('user_id');
         $data = Cache::get(Config::get('cache.users') . $userId);
-        $code = 1 AND $message = '获取用户信息成功';
 
-        return $this->response->array(compact('code', 'message', 'data'));
+        if (empty($data)) {
+            return $this->response->array(array('code' => 0, 'message' => '不存在此用户'));
+        } else {
+            return $this->response->array(array('code' => 1, 'message' => '获取用户信息成功', 'data' => $data));
+        }
     }
 
     // 更新用户信息

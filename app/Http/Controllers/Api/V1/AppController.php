@@ -25,38 +25,4 @@ class AppController extends Controller {
 
     use Helpers;
 
-    // 当前用户的id
-    private static $current_user_id;
-
-    public function __construct() {
-        self::$current_user_id = (int)Authorizer::getResourceOwnerId();
-    }
-
-    public function setCurrentApp(Request $request) {
-        $app = Cache::get('apps:' . $request->app_id);
-		Session::put('current_app', $app);
-		Session::put('current_app_title', $app['title']);
-		Session::put('current_app_id', $app['id']);
-
-        $roles = Session::get('roles');
-        $role = reset($roles[$app['id']]);
-		Session::put('current_role', $role);
-		Session::put('current_role_title', $role['title']);
-		Session::put('current_role_id', $role['id']);
-
-        $code = 1 AND $message = '设置app成功';
-
-        return $this->response->array(compact('code', 'message', 'data'));
-    }
-
-    public function setCurrentRole(Request $request) {
-        $role = Cache::get('roles:' . $request->role_id);
-		Session::put('current_role', $role);
-		Session::put('current_role_title', $role['title']);
-		Session::put('current_role_id', $role['id']);
-
-        $code = 1 AND $message = '获取用户信息成功';
-
-        return $this->response->array(compact('code', 'message', 'data'));
-    }
 }

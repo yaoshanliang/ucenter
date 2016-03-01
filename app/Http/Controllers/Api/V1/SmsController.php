@@ -13,8 +13,8 @@ use App\Model\User;
 use Dingo\Api\Routing\Helpers;
 use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 use PhpSms;
-
 use Toplan\PhpSms\Sms;
+
 class SmsController extends Controller
 {
     use Helpers;
@@ -105,6 +105,6 @@ class SmsController extends Controller
                 Cache::put(Config::get('cache.sms.count.user_id') . self::$currentUserId, ++$count, 60);
         }
 
-        return array('code' => 1, 'message' => '');
+        return array('code' => 1, 'message' => '发送前校验成功');
     }
 }
