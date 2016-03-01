@@ -14,10 +14,15 @@ class ApiController extends Controller
     use Helpers;
 
     protected static $currentUserId;
+    protected static $currentClientId;
+    protected static $currentAppId;
 
     public function __construct()
     {
         self::$currentUserId = (int)Authorizer::getResourceOwnerId();
+        self::$currentClientId = Authorizer::getClientId();
+        $currentApp = Cache::get(Config::get('cache.clients') . self::$currentClientId);
+        self::$currentAppId = $currentApp['id'];
     }
 
 }

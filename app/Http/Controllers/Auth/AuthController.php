@@ -146,6 +146,9 @@ class AuthController extends Controller
     // 登陆之后的操作
     private function afterLogin(Request $request, Response $response, $credentials)
     {
+        $this->cacheSettings();
+        $this->cacheUsers();
+        $this->cacheApps();
         $this->initRole($request, $response);
         $this->loginLog($request, $credentials);
         $this->cacheWechat();
@@ -157,8 +160,8 @@ class AuthController extends Controller
     {
         $rolesArray = UserRole::where('user_id', Auth::id())->get(array('app_id', 'role_id'))->toArray();
         foreach ($rolesArray as $v) {
-            $apps[$v['app_id']] = Cache::get(Config::get('cache.apps') . $v['app_id'], function() use ($v) { return $this->cacheApps($v['app_id']); });
-            $roles[$v['app_id']][$v['role_id']] = Cache::get(Config::get('cache.roles') . $v['role_id'], function() use ($v) { return $this->cacheRoles($v['role_id']); });
+            $apps[$v['app_id']] = Cache::get(Config::get('cache.apps') . $v['app_id']);
+            $roles[$v['app_id']][$v['role_id']] = Cache::get(Config::get('cache.roles') . $v['role_id']);
         }
         $currentApp = Session::get('current_app', function() use ($apps) {
             $firstApp = reset($apps);
@@ -177,7 +180,6 @@ class AuthController extends Controller
 
         Session::put('apps', $apps);
         Session::put('roles', $roles);
-        $this->cacheUsers();
     }
 
     // 登录日志

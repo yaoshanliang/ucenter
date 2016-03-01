@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Model\App;
 use App\Model\Role;
 use App\Model\User;
+use App\Model\Setting;
 use App\Model\UserWechat;
 use Cache;
 use Config;
@@ -21,22 +22,42 @@ abstract class Controller extends BaseController
     use DispatchesCommands, ValidatesRequests;
     use Helpers;
 
-    function cacheApps($app_id)
+    function cacheSettings()
     {
-        $appsArray = App::all();
+        $settingsArray = Setting::all()->toArray();
+        foreach($settingsArray as $k => $v) {
+            $settings[$v['name']] = Cache::get(Config::get('cache.settings') . $v['name'], function() use ($v) {
+                Cache::forever(Config::get('cache.settings') . $v['name'], $v['value']);
+                return $v['value'];
+            });
+        }
+    }
+
+    function cacheApps($appId = 0)
+    {
+        $appsArray = App::where(function ($query) use ($appId) {
+                if ($appId) {
+                    $query->where('id', $appId);
+                }
+            })->get();
         foreach($appsArray as $v) {
             $apps[$v['id']] = Cache::get(Config::get('cache.apps') . $v['id'], function() use ($v) {
                 $cacheData = array('id' => $v['id'], 'name' => $v['name'], 'title' => $v['title']);
                 Cache::forever(Config::get('cache.apps') . $v['id'], $cacheData);
+                Cache::forever(Config::get('cache.clients') . $v['name'], $cacheData);
                 return $cacheData;
             });
         }
-        return $apps[$app_id];
+        // return $apps[$app_id];
     }
 
-    function cacheRoles($role_id)
+    function cacheRoles($roleId = 0)
     {
-        $rolesArray = Role::all();
+        $rolesArray = Role::where(function ($query) use ($appId) {
+                if ($roleId) {
+                    $query->where('id', $roleId);
+                }
+            })->get();
         foreach($rolesArray as $v) {
             $roles[$v['id']] = Cache::get(Config::get('cache.roles') . $v['id'], function() use ($v) {
                 $cacheData = array('id' => $v['id'], 'name' => $v['name'], 'title' => $v['title']);
@@ -44,7 +65,7 @@ abstract class Controller extends BaseController
                 return $cacheData;
             });
         }
-        return $roles[$role_id];
+        // return $roles[$role_id];
     }
 
     function cacheUsers($user_id = 0)

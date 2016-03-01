@@ -64,6 +64,7 @@
                                 <button type="submit" class="btn btn-primary">登录</button>
                                 <a class="btn btn-link" href="{{ url('/password/phone') }}">忘记密码</a>
                                 <a class="btn btn-link" href="{{ url('/auth/register') }}">注册账户</a>
+                                <img src="{{ asset('/images/icon24_appwx_logo.png') }}">
                             </div>
                         </div>
                         </div>
