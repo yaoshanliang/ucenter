@@ -150,6 +150,8 @@ class AuthController extends Controller
         $this->cacheApps();
         $this->cacheUsers();
         $this->cacheRoles();
+        $this->cachePermissions();
+        $this->cacheUserRole();
         $this->initRole($request, $response);
         $this->loginLog($request, $credentials);
         $this->cacheWechat();
