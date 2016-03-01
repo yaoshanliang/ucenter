@@ -91,7 +91,7 @@ abstract class Controller extends BaseController
     {
         $usersArray = UserWechat::get(array('user_id', 'unionid', 'openid', 'nickname', 'sex', 'language', 'city', 'province', 'country', 'headimgurl'));
         foreach ($usersArray as $v) {
-            Cache::forever(Config::get('cache.wechat.openid') . $v['openid'], $v);
+            Cache::forever(Config::get('cache.wechat.openid') . $v['openid'], $v->toArray());
             Cache::forever(Config::get('cache.wechat.user_id') . $v['user_id'], $v['openid']);
         }
     }
