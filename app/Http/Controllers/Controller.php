@@ -8,8 +8,10 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Model\App;
 use App\Model\Role;
 use App\Model\User;
+use App\Model\Permission;
 use App\Model\Setting;
 use App\Model\UserWechat;
+use App\Model\UserRole;
 use Cache;
 use Config;
 use DB;
@@ -68,6 +70,15 @@ abstract class Controller extends BaseController
         // return $roles[$role_id];
     }
 
+    function cachePermissions()
+    {
+        $permissionsArray = Permission::all();
+        foreach ($permissionsArray as $v) {
+            $cacheData = array('id' => $v->id, 'name' => $v->name, 'title' => $v->title);
+            Cache::forever(Config::get('cache.permissions') . $v->id, $cacheData);
+        }
+    }
+
     function cacheUsers($user_id = 0)
     {
         // 用户详细信息字段
@@ -104,6 +115,25 @@ abstract class Controller extends BaseController
 
         foreach($users as $v) {
             Cache::forever(Config::get('cache.users') . $v['user_id'], $v);
+        }
+    }
+
+    // 缓存 用户-角色-权限
+    function cacheUserRole()
+    {
+        $userRolesArray = UserRole::get();
+        foreach ($userRolesArray as $v) {
+            $roles[$v->app_id][$v->user_id][] = $v->role_id;
+        }
+
+        foreach ($roles as $key => $value) {
+            foreach ($value as $k => $v) {
+                $permissions = array();
+                foreach ($v as $_v) {
+                    $v['permissions'][] = Cache::get(Config::get('cache.permissions') . $_v);
+                }
+                Cache::forever(Config::get('cache.user_role.app_id') . $key . ':user_id:' . $k, $v);
+            }
         }
     }
 
