@@ -147,8 +147,9 @@ class AuthController extends Controller
     private function afterLogin(Request $request, Response $response, $credentials)
     {
         $this->cacheSettings();
-        $this->cacheUsers();
         $this->cacheApps();
+        $this->cacheUsers();
+        $this->cacheRoles();
         $this->initRole($request, $response);
         $this->loginLog($request, $credentials);
         $this->cacheWechat();

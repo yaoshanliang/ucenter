@@ -79,6 +79,7 @@ return [
 
     #cache prefix
     'apps' => 'apps:',
+    'clients' => 'clients:',
     'roles' => 'roles:',
     'users' =>'users:',
     'settings' =>'settings:',

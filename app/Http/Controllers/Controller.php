@@ -53,7 +53,7 @@ abstract class Controller extends BaseController
 
     function cacheRoles($roleId = 0)
     {
-        $rolesArray = Role::where(function ($query) use ($appId) {
+        $rolesArray = Role::where(function ($query) use ($roleId) {
                 if ($roleId) {
                     $query->where('id', $roleId);
                 }
