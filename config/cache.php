@@ -81,6 +81,7 @@ return [
     'apps' => 'apps:',
     'clients' => 'clients:',
     'roles' => 'roles:',
+    'permissions' => 'permissions:',
     'users' =>'users:',
     'settings' =>'settings:',
     'sms' => [
@@ -97,5 +98,8 @@ return [
     ],
     'api' => [
         'access_token' => 'api:access_token:'
+    ],
+    'user_role' => [
+        'app_id' => 'user_role:app_id:',
     ],
 ];
