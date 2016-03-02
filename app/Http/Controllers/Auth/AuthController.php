@@ -149,8 +149,8 @@ class AuthController extends Controller
         $this->cacheSettings();
         $this->cacheApps();
         $this->cacheUsers();
-        $this->cacheRoles();
         $this->cachePermissions();
+        $this->cacheRoles();
         $this->cacheUserRole();
         $this->initRole($request, $response);
         $this->loginLog($request, $credentials);

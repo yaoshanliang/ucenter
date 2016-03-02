@@ -137,6 +137,7 @@ abstract class Controller extends BaseController
             foreach ($value as $k => $v) {
                 $rolePermissions = array();
                 $rolePermissions['user_id'] = $k;
+                $rolePermissions['roles'] = array();
                 foreach ($v as $_v) {
                     $rolePermissions['roles'][] = Cache::get(Config::get('cache.roles') . $_v);
                 }
