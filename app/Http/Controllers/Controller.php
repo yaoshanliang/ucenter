@@ -12,6 +12,7 @@ use App\Model\Permission;
 use App\Model\Setting;
 use App\Model\UserWechat;
 use App\Model\UserRole;
+use App\Model\RolePermission;
 use Cache;
 use Config;
 use DB;
@@ -50,7 +51,6 @@ abstract class Controller extends BaseController
                 return $cacheData;
             });
         }
-        // return $apps[$app_id];
     }
 
     function cacheRoles($roleId = 0)
@@ -60,14 +60,21 @@ abstract class Controller extends BaseController
                     $query->where('id', $roleId);
                 }
             })->get();
+        $rolePermissionsArray = RolePermission::where(function ($query) use ($roleId) {
+                if ($roleId) {
+                    $query->where('role_id', $roleId);
+                }
+            })->get();
         foreach($rolesArray as $v) {
-            $roles[$v['id']] = Cache::get(Config::get('cache.roles') . $v['id'], function() use ($v) {
-                $cacheData = array('id' => $v['id'], 'name' => $v['name'], 'title' => $v['title']);
-                Cache::forever(Config::get('cache.roles') . $v['id'], $cacheData);
-                return $cacheData;
-            });
+            $permissions = array();
+            foreach ($rolePermissionsArray as $value) {
+                if ($v->id == $value->role_id) {
+                    $permissions[] = Cache::get(Config::get('cache.permissions') . $value->permission_id);
+                }
+            }
+            $cacheData = array('id' => $v->id, 'name' => $v->name, 'title' => $v->title, 'permissions' => $permissions);
+            Cache::forever(Config::get('cache.roles') . $v->id, $cacheData);
         }
-        // return $roles[$role_id];
     }
 
     function cachePermissions()
@@ -128,11 +135,12 @@ abstract class Controller extends BaseController
 
         foreach ($roles as $key => $value) {
             foreach ($value as $k => $v) {
-                $permissions = array();
+                $rolePermissions = array();
+                $rolePermissions['user_id'] = $k;
                 foreach ($v as $_v) {
-                    $v['permissions'][] = Cache::get(Config::get('cache.permissions') . $_v);
+                    $rolePermissions['roles'][] = Cache::get(Config::get('cache.roles') . $_v);
                 }
-                Cache::forever(Config::get('cache.user_role.app_id') . $key . ':user_id:' . $k, $v);
+                Cache::forever(Config::get('cache.user_role.app_id') . $key . ':user_id:' . $k, $rolePermissions);
             }
         }
     }
