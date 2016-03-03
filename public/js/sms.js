@@ -6,7 +6,8 @@ function sendCode() {
     }
 
     $.ajax({
-        url: '/api/sms/sendCode',
+        url: '/api/sms/code',
+        type: 'POST',
         data: {'phone': phone, 'access_token': $('input[name="access_token"]').val()},
         dataType: 'json',
         headers: {
@@ -60,7 +61,8 @@ function validateCode() {
         return false;
     }
     $.ajax({
-        url: '/api/sms/validateCode',
+        url: '/api/sms/code',
+        type: 'PUT',
         data: {'phone': phone, 'code': code, 'access_token': $('input[name="access_token"]').val()},
         dataType: 'json',
         headers: {
