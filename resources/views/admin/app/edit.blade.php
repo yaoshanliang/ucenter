@@ -24,13 +24,7 @@
     <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/app/'.$app->id) }}">
         <input name="_method" type="hidden" value="PUT">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="form-group">
-                <label class="col-md-3 control-label">代号</label>
-                <div class="col-md-6">
-                    <input type="text" class="form-control" name="name" value="{{ $app->name }}">
-                    <input type="hidden" class="form-control" name="old_name" value="{{ $app->name }}">
-                </div>
-            </div>
+        <input type="hidden" name="access_token" value="{{ $accessToken }}">
 
             <div class="form-group">
                 <label class="col-md-3 control-label">名称</label>
@@ -60,8 +54,18 @@
                 </div>
             </div>
 
+            <div class="form-group"></div>
+
             <div class="form-group">
-                <label class="col-md-3 control-label">密钥</label>
+                <label class="col-md-3 control-label">Client_id</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="name" value="{{ $app->name }}">
+                    <input type="hidden" class="form-control" name="old_name" value="{{ $app->name }}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Client_secret</label>
                 <div class="col-md-5">
                     <input type="text" class="form-control" name="secret" value="{{ $app->secret }}">
                 </div>
@@ -82,4 +86,31 @@
     </div>
     </div>
 </div>
+<script>
+function generateSecret()
+{
+    $.ajax({
+        url: '/api/app/secret',
+        type: 'put',
+        data: {'access_token': $('input[name="access_token"]').val()},
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        },
+        success: function(data) {
+            if(data['code'] === 1) {
+                showSuccessTip(data['message']);
+                $("input[name='secret']").val(data['data']);
+            } else {
+                showFailTip(data['message']);
+                return false;
+            }
+        },
+        error: function(data) {
+            showFailTip(data['message']);
+            return false;
+        },
+    });
+}
+</script>
 @endsection
