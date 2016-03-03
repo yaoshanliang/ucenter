@@ -53,12 +53,13 @@ class AppController extends Controller {
     public function store(Request $request)
     {
         $this->validate($request, array(
-            'name' => 'required|unique:apps',
             'title' => 'required',
             'home_url' => 'required|url',
             'login_url' => 'required|url',
-            'secret' => 'required'
         ));
+
+        $request->name = uniqid('UC');
+        $request->secret = md5(uniqid(time() . rand(1000, 9999)));
 
         $app = App::create(array('name' => $request->name,
             'title' => $request->title,
@@ -122,7 +123,7 @@ class AppController extends Controller {
         $client = DB::table('oauth_clients')->find($app->name);
         $app->secret = $client->secret;
 
-        return view('admin.app.edit')->withApp($app);
+        return view('admin.app.edit')->with(['app' => $app, 'accessToken' => parent::$currentAccessToken]);
     }
 
     public function update(Request $request, $id)

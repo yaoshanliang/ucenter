@@ -16,12 +16,6 @@ use EasyWeChat\Foundation\Application;
 
 class UserController extends Controller
 {
-    private static $currentAccessToken;
-
-    public function __construct()
-    {
-        self::$currentAccessToken = parent::accessToken();
-    }
 
     public function index(Application $wechat)
     {
