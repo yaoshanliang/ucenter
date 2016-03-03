@@ -22,7 +22,7 @@ class UserController extends Controller
         $user = Cache::get(Config::get('cache.users') . Auth::id());
         $wechat->oauth->redirect();
         $wechat = Cache::get(Config::get('cache.wechat.openid') . (Cache::get(Config::get('cache.wechat.user_id') . Auth::id())));
-        return view('home.user.index')->with(['user' => $user, 'wechat' => $wechat, 'accessToken' => self::$currentAccessToken]);
+        return view('home.user.index')->with(['user' => $user, 'wechat' => $wechat, 'accessToken' => parent::$currentAccessToken]);
     }
 
     // 编辑个人信息
