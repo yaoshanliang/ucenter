@@ -7,9 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Model\App;
-use Redirect, Input, Auth;
-use Illuminate\Support\Facades\DB;
-use App\Services\Helper;
+use Auth;
+use DB;
 use Queue;
 use App\Model\Role;
 use App\Model\Permission;
@@ -18,15 +17,16 @@ use App\Services\Api;
 use Cache;
 use Config;
 use Session;
+use Dingo\Api\Routing\Helpers;
 
-class AppController extends Controller {
-
-    public function index()
+class AppController extends Controller
+{
+    public function getIndex()
     {
         return view('admin.app.index');
     }
 
-    public function lists(Request $request)
+    public function postLists(Request $request)
     {
         $fields = array('id', 'name', 'title', 'user_id', 'created_at', 'updated_at');
         $searchFields = array('name', 'title');
@@ -36,13 +36,12 @@ class AppController extends Controller {
             ->orderByDataTables($request)
             ->skip($request->start)
             ->take($request->length)
-            ->get($fields)
-            ->toArray();
+            ->get($fields);
         $draw = (int)$request->draw;
         $recordsTotal = App::where('user_id', Auth::id())->count();
         $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
 
-        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+        return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
     public function create()
@@ -95,21 +94,30 @@ class AppController extends Controller {
         ));
 
         // 勾选访客角色
-       if ($request->role) {
-            $role = Role::create(array(
+        if ($request->role) {
+            Role::create(array(
                 'app_id' => $app->id,
                 'name' => 'guest',
                 'title' => '访客',
                 'description' => '访客'
             ));
-       }
+        }
 
-        // $log = Queue::push(new UserLog(1, Auth::id(), 'A', '新增应用', 'name : ' . $request->name . '; title : ' . $request->title, '', $ip, $ips));
+        // 更新cache
+        $this->cacheApps($app->id);
+        $this->cacheRoles($role->id);
+
+        // 更新session
+        $this->initRole();
+
+        // 写入日志
+        $this->log('A', '新增应用', 'title : ' . $request->title);
+
         if ($app && $oauth_client && $role && $user_role) {
             session()->flash('success_message', '应用添加成功');
-            return Redirect::to('/admin/app');
+            return redirect('/admin/app');
         } else {
-            return Redirect::back()->withInput()->withErrors('保存失败！');
+            return redirect()->back()->withInput()->withErrors('保存失败！');
         }
     }
 
