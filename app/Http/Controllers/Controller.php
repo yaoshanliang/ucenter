@@ -24,12 +24,6 @@ abstract class Controller extends BaseController
 
     use DispatchesCommands, ValidatesRequests;
     use Helpers;
-    public static $currentAccessToken;
-
-    public function __construct()
-    {
-        self::$currentAccessToken = self::accessToken();
-    }
 
     function cacheSettings()
     {

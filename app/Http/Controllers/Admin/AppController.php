@@ -123,7 +123,7 @@ class AppController extends Controller {
         $client = DB::table('oauth_clients')->find($app->name);
         $app->secret = $client->secret;
 
-        return view('admin.app.edit')->with(['app' => $app, 'accessToken' => parent::$currentAccessToken]);
+        return view('admin.app.edit')->with(['app' => $app, 'accessToken' => parent::accessToken()]);
     }
 
     public function update(Request $request, $id)
