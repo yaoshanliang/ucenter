@@ -158,32 +158,6 @@ class AuthController extends Controller
         $this->accessToken();
     }
 
-    // 初始化角色、应用、当前角色、当前应用
-    private function initRole(Request $request, Response $response)
-    {
-        $rolesArray = UserRole::where('user_id', Auth::id())->get(array('app_id', 'role_id'))->toArray();
-        foreach ($rolesArray as $v) {
-            $apps[$v['app_id']] = Cache::get(Config::get('cache.apps') . $v['app_id']);
-            $roles[$v['app_id']][$v['role_id']] = Cache::get(Config::get('cache.roles') . $v['role_id']);
-        }
-        $currentApp = Session::get('current_app', function() use ($apps) {
-            $firstApp = reset($apps);
-            Session::put('current_app', $firstApp);
-            Session::put('current_app_title', $firstApp['title']);
-            Session::put('current_app_id', $firstApp['id']);
-            return $firstApp;
-        });
-        $currentRole = Session::get('current_role', function() use ($roles, $currentApp) {
-            $firstRole = reset($roles[$currentApp['id']]);
-            Session::put('current_role', $firstRole);
-            Session::put('current_role_title', $firstRole['title']);
-            Session::put('current_role_id', $firstRole['id']);
-            return $firstRole;
-        });
-
-        Session::put('apps', $apps);
-        Session::put('roles', $roles);
-    }
 
     // 登录日志
     private function loginLog($request, $credentials) {

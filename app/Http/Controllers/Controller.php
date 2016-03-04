@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 use Illuminate\Foundation\Bus\DispatchesCommands;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+// use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
+use Illuminate\Support\Facades\Request;
 use App\Model\App;
 use App\Model\Role;
 use App\Model\User;
@@ -16,8 +19,11 @@ use App\Model\RolePermission;
 use Cache;
 use Config;
 use DB;
-use Dingo\Api\Routing\Helpers;
 use Auth;
+use Session;
+use Queue;
+use App\Jobs\UserLog;
+use Dingo\Api\Routing\Helpers;
 
 abstract class Controller extends BaseController
 {
@@ -156,6 +162,33 @@ abstract class Controller extends BaseController
         }
     }
 
+    // 初始化角色、应用、当前角色、当前应用
+    public function initRole()
+    {
+        $rolesArray = UserRole::where('user_id', Auth::id())->get(array('app_id', 'role_id'))->toArray();
+        foreach ($rolesArray as $v) {
+            $apps[$v['app_id']] = Cache::get(Config::get('cache.apps') . $v['app_id']);
+            $roles[$v['app_id']][$v['role_id']] = Cache::get(Config::get('cache.roles') . $v['role_id']);
+        }
+        $currentApp = Session::get('current_app', function() use ($apps) {
+            $firstApp = reset($apps);
+            Session::put('current_app', $firstApp);
+            Session::put('current_app_title', $firstApp['title']);
+            Session::put('current_app_id', $firstApp['id']);
+            return $firstApp;
+        });
+        $currentRole = Session::get('current_role', function() use ($roles, $currentApp) {
+            $firstRole = reset($roles[$currentApp['id']]);
+            Session::put('current_role', $firstRole);
+            Session::put('current_role_title', $firstRole['title']);
+            Session::put('current_role_id', $firstRole['id']);
+            return $firstRole;
+        });
+
+        Session::put('apps', $apps);
+        Session::put('roles', $roles);
+    }
+
     // 获取access_token并缓存，失效时重新请求，即将过期时刷新
     public function accessToken()
     {
@@ -164,13 +197,13 @@ abstract class Controller extends BaseController
             // 获取授权码
             $authCode = $this->api
                 ->with(['client_id' => env('client_id'), 'response_type' => 'code', 'redirect_uri' => env('redirect_uri')])
-                ->get('api/oauth/getAuthCode');
+                ->get('api/oauth/authCode');
 
             // 获取access_token
             $accessToken = $this->api
                 ->with(['client_id' => env('client_id'), 'client_secret' => env('client_secret'),
                     'grant_type' => 'authorization_code', 'redirect_uri' => env('redirect_uri'), 'code' => $authCode])
-                ->post('api/oauth/getAccessToken');
+                ->post('api/oauth/accessToken');
             $accessToken = $accessToken['data'];
             $accessToken['timestamp'] = time();
 
@@ -181,7 +214,7 @@ abstract class Controller extends BaseController
             $accessToken = $this->api
                 ->with(['client_id' => env('client_id'), 'client_secret' => env('client_secret'),
                     'grant_type' => 'refresh_token', 'refresh_token' => $accessToken['refresh_token']])
-                ->post('api/oauth/getAccessToken');
+                ->post('api/oauth/accessToken');
             $accessToken = $accessToken['data'];
             $accessToken['timestamp'] = time();
 
@@ -196,8 +229,16 @@ abstract class Controller extends BaseController
         $accessToken = $this->api
             ->with(['client_id' => env('client_id'), 'client_secret' => env('client_secret'),
                 'grant_type' => 'client_credentials'])
-            ->post('api/oauth/getAccessToken');
+            ->post('api/oauth/accessToken');
 
         return $accessToken['data']['access_token'];
+    }
+
+    public function log($type = 'S', $title = '', $data = '', $sql = '')
+    {
+        $ips = Request::ips();
+        $ip = $ips[0];
+        $ips = implode(',', $ips);
+        Queue::push(new UserLog(1, Auth::id(), $type, $title, $data, $sql, $ip, $ips));
     }
 }
