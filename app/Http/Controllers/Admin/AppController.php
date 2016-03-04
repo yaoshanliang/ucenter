@@ -160,25 +160,39 @@ class AppController extends Controller
             'updated_at' => date('Y-m-d H:i:s')
         ));
 
+        // 更新cache
+        $this->cacheApps($id);
+
+        // 更新session
+        $this->initRole();
+
+        // 写入日志
+        $field = array('name', 'title', 'description', 'home_url', 'login_url', 'secret');
+        foreach ($field as $v) {
+            $old[$v] = $request->{'old_' . $v};
+            $new[$v] = $request->{$v};
+        }
+        $diff = array_diff_assoc($old, $new);
+        $diffData = '';
+        foreach ($diff as $k => &$v) {
+            $diffData .= $k . ': ' . $v . ' => ' . $new[$k] . '; ';
+        }
+        $this->log('U', '修改应用', $diffData);
+
         if ($app && $oauth_client) {
             session()->flash('success_message', '应用修改成功');
-            return Redirect::to('/admin/app');
+            return redirect('/admin/app');
         } else {
-            return Redirect::back()->withInput()->withErrors('保存失败！');
+            return redirect()->back()->withInput()->withErrors('保存失败！');
         }
     }
 
-    public function destroy($id)
-    {
-        return false;
-    }
-
     // 删除
-    public function delete()
+    public function destroy(Request $request)
     {
         DB::beginTransaction();
         try {
-            $ids = $_POST['ids'];
+            $ids = $request->ids;
             $appNames = App::whereIn('id', $ids)->lists('name');
             $result = App::whereIn('id', $ids)->delete();
 
@@ -192,7 +206,7 @@ class AppController extends Controller
         }
     }
 
-    public function setCurrentApp(Request $request)
+    public function putCurrentApp(Request $request)
     {
         $app = Cache::get(Config::get('cache.apps') . $request->app_id);
 		Session::put('current_app', $app);
@@ -205,16 +219,16 @@ class AppController extends Controller
 		Session::put('current_role_title', $role['title']);
 		Session::put('current_role_id', $role['id']);
 
-        return Api::jsonReturn(1, '切换应用成功');
+        return $this->response->array(array('code' => 1, 'message' => '切换应用成功'));
     }
 
-    public function setCurrentRole(Request $request)
+    public function putCurrentRole(Request $request)
     {
         $role = Cache::get(Config::get('cache.roles') . $request->role_id);
 		Session::put('current_role', $role);
 		Session::put('current_role_title', $role['title']);
 		Session::put('current_role_id', $role['id']);
 
-        return Api::jsonReturn(1, '切换角色成功');
+        return $this->response->array(array('code' => 1, 'message' => '切换角色成功'));
     }
 }

@@ -76,7 +76,7 @@ class AppController extends Controller
         }
     }
 
-    public function setCurrentApp(Request $request)
+    public function putCurrentApp(Request $request)
     {
         $app = Cache::get(Config::get('cache.apps') . $request->app_id);
 		Session::put('current_app', $app);
@@ -89,16 +89,16 @@ class AppController extends Controller
 		Session::put('current_role_title', $role['title']);
 		Session::put('current_role_id', $role['id']);
 
-        return Api::jsonReturn(1, '切换应用成功');
+        return $this->response->array(array('code' => 1, 'message' => '切换应用成功'));
     }
 
-    public function setCurrentRole(Request $request)
+    public function putCurrentRole(Request $request)
     {
         $role = Cache::get(Config::get('cache.roles') . $request->role_id);
 		Session::put('current_role', $role);
 		Session::put('current_role_title', $role['title']);
 		Session::put('current_role_id', $role['id']);
 
-        return Api::jsonReturn(1, '切换角色成功');
+        return $this->response->array(array('code' => 1, 'message' => '切换角色成功'));
     }
 }

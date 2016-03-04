@@ -71,7 +71,7 @@ function submit_datatable(type, datatable_id, url, ids, tip_msg, tip_time) {
     }
     $.ajax({
         url: url,
-        type: 'POST',
+        type: 'DELETE',
         data: {'ids': ids},
         dataType: 'json',
         headers: {
@@ -174,7 +174,7 @@ function check_remove(id) {
 function change_app(url, app_id) {
     $.ajax({
         url: url,
-        type: 'POST',
+        type: 'PUT',
         data: {'app_id': app_id},
         dataType: 'json',
         headers: {
@@ -196,7 +196,7 @@ function change_app(url, app_id) {
 function change_role(url, role_id) {
     $.ajax({
         url: url,
-        type: 'POST',
+        type: 'PUT',
         data: {'role_id': role_id},
         dataType: 'json',
         headers: {
