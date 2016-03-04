@@ -111,7 +111,7 @@ class AppController extends Controller
         $this->initRole();
 
         // 写入日志
-        $this->log('A', '新增应用', 'title : ' . $request->title);
+        $this->log('A', '新增应用', 'id: ' . $app->id . ', ' . 'title : ' . $request->title);
 
         if ($app && $oauth_client && $role && $user_role) {
             session()->flash('success_message', '应用添加成功');
@@ -134,7 +134,7 @@ class AppController extends Controller
         return view('admin.app.edit')->with(['app' => $app, 'accessToken' => parent::accessToken()]);
     }
 
-    public function update(Request $request, $id)
+    public function update(AppRequest $request, $id)
     {
         $this->validate($request, array(
             'name' => 'required|unique:apps,name,'.$id.'',
@@ -173,7 +173,7 @@ class AppController extends Controller
             $new[$v] = $request->{$v};
         }
         $diff = array_diff_assoc($old, $new);
-        $diffData = '';
+        $diffData = 'id: ' . $id . ', ';
         foreach ($diff as $k => &$v) {
             $diffData .= $k . ': ' . $v . ' => ' . $new[$k] . '; ';
         }
@@ -193,16 +193,43 @@ class AppController extends Controller
         DB::beginTransaction();
         try {
             $ids = $request->ids;
+            foreach ($ids as $v) {
+                if (Session::get('current_app_id') == $v) {
+                    return $this->response->array(array('code' => 0, 'message' => '不允许删除当前应用'));
+                }
+                if (!App::where('user_id', Auth::id())->where('id', $v)->exists()) {
+                    return $this->response->array(array('code' => 0, 'message' => '不允许删除他人应用'));
+                }
+            }
             $appNames = App::whereIn('id', $ids)->lists('name');
             $result = App::whereIn('id', $ids)->delete();
 
             DB::table('oauth_clients')->whereIn('id', $appNames)->delete();
             DB::commit();
-            return Api::jsonReturn(1, '删除成功', array('deleted_num' => $result));
+
+            // 清除cache
+            $appTitles = '';
+            foreach ($ids as $v) {
+                $app = Cache::get(Config::get('cache.apps') . $v);
+                $appTitles .= 'id: ' . $v . ', title: ' . $app['title'] . '; ';
+
+                Cache::forget(Config::get('cache.apps') . $v);
+            }
+            foreach ($appNames as $v) {
+                Cache::forget(Config::get('cache.clients') . $v);
+            }
+
+            // 更新session
+            $this->initRole();
+
+            $this->log('D', '删除应用', $appTitles);
+
+            return $this->response->array(array('code' => 1, 'message' => '删除成功'));
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;
-            return Api::jsonReturn(0, '删除失败', array('deleted_num' => 0));
+
+            return $this->response->array(array('code' => 0, 'message' => '删除失败'));
         }
     }
 

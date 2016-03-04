@@ -93,7 +93,7 @@ class AuthController extends Controller
         }
 
         // 验证密码
-        if (false === ($userId = $this->verifyPassword($request->username, $request->password, $credentials = array()))) {
+        if (false === ($userId = $this->verifyPassword($request->username, $request->password, $credentials))) {
 
             // 登陆失败记录，用于人机验证
             Cookie::queue('login_failed', 1, 3);
@@ -169,7 +169,7 @@ class AuthController extends Controller
     }
 
     // 验证密码
-    public function verifyPassword($username, $password, $credentials = array())
+    public function verifyPassword($username, $password, &$credentials = array())
     {
         if (false !== strpos($username, '@')) {
             $credentials = array('email' => $username, 'password' => $password);
