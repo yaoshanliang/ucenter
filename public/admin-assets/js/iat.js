@@ -71,7 +71,7 @@ function submit_datatable(type, datatable_id, url, ids, tip_msg, tip_time) {
     }
     $.ajax({
         url: url,
-        type: 'DELETE',
+        type: 'POST',
         data: {'ids': ids},
         dataType: 'json',
         headers: {
@@ -79,8 +79,11 @@ function submit_datatable(type, datatable_id, url, ids, tip_msg, tip_time) {
         },
         success: function(data) {
             if(data['code'] === 1) {
-                // $('#' + datatable_id).DataTable().draw(false);//保持分页
-                window.location.reload();
+                if (type == 'delete' && url == '/admin/app/delete') {
+                    window.location.reload();
+                } else {
+                    $('#' + datatable_id).DataTable().draw(false);//保持分页
+                }
                 showSuccessTip(data['message']);
             } else {
                 showFailTip(data['message']);

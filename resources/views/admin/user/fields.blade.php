@@ -55,7 +55,7 @@
 var datatable_id = 'user_fields';
 var columnDefs_targets = [0, 7];
 var order = [5, 'desc'];
-var ajax_url = '/admin/user/fieldsLists';
+var ajax_url = '/admin/user/fieldslists';
 var delete_url = '/admin/user/delete';
 var columns = [{
                     "data": "id",

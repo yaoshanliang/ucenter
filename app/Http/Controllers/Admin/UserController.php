@@ -11,26 +11,22 @@ use App\Model\Role;
 use App\Model\UserRole;
 use App\Model\App;
 use App\Model\UserFields;
-use Redirect, Input, Auth;
 
+use Auth;
 use Cache;
 use Queue;
 use Session;
-use App\Jobs\UserLog;
-use App\Jobs\SendEmail;
-use Mail;
 use Config;
-use App\Services\Api;
 use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function getIndex(Request $request)
     {
         return view('admin.user.index');
     }
 
-    public function lists(Request $request)
+    public function postLists(Request $request)
     {
         // 当前应用用户的id
         $userIdsArray = UserRole::where('app_id', Session::get('current_app_id'))->lists('user_id');
@@ -51,16 +47,16 @@ class UserController extends Controller
         $recordsTotal = User::whereIn('id', $userIdsArray)->count();
         $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
 
-        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+        return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
     // 用户总库
-    public function all(Request $request)
+    public function getAll(Request $request)
     {
         return view('admin.user.all');
     }
 
-    public function allLists(Request $request)
+    public function postAlllists(Request $request)
     {
         $fields = array('id', 'username', 'email', 'phone', 'created_at', 'updated_at');
         $searchFields = array('username', 'email', 'phone');
@@ -80,21 +76,20 @@ class UserController extends Controller
             }
         }
 
-
         $draw = (int)$request->draw;
         $recordsTotal = User::count();
         $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
 
-        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+        return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
     // 用户信息字段
-    public function fields(Request $request)
+    public function getFields(Request $request)
     {
         return view('admin.user.fields');
     }
 
-    public function fieldsLists(Request $request)
+    public function postFieldslists(Request $request)
     {
         $fields = array('id', 'name', 'title', 'type', 'description', 'created_at', 'updated_at');
         $searchFields = array('name', 'title', 'type');
@@ -109,12 +104,7 @@ class UserController extends Controller
         $recordsTotal = UserFields::count();
         $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
 
-        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
-    }
-
-    public function create()
-    {
-        return view('admin.user.create');
+        return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
     // 邀请加入
@@ -162,58 +152,23 @@ class UserController extends Controller
         }
     }
 
-    public function store()
+    // 显示用户详细
+    public function getShow(UserRequest $request, $id)
     {
-        //
-    }
-
-    public function show(UserRequest $request, $id)
-    {
+        if (!UserRole::where('user_id', $id)->where('app_id', Session::get('current_app_id'))->exists()) {
+            return $this->response->array(array('code' => 0, 'message' => 'Forbidden'));
+        }
         $user = Cache::get(Config::get('cache.users') . $id);
+
         return view('admin.user.show')->withUser($user);
     }
 
-    public function edit($id)
-    {
-        $dispatcher = app('Dingo\Api\Dispatcher');
-        $data = $dispatcher->get('api/user/user_info?user_id=1000&access_token=iblRrfFdctRVIxsuTzPDx5TgbGiAobhxjKItRPzO');
-        return view('admin.user.edit')->withUser($data['data']);
-    }
-
-    public function update($id)
-    {
-    }
-
-    public function destroy($id)
-    {
-    }
-
-    // 删除
-    public function delete()
-    {
-        DB::beginTransaction();
-        try {
-            $ids = $_POST['ids'];
-            if (in_array(Auth::id(), $ids)) {
-                return Api::jsonReturn(0, '删除失败, 不允许删除自己', array('deleted_num' => 0));
-            }
-            $result = User::whereIn('id', $ids)->delete();
-
-            DB::commit();
-            return Api::jsonReturn(1, '删除成功', array('deleted_num' => $result));
-        } catch (Exception $e) {
-            DB::rollBack();
-            throw $e;
-            return Api::jsonReturn(0, '删除失败', array('deleted_num' => 0));
-        }
-    }
-
     // 从当前应用中移出用户
-    public function remove()
+    public function postRemove(Request $request)
     {
         DB::beginTransaction();
         try {
-            $ids = $_POST['ids'];
+            $ids = $request->ids;
             $app = App::find(Session::get('current_app_id'))->toArray();
             if (in_array($app['user_id'], $ids)) {
                 return Api::jsonReturn(0, '移除失败, 不允许移除创建者');
@@ -224,16 +179,18 @@ class UserController extends Controller
             $result = UserRole::where('app_id', Session::get('current_app_id'))->whereIn('user_id', $ids)->delete();
 
             DB::commit();
-            return Api::jsonReturn(1, '移除成功', array('deleted_num' => $result));
+
+            return $this->response->array(array('code' => 1, 'message' => '移除成功'));
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;
-            return Api::jsonReturn(0, '移除失败', array('deleted_num' => 0));
+
+            return $this->response->array(array('code' => 0, 'message' => '移除失败'));
         }
     }
 
     // 当前用户的角色
-    public function roles($user_id)
+    public function getRoles($user_id)
     {
         $roles = Role::where('app_id', Session::get('current_app_id'))
             ->where('name', '<>', 'developer')
@@ -249,14 +206,14 @@ class UserController extends Controller
             }
         }
 
-        return Api::jsonReturn(1, '获取成功', $roles);
+        return $this->response->array(array('code' => 1, 'message' => '获取成功', 'data' => $roles));
     }
 
     // 勾选或取消勾选角色
     public function selectOrUnselectRole(Request $request, $id, $role_id)
     {
         if (Role::where('id', $role_id)->where('name', 'developer')->exists()) {
-            return Api::jsonReturn(0, '开发者角色限制');
+            return $this->response->array(array('code' => 0, 'message' => '开发者权限限制'));
         }
 
         if ($request->type == 'select') {
@@ -274,6 +231,7 @@ class UserController extends Controller
             $type = '移除角色';
         }
 
-        return empty($rs) ? Api::jsonReturn(0, $type . '失败') : Api::jsonReturn(1, $type . '成功');
+        return empty($rs) ? $this->response->array(array('code' => 0, 'message' => $type . '失败')) :
+            $this->response->array(array('code' => 1, 'message' => $type . '成功'));
     }
 }

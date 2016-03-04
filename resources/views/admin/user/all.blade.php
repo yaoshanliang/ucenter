@@ -99,7 +99,7 @@ function selectOrUnselect(type, user_id, role_id) {
 var datatable_id = 'user_all';
 var columnDefs_targets = [0, 6, 7];
 var order = [5, 'desc'];
-var ajax_url = '/admin/user/allLists';
+var ajax_url = '/admin/user/alllists';
 var delete_url = '/admin/user/delete';
 var columns = [{
                     "data": "id",

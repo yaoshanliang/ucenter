@@ -23,7 +23,7 @@ class AppController extends ApiController
     {
         $secret = md5(uniqid(time() . rand(1000, 9999)));
 
-        return $this->response->array(array('code' => 1, 'message' => '重新生成密钥成功', 'data' => $secret));
+        return $this->response->array(array('code' => 1, 'message' => '获取新密钥成功', 'data' => $secret));
     }
 
 }

@@ -188,7 +188,7 @@ class AppController extends Controller
     }
 
     // 删除
-    public function destroy(Request $request)
+    public function postDelete(Request $request)
     {
         DB::beginTransaction();
         try {
