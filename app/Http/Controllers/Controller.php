@@ -50,12 +50,9 @@ abstract class Controller extends BaseController
                 }
             })->get();
         foreach($appsArray as $v) {
-            $apps[$v['id']] = Cache::get(Config::get('cache.apps') . $v['id'], function() use ($v) {
-                $cacheData = array('id' => $v['id'], 'name' => $v['name'], 'title' => $v['title']);
-                Cache::forever(Config::get('cache.apps') . $v['id'], $cacheData);
-                Cache::forever(Config::get('cache.clients') . $v['name'], $cacheData);
-                return $cacheData;
-            });
+            $cacheData = array('id' => $v['id'], 'name' => $v['name'], 'title' => $v['title']);
+            Cache::forever(Config::get('cache.apps') . $v['id'], $cacheData);
+            Cache::forever(Config::get('cache.clients') . $v['name'], $cacheData);
         }
     }
 
