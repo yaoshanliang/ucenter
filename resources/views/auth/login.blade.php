@@ -24,7 +24,7 @@
                         <div class="col-md-3">
                         </div>
 
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                         <div class="form-group">
                             <label class="col-md-2 control-label">账户</label>
                             <div class="col-md-10">
@@ -50,7 +50,8 @@
                         @endif
 
                         <div class="form-group">
-                            <div class="col-md-offset-2">
+                            <label class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="remember"> 记住我
@@ -60,29 +61,20 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-offset-2">
+                            <label class="col-md-2 control-label"></label>
+                            <div class="col-md-10">
                                 <button type="submit" class="btn btn-primary">登录</button>
                                 <a class="btn btn-link" href="{{ url('/password/phone') }}">忘记密码</a>
                                 <a class="btn btn-link" href="{{ url('/auth/register') }}">注册账户</a>
-                                <img src="{{ asset('/images/icon24_appwx_logo.png') }}">
+                                <img style="cursor:pointer; padding-left:20px;" src="{{ asset('/images/icon24_appwx_logo.png') }}"
+                                    onclick="javascript:window.location.href='<?php echo
+                                    "https://open.weixin.qq.com/connect/qrconnect?appid=" . env('WECHAT_APPID') .
+                                    "&redirect_uri=" . urlencode(url('oauth/wechatCallback')) .
+                                    "&response_type=code&scope=snsapi_login&state=" . md5(time()) .
+                                    "#wechat_redirect"; ?>'">
+                            </div>
                             </div>
                         </div>
-                        </div>
-
-                        <div class="col-md-3">
-                            <script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
-                            <div id="login_container"></div>
-                            <script>
-                            var obj = new WxLogin({
-                                id: "login_container",
-                                appid: "<?php echo env('WECHAT_APPID'); ?>",
-                                scope: "snsapi_login, snsapi_userinfo",
-                                redirect_uri: "<?php echo urlencode(url('oauth/wechatCallback')); ?>",
-                                state: "<?php echo md5(time()); ?>",
-                                style: "",
-                                // href: "<?php echo asset('/css/wechat.css'); ?>"
-                            });
-                            </script>
                         </div>
 
                     </form>
