@@ -72,7 +72,7 @@ var columns = [{
                 {
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html("<a href=/admin/app/" + sData + "/edit>编辑</a>" + " " +
+                        $(nTd).html("<a href=/admin/app/edit/" + sData + ">编辑</a>" + " " +
                             "<a href='javascript:void(0);' onclick='return check_delete(" + sData + ");'>删除</a>");
                     }
                 }];

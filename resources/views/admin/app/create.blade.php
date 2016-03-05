@@ -20,7 +20,7 @@
             </div>
         @endif
 
-        <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/app') }}">
+        <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/app/create') }}">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
             <div class="form-group">
@@ -45,7 +45,7 @@
             </div>
 
             <div class="form-group">
-                <label class="col-md-3 control-label">登录地址</label>
+                <label class="col-md-3 control-label">回调地址</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control" name="login_url" value="{{ old('login_url') }}" placeholder="例:https://ucenter.szjlxh.com/auth/login">
                 </div>

@@ -21,7 +21,7 @@
         </div>
     @endif
 
-    <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/app/'.$app->id) }}">
+    <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/app/edit/'.$app->id) }}">
         <input name="_method" type="hidden" value="PUT">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <input type="hidden" name="access_token" value="{{ $accessToken }}">
