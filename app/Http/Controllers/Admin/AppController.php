@@ -21,6 +21,7 @@ use Dingo\Api\Routing\Helpers;
 
 class AppController extends Controller
 {
+    // 应用列表
     public function getIndex()
     {
         return view('admin.app.index');
@@ -44,12 +45,13 @@ class AppController extends Controller
         return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
-    public function create()
+    // 创建应用
+    public function getCreate()
     {
         return view('admin.app.create');
     }
 
-    public function store(Request $request)
+    public function postCreate(Request $request)
     {
         $this->validate($request, array(
             'title' => 'required',
@@ -125,7 +127,8 @@ class AppController extends Controller
     {
     }
 
-    public function edit(AppRequest $request, $id)
+    // 修改应用
+    public function getEdit(AppRequest $request, $id)
     {
         $app = App::find($id);
         $client = DB::table('oauth_clients')->find($app->name);
@@ -134,7 +137,7 @@ class AppController extends Controller
         return view('admin.app.edit')->with(['app' => $app, 'accessToken' => parent::accessToken()]);
     }
 
-    public function update(AppRequest $request, $id)
+    public function putEdit(AppRequest $request, $id)
     {
         $this->validate($request, array(
             'name' => 'required|unique:apps,name,'.$id.'',
@@ -188,7 +191,7 @@ class AppController extends Controller
     }
 
     // 删除
-    public function postDelete(Request $request)
+    public function deleteDelete(Request $request)
     {
         DB::beginTransaction();
         try {
@@ -231,31 +234,5 @@ class AppController extends Controller
 
             return $this->response->array(array('code' => 0, 'message' => '删除失败'));
         }
-    }
-
-    public function putCurrentApp(Request $request)
-    {
-        $app = Cache::get(Config::get('cache.apps') . $request->app_id);
-		Session::put('current_app', $app);
-		Session::put('current_app_title', $app['title']);
-		Session::put('current_app_id', $app['id']);
-
-        $roles = Session::get('roles');
-        $role = reset($roles[$app['id']]);
-		Session::put('current_role', $role);
-		Session::put('current_role_title', $role['title']);
-		Session::put('current_role_id', $role['id']);
-
-        return $this->response->array(array('code' => 1, 'message' => '切换应用成功'));
-    }
-
-    public function putCurrentRole(Request $request)
-    {
-        $role = Cache::get(Config::get('cache.roles') . $request->role_id);
-		Session::put('current_role', $role);
-		Session::put('current_role_title', $role['title']);
-		Session::put('current_role_id', $role['id']);
-
-        return $this->response->array(array('code' => 1, 'message' => '切换角色成功'));
     }
 }

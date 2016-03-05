@@ -71,7 +71,7 @@ function submit_datatable(type, datatable_id, url, ids, tip_msg, tip_time) {
     }
     $.ajax({
         url: url,
-        type: 'POST',
+        type: 'DELETE',
         data: {'ids': ids},
         dataType: 'json',
         headers: {
