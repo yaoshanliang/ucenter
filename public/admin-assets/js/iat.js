@@ -219,3 +219,23 @@ function change_role(url, role_id) {
         },
     });
 }
+// 勾选或者取消勾选角色
+function selectOrUnselectRole(user_id, role_id) {
+    $.ajax({
+        url: '/admin/user/role',
+        type: 'PUT',
+        data: {'user_id': user_id, 'role_id': role_id},
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        },
+        success: function(data) {
+            if(data['code'] === 1) {
+                showSuccessTip(data['message']);
+            } else {
+                showFailTip(data['message']);
+                return false;
+            }
+        },
+    });
+}
