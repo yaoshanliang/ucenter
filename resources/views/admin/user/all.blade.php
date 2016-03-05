@@ -53,7 +53,7 @@
 
 <script>
 function choose_role(user_id) {
-    $.getJSON('/admin/user/' + user_id + '/roles', function(data) {
+    $.getJSON('/admin/user/role/' + user_id, function(data) {
         if (data.code === 1) {
             data = data.data;
             var html;
@@ -76,23 +76,13 @@ function choose_role(user_id) {
             increaseArea: '20%' // optional
         });
         $('input').on('ifChecked', function(event){
-            selectOrUnselect('select', user_id, $(this).val())
+            selectOrUnselectRole(user_id, $(this).val())
         });
         $('input').on('ifUnchecked', function(event){
-            selectOrUnselect('unselect', user_id, $(this).val())
+            selectOrUnselectRole(user_id, $(this).val())
         });
     });
     $("#choose_role_modal").modal('show');
-}
-function selectOrUnselect(type, user_id, role_id) {
-    var type = {'type': type};
-    $.getJSON('/admin/user/' + user_id + '/selectOrUnselectRole/' + role_id, type, function(data, status, xhr) {
-        if (1 == data.code) {
-            showSuccessTip(data.message, 1);
-        } else {
-            showFailTip(data.message, 1);
-        }
-    });
 }
 
 
