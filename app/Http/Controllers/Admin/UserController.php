@@ -21,6 +21,7 @@ use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
+    // 当前应用拥有用户列表
     public function getIndex(Request $request)
     {
         return view('admin.user.index');
@@ -164,7 +165,7 @@ class UserController extends Controller
     }
 
     // 从当前应用中移出用户
-    public function postRemove(Request $request)
+    public function deleteRemove(Request $request)
     {
         DB::beginTransaction();
         try {
@@ -190,19 +191,18 @@ class UserController extends Controller
     }
 
     // 当前用户的角色
-    public function getRoles($user_id)
+    public function getRole($userId)
     {
         $roles = Role::where('app_id', Session::get('current_app_id'))
             ->where('name', '<>', 'developer')
-            ->get(array('id', 'name', 'title', 'description', 'updated_at'))
-            ->toArray();
-        $userRoles = UserRole::where('app_id', Session::get('current_app_id'))->where('user_id', $user_id)->lists('role_id')->toArray();
+            ->get(array('id', 'name', 'title', 'description', 'updated_at'));
+        $userRoles = UserRole::where('app_id', Session::get('current_app_id'))->where('user_id', $userId)->lists('role_id');
 
         foreach ($roles as &$v) {
-            if (in_array($v['id'], $userRoles)) {
-                $v['checked'] = 1;
+            if (in_array($v->id, $userRoles->toArray())) {
+                $v->checked = 1;
             } else {
-                $v['checked'] = 0;
+                $v->checked = 0;
             }
         }
 
@@ -210,25 +210,31 @@ class UserController extends Controller
     }
 
     // 勾选或取消勾选角色
-    public function selectOrUnselectRole(Request $request, $id, $role_id)
+    public function putRole(Request $request)
     {
-        if (Role::where('id', $role_id)->where('name', 'developer')->exists()) {
+        $userId = $request->user_id;
+        $roleId = $request->role_id;
+        if (Role::where('id', $roleId)->where('name', 'developer')->exists()) {
             return $this->response->array(array('code' => 0, 'message' => '开发者权限限制'));
         }
 
-        if ($request->type == 'select') {
-            $rs = UserRole::create(array(
-                'user_id' => $id,
-                'role_id' => $role_id,
-                'app_id' => Session::get('current_app_id')
-            ));
-            $type = '选中角色';
-        } else {
-            $rs = UserRole::where('user_id', $id)
-                ->where('role_id', $role_id)
+        if (UserRole::where('app_id', Session::get('current_app_id'))
+            ->where('user_id', $userId)->where('role_id', $roleId)->exists()) {
+
+            $rs = UserRole::where('user_id', $userId)
+                ->where('role_id', $roleId)
                 ->where('app_id', Session::get('current_app_id'))
                 ->delete();
             $type = '移除角色';
+
+        } else {
+            $rs = UserRole::create(array(
+                'user_id' => $userId,
+                'role_id' => $roleId,
+                'app_id' => Session::get('current_app_id')
+            ));
+            $type = '选中角色';
+
         }
 
         return empty($rs) ? $this->response->array(array('code' => 0, 'message' => $type . '失败')) :
