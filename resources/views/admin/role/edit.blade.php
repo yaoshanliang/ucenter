@@ -28,6 +28,7 @@
                 <label class="col-md-3 control-label">代号</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control" name="name" value="{{ $role->name }}">
+                    <input type="hidden" class="form-control" name="old_name" value="{{ $role->name }}">
                 </div>
             </div>
 
@@ -35,6 +36,7 @@
                 <label class="col-md-3 control-label">名称</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control" name="title" value="{{ $role->title }}">
+                    <input type="hidden" class="form-control" name="old_title" value="{{ $role->title }}">
                 </div>
             </div>
 
@@ -42,6 +44,7 @@
                 <label class="col-md-3 control-label">描述</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control" name="description" value="{{ $role->description }}">
+                    <input type="hidden" class="form-control" name="old_description" value="{{ $role->description }}">
                 </div>
             </div>
 
