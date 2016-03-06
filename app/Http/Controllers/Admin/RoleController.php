@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
-use Zizaco\Entrust\EntrustPermission;
 use App\Http\Requests;
 use App\Http\Requests\RoleRequest;
 use App\Http\Controllers\Controller;
@@ -17,16 +16,16 @@ use App\Services\Helper;
 use App\Services\Api;
 use Session;
 use Auth;
-use Redirect;
 
 class RoleController extends Controller
 {
-    public function index(Request $request)
+    // 角色列表
+    public function getIndex(Request $request)
     {
         return view('admin.role.index');
     }
 
-    public function lists(Request $request)
+    public function postLists(Request $request)
     {
         $fields = array('id', 'name', 'title', 'description', 'created_at', 'updated_at');
         $searchFields = array('name', 'title', 'description');
@@ -37,22 +36,21 @@ class RoleController extends Controller
             ->orderByDataTables($request)
             ->skip($request->start)
             ->take($request->length)
-            ->get($fields)
-            ->toArray();
+            ->get($fields);
         $draw = (int)$request->draw;
         $recordsTotal = Role::where('app_id', Session::get('current_app_id'))->where('name', '<>', 'developer')->count();
         $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
 
-        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+        return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
     // 当前角色的权限分组
-    public function permission(RoleRequest $request, $id)
+    public function getPermission(RoleRequest $request, $id)
     {
         return view('admin.role.permission')->withRole(Role::find($id));
     }
 
-    public function permissionLists(RoleRequest $request, $id)
+    public function postPermissionlists(RoleRequest $request, $id)
     {
         $fields = array('id', 'name', 'title', 'description', 'created_at', 'updated_at');
         $searchFields = array('name', 'title', 'description');
@@ -68,11 +66,11 @@ class RoleController extends Controller
         $recordsTotal = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', 0)->count();
         $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
 
-        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+        return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
     // 获取当前权限分组里的权限
-    public function permissionGroup(RoleRequest $request, $role_id, $permission_id)
+    public function getPermissiongroup(RoleRequest $request, $role_id, $permission_id)
     {
         $permissions = Permission::where('group_id', $permission_id)->get(array('id', 'name', 'title', 'description'))->toArray();
 
@@ -85,16 +83,16 @@ class RoleController extends Controller
             }
         }
 
-        return Api::jsonReturn(1, '获取权限成功', $permissions);
+        return $this->response->array(array('code' => 1, 'message' => '获取权限成功', 'data' => $permissions));
     }
 
     // 当前角色已拥有权限列表
-    public function permissionSelected(RoleRequest $request, $id)
+    public function getPermissionselected(RoleRequest $request, $id)
     {
         return view('admin.role.permissionSelected')->withRole(Role::find($id));
     }
 
-    public function permissionSelectedLists(RoleRequest $request, $id)
+    public function postPermissionselectedlists(RoleRequest $request, $id)
     {
         $permissionIdsArray = RolePermission::where('role_id', $id)->lists('permission_id');
 
@@ -112,18 +110,19 @@ class RoleController extends Controller
             unset($v['group']);
         }
         $draw = (int)$request->draw;
-        $recordsTotal = Permission::where('app_id', Session::get('current_app_id'))->where('group_id', 0)->count();
+        $recordsTotal = RolePermission::where('role_id', $id)->count();
         $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
 
-        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+        return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
-    public function create()
+    // 新增角色
+    public function getCreate()
     {
         return view('admin.role.create');
     }
 
-    public function store(Request $request)
+    public function postCreate(Request $request)
     {
         $this->validate($request, array(
             'name' => 'required|unique:roles,name,,,app_id,' . Session::get('current_app_id'),// Usage see:/vendor/laravel/framework/src/Illuminate/Validation/DatabasePresenceVerifier.php
@@ -136,6 +135,10 @@ class RoleController extends Controller
             'title' => $request->title,
             'description' => $request->description,
         ));
+
+        // 更新cache
+        $this->cacheRoles($role->id);
+
         if ($role) {
             session()->flash('success_message', '角色添加成功');
             return redirect('/admin/role');
@@ -144,17 +147,13 @@ class RoleController extends Controller
         }
     }
 
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit(RoleRequest $request, $id)
+    // 编辑角色
+    public function getEdit(RoleRequest $request, $id)
     {
         return view('admin.role.edit')->withRole(Role::find($id));
     }
 
-    public function update(RoleRequest $request, $id)
+    public function putEdit(RoleRequest $request, $id)
     {
         $this->validate($request, array(
             'name' => 'required|unique:roles,name,' . $id . ',id,app_id,' . Session::get('current_app_id'),
@@ -169,56 +168,57 @@ class RoleController extends Controller
         ));
         if ($role) {
             session()->flash('success_message', '角色修改成功');
-            return Redirect::to('/admin/role');
+            return redirect('/admin/role');
         } else {
-            return Redirect::back()->withInput()->withErrors('保存失败！');
+            return redirect()->back()->withInput()->withErrors('保存失败！');
         }
     }
 
-    public function selectOrUnselectPermission(RoleRequest $request, $id, $permission_id)
+    // 选中或取消选中权限
+    public function putPermission(RoleRequest $request)
     {
-        if ($request->type == 'select') {
-            $rs = DB::table('role_permission')->insert(array(
-                'role_id' => $id,
-                'permission_id' => $permission_id,
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s')
+        $roleId = $request->role_id;
+        $permissionId = $request->permission_id;
+        if (RolePermission::where('role_id', $roleId)->where('permission_id', $permissionId)->exists()) {
+            $rs = RolePermission::where('role_id', $roleId)->where('permission_id', $permissionId)->delete();
+            $type = '移除权限';
+        } else {
+            $rs = RolePermission::create(array(
+                'role_id' => $roleId,
+                'permission_id' => $permissionId,
             ));
             $type = '选中权限';
-        } else {
-            $rs = DB::table('role_permission')->where('role_id', $id)->where('permission_id', $permission_id)->delete();
-            $type = '移除权限';
+
         }
 
-        return empty($rs) ? Api::jsonReturn(0, $type . '失败') : Api::jsonReturn(1, $type . '成功');
+        return empty($rs) ? $this->response->array(array('code' => 0, 'message' => $type . '失败')) :
+            $this->response->array(array('code' => 1, 'message' => $type . '成功'));
     }
 
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function delete()
+    // 删除
+    public function deleteDelete(Request $request)
     {
         DB::beginTransaction();
         try {
-            $ids = $_POST['ids'];
+            $ids = $request->ids;
             $roles = Role::whereIn('id', $ids)->lists('app_id')->toArray();
             if (!in_array(Session::get('current_app_id'), $roles)) {
-                return Api::jsonReturn(0, '不允许删除');
+                return $this->response->array(array('code' => 0, 'message' => '不允许删除'));
             }
             $role = Role::where('app_id', Session::get('current_app_id'))->where('name', 'developer')->first()->toArray();
             if (in_array($role['id'], $ids)) {
-                return Api::jsonReturn(0, '开发者不允许删除');
+                return $this->response->array(array('code' => 0, 'message' => '开发者不允许删除'));
             }
             $result = Role::whereIn('id', $ids)->delete();
 
             DB::commit();
-            return Api::jsonReturn(1, '删除成功', array('deleted_num' => $result));
+
+            return $this->response->array(array('code' => 1, 'message' => '删除成功'));
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;
-            return Api::jsonReturn(0, '删除失败', array('deleted_num' => 0));
+
+            return $this->response->array(array('code' => 0, 'message' => '删除失败'));
         }
     }
 }
