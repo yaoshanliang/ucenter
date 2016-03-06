@@ -164,7 +164,7 @@ class UserController extends Controller
         return view('admin.user.show')->withUser($user);
     }
 
-    // 从当前应用中移出用户
+    // 从当前应用中移除用户
     public function deleteRemove(Request $request)
     {
         DB::beginTransaction();
@@ -180,6 +180,14 @@ class UserController extends Controller
             $result = UserRole::where('app_id', Session::get('current_app_id'))->whereIn('user_id', $ids)->delete();
 
             DB::commit();
+
+            // 日志
+            $data = '';
+            foreach ($ids as $v) {
+                $user = Cache::get(Config::get('cache.users') . $v);
+                $data .= 'user_id: ' . $v . ', username: ' . $user['username'] . '; ';
+            }
+            $this->log('D', '移除用户', $data);
 
             return $this->response->array(array('code' => 1, 'message' => '移除成功'));
         } catch (Exception $e) {
@@ -214,6 +222,10 @@ class UserController extends Controller
     {
         $userId = $request->user_id;
         $roleId = $request->role_id;
+
+        $user = Cache::get(Config::get('cache.users') . $userId);
+        $role = Cache::get(Config::get('cache.roles') . $roleId);
+
         if (Role::where('id', $roleId)->where('name', 'developer')->exists()) {
             return $this->response->array(array('code' => 0, 'message' => '开发者权限限制'));
         }
@@ -227,6 +239,7 @@ class UserController extends Controller
                 ->delete();
             $type = '移除角色';
 
+            $this->log('D', '用户' . $type, "user_id: $userId; username: {$user['username']}; role_id: $roleId; title: {$role['title']}");
         } else {
             $rs = UserRole::create(array(
                 'user_id' => $userId,
@@ -235,6 +248,7 @@ class UserController extends Controller
             ));
             $type = '选中角色';
 
+            $this->log('A', '用户' . $type, "user_id: $userId; username: {$user['username']}; role_id: $roleId; title: {$role['title']}");
         }
 
         return empty($rs) ? $this->response->array(array('code' => 0, 'message' => $type . '失败')) :

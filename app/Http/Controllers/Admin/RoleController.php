@@ -207,7 +207,7 @@ class RoleController extends Controller
             $rs = RolePermission::where('role_id', $roleId)->where('permission_id', $permissionId)->delete();
             $type = '移除权限';
 
-            $this->log('D', $type, "role_id: $roleId; title: {$role['title']}; permission_id: $permissionId; title: {$permission['title']}");
+            $this->log('D', '角色' . $type, "role_id: $roleId; title: {$role['title']}; permission_id: $permissionId; title: {$permission['title']}");
         } else {
             $rs = RolePermission::create(array(
                 'role_id' => $roleId,
@@ -215,7 +215,7 @@ class RoleController extends Controller
             ));
             $type = '选中权限';
 
-            $this->log('A', $type, "role_id: $roleId; title: {$role['title']}; permission_id: $permissionId; title: {$permission['title']}");
+            $this->log('A', '角色' . $type, "role_id: $roleId; title: {$role['title']}; permission_id: $permissionId; title: {$permission['title']}");
         }
 
         return empty($rs) ? $this->response->array(array('code' => 0, 'message' => $type . '失败')) :
