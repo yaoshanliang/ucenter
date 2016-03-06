@@ -14,6 +14,8 @@ use App\Model\Permission;
 use App\Model\RolePermission;
 use Session;
 use Auth;
+use Config;
+use Cache;
 
 class RoleController extends Controller
 {
@@ -137,6 +139,9 @@ class RoleController extends Controller
         // 更新cache
         $this->cacheRoles($role->id);
 
+        // 日志
+        $this->log('A', '新增角色', "id: $role->id; title: $request->title;");
+
         if ($role) {
             session()->flash('success_message', '角色添加成功');
             return redirect('/admin/role');
@@ -165,6 +170,23 @@ class RoleController extends Controller
             'description' => $request->description,
         ));
         if ($role) {
+
+            // 更新cache
+            $this->cacheRoles($id);
+
+            // 写入日志
+            $field = array('name', 'title', 'description');
+            foreach ($field as $v) {
+                $old[$v] = $request->{'old_' . $v};
+                $new[$v] = $request->{$v};
+            }
+            $diff = array_diff_assoc($old, $new);
+            $data = 'id: ' . $id . ', ';
+            foreach ($diff as $k => &$v) {
+                $data .= $k . ': ' . $v . ' => ' . $new[$k] . '; ';
+            }
+            $this->log('U', '修改角色', $data);
+
             session()->flash('success_message', '角色修改成功');
             return redirect('/admin/role');
         } else {
@@ -177,9 +199,15 @@ class RoleController extends Controller
     {
         $roleId = $request->role_id;
         $permissionId = $request->permission_id;
+
+        $role = Cache::get(Config::get('cache.roles') . $roleId);
+        $permission = Cache::get(Config::get('cache.permissions') . $permissionId);
+
         if (RolePermission::where('role_id', $roleId)->where('permission_id', $permissionId)->exists()) {
             $rs = RolePermission::where('role_id', $roleId)->where('permission_id', $permissionId)->delete();
             $type = '移除权限';
+
+            $this->log('D', $type, "role_id: $roleId; title: {$role['title']}; permission_id: $permissionId; title: {$permission['title']}");
         } else {
             $rs = RolePermission::create(array(
                 'role_id' => $roleId,
@@ -187,6 +215,7 @@ class RoleController extends Controller
             ));
             $type = '选中权限';
 
+            $this->log('A', $type, "role_id: $roleId; title: {$role['title']}; permission_id: $permissionId; title: {$permission['title']}");
         }
 
         return empty($rs) ? $this->response->array(array('code' => 0, 'message' => $type . '失败')) :
@@ -210,6 +239,18 @@ class RoleController extends Controller
             $result = Role::whereIn('id', $ids)->delete();
 
             DB::commit();
+
+            // 清除cache
+            $data = '';
+            foreach ($ids as $v) {
+                $role = Cache::get(Config::get('cache.roles') . $v);
+                $data .= 'id: ' . $v . ', title: ' . $role['title'] . '; ';
+
+                Cache::forget(Config::get('cache.apps') . $v);
+            }
+
+            // 日志
+            $this->log('D', '删除角色', $data);
 
             return $this->response->array(array('code' => 1, 'message' => '删除成功'));
         } catch (Exception $e) {

@@ -11,6 +11,8 @@ use App\Model\Role;
 use App\Model\User;
 use App\Model\Permission;
 use Session;
+use Cache;
+use Config;
 
 class PermissionController extends Controller
 {
@@ -60,6 +62,13 @@ class PermissionController extends Controller
 			'description' => $request->description,
 		));
 		if ($permission) {
+
+            // 更新cache
+            $this->cachePermissions($permission->id);
+
+            // 日志
+            $this->log('A', '新增权限', "id: $permission->id; title: $request->title;");
+
 			session()->flash('success_message', '添加成功');
             if ($request->group_id) {
 			    return redirect('/admin/permission');
@@ -86,6 +95,23 @@ class PermissionController extends Controller
 			'description' => $request->description,
 		));
 		if ($permission) {
+
+            // 更新cache
+            $this->cachePermissions($id);
+
+            // 写入日志
+            $field = array('name', 'title', 'description');
+            foreach ($field as $v) {
+                $old[$v] = $request->{'old_' . $v};
+                $new[$v] = $request->{$v};
+            }
+            $diff = array_diff_assoc($old, $new);
+            $data = 'id: ' . $id . ', ';
+            foreach ($diff as $k => &$v) {
+                $data .= $k . ': ' . $v . ' => ' . $new[$k] . '; ';
+            }
+            $this->log('U', '修改权限', $data);
+
 			session()->flash('success_message', '权限修改成功');
             if ($request->group_id) {
 			    return redirect('/admin/permission');
@@ -138,11 +164,22 @@ class PermissionController extends Controller
             if (!in_array(Session::get('current_app_id'), $permissions)) {
                 return $this->response->array(array('code' => 0, 'message' => '不允许删除'));
             }
-            $role = Role::where('app_id', Session::get('current_app_id'))->where('name', 'developer')->first()->toArray();
 			$result = Permission::whereIn('id', $ids)->delete();
             Permission::whereIn('group_id', $ids)->delete();
 
 			DB::commit();
+
+            // 清除cache
+            $data = '';
+            foreach ($ids as $v) {
+                $role = Cache::get(Config::get('cache.permissions') . $v);
+                $data .= 'id: ' . $v . ', title: ' . $role['title'] . '; ';
+
+                Cache::forget(Config::get('cache.permissions') . $v);
+            }
+
+            // 日志
+            $this->log('D', '删除权限', $data);
 
             return $this->response->array(array('code' => 1, 'message' => '删除成功'));
 		} catch (Exception $e) {
