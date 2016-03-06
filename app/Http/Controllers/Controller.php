@@ -236,6 +236,7 @@ abstract class Controller extends BaseController
         $ips = Request::ips();
         $ip = $ips[0];
         $ips = implode(',', $ips);
-        Queue::push(new UserLog(1, Auth::id(), $type, $title, $data, $sql, $ip, $ips));
+        $appId = Session::get('current_app_id') ?? 1;
+        Queue::push(new UserLog($appId, Auth::id(), $type, $title, $data, $sql, $ip, $ips));
     }
 }
