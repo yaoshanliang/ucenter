@@ -14,7 +14,7 @@
         <div class="dataTable_wrapper">
             <br />
             <div class="input-group custom-search-form">
-                <a href="{{ URL('admin/permission/createGroup') }}" class="btn btn-primary">新增分组</a>
+                <a href="{{ URL('admin/permission/creategroup') }}" class="btn btn-primary">新增分组</a>
                 &nbsp;
                 <a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return check_delete();'>删除</a>
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
@@ -51,11 +51,13 @@
 </div>
 </div>
 
+@include('admin.partials.modal.delete')
+
 <script>
 var datatable_id = 'user_index';
 var columnDefs_targets = [0];
 var order = [5, 'desc'];
-var ajax_url = '/admin/permission/groupLists';
+var ajax_url = '/admin/permission/grouplists';
 var delete_url = '/admin/permission/delete';
 var columns = [{
                     "data": "id",
@@ -71,7 +73,7 @@ var columns = [{
                 {
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html("<a href=/admin/permission/" + sData + "/edit>编辑</a>" + " " +
+                        $(nTd).html("<a href=/admin/permission/edit/" + sData + ">编辑</a>" + " " +
                             "<a href='javascript:void(0);' onclick='return check_delete(" + sData + ");'>删除</a>");
                     }
                 }];
