@@ -25,7 +25,7 @@
             </div>
             <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/role/index') }}">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <table class="table table-striped table-bordered table-hover" id="user_index" class="display" cellspacing="0" width="100%" border='0px'>
+                <table class="table table-striped table-bordered table-hover" id="role_index" class="display" cellspacing="0" width="100%" border='0px'>
                     <thead>
                         <tr>
                             <td style="width:15px"><input class="checkbox" type="checkbox" name="id" id='checkAll'></td>
@@ -53,7 +53,7 @@
 @include('admin.partials.modal.delete')
 
 <script>
-var datatable_id = 'user_index';
+var datatable_id = 'role_index';
 var columnDefs_targets = [0, 6];
 var order = [5, 'desc'];
 var ajax_url = '/admin/role/lists';
@@ -73,8 +73,8 @@ var columns = [{
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                         $(nTd).html(
-                            "<a href=/admin/role/" + sData + "/permission>权限</a>" + " " +
-                            "<a href=/admin/role/" + sData + "/edit>编辑</a>" + " " +
+                            "<a href=/admin/role/edit/" + sData + ">编辑</a>" + " " +
+                            "<a href=/admin/role/permission/" + sData + ">权限</a>" + " " +
                             "<a href='javascript:void(0);' onclick='return check_delete(" + sData + ");'>删除</a>"
                         );
                     }

@@ -20,27 +20,27 @@
             </div>
         @endif
 
-        <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/role') }}">
+        <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/role/create') }}">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
             <div class="form-group">
                 <label class="col-md-3 control-label">代号</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" name="name" value="{{ old('name') }}">
+                    <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="例:guest">
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-md-3 control-label">名称</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" name="title" value="{{ old('title') }}">
+                    <input type="text" class="form-control" name="title" value="{{ old('title') }}" placeholder="例:访客">
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-md-3 control-label">描述</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" name="description" value="{{ old('description') }}">
+                    <input type="text" class="form-control" name="description" value="{{ old('description') }}" placeholder="例:访客角色">
                 </div>
             </div>
 
