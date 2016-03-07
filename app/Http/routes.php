@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+Route::get('/', ['middleware' => ['auth', 'role:developer|admin'], function () {
+    return Redirect::to('/admin/index');
+}]);
 Route::group(['middleware' => 'csrf'], function() {
     Route::controllers([
         'auth' => 'Auth\AuthController',
@@ -26,7 +28,7 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => ['auth'
     });
 
     Route::group(['middleware' => ['csrf']], function () {
-        Route::get('/', 'HomeController@index');
+        Route::get('/', function() { return Redirect::to('/home/index'); });
         Route::get('/index', 'HomeController@index');
 
         // user
@@ -44,10 +46,8 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => ['auth'
     });
 });
 
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array('auth', 'role:developer|admin')], function() {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'role:developer|admin']], function() {
     Route::group([], function () {
-        Route::put('/app/currentApp', 'AppController@putCurrentApp');
-        Route::put('/app/currentRole', 'AppController@putCurrentRole');
     });
     Route::group(['middleware' => 'csrf'], function () {
         Route::get('/', function() { return Redirect::to('/admin/index'); });
@@ -55,49 +55,28 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => array
 
         // app，require developer role
         Route::group(['prefix' => 'app', 'middleware' => 'role:developer'], function() {
-            // Route::post('/currentApp', 'AppController@currentApp');
+            Route::controller('', 'AppController');
         });
-        Route::resource('app', 'AppController');
-        // Route::controller('app', 'AppController');
 
         // user
         Route::group(['prefix' => 'user'], function(){
-            Route::get('/invite', 'UserController@getInvite');
-            Route::post('/invite', 'UserController@postInvite');
-            Route::post('/lists', 'UserController@lists');
-            Route::post('/delete', 'UserController@delete');
-            Route::post('/remove', 'UserController@remove');
-            Route::get('/all', 'UserController@all');
-            Route::post('/allLists', 'UserController@allLists');
-            Route::get('/fields', 'UserController@fields');
-            Route::post('/fieldsLists', 'UserController@fieldsLists');
-            Route::get('/{id}/roles', 'UserController@roles');
-            Route::get('/{id}/selectOrUnselectRole/{role_id}', 'UserController@selectOrUnselectRole')->where('id', '[0-9]+')->where('role_id', '[0-9]+');
+            Route::controller('', 'UserController');
         });
-        Route::resource('/user', 'UserController');
 
         // role
         Route::group(['prefix' => 'role'], function(){
-            Route::post('/lists', 'RoleController@lists');
-            Route::post('/delete', 'RoleController@delete');
-            Route::get('/{id}/permission', 'RoleController@permission')->where('id', '[0-9]+');
-            Route::post('/{id}/permissionLists', 'RoleController@permissionLists')->where('id', '[0-9]+');
-            Route::get('/{id}/permissionSelected', 'RoleController@permissionSelected')->where('id', '[0-9]+');
-            Route::post('/{id}/permissionSelectedLists', 'RoleController@permissionSelectedLists');
-            Route::get('/{id}/permissionGroup/{permission_id}', 'RoleController@permissionGroup')->where('id', '[0-9]+')->where('permission_id', '[0-9]+');
-            Route::get('/{id}/selectOrUnselectPermission/{permission_id}', 'RoleController@selectOrUnselectPermission')->where('id', '[0-9]+')->where('permission_id', '[0-9]+');
+            Route::controller('', 'RoleController');
         });
-        Route::resource('/role', 'RoleController');
 
         // permission
         Route::group(['prefix' => 'permission'], function(){
-            Route::post('/lists', 'PermissionController@lists');
-            Route::post('/delete', 'PermissionController@delete');
-            Route::get('/group', 'PermissionController@group');
-            Route::post('/groupLists', 'PermissionController@groupLists');
-            Route::get('/createGroup', 'PermissionController@createGroup');
+            // Route::post('/lists', 'PermissionController@lists');
+            // Route::post('/delete', 'PermissionController@delete');
+            // Route::get('/group', 'PermissionController@group');
+            // Route::post('/groupLists', 'PermissionController@groupLists');
+            // Route::get('/createGroup', 'PermissionController@createGroup');
+            Route::controller('', 'PermissionController');
         });
-        Route::resource('/permission', 'PermissionController');
 
         // file
         Route::group(['prefix' => 'file'], function(){
