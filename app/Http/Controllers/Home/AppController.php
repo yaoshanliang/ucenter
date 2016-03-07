@@ -11,16 +11,15 @@ use Cache;
 use Config;
 use App\Model\App;
 use App\Model\UserRole;
-use App\Services\Api;
 
 class AppController extends Controller
 {
-    public function index()
+    public function getIndex()
     {
         return view('home.app.index');
     }
 
-    public function lists(Request $request)
+    public function postLists(Request $request)
     {
         $fields = array('id', 'name', 'title', 'home_url');
         $searchFields = array('name', 'title');
@@ -51,11 +50,11 @@ class AppController extends Controller
         $recordsTotal = App::whereIn('id', $appIdsArray)->count();
         $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
 
-        return Api::dataTablesReturn(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+        return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
     // 从当前应用中移出用户
-    public function remove(Request $request)
+    public function deleteRemove(Request $request)
     {
         DB::beginTransaction();
         try {
