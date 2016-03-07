@@ -11,12 +11,12 @@ use App\Services\Api;
 
 class UserLogController extends Controller
 {
-	public function index()
+	public function getIndex()
 	{
 		return view('admin.userlog.index');
 	}
 
-    public function lists(Request $request)
+    public function postLists(Request $request)
     {
 		$fields = array('id', 'user_id', 'type', 'title', 'data', 'sql', 'ip', 'pushed_at', 'created_at');
         $searchFields = array('user_id', 'type', 'title');
