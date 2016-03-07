@@ -41,7 +41,7 @@
                 <a href="/admin/message"><i class="fa fa-comments-o fa-fw"></i> 短 信</a>
             </li>
             <li>
-                <a href="/admin/userlog"><i class="fa fa-file-text-o fa-fw"></i> 日 志</a>
+                <a href="/admin/applog"><i class="fa fa-file-text-o fa-fw"></i> 日 志</a>
             </li>
         </ul>
     </div>

@@ -28,6 +28,7 @@
                             <td>ip</td>
                             <td>触发时间</td>
                             <td>写库时间</td>
+                            <td>操作</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,18 +46,39 @@
 
 <script>
 var datatable_id = 'user_index';
-var columnDefs_targets = [];
+var columnDefs_targets = [7];
 var order = [5, 'desc'];
 var ajax_url = '/admin/applog/lists';
 var delete_url = '/admin/user/delete';
 var columns = [
-                {"data": "user_id"},
+                {"data": "username"},
                 {"data": "type"},
-                {"data": "title"},
-                {"data": "data"},
+                {
+                    "data": "title",
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        if (sData.length > 8) {
+                            sData = sData.substr(0, 8) + '...';
+                        }
+                        $(nTd).html(sData);
+                    }
+                },
+                {
+                    "data": "data",
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        if (sData.length > 10) {
+                            sData = sData.substr(0, 10) + '...';
+                        }
+                        $(nTd).html(sData);
+                    }
+                },
                 {"data": "ip"},
                 {"data": "pushed_at"},
                 {"data": "created_at"},
-                ];
+                {
+                    "data": "id",
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        $(nTd).html("<a href=/admin/applog/show/" + sData + ">详细</a>");
+                    }
+                }];
 </script>
 @endsection

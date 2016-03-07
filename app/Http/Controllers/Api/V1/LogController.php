@@ -15,6 +15,7 @@ use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
 class LogController extends ApiController
 {
+    // 创建日志
     public function postCreate(Request $request)
     {
         // 验证
