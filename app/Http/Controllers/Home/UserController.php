@@ -17,7 +17,7 @@ use EasyWeChat\Foundation\Application;
 class UserController extends Controller
 {
 
-    public function index(Application $wechat)
+    public function getIndex(Application $wechat)
     {
         $user = Cache::get(Config::get('cache.users') . Auth::id());
         $wechat->oauth->redirect();
@@ -26,13 +26,13 @@ class UserController extends Controller
     }
 
     // 编辑个人信息
-    public function edit()
+    public function getEdit()
     {
         $user = Cache::get(Config::get('cache.users') . Auth::id());
         return view('home.user.edit')->withUser($user);
     }
 
-    public function update(Request $request)
+    public function putEdit(Request $request)
     {
         // 验证
         $userFieldsArray = UserFields::where('validation', '<>', '')->get(array('name', 'validation'))->toArray();
@@ -71,7 +71,7 @@ class UserController extends Controller
     }
 
     // 微信扫描绑定之后的回调
-    public function wechatCallback(Application $wechat)
+    public function getWechatcallback(Application $wechat)
     {
         $wechatUser = $wechat->oauth->user()->toArray();
         $wechatUser = $wechatUser['original'];

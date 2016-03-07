@@ -110,7 +110,7 @@ function bindWechat() {
             id: "wechat_container",
             appid: "<?php echo env('WECHAT_APPID'); ?>",
             scope: "snsapi_login, snsapi_userinfo",
-            redirect_uri: "<?php echo urlencode(url('home/user/wechatCallback')); ?>",
+            redirect_uri: "<?php echo urlencode(url('home/user/wechatcallback')); ?>",
             state: "<?php echo md5(time()); ?>",
             style: "",
             href: ""
