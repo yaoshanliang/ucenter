@@ -29,20 +29,10 @@ Route::group(['prefix' => 'home', 'namespace' => 'Home', 'middleware' => ['auth'
 
     Route::group(['middleware' => ['csrf']], function () {
         Route::get('/', function() { return Redirect::to('/home/index'); });
-        Route::get('/index', 'HomeController@index');
+        Route::get('/index', 'HomeController@getIndex');
 
-        // user
-        Route::group(['prefix' => 'user'], function(){
-            Route::get('/edit', 'UserController@edit');
-            Route::get('/wechatCallback', 'UserController@wechatCallback');
-            // Route::post('/edit', 'UserController@postEdit');
-        });
-        Route::resource('/user', 'UserController');
-
-        // app
-        Route::group(['prefix' => 'app'], function(){
-        });
-        Route::resource('/app', 'AppController');
+        Route::controller('user', 'UserController');
+        Route::controller('app', 'AppController');
     });
 });
 
@@ -53,53 +43,17 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
         Route::get('/', function() { return Redirect::to('/admin/index'); });
         Route::get('/index', 'AdminController@index');
 
-        // app，require developer role
         Route::group(['prefix' => 'app', 'middleware' => 'role:developer'], function() {
             Route::controller('', 'AppController');
         });
+        Route::controller('user', 'UserController');
+        Route::controller('role', 'RoleController');
+        Route::controller('permission', 'PermissionController');
 
-        // user
-        Route::group(['prefix' => 'user'], function(){
-            Route::controller('', 'UserController');
-        });
-
-        // role
-        Route::group(['prefix' => 'role'], function(){
-            Route::controller('', 'RoleController');
-        });
-
-        // permission
-        Route::group(['prefix' => 'permission'], function(){
-            // Route::post('/lists', 'PermissionController@lists');
-            // Route::post('/delete', 'PermissionController@delete');
-            // Route::get('/group', 'PermissionController@group');
-            // Route::post('/groupLists', 'PermissionController@groupLists');
-            // Route::get('/createGroup', 'PermissionController@createGroup');
-            Route::controller('', 'PermissionController');
-        });
-
-        // file
-        Route::group(['prefix' => 'file'], function(){
-        });
-        Route::resource('/file', 'FileController');
-
-        // mail
-        Route::group(['prefix' => 'mail'], function(){
-        });
-        Route::resource('/mail', 'MailController');
-
-        // message
-        Route::group(['prefix' => 'message'], function(){
-        });
-        Route::resource('/message', 'MessageController');
-
-        // userlog
-        Route::group(['prefix' => 'userlog'], function(){
-            Route::post('/lists', 'UserLogController@lists');
-            Route::post('/delete', 'UserLogController@delete');
-        });
-        Route::resource('/userlog', 'UserLogController');
-
+        Route::controller('file', 'FileController');
+        Route::controller('mail', 'MailController');
+        Route::controller('message', 'MessageController');
+        Route::controller('userlog', 'UserLogController');
     });
 });
 
@@ -118,9 +72,6 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
     $api->group([], function ($api) {
         $api->post('oauth/accessToken', 'OauthController@getAccessToken');
         $api->get('oauth/authCode', ['middleware' => ['check-authorization-params'], 'uses' => 'OauthController@getAuthCode']);
-
-        $api->put('app/currentApp', 'AppController@updateCurrentApp');
-        $api->put('app/currentRole', 'AppController@updateCurrentRole');
     });
 });
 
