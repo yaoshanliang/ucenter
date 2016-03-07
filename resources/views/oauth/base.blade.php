@@ -19,7 +19,8 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="{{url('/')}}">{{ Cache::get('settings:site_name') }}</a>
+				<a class="navbar-brand" href="{{ url('/') }}">{{ Cache::get('settings:site_name') }}</a>
+				<a class="navbar-brand" href="{{ url('/') }}">{{ $client->getName() }}</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

@@ -93,11 +93,17 @@ class AppController extends Controller
 
     public function putCurrentRole(Request $request)
     {
+        $oldRole = Session::get('current_role');
         $role = Cache::get(Config::get('cache.roles') . $request->role_id);
 		Session::put('current_role', $role);
 		Session::put('current_role_title', $role['title']);
 		Session::put('current_role_id', $role['id']);
 
-        return $this->response->array(array('code' => 1, 'message' => '切换角色成功'));
+        // temp solution
+        if (!in_array($oldRole['name'], array('developer', 'admin')) && in_array($role['name'], array('developer', 'admin'))) {
+            return $this->response->array(array('code' => 1, 'message' => '切换角色成功', 'data' => array('redirect' => '/admin/index')));
+        }
+
+        return $this->response->array(array('code' => 1, 'message' => '切换角色成功', 'data' => array('redirect' => '')));
     }
 }

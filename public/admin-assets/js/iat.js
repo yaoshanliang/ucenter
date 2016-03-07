@@ -208,7 +208,7 @@ function change_role(url, role_id) {
         },
         success: function(data) {
             if(data['code'] === 1) {
-                window.location.reload();
+                window.location.href = data['data']['redirect'];
                 showSuccessTip(data['message']);
             } else {
                 showFailTip(data['message']);

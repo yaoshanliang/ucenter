@@ -31,7 +31,7 @@ class AppLogController extends Controller
             ->get($fields);
         foreach ($data as &$v) {
             $user = Cache::get(Config::get('cache.users') . $v->user_id);
-            $v->username = $user['username'];
+            $v->user_id = $user['username'];
         }
         $draw = (int)$request->draw;
         $recordsTotal = AppLog::where('app_id', Session::get('current_app_id'))->count();

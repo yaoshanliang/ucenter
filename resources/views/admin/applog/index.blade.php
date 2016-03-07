@@ -51,7 +51,7 @@ var order = [5, 'desc'];
 var ajax_url = '/admin/applog/lists';
 var delete_url = '/admin/user/delete';
 var columns = [
-                {"data": "username"},
+                {"data": "user_id"},
                 {"data": "type"},
                 {
                     "data": "title",
