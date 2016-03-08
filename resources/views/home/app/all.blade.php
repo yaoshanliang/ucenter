@@ -110,9 +110,12 @@ var columns = [
                 {
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html(
-                            "<button type='button' onclick='return applyAccess(" + sData + ");' class='btn btn-outline btn-primary btn-xs'>申请接入</button>"
-                        );
+                        if (oData.status === 1) {
+                            data = "<button type='button' onclick='return applyExit(" + sData + ");' class='btn btn-outline btn-danger btn-xs'>取消接入</button>";
+                        } else {
+                            data = "<button type='button' onclick='return applyAccess(" + sData + ");' class='btn btn-outline btn-primary btn-xs'>申请接入</button>";
+                        }
+                        $(nTd).html(data);
                     }
                 }];
 </script>

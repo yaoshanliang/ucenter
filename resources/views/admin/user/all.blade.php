@@ -105,7 +105,7 @@ var columns = [{
                 {
                     "data": "status",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        if (sData == 1) {
+                        if (sData === 1) {
                             $(nTd).html('<span class="text-success">已接入</span>');
                         } else {
                             $(nTd).html('<span class="text-danger">未接入</span>');
@@ -115,9 +115,12 @@ var columns = [{
                 {
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html(
-                            "<a href='javascript:void(0);' onclick='return choose_role(" + sData + ");'>接入</a>"
-                        );
+                        if (oData.status === 1) {
+                            data = "<button type='button' onclick='return choose_role(" + sData + ");' class='btn btn-outline btn-danger btn-xs'>取消接入</button>";
+                        } else {
+                            data = "<button type='button' onclick='return choose_role(" + sData + ");' class='btn btn-outline btn-primary btn-xs'>接入应用</button>";
+                        }
+                        $(nTd).html(data);
                     }
                 }];
 </script>

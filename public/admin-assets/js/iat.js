@@ -261,3 +261,32 @@ function selectOrUnselectPermission(role_id, permission_id) {
         },
     });
 }
+
+// 申请接入、退出应用
+function apply(type, id) {
+    $.ajax({
+        url: '/home/app/access',
+        type: type,
+        data: {'app_id': id},
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        },
+        success: function(data) {
+            if(data['code'] === 1) {
+                showSuccessTip(data['message']);
+            } else {
+                showFailTip(data['message']);
+                return false;
+            }
+        },
+    });
+}
+function applyAccess(id) {
+    var type = 'POST';
+    return apply(type, id);
+}
+function applyExit(id) {
+    var type = 'DELETE';
+    return apply(type, id);
+}
