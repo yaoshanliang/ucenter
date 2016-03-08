@@ -111,12 +111,62 @@ var columns = [
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                         if (oData.status === 1) {
-                            data = "<button type='button' onclick='return applyExit(" + sData + ");' class='btn btn-outline btn-danger btn-xs'>取消接入</button>";
+                            data = "<button type='button' onclick='return appApply(" + "\"exit\"," + sData + ");' class='btn btn-outline btn-danger btn-xs'>取消接入</button>";
                         } else {
-                            data = "<button type='button' onclick='return applyAccess(" + sData + ");' class='btn btn-outline btn-primary btn-xs'>申请接入</button>";
+                            data = "<button type='button' onclick='return appApply(" + "\"access\"," + sData + ");' class='btn btn-outline btn-primary btn-xs'>申请接入</button>";
                         }
                         $(nTd).html(data);
                     }
                 }];
+
+function appApply(type, id) {
+    $('input[name="type"]').val(type);
+    $('input[name="app_id"]').val(id);
+
+    if (type == 'exit') {
+        $("#modal-title").html('取消接入');
+        $('input[name="title"]').val('申请取消接入');
+    }
+    $('#app_apply').modal('show');
+}
+
 </script>
+<!-- Modal -->
+<div class="modal fade" id="app_apply" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:400px; margin-top:40px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5 class="modal-title" id="modal-title">申请接入</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <input type="hidden" name="app_id">
+                    <input type="hidden" name="type">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" name="title" placeholder="申请接入" value="申请接入">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <textarea class="form-control" rows="3" placeholder="理由"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary btn-block" onClick="return apply();">确认</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 @endsection
