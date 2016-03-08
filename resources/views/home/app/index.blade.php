@@ -13,6 +13,8 @@
         <div class="dataTable_wrapper">
             <br />
             <div class="input-group custom-search-form">
+                <a href="{{ URL('home/app/all') }}" class="btn btn-primary">应用总库</a>
+                &nbsp;
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button">

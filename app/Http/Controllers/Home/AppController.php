@@ -14,6 +14,7 @@ use App\Model\UserRole;
 
 class AppController extends Controller
 {
+    // 接入应用列表
     public function getIndex()
     {
         return view('home.app.index');
@@ -53,28 +54,51 @@ class AppController extends Controller
         return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
 
-    // 从当前应用中移出用户
-    public function deleteRemove(Request $request)
+    // 应用总库列表
+    public function getAll()
     {
-        DB::beginTransaction();
-        try {
-            $ids = $request->ids;
-            $appIdsArray = UserRole::where('user_id', Auth::id())->whereIn('role_id', $ids)->lists('app_id')->toArray();
-            $userIdsArray = App::whereIn('id', $appIdsArray)->lists('user_id')->toArray();
-            if (in_array(Auth::id(), $userIdsArray)) {
-                // return Api::jsonReturn(0, '移除失败, 不允许移除创建者');
-            }
-            $result = UserRole::where('user_id', Auth::id())->whereIn('role_id', $ids)->delete();
-
-            DB::commit();
-            return Api::jsonReturn(1, '移除成功', array('deleted_num' => $result));
-        } catch (Exception $e) {
-            DB::rollBack();
-            throw $e;
-            return Api::jsonReturn(0, '移除失败', array('deleted_num' => 0));
-        }
+        return view('home.app.all');
     }
 
+    public function postAlllists(Request $request)
+    {
+        $fields = array('id', 'name', 'title', 'home_url', 'created_at');
+        $searchFields = array('name', 'title');
+
+        $data = App::whereDataTables($request, $searchFields)
+            ->orderByDataTables($request)
+            ->skip($request->start)
+            ->take($request->length)
+            ->get($fields);
+        foreach ($data as &$v) {
+            if (UserRole::where('app_id', $v->id)->where('user_id', Auth::id())->exists()) {
+                $v->status = 1;
+            } else {
+                $v->status = 0;
+            }
+        }
+        $draw = (int)$request->draw;
+        $recordsTotal = App::count();
+        $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
+
+        return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+    }
+
+    // 申请接入
+    public function postAccess(Request $request)
+    {
+
+        return $this->response->array(array('code' => 1, 'message' => '申请成功，待审核'));
+    }
+
+    // 申请退出
+    public function deleteAccess(Request $request)
+    {
+
+        return $this->response->array(array('code' => 1, 'message' => '申请成功，待审核'));
+    }
+
+    // 切换应用
     public function putCurrentApp(Request $request)
     {
         $app = Cache::get(Config::get('cache.apps') . $request->app_id);
@@ -91,6 +115,7 @@ class AppController extends Controller
         return $this->response->array(array('code' => 1, 'message' => '切换应用成功'));
     }
 
+    // 切换角色
     public function putCurrentRole(Request $request)
     {
         $oldRole = Session::get('current_role');
