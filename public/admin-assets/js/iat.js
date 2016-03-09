@@ -263,7 +263,10 @@ function selectOrUnselectPermission(role_id, permission_id) {
 }
 
 // 申请接入、退出应用
-function apply(type, id) {
+function apply() {
+    type = $('input[name="type"]').val();
+    id = $('input[name="app_id"]').val();
+    type = (type == 'access') ? 'POST' : 'DELETE';
     $.ajax({
         url: '/home/app/access',
         type: type,
@@ -275,18 +278,11 @@ function apply(type, id) {
         success: function(data) {
             if(data['code'] === 1) {
                 showSuccessTip(data['message']);
+                window.location.reload();
             } else {
                 showFailTip(data['message']);
                 return false;
             }
         },
     });
-}
-function applyAccess(id) {
-    var type = 'POST';
-    return apply(type, id);
-}
-function applyExit(id) {
-    var type = 'DELETE';
-    return apply(type, id);
 }
