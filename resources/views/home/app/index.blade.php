@@ -27,7 +27,6 @@
                 <table class="table table-striped table-bordered table-hover" id="app_index" class="display" cellspacing="0" width="100%" border='0px'>
                     <thead>
                         <tr>
-                            <td style="width:15px"><input class="checkbox" type="checkbox" name="id" id='checkAll'></td>
                             <td>名称</td>
                             <td>地址</td>
                             <td>角色</td>
@@ -50,16 +49,11 @@
 
 <script>
 var datatable_id = 'app_index';
-var columnDefs_targets = [0, 3, 4, 5];
-var order = [1, 'desc'];
+var columnDefs_targets = [2, 3, 4];
+var order = [0, 'desc'];
 var ajax_url = '/home/app/lists';
 var remove_url = '/home/app/remove';
-var columns = [{
-                    "data": "id",
-                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html("<input type='checkbox' id='" + sData + "' class='checkbox' name='ids' value='" + sData + "'>");
-                    }
-                },
+var columns = [
                 {"data": "title"},
                 {
                     "data": "home_url",
@@ -85,14 +79,9 @@ var columns = [{
                     }
                 },
                 {
-                    "data": "roles",
+                    "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        var ids = [];
-                        for (var i = 0; i < sData.length; i++) {
-                            ids.push(sData[i]['id']);
-                        }
-                        $(nTd).html("");
-                        // $(nTd).html("<a href='javascript:void(0);' onclick='return check_remove([" + ids + "]);'>取消接入</a>");
+                        $(nTd).html("<button type='button' onclick='return applyExit(" + sData + ");' class='btn btn-outline btn-danger btn-xs'>取消接入</button>");
                     }
                 }];
 </script>
