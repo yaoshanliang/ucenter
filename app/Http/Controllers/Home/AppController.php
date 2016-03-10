@@ -87,15 +87,43 @@ class AppController extends Controller
     // 申请接入
     public function postAccess(Request $request)
     {
+        if (AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', 'access')->where('operator_id', '')->exists()) {
+            return $this->response->array(array('code' => 0, 'message' => '已申请'));
+        }
+        $appAccess = AppAccess::create(array(
+            'app_id' => $request->app_id,
+            'user_id' => Auth::id(),
+            'type' => 'access',
+            'title' => $request->title,
+            'description' => $request->description
+        ));
 
-        return $this->response->array(array('code' => 1, 'message' => '申请成功，待审核'));
+        if ($appAccess) {
+            return $this->response->array(array('code' => 1, 'message' => '申请接入成功，待审核'));
+        } else {
+            return $this->response->array(array('code' => 0, 'message' => '申请失败'));
+        }
     }
 
     // 申请退出
     public function deleteAccess(Request $request)
     {
+        if (AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', 'exit')->where('operator_id', '')->exists()) {
+            return $this->response->array(array('code' => 0, 'message' => '已申请'));
+        }
+        $appAccess = AppAccess::create(array(
+            'app_id' => $request->app_id,
+            'user_id' => Auth::id(),
+            'type' => 'exit',
+            'title' => $request->title,
+            'description' => $request->description
+        ));
 
-        return $this->response->array(array('code' => 1, 'message' => '申请成功，待审核'));
+        if ($appAccess) {
+            return $this->response->array(array('code' => 1, 'message' => '申请取消接入成功，待审核'));
+        } else {
+            return $this->response->array(array('code' => 0, 'message' => '申请失败'));
+        }
     }
 
     // 切换应用
