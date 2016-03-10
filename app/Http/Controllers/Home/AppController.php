@@ -11,6 +11,7 @@ use Cache;
 use Config;
 use App\Model\App;
 use App\Model\UserRole;
+use App\Model\AppAccess;
 
 class AppController extends Controller
 {
@@ -87,7 +88,7 @@ class AppController extends Controller
     // 申请接入
     public function postAccess(Request $request)
     {
-        if (AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', 'access')->where('operator_id', '')->exists()) {
+        if (AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', 'access')->where('handled_at', 0)->exists()) {
             return $this->response->array(array('code' => 0, 'message' => '已申请'));
         }
         $appAccess = AppAccess::create(array(
@@ -108,7 +109,7 @@ class AppController extends Controller
     // 申请退出
     public function deleteAccess(Request $request)
     {
-        if (AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', 'exit')->where('operator_id', '')->exists()) {
+        if (AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', 'exit')->where('handled_at', 0)->exists()) {
             return $this->response->array(array('code' => 0, 'message' => '已申请'));
         }
         $appAccess = AppAccess::create(array(

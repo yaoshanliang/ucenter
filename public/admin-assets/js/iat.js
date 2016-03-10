@@ -266,11 +266,13 @@ function selectOrUnselectPermission(role_id, permission_id) {
 function apply() {
     type = $('input[name="type"]').val();
     id = $('input[name="app_id"]').val();
+    title = $('input[name="title"]').val();
+    description = $('textarea[name="description"]').val();
     type = (type == 'access') ? 'POST' : 'DELETE';
     $.ajax({
         url: '/home/app/access',
         type: type,
-        data: {'app_id': id},
+        data: {'app_id': id, 'title': title, 'description': description},
         dataType: 'json',
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()

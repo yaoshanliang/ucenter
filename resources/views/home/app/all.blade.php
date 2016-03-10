@@ -150,7 +150,7 @@ function appApply(type, id) {
                     </div>
                     <div class="form-group">
                         <div class="col-md-12">
-                            <textarea class="form-control" rows="3" placeholder="理由"></textarea>
+                            <textarea class="form-control" name="description" rows="3" placeholder="理由"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
