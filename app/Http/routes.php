@@ -54,6 +54,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
         Route::controller('mail', 'MailController');
         Route::controller('message', 'MessageController');
         Route::controller('userlog', 'UserLogController');
+        Route::controller('applog', 'AppLogController');
     });
 });
 
@@ -68,6 +69,8 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
         $api->put('app/secret', 'AppController@updateSecret');
         $api->post('sms/code', ['middleware' => ['oauth'], 'uses' => 'SmsController@sendCode']);
         $api->put('sms/code', 'SmsController@validateCode');
+
+        $api->post('log', 'LogController@postCreate');
     });
     $api->group([], function ($api) {
         $api->post('oauth/accessToken', 'OauthController@getAccessToken');

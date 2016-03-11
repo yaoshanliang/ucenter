@@ -32,10 +32,9 @@ class Role
     public function handle($request, Closure $next, $roles)
     {
         if (!$request->user()->hasRole(explode('|', $roles))) {
-            if (!Request::is('admin/forbidden')) {
-                return redirect('/home/index');
-            }
+            return redirect('/home/index');
         }
+
         return $next($request);
     }
 
