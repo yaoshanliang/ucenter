@@ -104,6 +104,8 @@ class AppController extends Controller
         ));
 
         if ($appAccess) {
+            $type = ('access' == $request->type) ? '接入' : '退出';
+            $this->log('A', '申请' . $type . '应用', "app_id: $request->app_id, user_id: " . Auth::id());
             return $this->response->array(array('code' => 1, 'message' => '申请成功，待审核'));
         } else {
             return $this->response->array(array('code' => 0, 'message' => '申请失败'));
@@ -119,6 +121,8 @@ class AppController extends Controller
         $appAccess = AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', $request->type)->delete();
 
         if ($appAccess) {
+            $type = ('access' == $request->type) ? '接入' : '退出';
+            $this->log('A', '取消申请' . $type . '应用', "app_id: $request->app_id, user_id: " . Auth::id());
             return $this->response->array(array('code' => 1, 'message' => '申请取消接入成功，待审核'));
         } else {
             return $this->response->array(array('code' => 0, 'message' => '申请失败'));

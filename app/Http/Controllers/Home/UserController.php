@@ -45,10 +45,12 @@ class UserController extends Controller
 
         // 更新数据库
         $user = Cache::get(Config::get('cache.users') . Auth::id());
+        $log = '';
         foreach ($user['details'] as $k => &$v) {
             if ($v['value'] != $request->$k) {
                 $fieldId = UserFields::where('name', $k)->first(array('id'))->toArray();
                 $result = UserInfo::where('user_id', Auth::id())->where('field_id', $fieldId['id'])->update(array('value' => $request->$k));
+                $log .= $k . ': ' . $v['value'] . ' => ' . $request->$k . '; ';
                 $v['value'] = $request->$k;
                 $isEdit = true;
             }
@@ -60,6 +62,8 @@ class UserController extends Controller
         }
 
         if (isset($result) && $result) {
+            $this->log('U', '修改个人信息', $log);
+
             session()->flash('success_message', '个人信息编辑成功');
             return redirect('/home/user/edit');
         } elseif (!isset($isEdit)) {
@@ -99,6 +103,9 @@ class UserController extends Controller
         // 更新cache
         Cache::forever(Config::get('cache.wechat.openid') . $data['openid'], $data);
         Cache::forever(Config::get('cache.wechat.user_id') . $data['user_id'], $data['openid']);
+
+        // 日志
+        $this->log('U', '绑定微信', "nickname: {$wechatUser['nickname']}, unionid: {$wechatUser['unionid']}");
 
         session()->flash('success_message', '绑定成功');
         return redirect('/home/user');

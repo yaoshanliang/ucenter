@@ -103,9 +103,9 @@ var columns = [
                         if (1 === sData) {
                             $(nTd).html('<span class="text-success">已接入</span>');
                         } else if ('access' == sData) {
-                            $(nTd).html('<span class="text-danger">申请接入中</span>');
+                            $(nTd).html('<span class="text-warning">申请接入中</span>');
                         } else if ('exit' == sData) {
-                            $(nTd).html('<span class="text-danger">申请取消接入中</span>');
+                            $(nTd).html('<span class="text-warning">申请取消接入中</span>');
                         } else {
                             $(nTd).html('<span class="text-danger">未接入</span>');
                         }
