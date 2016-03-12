@@ -88,8 +88,8 @@ class AppController extends Controller
     // 申请接入
     public function postAccess(Request $request)
     {
-        if (AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', 'access')->where('handled_at', 0)->exists()) {
-            return $this->response->array(array('code' => 0, 'message' => '已申请'));
+        if (AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', 'access')->where('handler_id', 0)->exists()) {
+            return $this->response->array(array('code' => 0, 'message' => '已申请，请务重复申请'));
         }
         $appAccess = AppAccess::create(array(
             'app_id' => $request->app_id,
@@ -109,8 +109,8 @@ class AppController extends Controller
     // 申请退出
     public function deleteAccess(Request $request)
     {
-        if (AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', 'exit')->where('handled_at', 0)->exists()) {
-            return $this->response->array(array('code' => 0, 'message' => '已申请'));
+        if (AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', 'exit')->where('handler_id', 0)->exists()) {
+            return $this->response->array(array('code' => 0, 'message' => '已申请，请务重复申请'));
         }
         $appAccess = AppAccess::create(array(
             'app_id' => $request->app_id,
