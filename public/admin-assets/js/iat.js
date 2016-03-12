@@ -264,15 +264,15 @@ function selectOrUnselectPermission(role_id, permission_id) {
 
 // 申请接入、退出应用
 function apply() {
+    method = $('input[name="method"]').val();
     type = $('input[name="type"]').val();
     id = $('input[name="app_id"]').val();
     title = $('input[name="title"]').val();
     description = $('textarea[name="description"]').val();
-    type = (type == 'access') ? 'POST' : 'DELETE';
     $.ajax({
         url: '/home/app/access',
-        type: type,
-        data: {'app_id': id, 'title': title, 'description': description},
+        type: method,
+        data: {'type': type, 'app_id': id, 'title': title, 'description': description},
         dataType: 'json',
         headers: {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()

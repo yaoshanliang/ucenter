@@ -100,8 +100,12 @@ var columns = [
                 {
                     "data": "status",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        if (sData == 1) {
+                        if (1 === sData) {
                             $(nTd).html('<span class="text-success">已接入</span>');
+                        } else if ('access' == sData) {
+                            $(nTd).html('<span class="text-danger">申请接入中</span>');
+                        } else if ('exit' == sData) {
+                            $(nTd).html('<span class="text-danger">申请取消接入中</span>');
                         } else {
                             $(nTd).html('<span class="text-danger">未接入</span>');
                         }
@@ -110,20 +114,28 @@ var columns = [
                 {
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        if (oData.status === 1) {
-                            data = "<button type='button' onclick='return appApply(" + "\"exit\"," + sData + ");' class='btn btn-outline btn-danger btn-xs'>取消接入</button>";
+                        if (1 === oData.status) {
+                            data = "<button type='button' onclick='return appApply(" + "\"post\"," + "\"exit\"," + sData + ");' class='btn btn-outline btn-danger btn-xs'>取消接入</button>";
+                        } else if('access' == oData.status) {
+                            data = "<button type='button' onclick='return appApply(" + "\"delete\"," + "\"access\"," + sData + ");' class='btn btn-outline btn-warning btn-xs'>取消申请</button>";
+                        } else if('exit' == oData.status) {
+                            data = "<button type='button' onclick='return appApply(" + "\"delete\"," + "\"exit\"," + sData + ");' class='btn btn-outline btn-warning btn-xs'>取消申请</button>";
                         } else {
-                            data = "<button type='button' onclick='return appApply(" + "\"access\"," + sData + ");' class='btn btn-outline btn-primary btn-xs'>申请接入</button>";
+                            data = "<button type='button' onclick='return appApply(" + "\"post\"," + "\"access\"," + sData + ");' class='btn btn-outline btn-primary btn-xs'>申请接入</button>";
                         }
                         $(nTd).html(data);
                     }
                 }];
 
-function appApply(type, id) {
+function appApply(method, type, id) {
+    $('input[name="method"]').val(method);
     $('input[name="type"]').val(type);
     $('input[name="app_id"]').val(id);
 
-    if (type == 'exit') {
+    if ('delete' == method) {
+        $("#modal-title").html('取消申请');
+        $('input[name="title"]').val('取消申请');
+    } else if ('exit' == type) {
         $("#modal-title").html('取消接入');
         $('input[name="title"]').val('申请取消接入');
     }
@@ -143,6 +155,7 @@ function appApply(type, id) {
                 <div class="form-horizontal">
                     <input type="hidden" name="app_id">
                     <input type="hidden" name="type">
+                    <input type="hidden" name="method">
                     <div class="form-group">
                         <div class="col-md-12">
                             <input type="text" class="form-control" name="title" placeholder="申请接入" value="申请接入">
