@@ -263,6 +263,21 @@ function selectOrUnselectPermission(role_id, permission_id) {
 }
 
 // 申请接入、退出应用
+function appApply(method, type, id) {
+    $('input[name="method"]').val(method);
+    $('input[name="type"]').val(type);
+    $('input[name="app_id"]').val(id);
+
+    if ('delete' == method) {
+        $("#modal-title").html('取消申请');
+        $('input[name="title"]').val('取消申请');
+    } else if ('exit' == type) {
+        $("#modal-title").html('取消接入');
+        $('input[name="title"]').val('申请取消接入');
+    }
+    $('#app_apply').modal('show');
+}
+
 function apply() {
     method = $('input[name="method"]').val();
     type = $('input[name="type"]').val();

@@ -47,6 +47,8 @@
 </div>
 </div>
 
+@include('home.partials.modal.appApply')
+
 <script>
 var datatable_id = 'app_index';
 var columnDefs_targets = [2, 3, 4];
@@ -81,7 +83,7 @@ var columns = [
                 {
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html("<button type='button' onclick='return applyExit(" + sData + ");' class='btn btn-outline btn-danger btn-xs'>取消接入</button>");
+                        $(nTd).html("<button type='button' onclick='return appApply(" + "\"post\"," + "\"exit\"," + sData + ");' class='btn btn-outline btn-danger btn-xs'>取消接入</button>");
                     }
                 }];
 </script>
