@@ -280,7 +280,8 @@ function apply() {
         success: function(data) {
             if(data['code'] === 1) {
                 showSuccessTip(data['message']);
-                window.location.reload();
+                $('#app_apply').modal('hide');
+                $('#app_all').DataTable().draw(false);//保持分页
             } else {
                 showFailTip(data['message']);
                 return false;

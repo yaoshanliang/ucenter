@@ -23,7 +23,7 @@
             </div>
             <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/app') }}">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <table class="table table-striped table-bordered table-hover" id="user_all" class="display" cellspacing="0" width="100%" border='0px'>
+                <table class="table table-striped table-bordered table-hover" id="app_all" class="display" cellspacing="0" width="100%" border='0px'>
                     <thead>
                         <tr>
                             <td>名称</td>
@@ -83,7 +83,7 @@ function choose_role(user_id) {
 }
 
 
-var datatable_id = 'user_all';
+var datatable_id = 'app_all';
 var columnDefs_targets = [3, 4];
 var order = [2, 'desc'];
 var ajax_url = '/home/app/alllists';
