@@ -52,8 +52,24 @@ var delete_url = '/admin/user/delete';
 var columns = [
                 {"data": "user_id"},
                 {"data": "type"},
-                {"data": "title"},
-                {"data": "data"},
+                {
+                    "data": "title",
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        if (sData.length > 8) {
+                            sData = sData.substr(0, 8) + '...';
+                        }
+                        $(nTd).html(sData);
+                    }
+                },
+                {
+                    "data": "data",
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        if (sData.length > 10) {
+                            sData = sData.substr(0, 10) + '...';
+                        }
+                        $(nTd).html(sData);
+                    }
+                },
                 {"data": "ip"},
                 {"data": "pushed_at"},
                 {"data": "created_at"},
