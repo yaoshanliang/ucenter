@@ -15,6 +15,8 @@
             <div class="input-group custom-search-form">
                 <a href="{{ URL('admin/user/all') }}" class="btn btn-primary">用户总库</a>
                 &nbsp;
+                <a href="{{ URL('admin/user/access') }}" class="btn btn-primary">处理申请</a>
+                &nbsp;
                 <a href="{{ URL('admin/user/invite') }}" class="btn btn-primary">邀请用户</a>
                 &nbsp;
                 <a href='javascript:void(0);' class="btn btn-primary btn-danger" onclick='return check_remove();'>移除</a>
