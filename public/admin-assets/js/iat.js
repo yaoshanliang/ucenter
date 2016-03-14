@@ -220,6 +220,40 @@ function change_role(url, role_id) {
     });
 }
 
+// 选中角色
+function chooseRole(user_id) {
+    $.getJSON('/admin/user/role/' + user_id, function(data) {
+        if (data.code === 1) {
+            data = data.data;
+            var html;
+            for (var i = 0; i < data.length; i++) {
+                html += '<tr>';
+                if (data[i].checked) {
+                    html += '<td><input class="checkbox" type="checkbox" name="id" checked="checked" value=' + data[i].id + '></input></td>';
+                } else {
+                    html += '<td><input class="checkbox" type="checkbox" name="id" value="' + data[i].id + '"></input></td>';
+                }
+                html += '<td>' + data[i].title + '</td>';
+                html += '<td>' + data[i].name + '</td>';
+                html += '<td>' + data[i].description + '</td>';
+                html += '<td>' + data[i].updated_at + '</td>';
+            }
+            var nTr = $("#role_index_tbody").html(html);
+        }
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            increaseArea: '20%' // optional
+        });
+        $('input').on('ifChecked', function(event){
+            selectOrUnselectRole(user_id, $(this).val())
+        });
+        $('input').on('ifUnchecked', function(event){
+            selectOrUnselectRole(user_id, $(this).val())
+        });
+    });
+    $("#choose_role_modal").modal('show');
+}
+
 // 勾选或者取消勾选角色
 function selectOrUnselectRole(user_id, role_id) {
     $.ajax({
@@ -297,6 +331,41 @@ function apply() {
                 showSuccessTip(data['message']);
                 $('#app_apply').modal('hide');
                 $('#app_all').DataTable().draw(false);//保持分页
+            } else {
+                showFailTip(data['message']);
+                return false;
+            }
+        },
+    });
+}
+
+// 处理用户申请
+function handleAppApply(type, result, user_id) {
+    $('input[name="type"]').val(type);
+    $('input[name="result"]').val(result);
+    $('input[name="user_id"]').val(user_id);
+
+    $('#handle_app_apply').modal('show');
+}
+
+function handleApply() {
+    user_id = $('input[name="user_id"]').val();
+    type = $('input[name="type"]').val();
+    result = $('input[name="result"]').val();
+    reason = $('textarea[name="reason"]').val();
+    $.ajax({
+        url: '/admin/user/access',
+        type: 'PUT',
+        data: {'user_id': user_id, 'type': type, 'result': result, 'reason': reason},
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        },
+        success: function(data) {
+            if(data['code'] === 1) {
+                showSuccessTip(data['message']);
+                $('#handle_app_apply').modal('hide');
+                $('#app_apply').DataTable().draw(false);
             } else {
                 showFailTip(data['message']);
                 return false;
