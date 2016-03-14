@@ -121,6 +121,18 @@ class UserController extends Controller
                 'handled_at' => date('Y-m-d H:i:s')
             ));
 
+        // 同意退出
+        if ('exit' == $request->type && 'agree' == $request->result) {
+            // 禁止删除的应用和角色
+            $appRole = DB::table('apps')
+                ->where('apps.name', env('DEFAULT_APP'))
+                ->join('roles', 'apps.id', '=', 'roles.app_id')
+                ->where('roles.name', env('DEFAULT_ROLE'))
+                ->select('apps.id as app_id', 'roles.id as role_id')
+                ->first();
+            UserRole::where('role_id', '<>', $appRole->role_id)->where('app_id', Session::get('current_app_id'))->where('user_id', $request->user_id)->delete();
+        }
+
         return $this->response->array(array('code' => 1, 'message' => '已处理'));
     }
 

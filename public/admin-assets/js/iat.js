@@ -345,6 +345,9 @@ function handleAppApply(type, result, user_id) {
     $('input[name="result"]').val(result);
     $('input[name="user_id"]').val(user_id);
 
+    if ('agree' == result) {
+        $('input[name="title"]').val('同意退出');
+    }
     $('#handle_app_apply').modal('show');
 }
 

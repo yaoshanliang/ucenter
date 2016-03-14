@@ -30,6 +30,7 @@
                             <td>用户名</td>
                             <td>邮箱</td>
                             <td>手机</td>
+                            <td>接入/退出</td>
                             <td>申请时间</td>
                             <td>操作</td>
                         </tr>
@@ -66,13 +67,25 @@ var columns = [{
                 {"data": "user_id"},
                 {"data": "user_id"},
                 {"data": "user_id"},
+                {
+                    "data": "type",
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        data = ('access' ==sData) ? '接入' : '退出';
+                        $(nTd).html(data);
+                    }
+                },
                 {"data": "created_at"},
                 {
                     "data": "user_id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        if (oData.handler_id === 0) {
-                            data = "<button type='button' onclick='return chooseRole(" + sData + ");' class='btn btn-outline btn-primary btn-xs'>同意</button>" + " ";
-                            data += "<button type='button' onclick='return handleAppApply(" + "\"" + oData.type + "\"," + "\"disagree\"," + sData + ");' class='btn btn-outline btn-danger btn-xs'>拒绝</button>";
+                        if (0 === oData.handler_id) {
+                            if ('access' == oData.type) {
+                                data = "<button type='button' onclick='return chooseRole(" + sData + ");' class='btn btn-outline btn-primary btn-xs'>同意</button>" + " ";
+                                data += "<button type='button' onclick='return handleAppApply(" + "\"" + oData.type + "\"," + "\"disagree\"," + sData + ");' class='btn btn-outline btn-danger btn-xs'>拒绝</button>";
+                            } else {
+                                data = "<button type='button' onclick='return handleAppApply(" + "\"" + oData.type + "\"," + "\"agree\"," + sData + ");' class='btn btn-outline btn-primary btn-xs'>同意</button>" + " ";
+                                data += "<button type='button' onclick='return handleAppApply(" + "\"" + oData.type + "\"," + "\"disagree\"," + sData + ");' class='btn btn-outline btn-danger btn-xs'>拒绝</button>";
+                            }
                         } else {
                             data = "<span class='text-success'>已处理</span>";
                         }
