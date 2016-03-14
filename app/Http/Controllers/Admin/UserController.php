@@ -11,6 +11,7 @@ use App\Model\Role;
 use App\Model\UserRole;
 use App\Model\App;
 use App\Model\UserFields;
+use App\Model\AppAccess;
 
 use Auth;
 use Cache;
@@ -82,6 +83,45 @@ class UserController extends Controller
         $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
 
         return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+    }
+
+    // 用户申请处理
+    public function getAccess(Request $request)
+    {
+        return view('admin.user.access');
+    }
+
+    public function postAccesslists(Request $request)
+    {
+        $fields = array('id', 'user_id', 'type', 'title', 'description', 'created_at', 'handler_id');
+        $searchFields = array('user_id', 'type', 'title');
+
+        $data = AppAccess::where('app_id', Session::get('current_app_id'))
+            ->whereDataTables($request, $searchFields)
+            ->orderByDataTables($request)
+            ->skip($request->start)
+            ->take($request->length)
+            ->get($fields);
+
+        $draw = (int)$request->draw;
+        $recordsTotal = AppAccess::where('app_id', Session::get('current_app_id'))->count();
+        $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
+
+        return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+    }
+
+    // 处理用户申请
+    public function putAccess(Request $request)
+    {
+        AppAccess::where('app_id', Session::get('current_app_id'))->where('user_id', $request->user_id)
+            ->where('type', $request->type)->where('handler_id', 0)
+            ->update(array('handler_id' => Auth::id(),
+                'result' => $request->result,
+                'reason' => $request->reason,
+                'handled_at' => date('Y-m-d H:i:s')
+            ));
+
+        return $this->response->array(array('code' => 1, 'message' => '已处理'));
     }
 
     // 用户信息字段
@@ -249,6 +289,18 @@ class UserController extends Controller
             $type = '选中角色';
 
             $this->log('A', '用户' . $type, "user_id: $userId; username: {$user['username']}; role_id: $roleId; title: {$role['title']}");
+
+            // 处理申请接入
+            if (AppAccess::where('app_id', Session::get('current_app_id'))->where('user_id', $userId)
+                ->where('type', 'access')->where('handler_id', 0)->exists()) {
+                AppAccess::where('app_id', Session::get('current_app_id'))->where('user_id', $userId)->where('type', 'access')
+                    ->update(array('handler_id' => Auth::id(),
+                        'result' => 'agree',
+                        'handled_at' => date('Y-m-d H:i:s'),
+                    ));
+
+                $this->log('U', '处理申请接入', "user_id: $userId; result: agree;");
+            }
         }
 
         return empty($rs) ? $this->response->array(array('code' => 0, 'message' => $type . '失败')) :
