@@ -204,7 +204,7 @@ class AuthController extends Controller
         // 验证验证码
         $validateCode = $this->api
             ->with(['phone' => $request->phone, 'code' => $request->code, 'access_token' => $request->access_token])
-            ->get('api/sms/validateCode');
+            ->put('api/sms/code');
         if (1 !== $validateCode['code']) {
             return redirect()->back()->withInput()->withErrors($validateCode['message']);
         }

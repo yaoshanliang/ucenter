@@ -92,6 +92,19 @@ class AppController extends Controller
     // 申请接入、退出
     public function postAccess(Request $request)
     {
+        // 禁止退出的应用
+        if ('exit' == $request->type) {
+            $appRole = DB::table('apps')
+                ->where('apps.name', env('DEFAULT_APP'))
+                ->join('roles', 'apps.id', '=', 'roles.app_id')
+                ->where('roles.name', env('DEFAULT_ROLE'))
+                ->select('apps.id as app_id', 'roles.id as role_id')
+                ->first();
+            if ($appRole->app_id == $request->app_id) {
+                return $this->response->array(array('code' => 0, 'message' => '该应用不允许退出'));
+            }
+        }
+
         if (AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', $request->type)->where('handler_id', 0)->exists()) {
             return $this->response->array(array('code' => 0, 'message' => '已申请，请务重复申请'));
         }
@@ -115,17 +128,17 @@ class AppController extends Controller
     // 取消接入、退出
     public function deleteAccess(Request $request)
     {
-        if (AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', $request->type)->where('handler_id', '<>', 0)->exists()) {
+        if (!AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', $request->type)->where('handler_id', 0)->exists()) {
             return $this->response->array(array('code' => 0, 'message' => '已处理，不可取消'));
         }
-        $appAccess = AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', $request->type)->delete();
+        $appAccess = AppAccess::where('app_id', $request->app_id)->where('user_id', Auth::id())->where('type', $request->type)->where('handler_id', 0)->delete();
 
         if ($appAccess) {
             $type = ('access' == $request->type) ? '接入' : '退出';
             $this->log('A', '取消申请' . $type . '应用', "app_id: $request->app_id, user_id: " . Auth::id());
-            return $this->response->array(array('code' => 1, 'message' => '申请取消接入成功，待审核'));
+            return $this->response->array(array('code' => 1, 'message' => '取消成功'));
         } else {
-            return $this->response->array(array('code' => 0, 'message' => '申请失败'));
+            return $this->response->array(array('code' => 0, 'message' => '取消失败'));
         }
     }
 
