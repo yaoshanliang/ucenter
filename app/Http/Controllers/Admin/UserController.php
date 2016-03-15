@@ -93,7 +93,7 @@ class UserController extends Controller
 
     public function postAccesslists(Request $request)
     {
-        $fields = array('id', 'user_id', 'type', 'title', 'description', 'created_at', 'handler_id');
+        $fields = array('id', 'user_id', 'type', 'title', 'description', 'created_at', 'handler_id', 'result');
         $searchFields = array('user_id', 'type', 'title');
 
         $data = AppAccess::where('app_id', Session::get('current_app_id'))
@@ -105,7 +105,7 @@ class UserController extends Controller
 
         foreach ($data as &$v) {
             $user = Cache::get(Config::get('cache.users') . $v->user_id);
-            $v->user_id = $user['username'];
+            $v->username = $user['username'];
             $v->email = $user['email'];
             $v->phone = $user['phone'];
         }
@@ -127,6 +127,9 @@ class UserController extends Controller
                 'reason' => $request->reason,
                 'handled_at' => date('Y-m-d H:i:s')
             ));
+
+        $type = ('access' == $request->type) ? '接入' : '退出';
+        $this->log('U', '处理申请' . $type, "user_id: $request->user_id; result: $request->result;");
 
         // 同意退出
         if ('exit' == $request->type && 'agree' == $request->result) {

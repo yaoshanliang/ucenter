@@ -53,12 +53,12 @@
 <script>
 
 var datatable_id = 'app_apply';
-var columnDefs_targets = [1, 2, 5];
+var columnDefs_targets = [0, 1, 2, 5];
 var order = [4, 'desc'];
 var ajax_url = '/admin/user/accesslists';
 var delete_url = '/admin/user/delete';
 var columns = [
-                {"data": "user_id"},
+                {"data": "username"},
                 {"data": "email"},
                 {"data": "phone"},
                 {
@@ -81,7 +81,8 @@ var columns = [
                                 data += "<button type='button' onclick='return handleAppApply(" + "\"" + oData.type + "\"," + "\"disagree\"," + sData + ");' class='btn btn-outline btn-danger btn-xs'>拒绝</button>";
                             }
                         } else {
-                            data = "<span class='text-success'>已处理</span>";
+                            result = ('agree' == oData.result) ? '同意' : '拒绝';
+                            data = "已处理<span class='text-success'>(" + result + ")</span>";
                         }
                         $(nTd).html(data);
                     }
