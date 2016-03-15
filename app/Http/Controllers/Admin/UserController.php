@@ -103,6 +103,13 @@ class UserController extends Controller
             ->take($request->length)
             ->get($fields);
 
+        foreach ($data as &$v) {
+            $user = Cache::get(Config::get('cache.users') . $v->user_id);
+            $v->user_id = $user['username'];
+            $v->email = $user['email'];
+            $v->phone = $user['phone'];
+        }
+
         $draw = (int)$request->draw;
         $recordsTotal = AppAccess::where('app_id', Session::get('current_app_id'))->count();
         $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
