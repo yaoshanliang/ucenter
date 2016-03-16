@@ -1,4 +1,4 @@
-@extends('admin.base')
+@extends('home.base')
 
 @section('content')
 <div class="panel panel-default">
@@ -21,21 +21,16 @@
         </div>
     @endif
 
-    <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/app/'.$app->id) }}">
+    <form class="form-horizontal" role="form" method="POST" action="{{ url('/home/app/edit/'.$app->id) }}">
         <input name="_method" type="hidden" value="PUT">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-            <div class="form-group">
-                <label class="col-md-3 control-label">代号</label>
-                <div class="col-md-6">
-                    <input type="text" class="form-control" name="name" value="{{ $app->name }}">
-                    <input type="hidden" class="form-control" name="old_name" value="{{ $app->name }}">
-                </div>
-            </div>
+        <input type="hidden" name="access_token" value="{{ $accessToken }}">
 
             <div class="form-group">
                 <label class="col-md-3 control-label">名称</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control" name="title" value="{{ $app->title }}">
+                    <input type="hidden" class="form-control" name="old_title" value="{{ $app->title }}">
                 </div>
             </div>
 
@@ -43,6 +38,7 @@
                 <label class="col-md-3 control-label">描述</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control" name="description" value="{{ $app->description }}">
+                    <input type="hidden" class="form-control" name="old_description" value="{{ $app->description }}">
                 </div>
             </div>
 
@@ -50,20 +46,33 @@
                 <label class="col-md-3 control-label">首页地址</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control" name="home_url" value="{{ $app->home_url }}">
+                    <input type="hidden" class="form-control" name="old_home_url" value="{{ $app->home_url }}">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-md-3 control-label">登录地址</label>
+                <label class="col-md-3 control-label">回调地址</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control" name="login_url" value="{{ $app->login_url }}">
+                    <input type="hidden" class="form-control" name="old_login_url" value="{{ $app->login_url }}">
+                </div>
+            </div>
+
+            <div class="form-group"></div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">Client_id</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control" name="name" value="{{ $app->name }}">
+                    <input type="hidden" class="form-control" name="old_name" value="{{ $app->name }}">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-md-3 control-label">密钥</label>
+                <label class="col-md-3 control-label">Client_secret</label>
                 <div class="col-md-5">
                     <input type="text" class="form-control" name="secret" value="{{ $app->secret }}">
+                    <input type="hidden" class="form-control" name="old_secret" value="{{ $app->secret }}">
                 </div>
                 <div class="col-md-1">
                     <button type="button" class="btn btn-default" onclick="generateSecret();">生成</button>
@@ -82,4 +91,31 @@
     </div>
     </div>
 </div>
+<script>
+function generateSecret()
+{
+    $.ajax({
+        url: '/api/app/secret',
+        type: 'put',
+        data: {'access_token': $('input[name="access_token"]').val()},
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        },
+        success: function(data) {
+            if(data['code'] === 1) {
+                showSuccessTip(data['message']);
+                $("input[name='secret']").val(data['data']);
+            } else {
+                showFailTip(data['message']);
+                return false;
+            }
+        },
+        error: function(data) {
+            showFailTip(data['message']);
+            return false;
+        },
+    });
+}
+</script>
 @endsection

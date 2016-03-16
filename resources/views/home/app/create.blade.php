@@ -1,10 +1,10 @@
-@extends('admin.base')
+@extends('home.base')
 
 @section('content')
 <div class="panel panel-default">
     <div class="panel-heading">新增应用
         <div class="pull-right">
-            <a href="/admin/app"><i class="fa fa-th"></i> 应 用</a> /
+            <a href="/home/app"><i class="fa fa-th"></i> 应 用</a> /
             新增应用
         </div>
     </div>
@@ -20,51 +20,34 @@
             </div>
         @endif
 
-        <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/app') }}">
+        <form class="form-horizontal" role="form" method="POST" action="{{ url('/home/app/create') }}">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
-            <div class="form-group">
-                <label class="col-md-3 control-label">代号</label>
-                <div class="col-md-6">
-                    <input type="text" class="form-control" name="name" value="{{ old('name') }}">
-                </div>
-            </div>
 
             <div class="form-group">
                 <label class="col-md-3 control-label">名称</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" name="title" value="{{ old('title') }}">
+                    <input type="text" class="form-control" name="title" value="{{ old('title') }}" placeholder="例:用户中心">
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-md-3 control-label">描述</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" name="description" value="{{ old('description') }}">
+                    <input type="text" class="form-control" name="description" value="{{ old('description') }}" placeholder="例:用户统一管理开发者平台">
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-md-3 control-label">首页地址</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" name="home_url" value="{{ old('home_url') }}">
+                    <input type="text" class="form-control" name="home_url" value="{{ old('home_url') }}" placeholder="例:https://ucenter.szjlxh.com">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-md-3 control-label">登录地址</label>
+                <label class="col-md-3 control-label">回调地址</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" name="login_url" value="{{ old('login_url') }}">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-md-3 control-label">密钥</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" name="secret" value="{{ old('secret') }}">
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-default" onclick="generateSecret();">生成</button>
+                    <input type="text" class="form-control" name="login_url" value="{{ old('login_url') }}" placeholder="例:https://ucenter.szjlxh.com/auth/login">
                 </div>
             </div>
 
@@ -85,7 +68,4 @@
         </form>
     </div>
 </div>
-<script>
-generateSecret();
-</script>
 @endsection

@@ -15,8 +15,6 @@
             <div class="input-group custom-search-form">
                 <a href="{{ URL('home/app/create') }}" class="btn btn-primary">创建应用</a>
                 &nbsp;
-                <a href="{{ URL('home/app/access') }}" class="btn btn-primary">我接入的</a>
-                &nbsp;
                 <a href="{{ URL('home/app/all') }}" class="btn btn-primary">应用总库</a>
                 &nbsp;
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
@@ -51,14 +49,13 @@
 </div>
 
 @include('home.partials.modal.appApply')
-@include('home.partials.modal.delete')
 
 <script>
 var datatable_id = 'app_index';
-var columnDefs_targets = [3];
-var order = [2, 'desc'];
+var columnDefs_targets = [2, 3, 4];
+var order = [0, 'desc'];
 var ajax_url = '/home/app/lists';
-var delete_url = '/home/app/delete';
+var remove_url = '/home/app/remove';
 var columns = [
                 {"data": "title"},
                 {
@@ -67,12 +64,27 @@ var columns = [
                         $(nTd).html("<a href='" + sData + "' target='_blank'>" + sData + "</a>");
                     }
                 },
-                {"data": "created_at"},
+                {
+                    "data": "roles",
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        var roles = '';
+                        $.each(sData, function() {
+                            roles += this.title + ' | ';
+                        });
+                        roles = roles.substr(0, roles.length - 2);
+                        $(nTd).html(roles);
+                    }
+                },
+                {
+                    "data": "roles",
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        $(nTd).html(sData[0]['created_at']);
+                    }
+                },
                 {
                     "data": "id",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html("<a href=/home/app/edit/" + sData + ">编辑</a>" + " " +
-                            "<a href='javascript:void(0);' onclick='return check_delete(" + sData + ");'>删除</a>");
+                        $(nTd).html("<button type='button' onclick='return appApply(" + "\"post\"," + "\"exit\"," + sData + ");' class='btn btn-outline btn-danger btn-xs'>取消接入</button>");
                     }
                 }];
 </script>
