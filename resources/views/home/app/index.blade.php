@@ -4,7 +4,7 @@
 <div class="row">
 <div class="col-lg-12">
 <div class="panel panel-default">
-    <div class="panel-heading">接入应用
+    <div class="panel-heading">我创建的
         <div class="pull-right">
             <i class="fa fa-th"></i>接入应用
         </div>
@@ -35,6 +35,7 @@
                             <td>地址</td>
                             <td>创建时间</td>
                             <td>操作</td>
+                            <td>管理后台</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,7 +56,7 @@
 
 <script>
 var datatable_id = 'app_index';
-var columnDefs_targets = [3];
+var columnDefs_targets = [3, 4];
 var order = [2, 'desc'];
 var ajax_url = '/home/app/lists';
 var delete_url = '/home/app/delete';
@@ -73,6 +74,12 @@ var columns = [
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                         $(nTd).html("<a href=/home/app/edit/" + sData + ">编辑</a>" + " " +
                             "<a href='javascript:void(0);' onclick='return check_delete(" + sData + ");'>删除</a>");
+                    }
+                },
+                {
+                    "data": "id",
+                    "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                        $(nTd).html("<button type='button' onclick='return redirectAdmin(" + sData + ");' class='btn btn-outline btn-success btn-xs'>管理后台</button>");
                     }
                 }];
 </script>

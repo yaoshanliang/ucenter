@@ -376,3 +376,27 @@ function handleApply() {
         },
     });
 }
+
+// 切换到管理后台
+function redirectAdmin(app_id) {
+    $.ajax({
+        url: '/home/app/admin',
+        type: 'PUT',
+        data: {'app_id': app_id},
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('input[name="_token"]').val()
+        },
+        success: function(data) {
+            if(data['code'] === 1) {
+                window.location.href = data['data']['redirect'];
+                showSuccessTip(data['message']);
+            } else {
+                showFailTip(data['message']);
+            }
+        },
+        error: function() {
+            showFailTip(data['message']);
+        },
+    });
+}

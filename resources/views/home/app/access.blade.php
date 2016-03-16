@@ -4,7 +4,7 @@
 <div class="row">
 <div class="col-lg-12">
 <div class="panel panel-default">
-    <div class="panel-heading">接入应用
+    <div class="panel-heading">我接入的
         <div class="pull-right">
             <i class="fa fa-th"></i>接入应用
         </div>
@@ -14,6 +14,8 @@
             <br />
             <div class="input-group custom-search-form">
                 <a href="{{ URL('home/app/create') }}" class="btn btn-primary">创建应用</a>
+                &nbsp;
+                <a href="{{ URL('home/app/access') }}" class="btn btn-primary">我接入的</a>
                 &nbsp;
                 <a href="{{ URL('home/app/all') }}" class="btn btn-primary">应用总库</a>
                 &nbsp;
@@ -31,7 +33,8 @@
                         <tr>
                             <td>名称</td>
                             <td>地址</td>
-                            <td>创建时间</td>
+                            <td>角色</td>
+                            <td>接入时间</td>
                             <td>操作</td>
                         </tr>
                     </thead>
@@ -54,7 +57,7 @@
 var datatable_id = 'app_index';
 var columnDefs_targets = [2, 3, 4];
 var order = [0, 'desc'];
-var ajax_url = '/home/app/lists';
+var ajax_url = '/home/app/accesslists';
 var remove_url = '/home/app/remove';
 var columns = [
                 {"data": "title"},
