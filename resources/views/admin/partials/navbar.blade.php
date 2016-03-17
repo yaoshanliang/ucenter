@@ -1,6 +1,13 @@
 <div class="navbar-header">
     <a class="navbar-brand" href={{ Cache::get(Config::get('cache.settings') . 'site_url') }}>{{ Cache::get(Config::get('cache.settings') . 'site_name') }}</a>
-    <a class="navbar-brand" href={{ Cache::get(Config::get('cache.settings') . 'site_url') }}/admin>{{ Cache::get(Config::get('cache.settings') . 'site_admin_name') }}</a>
+    <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+            <a  href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown">{{ Cache::get(Config::get('cache.settings') . 'site_admin_name') }}<span class="caret"></span></a>
+            <ul class="dropdown-menu" style="min-width: 100%;" role="menu">
+                <li><a  href={{ Cache::get(Config::get('cache.settings') . 'site_url') }}/home>{{ Cache::get(Config::get('cache.settings') . 'site_home_name') }}</a></li>
+            </ul>
+        </li>
+    </ul>
 </div>
 <!-- /.navbar-header -->
 
@@ -38,42 +45,6 @@
             </li>
             <li class="divider"></li>
             <li>
-                <a href="#">
-                    <div>
-                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                        <span class="pull-right text-muted small">12 minutes ago</span>
-                    </div>
-                </a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <a href="#">
-                    <div>
-                        <i class="fa fa-envelope fa-fw"></i> Message Sent
-                        <span class="pull-right text-muted small">4 minutes ago</span>
-                    </div>
-                </a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <a href="#">
-                    <div>
-                        <i class="fa fa-tasks fa-fw"></i> New Task
-                        <span class="pull-right text-muted small">4 minutes ago</span>
-                    </div>
-                </a>
-            </li>
-            <li class="divider"></li>
-            <li>
-                <a href="#">
-                    <div>
-                        <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                        <span class="pull-right text-muted small">4 minutes ago</span>
-                    </div>
-                </a>
-            </li>
-            <li class="divider"></li>
-            <li>
                 <a class="text-center" href="#">
                     <strong>See All Alerts</strong>
                     <i class="fa fa-angle-right"></i>
@@ -88,12 +59,12 @@
             <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-user">
-            <li><a href="#"><i class="fa fa-user fa-fw"></i>个人信息</a>
-            </li>
-            <li><a href="/admin/settings/index"><i class="fa fa-gear fa-fw"></i> 设置</a>
+            <li>
+                <a href="/home/user"><i class="fa fa-user fa-fw"></i>个人信息</a>
             </li>
             <li class="divider"></li>
-            <li><a href="/auth/logout"><i class="fa fa-sign-out fa-fw"></i>退出</a>
+            <li>
+                <a href="/auth/logout"><i class="fa fa-sign-out fa-fw"></i>退出</a>
             </li>
         </ul>
         <!-- /.dropdown-user -->
