@@ -36,17 +36,16 @@
         </a>
         <ul class="dropdown-menu dropdown-alerts">
             <li>
-                <a href="#">
+                <a href="javascript:void(0);">
                     <div>
-                        <i class="fa fa-comment fa-fw"></i> New Comment
-                        <span class="pull-right text-muted small">4 minutes ago</span>
+                        <i class="fa fa-comment fa-fw"></i>通知
+                        <span class="pull-right text-muted small">4 分钟前</span>
                     </div>
                 </a>
             </li>
             <li class="divider"></li>
             <li>
-                <a class="text-center" href="#">
-                    <strong>See All Alerts</strong>
+                <a class="text-center" href="#">所有通知
                     <i class="fa fa-angle-right"></i>
                 </a>
             </li>
