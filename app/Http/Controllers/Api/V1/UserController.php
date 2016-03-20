@@ -19,12 +19,10 @@ use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
 class UserController extends ApiController
 {
-    use Helpers;
-
     // 获取用户信息，没有user_id参数时则为当前用户
     public function getUserInfo(Request $request)
     {
-        $userId = empty($request->has('user_id')) ? parent::$currentUserId : (int)$request->get('user_id');
+        $userId = empty($request->has('user_id')) ? parent::getUserId() : (int)$request->get('user_id');
         $data = Cache::get(Config::get('cache.users') . $userId);
 
         if (empty($data)) {
@@ -37,7 +35,7 @@ class UserController extends ApiController
     // 获取当前应用当前用户的角色
     public function getUserRole(Request $request)
     {
-        $roles = Cache::get(Config::get('cache.user_role.app_id') . parent::$currentAppId . ':user_id:' . parent::$currentUserId);
+        $roles = Cache::get(Config::get('cache.user_role.app_id') . parent::getAppId() . ':user_id:' . parent::getUserId());
 
         if (empty($roles['roles'])) {
             return $this->response->array(array('code' => 0, 'message' => '当前用户没有角色'));
@@ -49,7 +47,7 @@ class UserController extends ApiController
     // 获取当前应用当前用户的权限
     public function getUserPermission(Request $request)
     {
-        $roles = Cache::get(Config::get('cache.user_role.app_id') . parent::$currentAppId . ':user_id:' . parent::$currentUserId);
+        $roles = Cache::get(Config::get('cache.user_role.app_id') . parent::getAppId() . ':user_id:' . parent::getUserId());
         if (empty($roles['roles'])) {
             return $this->response->array(array('code' => 0, 'message' => '当前用户没有权限'));
         }
@@ -73,7 +71,7 @@ class UserController extends ApiController
     // 更新用户信息
     public function edit(Request $request)
     {
-        $user = Cache::get(Config::get('cache.users') . parent::$currentUserId);
+        $user = Cache::get(Config::get('cache.users') . parent::getUserId());
         foreach ($request->all() as $k => $v) {
             switch ($k) {
                 case 'username' :
@@ -113,7 +111,7 @@ class UserController extends ApiController
                     case 'email' :
                     case 'phone' :
                         if ($user[$k] != $request->$k) {
-                            $result = User::where('id', parent::$currentUserId)->update(array($k => $request->$k));
+                            $result = User::where('id', parent::getUserId())->update(array($k => $request->$k));
                             $user[$k] = $request->$k;
                             $isEdit = true;
                         }
@@ -121,7 +119,7 @@ class UserController extends ApiController
 
                     default :
                         if (isset($user['details'][$k]) && $user['details'][$k]['value'] != $request->$k) {
-                            $result = UserInfo::where('user_id', parent::$currentUserId)->where('field_id', $userFieldsArray['id'])->update(array('value' => $request->$k));
+                            $result = UserInfo::where('user_id', parent::getUserId())->where('field_id', $userFieldsArray['id'])->update(array('value' => $request->$k));
                             $user['details'][$k]['value'] = $request->$k;
                             $isEdit = true;
                         }
@@ -133,7 +131,7 @@ class UserController extends ApiController
         if (isset($isEdit)) {
 
             // 更新cache
-            Cache::forever(Config::get('cache.users') . parent::$currentUserId, $user);
+            Cache::forever(Config::get('cache.users') . parent::getUserId(), $user);
 
             return $this->response->array(array('code' => 1, 'message' => '修改成功', 'data' => $user));
         } else {

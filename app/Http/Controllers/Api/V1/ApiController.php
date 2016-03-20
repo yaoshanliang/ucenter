@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Requests;
@@ -13,16 +14,20 @@ class ApiController extends Controller
 {
     use Helpers;
 
-    protected static $currentUserId;
-    protected static $currentClientId;
-    protected static $currentAppId;
-
-    public function __construct()
+    public static function getUserId()
     {
-        self::$currentUserId = (int)Authorizer::getResourceOwnerId();
-        self::$currentClientId = Authorizer::getClientId();
-        $currentApp = Cache::get(Config::get('cache.clients') . self::$currentClientId);
-        self::$currentAppId = $currentApp['id'];
+        return (int)Authorizer::getResourceOwnerId();
+    }
+
+    public static function getClientId()
+    {
+        return Authorizer::getClientId();
+    }
+
+    public static function getAppId()
+    {
+        $app = Cache::get(Config::get('cache.clients') . self::getClientId());
+        return $app['id'];
     }
 
 }

@@ -17,16 +17,6 @@ use Toplan\PhpSms\Sms;
 
 class SmsController extends Controller
 {
-    use Helpers;
-
-    // 当前用户的id
-    private static $currentUserId;
-
-    public function __construct()
-    {
-        self::$currentUserId = (int)Authorizer::getResourceOwnerId();
-    }
-
     // 发送验证码
     public function sendCode(Request $request)
     {
@@ -91,18 +81,18 @@ class SmsController extends Controller
         }
 
         // 手机号和用户id两种方式计数
-        $count = empty(self::$currentUserId) ? Cache::get(Config::get('cache.sms.count.phone') . $request->phone) :
-            Cache::get(Config::get('cache.sms.count.user_id') . self::$currentUserId);
+        $count = empty(parent::getUserId()) ? Cache::get(Config::get('cache.sms.count.phone') . $request->phone) :
+            Cache::get(Config::get('cache.sms.count.user_id') . parent::getUserId());
 
         if (is_null($count)) {
-            empty(self::$currentUserId) ? Cache::put(Config::get('cache.sms.count.phone') . $request->phone, 1, 60) :
-                Cache::put(Config::get('cache.sms.count.user_id') . self::$currentUserId, 1, 60);
+            empty(parent::getUserId()) ? Cache::put(Config::get('cache.sms.count.phone') . $request->phone, 1, 60) :
+                Cache::put(Config::get('cache.sms.count.user_id') . parent::getUserId(), 1, 60);
         } else {
             if (!in_array($request->phone, Config::get('phpsms.whiteList')) && $count > 3) {
                 return array('code' => 0, 'message' => '超过每小时三次限制');
             }
-            empty(self::$currentUserId) ? Cache::put(Config::get('cache.sms.count.phone') . $request->phone, ++$count, 60) :
-                Cache::put(Config::get('cache.sms.count.user_id') . self::$currentUserId, ++$count, 60);
+            empty(parent::getUserId()) ? Cache::put(Config::get('cache.sms.count.phone') . $request->phone, ++$count, 60) :
+                Cache::put(Config::get('cache.sms.count.user_id') . parent::getUserId(), ++$count, 60);
         }
 
         return array('code' => 1, 'message' => '发送前校验成功');

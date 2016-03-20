@@ -35,7 +35,7 @@ class LogController extends ApiController
         $ips = $request->ips();
         $ip = $ips[0];
         $ips = implode(',', $ips);
-        Queue::push(new AppLog(parent::$currentAppId, parent::$currentUserId, $request->type, $request->title, $request->data, $request->sql, $ip, $ips));
+        Queue::push(new AppLog(parent::getAppId(), parent::getUserId(), $request->type, $request->title, $request->data, $request->sql, $ip, $ips));
 
         return $this->response->array(array('code' => 1, 'message' => '记录成功'));
     }
