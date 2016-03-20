@@ -3,6 +3,7 @@
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\ApiException;
 
 class Handler extends ExceptionHandler {
 
@@ -37,10 +38,10 @@ class Handler extends ExceptionHandler {
 	 */
 	public function render($request, Exception $e)
 	{
-        // if ($e instanceof ModelNotFoundException)
-        // {
-            // echo 'Not Found';exit;
-        // }
+        if ($e instanceof ApiException)
+        {
+            return $this->response->array(array('code' => 0, 'message' => $e->getMessage()));
+        }
 		return parent::render($request, $e);
 	}
 
