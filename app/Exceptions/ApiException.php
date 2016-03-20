@@ -4,13 +4,13 @@ namespace App\Exceptions;
 
 use Exception;
 
-class ApiValidationException extends Exception
+class ApiException extends Exception
 {
     public $validator;
 
     public $response;
 
-    public function __construct($response = 'ApiValidationException', $validator = null)
+    public function __construct($response = 'ApiException', $validator = null)
     {
         parent::__construct($response);
 
