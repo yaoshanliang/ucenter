@@ -9,6 +9,7 @@ use Cache;
 use Config;
 use Authorizer;
 use Dingo\Api\Routing\Helpers;
+use App\Exceptions\ApiException;
 
 class ApiController extends Controller
 {
@@ -30,5 +31,20 @@ class ApiController extends Controller
         return $app['id'];
     }
 
-}
+    /**
+     * 验证参数
+     *
+     * @param array $input 需要验证的参数
+     * @param array $rules 验证规则
+     * @return ApiException
+     */
+     public function validate($input, $rules)
+     {
+         $validator = Validator::make($input, $rules);
+         if ($validator->fails()) {
+             throw new ApiException($validator->messages()->first());
+         }
+     }
 
+
+}
