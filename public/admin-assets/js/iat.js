@@ -101,7 +101,7 @@ function initComplete() {
         radioClass: 'iradio_square-red',
         increaseArea: '20%' // optional
     });
-    $(".select2").select2();
+    // $(".select2").select2();
     //行列高亮
     var lastIdx = null;
     $('#' + datatable_id + ' tbody')

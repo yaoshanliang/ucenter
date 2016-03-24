@@ -23,7 +23,7 @@
 <script src="{{ asset('admin-assets/js/jquery.min.js') }}"></script>
 
 <!-- iat JavaScript -->
-<script src="{{ url('admin-assets/js/iat.js') }}"></script>
+<script src="{{ asset('admin-assets/js/iat.js') }}"></script>
 
 <style>
 table {
