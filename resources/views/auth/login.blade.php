@@ -35,7 +35,7 @@
                         <div class="form-group">
                             <label class="col-md-2 control-label">密码</label>
                             <div class="col-md-10">
-                                <input type="password" class="form-control" name="password">
+                                <input type="password" class="form-control" name="password" placeholder="密码">
                             </div>
                         </div>
 

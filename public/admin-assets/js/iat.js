@@ -128,7 +128,7 @@ function initComplete() {
             $('input').iCheck('uncheck');
         });
         $('#checkAll').iCheck('uncheck');
-        $(".select2").select2();
+        // $(".select2").select2();
     } );
     //全选全不选
     $('#checkAll').on('ifChecked', function(event){

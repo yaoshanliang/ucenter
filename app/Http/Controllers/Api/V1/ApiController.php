@@ -38,7 +38,7 @@ class ApiController extends Controller
      * @param array $rules 验证规则
      * @return ApiException
      */
-     public function validate($input, $rules)
+     public function apiValidate($input, $rules)
      {
          $validator = Validator::make($input, $rules);
          if ($validator->fails()) {
