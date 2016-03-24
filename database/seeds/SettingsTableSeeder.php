@@ -1,12 +1,14 @@
 <?php
 
-use \App\Setting;
+use App\Model\Setting;
 use Illuminate\Database\Seeder;
 
 class SettingsTableSeeder extends Seeder
 {
     public function run()
     {
+        DB::table('settings')->delete();
+
         Setting::create([
             'name' => 'site_name',
             'value' => '用户中心',
@@ -17,16 +19,16 @@ class SettingsTableSeeder extends Seeder
 
         Setting::create([
             'name' => 'site_url',
-            'value' => 'http://ucenter.iat.net.cn',
+            'value' => 'http://ucenter.szjlxh.com',
             'description' => '站点网址',
 			'order' => 2,
             'type' => 'text',
         ]);
 
         Setting::create([
-			'name' => 'site_sub_name',
+			'name' => 'site_admin_name',
             'value' => '管理后台',
-            'description' => '站点子名称',
+            'description' => '站点管理后台',
 			'order' => 3,
             'type' => 'text',
         ]);
@@ -41,7 +43,7 @@ class SettingsTableSeeder extends Seeder
 
         Setting::create([
             'name' => 'copyright',
-            'value' => 'Copyright &copyright 2015',
+            'value' => 'Copyright &copyright 2015-2016',
             'description' => '版权',
 			'order' => 5,
             'type' => 'text',
@@ -87,12 +89,19 @@ class SettingsTableSeeder extends Seeder
             'type' => 'text',
         ]);
 
-
         Setting::create([
             'name' => 'register_on',
             'value' => '0',
             'description' => '用户注册开关,1 or 0',
 			'order' => 11,
+            'type' => 'text',
+        ]);
+
+        Setting::create([
+            'name' => 'site_home_name',
+            'value' => '个人中心',
+            'description' => '站点个人中心',
+			'order' => 3,
             'type' => 'text',
         ]);
     }
