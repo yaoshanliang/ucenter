@@ -16,6 +16,7 @@
 <!-- Custom Fonts -->
 <link href="{{ asset('admin-assets/css/font-awesome.min.css') }}" rel="stylesheet">
 
+<!-- icheck CSS -->
 <link href="{{ asset('plugin/icheck/skins/square/blue.css') }}" rel="stylesheet">
 
 <!-- jQuery -->
