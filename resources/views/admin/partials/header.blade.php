@@ -1,32 +1,29 @@
 <!-- Bootstrap Core CSS -->
-<link href="/admin-assets/css/bootstrap.min.css" rel="stylesheet">
+<link href="{{ asset('admin-assets/css/bootstrap.min.css') }}" rel="stylesheet">
 
 <!-- MetisMenu CSS -->
-<link href="/admin-assets/css/metisMenu.min.css" rel="stylesheet">
+<link href="{{ asset('admin-assets/css/metisMenu.min.css') }}" rel="stylesheet">
 
 <!-- DataTables CSS -->
-<link href="/plugin/sb-admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+<link href="{{ asset('plugin/sb-admin/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css') }}" rel="stylesheet">
 
 <!-- DataTables Responsive CSS -->
-<link href="/plugin/sb-admin/bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">
+<link href="{{ asset('plugin/sb-admin/bower_components/datatables-responsive/css/dataTables.responsive.css') }}" rel="stylesheet">
 
 <!-- Custom CSS -->
-<link href="/admin-assets/css/sb-admin-2.css" rel="stylesheet">
+<link href="{{ asset('admin-assets/css/sb-admin-2.css') }}" rel="stylesheet">
 
 <!-- Custom Fonts -->
-<link href="/admin-assets/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+<link href="{{ asset('admin-assets/css/font-awesome.min.css') }}" rel="stylesheet">
 
-<link href="/plugin/icheck/skins/square/blue.css" rel="stylesheet">
+<link href="{{ asset('plugin/icheck/skins/square/blue.css') }}" rel="stylesheet">
 
 <!-- jQuery -->
-<script src="/admin-assets/js/jquery.min.js"></script>
+<script src="{{ asset('admin-assets/js/jquery.min.js') }}"></script>
 
 <!-- iat JavaScript -->
-<script src="/admin-assets/js/select2.min.js"></script>
-<link href="/admin-assets/css/select2.min.css" rel="stylesheet">
-<script src="/admin-assets/js/iat.js"></script>
+<script src="{{ url('admin-assets/js/iat.js') }}"></script>
 
-<!--<meta name="_token" content="{{ csrf_token() }}"/>-->
 <style>
 table {
     margin-top: 6px !important;
