@@ -1,5 +1,7 @@
 #用户中心
 ####——“统一身份认证服务”、“用户系统”、“权限系统”、“日志系统”、“文件系统”、“邮件服务”、“短信服务”
+*开放平台: [http://yaoshanliang.github.io/ucenter-open/](http://yaoshanliang.github.io/ucenter-open/)*
+
 * [Laravel](http://laravel.com)
 * [Bootstrap](http://getbootstrap.com)
 * [Redis](http://redis.io)
@@ -41,7 +43,15 @@
 * 可以。可以在应用中进行角色的切换，应用管理员需设置用户的默认角色；如：应用开发者也是应用管理员的角色。
 
 
+##发布计划
 
-
+| 版本 | 时间 | 说明 |
+| ---- | ---- | ---- |
+| beta1 | 2016/3 | 应用/用户/角色/权限/验证码/日志等模块 |
+| v1 | 2016/4 | 第一版 |
+| v2-beta1 | 2016/4 | 邮件/文件/短信模块 |
+| v2-beta2 | 2016/4 | super后台 |
+| v2 | 2016/5 | 第二版 |
+| v2-stable | 2016/6 | 第二版stable |
 
 
