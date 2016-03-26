@@ -63,7 +63,7 @@
             <div class="form-group">
                 <label class="col-md-3 control-label">Client_id</label>
                 <div class="col-md-6">
-                    <input type="text" class="form-control" name="name" value="{{ $app->name }}">
+                    <input type="text" class="form-control" name="name" value="{{ $app->name }}" disabled>
                     <input type="hidden" class="form-control" name="old_name" value="{{ $app->name }}">
                 </div>
             </div>
