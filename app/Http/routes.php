@@ -78,8 +78,10 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
     });
 });
 
-// Route::post('api/oauth/accessToken', 'Api\V1\OauthController@getAccessToken');
-// Route::get('api/oauth/authCode', ['middleware' => ['check-authorization-params'], 'uses' => 'Api\V1\OauthController@getAuthCode']);
+app('api.exception')->register(function (Exception $exception) {
+    $request = Illuminate\Http\Request::capture();
+    return app('App\Exceptions\ApiHandler')->render($request, $exception);
+});
 
 Route::get('/oauth/authorize', ['as' => 'oauth.authorize.get', 'middleware' => ['check-authorization-params', 'auth'], 'uses' => 'Oauth\OauthController@getAuthorize']);
 Route::post('/oauth/authorize', ['as' => 'oauth.authorize.post', 'middleware' => ['csrf', 'check-authorization-params', 'auth'], 'uses' => 'Oauth\OauthController@postAuthorize']);
