@@ -4,9 +4,13 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\ApiException;
+use League\OAuth2\Server\Exception\AccessDeniedException;
+use League\OAuth2\Server\Exception\InvalidRequestException;
+use League\OAuth2\Server\Exception\InvalidRefreshException;
+use App\Services\Api;
 
-class Handler extends ExceptionHandler
+class ApiHandler extends ExceptionHandler
 {
 
 	/**
@@ -40,7 +44,16 @@ class Handler extends ExceptionHandler
 	 */
 	public function render($request, Exception $e)
 	{
+        if ($e instanceof AccessDeniedException) {
+            return Api::apiReturn(ERROR, 'access_token错误');
+        }
+        if ($e instanceof InvalidRequestException || $e instanceof InvalidRefreshException) {
+            return Api::apiReturn(ERROR, '参数错误, ' . $e->getMessage());
+        }
+        if ($e instanceof ApiException){
+            return Api::apiReturn(ERROR, $e->getMessage());
+        }
+
 		return parent::render($request, $e);
 	}
-
 }
