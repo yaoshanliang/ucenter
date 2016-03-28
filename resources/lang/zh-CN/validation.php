@@ -80,6 +80,8 @@ return [
     'unique'               => ':attribute 已经存在。',
     'url'                  => ':attribute 格式不正确。',
 
+    'validate_code'        => '验证码验证失败',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
