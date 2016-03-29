@@ -14,7 +14,6 @@ use App\Services\Api;
 use App\Model\User;
 use App\Model\UserFields;
 use App\Model\UserInfo;
-use App\Exceptions\ApiException;
 
 class UserController extends ApiController
 {

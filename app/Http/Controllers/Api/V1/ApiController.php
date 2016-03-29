@@ -10,11 +10,10 @@ use Config;
 use Authorizer;
 use Dingo\Api\Routing\Helpers;
 use App\Exceptions\ApiException;
+use Validator;
 
 class ApiController extends Controller
 {
-    use Helpers;
-
     public static function getUserId()
     {
         return (int)Authorizer::getResourceOwnerId();
@@ -44,6 +43,8 @@ class ApiController extends Controller
          if ($validator->fails()) {
              throw new ApiException($validator->messages()->first());
          }
+
+         return true;
      }
 
 

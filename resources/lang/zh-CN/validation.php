@@ -121,7 +121,7 @@ return [
         'city'                  => '城市',
         'country'               => '国家',
         'address'               => '地址',
-        'phone'                 => '电话',
+        'phone'                 => '手机',
         'mobile'                => '手机',
         'age'                   => '年轻',
         'sex'                   => '性别',

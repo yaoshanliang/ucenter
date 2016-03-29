@@ -9,6 +9,7 @@ define('ERROR', 0);
 define('BADREQUEST', 1000);
 define('UNAUTHORIZED', 1001);
 define('FORBIDDEN', 1003);
+define('NOTFOUNE', 1004);
 
 // 状态码
 define('STATUSCODE', [
@@ -47,6 +48,10 @@ class Api
 
             case FORBIDDEN:
                 $statusCode = STATUSCODE['FORBIDDEN'];
+                break;
+
+            case NOTFOUNE:
+                $statusCode = STATUSCODE['BADREQUEST'];
                 break;
 
             default:

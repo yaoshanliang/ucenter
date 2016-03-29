@@ -16,14 +16,12 @@ use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
 class AppController extends ApiController
 {
-    use Helpers;
-
     // 重新生成密钥
-    public function updateSecret(Request $request)
+    public function putSecret(Request $request)
     {
         $secret = md5(uniqid(time() . rand(1000, 9999)));
 
-        return $this->response->array(array('code' => 1, 'message' => '获取新密钥成功', 'data' => $secret));
+        return Api::apiReturn(SUCCESS, '获取新密钥成功', $secret);
     }
 
 }
