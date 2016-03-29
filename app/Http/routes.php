@@ -61,14 +61,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 $api = app('api.router');
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($api) {
     $api->group(['middleware' => 'oauth'], function ($api) {
-        $api->get('user/info', 'UserController@getUserInfo');
-        $api->get('user/role', 'UserController@getUserRole');
-        $api->get('user/permission', 'UserController@getUserPermission');
-        $api->put('user/info', 'UserController@edit');
+        $api->get('user/info', 'UserController@getInfo');
+        $api->get('user/role', 'UserController@getRole');
+        $api->get('user/permission', 'UserController@getPermission');
+        $api->put('user/info', 'UserController@putInfo');
 
-        $api->put('app/secret', 'AppController@updateSecret');
-        $api->post('sms/code', ['middleware' => ['oauth'], 'uses' => 'SmsController@sendCode']);
-        $api->put('sms/code', 'SmsController@validateCode');
+        $api->put('app/secret', 'AppController@putSecret');
+        $api->post('sms/code', ['middleware' => ['oauth'], 'uses' => 'SmsController@postCode']);
+        $api->put('sms/code', 'SmsController@putCode');
 
         $api->post('log', 'LogController@postCreate');
     });
