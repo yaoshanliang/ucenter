@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Api\V1\ApiController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Http\Controllers\Controller;
+use App\Services\Api;
 
 use Cache;
 use Config;
@@ -23,7 +23,7 @@ class LogController extends ApiController
      * @param string $data 数据
      * @return apiReturn
      */
-    public function postCreate(Request $request)
+    public function postLog(Request $request)
     {
         // 验证
         $this->apiValidate($request->all(), [
@@ -36,7 +36,7 @@ class LogController extends ApiController
         $ips = $request->ips();
         $ip = $ips[0];
         $ips = implode(',', $ips);
-        Queue::push(new AppLog(parent::getAppId(), parent::getUserId(), $request->type, $request->title, $request->data, $request->sql, $ip, $ips));
+        Queue::push(new AppLog(parent::getAppId(), parent::getUserId(), $request->type, $request->title, $request->data, "$request->sql", $ip, $ips));
 
         return Api::apiReturn(SUCCESS, '记录成功');
     }
