@@ -5,7 +5,7 @@ use App\Model\Model;
 
 class UserLog extends Model
 {
-	protected $table = 'user_logs';
+	protected $table = 'log_user';
 
 	protected $fillable = ['id', 'app_id', 'user_id', 'type', 'title', 'data', 'sql', 'ip', 'ips', 'pushed_at', 'created_at'];
 
