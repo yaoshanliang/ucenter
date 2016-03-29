@@ -10,47 +10,53 @@ use App\Http\Controllers\Controller;
 use Cache;
 use Config;
 use Queue;
-use Validator;
 use App\Services\Api;
 use App\Model\User;
 use App\Model\UserFields;
 use App\Model\UserInfo;
-use Dingo\Api\Routing\Helpers;
-use LucaDegasperi\OAuth2Server\Facades\Authorizer;
+use App\Exceptions\ApiException;
 
 class UserController extends ApiController
 {
-    // 获取用户信息，没有user_id参数时则为当前用户
-    public function getUserInfo(Request $request)
+    /**
+     * 获取当前用户信息
+     *
+     * @return apiReturn
+     */
+    public function getInfo(Request $request)
     {
-        $userId = empty($request->has('user_id')) ? parent::getUserId() : (int)$request->get('user_id');
-        $data = Cache::get(Config::get('cache.users') . $userId);
+        $data = Cache::get(Config::get('cache.users') . parent::getUserId());
 
-        if (empty($data)) {
-            return $this->response->array(array('code' => 0, 'message' => '不存在此用户'));
-        } else {
-            return $this->response->array(array('code' => 1, 'message' => '获取用户信息成功', 'data' => $data));
-        }
+        return Api::apiReturn(SUCCESS, '获取用户信息成功', $data);
     }
 
-    // 获取当前应用当前用户的角色
-    public function getUserRole(Request $request)
+    /**
+     * 获取当前应用当前用户的角色
+     *
+     * @return apiReturn
+     */
+    public function getRole(Request $request)
     {
         $roles = Cache::get(Config::get('cache.user_role.app_id') . parent::getAppId() . ':user_id:' . parent::getUserId());
 
         if (empty($roles['roles'])) {
-            return $this->response->array(array('code' => 0, 'message' => '当前用户没有角色'));
+            return Api::apiReturn(SUCCESS, '当前用户没有角色');
         }
 
-        return $this->response->array(array('code' => 1, 'message' => '获取角色成功', 'data' => $roles));
+        return Api::apiReturn(SUCCESS, '获取用户角色成功', $data);
     }
 
-    // 获取当前应用当前用户的权限
-    public function getUserPermission(Request $request)
+    /**
+     * 获取当前应用当前用户的权限
+     *
+     * @return apiReturn
+     */
+    public function getPermission(Request $request)
     {
         $roles = Cache::get(Config::get('cache.user_role.app_id') . parent::getAppId() . ':user_id:' . parent::getUserId());
+
         if (empty($roles['roles'])) {
-            return $this->response->array(array('code' => 0, 'message' => '当前用户没有权限'));
+            return Api::apiReturn(SUCCESS, '当前用户没有权限');
         }
         $data['user_id'] = $roles['user_id'];
         $permissions = array();
@@ -61,50 +67,51 @@ class UserController extends ApiController
         }
 
         if (empty($permissions)) {
-            return $this->response->array(array('code' => 0, 'message' => '当前用户没有权限'));
+            return Api::apiReturn(SUCCESS, '当前用户没有权限');
         }
 
         $data['permissions'] = array_values($permissions);
 
-        return $this->response->array(array('code' => 1, 'message' => '获取权限成功', 'data' => $data));
+        return Api::apiReturn(SUCCESS, '当前用户权限成功', $data);
     }
 
-    // 更新用户信息
-    public function edit(Request $request)
+    /**
+     * 更新用户信息
+     *
+     * @return apiReturn
+     */
+    public function putInfo(Request $request)
     {
         $user = Cache::get(Config::get('cache.users') . parent::getUserId());
+
+        $isEdit = false;
+
         foreach ($request->all() as $k => $v) {
             switch ($k) {
                 case 'username' :
-                    $validator = Validator::make(array($k => $request->$k), ['username' => 'required|unique:users,username,'.parent::$currentUserId]);
+                    $validator = $this->apiValidate(array($k => $request->$k), ['username' => 'required|unique:users,username,'.parent::getUserId()]);
                     break;
 
                 case 'email' :
-                    $validator = Validator::make(array($k => $request->$k), ['email' => 'required|email|unique:users,email,'.parent::$currentUserId]);
+                    $validator = $this->apiValidate(array($k => $request->$k), ['email' => 'required|email|unique:users,email,'.parent::getUserId()]);
                     break;
 
                 case 'phone' :
                     Validator::extend('validate_code', function($attribute, $value, $parameters) {
                         return Cache::get(Config::get('cache.sms.validated') . $value) ? true : false;
                     });
-                    $validator = Validator::make(array($k => $request->$k), ['phone' => 'required|size:11|unique:users,phone,'.parent::$currentUserId.'|validate_code'], ['validate_code' => '手机号验证失败']);
+                    $validator = $this->apiValidate(array($k => $request->$k), ['phone' => 'required|size:11|unique:users,phone,'.parent::getUserId().'|validate_code']);
                     break;
 
                 default :
                     $userFieldsArray = UserFields::where('name', $k)->first(array('id', 'validation'));
                     if (!empty($userFieldsArray)) {
-                        $validator = Validator::make(array($k => $request->$k), [$k => $userFieldsArray['validation']]);
+                        $validator = $this->apiValidate(array($k => $request->$k), [$k => $userFieldsArray['validation']]);
                     }
                     break;
             }
 
             if (isset($validator)) {
-
-                // 返回验证失败信息
-                if ($validator->fails()) {
-                    $message = $validator->messages()->first();
-                    return $this->response->array(array('code' => 0, 'message' => $message));
-                }
 
                 // 更新数据库
                 switch ($k) {
@@ -129,14 +136,14 @@ class UserController extends ApiController
             }
         }
 
-        if (isset($isEdit)) {
+        if (true === $isEdit) {
 
             // 更新cache
             Cache::forever(Config::get('cache.users') . parent::getUserId(), $user);
 
-            return $this->response->array(array('code' => 1, 'message' => '修改成功', 'data' => $user));
+            return Api::apiReturn(SUCCESS, '修改成功', $user);
         } else {
-            return $this->response->array(array('code' => 0, 'message' => '未做修改'));
+            return Api::apiReturn(ERROR, '未做修改');
         }
     }
 }
