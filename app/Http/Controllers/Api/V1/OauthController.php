@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Authorizer;
-use Dingo\Api\Routing\Helpers;
+use App\Services\Api;
 use Auth;
 
 class OauthController extends Controller

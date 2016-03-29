@@ -9,6 +9,7 @@ use Dingo\Api\Routing\Helpers;
 use App\Model\UserRole;
 use Cache;
 use Config;
+use App\Services\Api;
 
 class RoleController extends ApiController
 {

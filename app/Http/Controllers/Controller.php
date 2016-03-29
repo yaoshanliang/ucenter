@@ -201,7 +201,7 @@ abstract class Controller extends BaseController
                 ->with(['client_id' => env('client_id'), 'client_secret' => env('client_secret'),
                     'grant_type' => 'authorization_code', 'redirect_uri' => env('redirect_uri'), 'code' => $authCode])
                 ->post('api/oauth/accessToken');
-            $accessToken = $accessToken['data'];
+            $accessToken = (array)$accessToken['data'];
             $accessToken['timestamp'] = time();
 
             Cache::put(Config::get('cache.api.access_token') . Auth::id(), $accessToken, $accessToken['expires_in'] / 60);
@@ -212,7 +212,7 @@ abstract class Controller extends BaseController
                 ->with(['client_id' => env('client_id'), 'client_secret' => env('client_secret'),
                     'grant_type' => 'refresh_token', 'refresh_token' => $accessToken['refresh_token']])
                 ->post('api/oauth/accessToken');
-            $accessToken = $accessToken['data'];
+            $accessToken = (array)$accessToken['data'];
             $accessToken['timestamp'] = time();
 
             Cache::put(Config::get('cache.api.access_token') . Auth::id(), $accessToken, $accessToken['expires_in'] / 60);
@@ -228,7 +228,7 @@ abstract class Controller extends BaseController
                 'grant_type' => 'client_credentials'])
             ->post('api/oauth/accessToken');
 
-        return $accessToken['data']['access_token'];
+        return (array)$accessToken['data']['access_token'];
     }
 
     public function log($type = 'S', $title = '', $data = '', $sql = '')
