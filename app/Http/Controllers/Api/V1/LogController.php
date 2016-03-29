@@ -12,11 +12,17 @@ use Config;
 use Queue;
 use Validator;
 use App\Jobs\AppLog;
-use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
 class LogController extends ApiController
 {
-    // 创建日志
+    /**
+     * 创建日志
+     *
+     * @param string $type 类型
+     * @param string $title 标题
+     * @param string $data 数据
+     * @return apiReturn
+     */
     public function postCreate(Request $request)
     {
         // 验证

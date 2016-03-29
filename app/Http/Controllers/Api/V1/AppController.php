@@ -11,12 +11,14 @@ use Config;
 use Queue;
 use DB;
 use App\Model\App;
-use Dingo\Api\Routing\Helpers;
-use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 
 class AppController extends ApiController
 {
-    // 重新生成密钥
+    /**
+     * 重新生成密钥
+     *
+     * @return apiReturn
+     */
     public function putSecret(Request $request)
     {
         $secret = md5(uniqid(time() . rand(1000, 9999)));

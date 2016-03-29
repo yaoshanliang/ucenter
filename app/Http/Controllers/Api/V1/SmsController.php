@@ -11,14 +11,17 @@ use Queue;
 use Config;
 use App\Services\Api;
 use App\Model\User;
-use Dingo\Api\Routing\Helpers;
-use LucaDegasperi\OAuth2Server\Facades\Authorizer;
 use PhpSms;
 // use Toplan\PhpSms\Sms;
 
 class SmsController extends ApiController
 {
-    // 发送验证码
+    /**
+     * 发送验证码
+     *
+     * @param string $phone 手机号
+     * @return apiReturn
+     */
     public function postCode(Request $request)
     {
         $this->beforeSend($request);
@@ -35,13 +38,15 @@ class SmsController extends ApiController
         }
     }
 
-    // 发送内容短信
+    /**
+     * 发送内容短信
+     *
+     * @param string $phone 手机号
+     * @return apiReturn
+     */
     public function sendContent(Request $request)
     {
-        $beforeSend = $this->beforeSend($request);
-        if (1 !== $beforeSend['code']) {
-            return $this->response->array(array('code' => 0, 'message' => $beforeSend['message']));
-        }
+        $this->beforeSend($request);
 
         PhpSms::queue(false);
         $result = PhpSms::make()->to($request->phone)->content($request->content)->send();
@@ -53,7 +58,13 @@ class SmsController extends ApiController
         }
     }
 
-    // 验证验证码
+    /**
+     * 发送内容短信
+     *
+     * @param string $phone 手机号
+     * @param string $code 验证码
+     * @return apiReturn
+     */
     public function validateCode(Request $request)
     {
         $this->apiValidate($request->only('phone', 'code'), ['phone' => 'required|size:11', 'code' => 'required|size:6']);
@@ -66,7 +77,12 @@ class SmsController extends ApiController
         }
     }
 
-    // 发送前的校验
+    /**
+     * 发送前的校验
+     *
+     * @param string $phone 手机号
+     * @return true/ApiException
+     */
     private function beforeSend(Request $request)
     {
         $this->apiValidate($request->only('phone'), ['phone' => 'required|size:11']);

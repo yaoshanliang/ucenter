@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
@@ -8,15 +9,21 @@ use Auth;
 
 class OauthController extends Controller
 {
-    use Helpers;
-
-    // 获取access_token
+    /**
+     * 获取access_token
+     *
+     * @return apiReturn
+     */
     public function getAccessToken()
     {
-        return $this->response->array(array('code' => 1, 'message' => '获取access_token成功', 'data' => Authorizer::issueAccessToken()));
+        return Api::apiReturn(SUCCESS, '获取access_token成功', Authorizer::issueAccessToken());
     }
 
-    // 获取授权码
+    /**
+     * 获取授权码
+     *
+     * @return apiReturn
+     */
     public function getAuthCode()
     {
         $authParams = Authorizer::getAuthCodeRequestParams();
