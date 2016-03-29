@@ -45,10 +45,10 @@ class ApiHandler extends ExceptionHandler
 	public function render($request, Exception $e)
 	{
         if ($e instanceof AccessDeniedException) {
-            return Api::apiReturn(ERROR, 'access_token错误');
+            return Api::apiReturn(UNAUTHORIZED, 'access_token错误');
         }
         if ($e instanceof InvalidRequestException || $e instanceof InvalidRefreshException) {
-            return Api::apiReturn(ERROR, '参数错误, ' . $e->getMessage());
+            return Api::apiReturn(BADREQUEST, '参数错误, ' . $e->getMessage());
         }
         if ($e instanceof ApiException){
             return Api::apiReturn(ERROR, $e->getMessage());

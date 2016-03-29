@@ -22,4 +22,9 @@ class ApiException extends Exception
     {
         return $this->response;
     }
+
+    public function getStatusCode()
+    {
+        return 301;
+    }
 }
