@@ -12,6 +12,8 @@ use Config;
 use Queue;
 use Validator;
 use App\Jobs\AppLog;
+use App\Jobs\SmsLog;
+use App\Jobs\EmailLog;
 
 class LogController extends ApiController
 {
@@ -23,7 +25,7 @@ class LogController extends ApiController
      * @param string $data 数据
      * @return apiReturn
      */
-    public function postLog(Request $request)
+    public function postApp(Request $request)
     {
         // 验证
         $this->apiValidate($request->all(), [
@@ -37,6 +39,49 @@ class LogController extends ApiController
         $ip = $ips[0];
         $ips = implode(',', $ips);
         Queue::push(new AppLog(parent::getAppId(), parent::getUserId(), $request->type, $request->title, $request->data, "$request->sql", $ip, $ips));
+
+        return Api::apiReturn(SUCCESS, '记录成功');
+    }
+
+    /**
+     * 短信日志
+     *
+     * @param string $phone 手机号
+     * @param string $content 内容
+     * @return apiReturn
+     */
+    public function postSms(Request $request)
+    {
+        // 验证
+        $this->apiValidate($request->all(), [
+            'phone' => 'required|size:11',
+            'content' => 'required'
+        ]);
+
+        // 日志队列
+        Queue::push(new SmsLog(parent::getAppId(), parent::getUserId(), $request->phone, $request->content));
+
+        return Api::apiReturn(SUCCESS, '记录成功');
+    }
+
+
+    /**
+     * 邮件日志
+     *
+     * @param string $email 邮箱
+     * @param string $content 内容
+     * @return apiReturn
+     */
+    public function postEmail(Request $request)
+    {
+        // 验证
+        $this->apiValidate($request->all(), [
+            'email' => 'required|email',
+            'content' => 'required'
+        ]);
+
+        // 日志队列
+        Queue::push(new EmailLog(parent::getAppId(), parent::getUserId(), $request->email, $request->content));
 
         return Api::apiReturn(SUCCESS, '记录成功');
     }

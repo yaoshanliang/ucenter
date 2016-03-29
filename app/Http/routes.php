@@ -70,7 +70,9 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
         $api->post('sms/code', ['middleware' => ['oauth'], 'uses' => 'SmsController@postCode']);
         $api->put('sms/code', 'SmsController@putCode');
 
-        $api->post('log', 'LogController@postLog');
+        $api->post('log/app', 'LogController@postApp');
+        $api->post('log/sms', 'LogController@postSms');
+        $api->post('log/email', 'LogController@postEmail');
     });
     $api->group([], function ($api) {
         $api->post('oauth/accessToken', 'OauthController@getAccessToken');
