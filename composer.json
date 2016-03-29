@@ -19,7 +19,7 @@
         "dingo/api": "1.0.x@dev",
         "lucadegasperi/oauth2-server-laravel": "^5.1",
         "zizaco/entrust": "dev-laravel-5",
-        "yaoshanliang/phpsms": "dev-master",
+        "yaoshanliang/phpsms": "^1.0",
         "php-curl-class/php-curl-class": "^4.10",
         "overtrue/laravel-wechat": "~3.0"
     },

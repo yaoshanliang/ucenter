@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0898f23033673b006223a10bb1089391",
-    "content-hash": "ec279641884830684421164741e4e74d",
+    "hash": "8bf732d16d75bc04e57b87a59ee57819",
+    "content-hash": "1aeb9caf6fcead2899061fff4efb3ef2",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -963,7 +963,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/laravel/framework/d899fbda59bf3ffcde11a9b443c01043b76f40b3.zip",
+                "url": "https://packagist.phpcomposer.com/files/laravel/framework/d899fbda59bf3ffcde11a9b443c01043b76f40b3.zip",
                 "reference": "d899fbda59bf3ffcde11a9b443c01043b76f40b3",
                 "shasum": ""
             },
@@ -3294,16 +3294,16 @@
         },
         {
             "name": "toplan/laravel-sms",
-            "version": "2.2.6",
+            "version": "2.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/toplan/laravel-sms.git",
-                "reference": "8b09fa6c95cd0b9e1882ca4c14a64c256d7b2b03"
+                "reference": "801d407e405b65bb900692ff7c955822ebd56b49"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/toplan/laravel-sms/8b09fa6c95cd0b9e1882ca4c14a64c256d7b2b03.zip",
-                "reference": "8b09fa6c95cd0b9e1882ca4c14a64c256d7b2b03",
+                "url": "https://packagist.phpcomposer.com/files/toplan/laravel-sms/801d407e405b65bb900692ff7c955822ebd56b49.zip",
+                "reference": "801d407e405b65bb900692ff7c955822ebd56b49",
                 "shasum": ""
             },
             "require": {
@@ -3335,7 +3335,7 @@
                 "laravel-sms",
                 "sms"
             ],
-            "time": "2016-01-27 03:33:09"
+            "time": "2016-03-24 08:12:25"
         },
         {
             "name": "toplan/phpsms",
@@ -3480,16 +3480,16 @@
         },
         {
             "name": "yaoshanliang/phpsms",
-            "version": "dev-master",
+            "version": "v1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yaoshanliang/phpsms.git",
-                "reference": "3b35f062a4f149f9aea6061be9f97a1b24c7a17d"
+                "reference": "880e4d3340221222e4dd8698cb40b06ea92114dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/yaoshanliang/phpsms/3b35f062a4f149f9aea6061be9f97a1b24c7a17d.zip",
-                "reference": "3b35f062a4f149f9aea6061be9f97a1b24c7a17d",
+                "url": "https://packagist.phpcomposer.com/files/yaoshanliang/phpsms/880e4d3340221222e4dd8698cb40b06ea92114dd.zip",
+                "reference": "880e4d3340221222e4dd8698cb40b06ea92114dd",
                 "shasum": ""
             },
             "require": {
@@ -3520,7 +3520,7 @@
                 "php",
                 "sms"
             ],
-            "time": "2016-02-22 01:34:36"
+            "time": "2016-02-26 07:52:34"
         },
         {
             "name": "zizaco/entrust",
@@ -5361,8 +5361,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "dingo/api": 20,
-        "zizaco/entrust": 20,
-        "yaoshanliang/phpsms": 20
+        "zizaco/entrust": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
