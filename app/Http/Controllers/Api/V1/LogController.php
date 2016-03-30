@@ -77,11 +77,12 @@ class LogController extends ApiController
         // 验证
         $this->apiValidate($request->all(), [
             'email' => 'required|email',
+            'subject' => 'required',
             'content' => 'required'
         ]);
 
         // 日志队列
-        Queue::push(new EmailLog(parent::getAppId(), parent::getUserId(), $request->email, $request->content));
+        Queue::push(new EmailLog(parent::getAppId(), parent::getUserId(), $request->email, $request->subject, $request->content));
 
         return Api::apiReturn(SUCCESS, '记录成功');
     }

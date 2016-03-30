@@ -7,6 +7,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldBeQueued;
+use Mail;
 
 class EmailLog extends Job implements SelfHandling, ShouldBeQueued
 {
@@ -19,11 +20,12 @@ class EmailLog extends Job implements SelfHandling, ShouldBeQueued
      * 邮件日志
      *
      */
-    public function __construct($appId, $userId, $email, $content)
+    public function __construct($appId, $userId, $email, $subject, $content)
     {
         $this->log = array('app_id' => $appId,
                             'user_id' => $userId,
                             'email' => $email,
+                            'subject' => $subject,
                             'content' => $content,
                             'pushed_at' => date("Y-m-d H:i:s")
                     );
@@ -38,7 +40,17 @@ class EmailLog extends Job implements SelfHandling, ShouldBeQueued
     {
         $popedAt = date('Y-m-d H:i:s');
         echo '[', $popedAt, ']', '[Email Log]...';
+
+        // 发送邮件
+        $mail = $this->log;
+        Mail::send('emails.invite', $mail, function($message) use ($mail) {
+            $message->from(env('MAIL_USERNAME'), env('MAIL_FROMNAME'));
+            $message->to($mail['email'])->subject($mail['subject']);
+        });
+
+        // 记录日志
         $user_log = EmailLogModel::create(array_merge($this->log, array('poped_at' => $popedAt, 'created_at' => date('Y-m-d H:i:s'))));
+
         echo 'OK!';
     }
 
