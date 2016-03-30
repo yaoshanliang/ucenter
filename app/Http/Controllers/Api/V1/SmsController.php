@@ -12,7 +12,6 @@ use Config;
 use App\Services\Api;
 use App\Model\User;
 use PhpSms;
-// use Toplan\PhpSms\Sms;
 
 class SmsController extends ApiController
 {
@@ -24,14 +23,19 @@ class SmsController extends ApiController
      */
     public function postCode(Request $request)
     {
-        $this->beforeSend($request);
+        $this->_beforeSend($request->phone);
 
         $code = rand(100000, 999999);
+        $content = '您好，您的验证码是：' . $code;
+
         Cache::put(Config::get('cache.sms.code') . $request->phone, $code, 5);
         PhpSms::queue(false);
-        $result = PhpSms::make()->to($request->phone)->content('您好，您的验证码是：' . $code)->send();
+        $result = PhpSms::make()->to($request->phone)->content($content)->send();
 
         if (true === $result['success']) {
+
+            $this->_afterSend($request->phone, $content, $request->access_token);
+
             return Api::apiReturn(SUCCESS, '发送成功');
         } else {
             return Api::apiReturn(ERROR, '发送失败', $result['logs']);
@@ -83,24 +87,39 @@ class SmsController extends ApiController
      * @param string $phone 手机号
      * @return true/ApiException
      */
-    private function beforeSend(Request $request)
+    private function _beforeSend($phone)
     {
-        $this->apiValidate($request->only('phone'), ['phone' => 'required|size:11']);
+        $this->apiValidate(['phone' => $phone], ['phone' => 'required|size:11']);
 
         // 手机号和用户id两种方式计数
-        $count = empty(parent::getUserId()) ? Cache::get(Config::get('cache.sms.count.phone') . $request->phone) :
+        $count = empty(parent::getUserId()) ? Cache::get(Config::get('cache.sms.count.phone') . $phone) :
             Cache::get(Config::get('cache.sms.count.user_id') . parent::getUserId());
 
         if (is_null($count)) {
-            empty(parent::getUserId()) ? Cache::put(Config::get('cache.sms.count.phone') . $request->phone, 1, 60) :
+            empty(parent::getUserId()) ? Cache::put(Config::get('cache.sms.count.phone') . $phone, 1, 60) :
                 Cache::put(Config::get('cache.sms.count.user_id') . parent::getUserId(), 1, 60);
         } else {
-            if (!in_array($request->phone, Config::get('phpsms.whiteList')) && $count > 3) {
+            if (!in_array($phone, Config::get('phpsms.whiteList')) && $count > 3) {
                 throw new ApiException('超过每小时三次限制');
             }
-            empty(parent::getUserId()) ? Cache::put(Config::get('cache.sms.count.phone') . $request->phone, ++$count, 60) :
+            empty(parent::getUserId()) ? Cache::put(Config::get('cache.sms.count.phone') . $phone, ++$count, 60) :
                 Cache::put(Config::get('cache.sms.count.user_id') . parent::getUserId(), ++$count, 60);
         }
+
+        return true;
+    }
+
+    /**
+     * 发送后的回调
+     *
+     * @param string $phone 手机号
+     * @return true/ApiException
+     */
+    private function _afterSend($phone, $content, $accessToken)
+    {
+        // 日志
+        $this->api->with(['phone' => $phone, 'content' => $content, 'access_token' => $accessToken])
+            ->post('api/log/sms');
 
         return true;
     }
