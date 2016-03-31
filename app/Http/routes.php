@@ -73,6 +73,8 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
         $api->post('log/app', 'LogController@postApp');
         $api->post('log/sms', 'LogController@postSms');
         $api->post('log/email', 'LogController@postEmail');
+
+        $api->post('file/file', 'FileController@postFile');
     });
     $api->group([], function ($api) {
         $api->post('oauth/accessToken', 'OauthController@getAccessToken');

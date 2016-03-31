@@ -53,5 +53,4 @@ class EmailLog extends Job implements SelfHandling, ShouldBeQueued
 
         echo 'OK!';
     }
-
 }
