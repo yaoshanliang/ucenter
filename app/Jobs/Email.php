@@ -9,7 +9,7 @@ use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldBeQueued;
 use Mail;
 
-class EmailLog extends Job implements SelfHandling, ShouldBeQueued
+class Email extends Job implements SelfHandling, ShouldBeQueued
 {
 
     use InteractsWithQueue, SerializesModels;

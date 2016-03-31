@@ -7,13 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Services\Api;
 
-use Cache;
-use Config;
 use Queue;
-use Validator;
 use App\Jobs\AppLog;
 use App\Jobs\SmsLog;
-use App\Jobs\EmailLog;
 
 class LogController extends ApiController
 {
@@ -60,29 +56,6 @@ class LogController extends ApiController
 
         // 日志队列
         Queue::push(new SmsLog(parent::getAppId(), parent::getUserId(), $request->phone, $request->content));
-
-        return Api::apiReturn(SUCCESS, '记录成功');
-    }
-
-
-    /**
-     * 邮件日志
-     *
-     * @param string $email 邮箱
-     * @param string $content 内容
-     * @return apiReturn
-     */
-    public function postEmail(Request $request)
-    {
-        // 验证
-        $this->apiValidate($request->all(), [
-            'email' => 'required|email',
-            'subject' => 'required',
-            'content' => 'required'
-        ]);
-
-        // 日志队列
-        Queue::push(new EmailLog(parent::getAppId(), parent::getUserId(), $request->email, $request->subject, $request->content));
 
         return Api::apiReturn(SUCCESS, '记录成功');
     }

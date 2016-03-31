@@ -30,22 +30,22 @@ return [
     'grant_types' => [
         'authorization_code' => [
             'class' => '\League\OAuth2\Server\Grant\AuthCodeGrant',
-            'access_token_ttl' => 3600,
-            'auth_token_ttl'   => 3600
+            'access_token_ttl' => 3600 * 2,
+            'auth_token_ttl'   => 3600 * 2
         ],
         'refresh_token' => [
             'class' => '\League\OAuth2\Server\Grant\RefreshTokenGrant',
-            'access_token_ttl' => 3600,
-            'refresh_token_ttl' => 3600
+            'access_token_ttl' => 3600 * 2,
+            'refresh_token_ttl' => 3600 * 2
         ],
         'password' => [
             'class' => '\League\OAuth2\Server\Grant\PasswordGrant',
             'callback' => '\App\Http\Controllers\Auth\AuthController@verifyPassword',
-            'access_token_ttl' => 3600
+            'access_token_ttl' => 3600 * 2
         ],
         'client_credentials' => [
             'class' => '\League\OAuth2\Server\Grant\ClientCredentialsGrant',
-            'access_token_ttl' => 3600
+            'access_token_ttl' => 3600 * 2
         ]
     ],
 
