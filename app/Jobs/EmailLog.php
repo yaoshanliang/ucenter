@@ -43,7 +43,7 @@ class EmailLog extends Job implements SelfHandling, ShouldBeQueued
 
         // 发送邮件
         $mail = $this->log;
-        Mail::send('emails.invite', $mail, function($message) use ($mail) {
+        $mail = Mail::send('emails.custom', $mail, function($message) use ($mail) {
             $message->from(env('MAIL_USERNAME'), env('MAIL_FROMNAME'));
             $message->to($mail['email'])->subject($mail['subject']);
         });
