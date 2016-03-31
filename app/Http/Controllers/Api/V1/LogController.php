@@ -9,7 +9,6 @@ use App\Services\Api;
 
 use Queue;
 use App\Jobs\AppLog;
-use App\Jobs\SmsLog;
 
 class LogController extends ApiController
 {
@@ -21,7 +20,7 @@ class LogController extends ApiController
      * @param string $data 数据
      * @return apiReturn
      */
-    public function postApp(Request $request)
+    public function postLog(Request $request)
     {
         // 验证
         $this->apiValidate($request->all(), [
@@ -39,24 +38,4 @@ class LogController extends ApiController
         return Api::apiReturn(SUCCESS, '记录成功');
     }
 
-    /**
-     * 短信日志
-     *
-     * @param string $phone 手机号
-     * @param string $content 内容
-     * @return apiReturn
-     */
-    public function postSms(Request $request)
-    {
-        // 验证
-        $this->apiValidate($request->all(), [
-            'phone' => 'required|size:11',
-            'content' => 'required'
-        ]);
-
-        // 日志队列
-        Queue::push(new SmsLog(parent::getAppId(), parent::getUserId(), $request->phone, $request->content));
-
-        return Api::apiReturn(SUCCESS, '记录成功');
-    }
 }
