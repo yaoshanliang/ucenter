@@ -8,7 +8,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldBeQueued;
 
-class SmsLog extends Job implements SelfHandling, ShouldBeQueued
+use PhpSms;
+
+class Sms extends Job implements SelfHandling, ShouldBeQueued
 {
 
     use InteractsWithQueue, SerializesModels;
@@ -38,6 +40,11 @@ class SmsLog extends Job implements SelfHandling, ShouldBeQueued
     {
         $popedAt = date('Y-m-d H:i:s');
         echo '[', $popedAt, ']', '[Sms Log]...';
+
+        // PhpSms::queue(false);
+        // $sms = $this->log;
+        // $result = PhpSms::make()->to($sms['phone'])->content($sms['content'])->send();
+
         $user_log = SmsLogModel::create(array_merge($this->log, array('poped_at' => $popedAt, 'created_at' => date('Y-m-d H:i:s'))));
         echo 'OK!';
     }

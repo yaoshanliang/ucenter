@@ -12,6 +12,7 @@ use Config;
 use App\Services\Api;
 use App\Model\User;
 use PhpSms;
+use App\Jobs\Sms;
 
 class SmsController extends ApiController
 {
@@ -29,12 +30,13 @@ class SmsController extends ApiController
         $content = '您好，您的验证码是：' . $code;
 
         Cache::put(Config::get('cache.sms.code') . $request->phone, $code, 5);
+
         PhpSms::queue(false);
         $result = PhpSms::make()->to($request->phone)->content($content)->send();
 
         if (true === $result['success']) {
 
-            $this->_afterSend($request->phone, $content, $request->access_token);
+            Queue::push(new Sms(parent::getAppId(), parent::getUserId(), $request->phone, $content));
 
             return Api::apiReturn(SUCCESS, '发送成功');
         } else {
@@ -108,19 +110,5 @@ class SmsController extends ApiController
 
         return true;
     }
-
-    /**
-     * 发送后的回调
-     *
-     * @param string $phone 手机号
-     * @return true/ApiException
-     */
-    private function _afterSend($phone, $content, $accessToken)
-    {
-        // 日志
-        $this->api->with(['phone' => $phone, 'content' => $content, 'access_token' => $accessToken])
-            ->post('api/log/sms');
-
-        return true;
-    }
 }
+
