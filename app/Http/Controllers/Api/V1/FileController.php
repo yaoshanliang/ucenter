@@ -14,6 +14,7 @@ use Queue;
 use DB;
 use Storage;
 use App\Model\App;
+use App\Model\File;
 
 class FileController extends ApiController
 {
@@ -28,6 +29,12 @@ class FileController extends ApiController
         return Api::apiReturn(SUCCESS, '上传成功', $this->_uploadFile($request->file('file')));
     }
 
+    /**
+     * 上传文件
+     *
+     * @param file $file 文件
+     * @return array
+     */
     public function _uploadFile($file)
     {
         $this->apiValidate(['file' => $file], ['file' => 'required']);
@@ -37,9 +44,14 @@ class FileController extends ApiController
         $data['mime_type'] = $file->getMimeType();
         $data['size'] = $file->getClientSize();
         $newName = md5($data['file_name'] . time()) . '.' . $data['extension'];
-        $directory = config('file.directory') . date('Ymd', time()) . '/';
+        $directory = config('file.directory') . date('Ymd') . '/';
         $result = $file->move($directory, $newName);
         $data['file_path'] = url($directory . $newName);
+
+        File::create(['app_id' => $this->getAppId(), 'user_id' => $this->getUserId(), 'file_name' => $data['file_name'],
+            'file_path' => $data['file_path'], 'extension' => $data['extension'], 'mime_type' => $data['mime_type'],
+            'size' => $data['size'], 'created_at' => date('Y-m-d H:i:s')
+        ]);
 
         return $data;
     }
