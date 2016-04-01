@@ -43,21 +43,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     use SoftDeletes;
     protected $dates = ['deleted_at'];
 
-    // 获取用户信息
-    protected function getUserInfo($user_id) {
-        $user_info = Cache::get(Config::get('cache.users') . $user_id, function() use ($user_id) {
-            $user_info = User::findOrFail($user_id)->toArray();
-            Cache::forever(Config::get('cache.users') . $user_id, $user_info);
-            return $user_info;
-        });
-        return $user_info;
-    }
-
-    // public function scopeRoles($query, $user_id)
-    // {
-        // return $this->belongsToMany('App\Model\Role', 'user_role', 'user_id', 'role_id');
-    // }
-
     public function appRoles()
     {
         $instance = $this->belongsToMany('App\Model\Role', 'user_role', 'user_id', 'role_id');

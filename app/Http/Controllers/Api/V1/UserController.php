@@ -10,6 +10,8 @@ use App\Http\Controllers\Controller;
 use Cache;
 use Config;
 use Queue;
+use DB;
+use Validator;
 use App\Services\Api;
 use App\Model\User;
 use App\Model\UserFields;
@@ -17,6 +19,73 @@ use App\Model\UserInfo;
 
 class UserController extends ApiController
 {
+    /**
+     * 注册
+     *
+     * @param string $phone 手机号
+     * @param string $password 密码
+     * @param string $code 验证码
+     */
+    public function postUser(Request $request)
+    {
+        $this->_beforeRegister($request->phone, $request->password, $request->code);
+
+        $user = User::create(['username' => $request->phone, 'phone' => $request->phone, 'password' => bcrypt($request->password)]);
+
+        $this->_afterRegister($user);
+
+        return Api::apiReturn(SUCCESS, '注册成功', $user->toArray());
+    }
+
+    /**
+     * 注册之前的操作
+     *
+     * @param string $phone 手机号
+     * @param string $password 密码
+     * @param string $code 验证码
+     */
+    protected function _beforeRegister($phone, $password, $code)
+    {
+        Validator::extend('validate_code', function($attribute, $value, $parameters) use ($code) {
+            return (Cache::get(Config::get('cache.sms.code') . $value) == $code);
+        });
+
+        $this->apiValidate(compact('phone', 'password', 'code'), ['phone' => 'required|size:11|unique:users,phone|validate_code', 'password' => 'required|min:6', 'code' => 'required|size:6']);
+    }
+
+    /**
+     * 注册之后的操作
+     *
+     * @param array $user 用户信息
+     */
+    protected function _afterRegister(&$user)
+    {
+        // cache新用户
+        $this->cacheUsers($user['id']);
+
+        // 增加默认角色
+        $appRole = DB::table('apps')
+            ->where('apps.name', env('DEFAULT_APP'))
+            ->join('roles', 'apps.id', '=', 'roles.app_id')
+            ->where('roles.name', env('DEFAULT_ROLE'))
+            ->select('apps.id as app_id', 'roles.id as role_id')
+            ->first();
+        if (empty($appRole)) {
+            return Api::apiReturn(ERROR, '默认角色不存在');
+        }
+        $userRole = DB::table('user_role')->insert(array(
+            'user_id' => $user['id'],
+            'app_id' => $appRole->app_id,
+            'role_id' => $appRole->role_id,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ));
+
+        $user['user_id'] = $user['id'];
+        unset($user['id']);
+        unset($user['updated_at']);
+    }
+
     /**
      * 获取当前用户信息
      *
