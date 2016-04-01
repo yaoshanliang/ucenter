@@ -20,7 +20,7 @@ class ApiHandler extends ExceptionHandler
      */
     protected $dontReport = [
         'Symfony\Component\HttpKernel\Exception\HttpException',
-        'App\Exceptions\ApiException'
+        'App\Exceptions\ApiException',
     ];
 
     /**
