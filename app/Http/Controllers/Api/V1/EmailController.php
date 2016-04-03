@@ -21,7 +21,7 @@ class EmailController extends ApiController
      */
     public function postEmail(Request $request)
     {
-        return Api::apiReturn(SUCCESS, '发送成功', $this->_send($request->email, $request->subject, $request->content));
+        return Api::apiReturn(SUCCESS, '邮件发送中', $this->_send($request->email, $request->subject, $request->content));
     }
 
     /**
