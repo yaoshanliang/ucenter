@@ -11,6 +11,7 @@ use App\Model\Email;
 
 class EmailController extends Controller
 {
+    // 当前应用邮件列表
     public function getIndex(Request $request)
     {
         return view('admin.email.index');
@@ -36,5 +37,17 @@ class EmailController extends Controller
         $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
 
         return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
+    }
+
+    // 显示邮件详细
+    public function getShow(Request $request, $id)
+    {
+        if (! Email::where('app_id', Session::get('current_app_id'))->exists()) {
+            return $this->response->array(array('code' => 0, 'message' => 'Forbidden'));
+        }
+
+        $email = Email::find($id);
+
+        return view('admin.email.show')->with(compact('email'));
     }
 }
