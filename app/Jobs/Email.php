@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Model\EmailLog as EmailLogModel;
+use App\Model\Email as EmailModel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
@@ -49,7 +49,7 @@ class Email extends Job implements SelfHandling, ShouldBeQueued
         });
 
         // 记录日志
-        $user_log = EmailLogModel::create(array_merge($this->log, array('poped_at' => $popedAt, 'created_at' => date('Y-m-d H:i:s'))));
+        $user_log = EmailModel::create(array_merge($this->log, array('poped_at' => $popedAt, 'created_at' => date('Y-m-d H:i:s'))));
 
         echo 'OK!';
     }

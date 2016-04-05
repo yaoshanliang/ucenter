@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Model\SmsLog as SmsLogModel;
+use App\Model\Sms as SmsModel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Bus\SelfHandling;
@@ -45,7 +45,7 @@ class Sms extends Job implements SelfHandling, ShouldBeQueued
         // $sms = $this->log;
         // $result = PhpSms::make()->to($sms['phone'])->content($sms['content'])->send();
 
-        $user_log = SmsLogModel::create(array_merge($this->log, array('poped_at' => $popedAt, 'created_at' => date('Y-m-d H:i:s'))));
+        $user_log = SmsModel::create(array_merge($this->log, array('poped_at' => $popedAt, 'created_at' => date('Y-m-d H:i:s'))));
         echo 'OK!';
     }
 
