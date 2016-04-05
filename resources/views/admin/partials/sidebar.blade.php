@@ -35,10 +35,10 @@
                 <a href="/admin/file"><i class="fa fa-file-o fa-fw"></i> 文 件</a>
             </li>
             <li>
-                <a href="/admin/mail"><i class="fa fa-envelope-o fa-fw"></i> 邮 件</a>
+                <a href="/admin/email"><i class="fa fa-envelope-o fa-fw"></i> 邮 件</a>
             </li>
             <li>
-                <a href="/admin/message"><i class="fa fa-comments-o fa-fw"></i> 短 信</a>
+                <a href="/admin/sms"><i class="fa fa-comments-o fa-fw"></i> 短 信</a>
             </li>
             <li>
                 <a href="/admin/applog"><i class="fa fa-file-text-o fa-fw"></i> 日 志</a>

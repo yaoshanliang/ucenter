@@ -51,8 +51,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
         Route::controller('permission', 'PermissionController');
 
         Route::controller('file', 'FileController');
-        Route::controller('mail', 'MailController');
-        Route::controller('message', 'MessageController');
+        Route::controller('email', 'EmailController');
+        Route::controller('sms', 'SmsController');
         Route::controller('userlog', 'UserLogController');
         Route::controller('applog', 'AppLogController');
     });

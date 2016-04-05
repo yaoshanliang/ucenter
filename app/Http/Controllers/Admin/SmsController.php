@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class MailController extends Controller
+class SmsController extends Controller
 {
     public function getIndex(Request $request)
     {
-        return view('admin.mail.index');
+        return view('admin.message.index');
     }
 }
