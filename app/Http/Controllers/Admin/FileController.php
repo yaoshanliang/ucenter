@@ -40,16 +40,4 @@ class FileController extends Controller
 
         return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
-
-    // 显示邮件详细
-    public function getShow(Request $request, $id)
-    {
-        if (! Email::where('app_id', Session::get('current_app_id'))->exists()) {
-            return $this->response->array(array('code' => 0, 'message' => 'Forbidden'));
-        }
-
-        $email = Email::find($id);
-
-        return view('admin.email.show')->with(compact('email'));
-    }
 }
