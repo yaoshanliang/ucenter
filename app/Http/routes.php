@@ -69,6 +69,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
         $api->put('user', 'UserController@putUser');
         $api->get('user/role', 'UserController@getRole');
         $api->get('user/permission', 'UserController@getPermission');
+        $api->get('user/rolePermission', 'UserController@getRolePermission');
 
         $api->put('app/secret', 'AppController@putSecret');
         $api->post('sms/code', 'SmsController@postCode');

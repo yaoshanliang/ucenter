@@ -107,8 +107,15 @@ class UserController extends ApiController
     {
         $roles = Cache::get(Config::get('cache.user_role.app_id') . parent::getAppId() . ':user_id:' . parent::getUserId());
 
-        if (empty($roles['roles'])) {
+        if (empty($roles['role_ids'])) {
             return Api::apiReturn(SUCCESS, '当前用户没有角色');
+        }
+
+        $data['user_id'] = $roles['user_id'];
+        foreach ($roles['role_ids'] as $v) {
+            $rolesArray = Cache::get(Config::get('cache.roles') . $v);
+            unset($rolesArray['permission_ids']);
+            $data['roles'][] = $rolesArray;
         }
 
         return Api::apiReturn(SUCCESS, '获取用户角色成功', $data);
@@ -123,14 +130,15 @@ class UserController extends ApiController
     {
         $roles = Cache::get(Config::get('cache.user_role.app_id') . parent::getAppId() . ':user_id:' . parent::getUserId());
 
-        if (empty($roles['roles'])) {
+        if (empty($roles['role_ids'])) {
             return Api::apiReturn(SUCCESS, '当前用户没有权限');
         }
         $data['user_id'] = $roles['user_id'];
         $permissions = array();
-        foreach ($roles['roles'] as $value) {
-            foreach ($value['permissions'] as $v) {
-                $permissions[$v['id']] = $v;
+        foreach ($roles['role_ids'] as $value) {
+            $rolesArray = Cache::get(Config::get('cache.roles') . $value);
+            foreach ($rolesArray['permission_ids'] as $v) {
+                $permissions[$v] = Cache::get(Config::get('cache.permissions') . $v);
             }
         }
 
@@ -141,6 +149,33 @@ class UserController extends ApiController
         $data['permissions'] = array_values($permissions);
 
         return Api::apiReturn(SUCCESS, '当前用户权限成功', $data);
+    }
+
+    /**
+     * 获取当前应用当前用户的角色和对应的权限
+     *
+     * @return apiReturn
+     */
+    public function getRolePermission(Request $request)
+    {
+        $roles = Cache::get(Config::get('cache.user_role.app_id') . parent::getAppId() . ':user_id:' . parent::getUserId());
+
+        if (empty($roles['role_ids'])) {
+            return Api::apiReturn(SUCCESS, '当前用户没有角色');
+        }
+
+        $data['user_id'] = $roles['user_id'];
+        foreach ($roles['role_ids'] as $v) {
+            $rolesArray = Cache::get(Config::get('cache.roles') . $v);
+            $rolesArray['permissions'] = array();
+            foreach ($rolesArray['permission_ids'] as $_v) {
+                $rolesArray['permissions'][] = Cache::get(Config::get('cache.permissions') . $_v);
+            }
+            unset($rolesArray['permission_ids']);
+            $data['roles'][] = $rolesArray;
+        }
+
+        return Api::apiReturn(SUCCESS, '获取用户角色和权限成功', $data);
     }
 
     /**

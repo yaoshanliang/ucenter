@@ -146,18 +146,10 @@ class AuthController extends Controller
     // 登陆之后的操作
     private function afterLogin(Request $request, Response $response, $credentials)
     {
-        $this->cacheSettings();
-        $this->cacheApps();
-        $this->cacheUsers();
-        $this->cachePermissions();
-        $this->cacheRoles();
-        $this->cacheUserRole();
         $this->initRole($request, $response);
         $this->loginLog($request, $credentials);
-        $this->cacheWechat();
         $this->accessToken();
     }
-
 
     // 登录日志
     private function loginLog($request, $credentials) {

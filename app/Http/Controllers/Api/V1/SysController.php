@@ -6,13 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Api\V1\ApiController;
 
-use Cache;
-use Queue;
-use Config;
 use App\Services\Api;
-use App\Model\User;
-use PhpSms;
-use App\Jobs\Sms;
 
 class SysController extends ApiController
 {
@@ -28,5 +22,7 @@ class SysController extends ApiController
         $this->cacheRoles();
         $this->cacheUserRole();
         $this->cacheWechat();
+
+        return Api::apiReturn(SUCCESS, 'refresh cache');
     }
 }
