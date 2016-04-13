@@ -91,7 +91,7 @@ class UserController extends ApiController
      *
      * @return apiReturn
      */
-    public function getInfo(Request $request)
+    public function getUser(Request $request)
     {
         $data = Cache::get(Config::get('cache.users') . parent::getUserId());
 
@@ -148,7 +148,7 @@ class UserController extends ApiController
      *
      * @return apiReturn
      */
-    public function putInfo(Request $request)
+    public function putUser(Request $request)
     {
         $user = Cache::get(Config::get('cache.users') . parent::getUserId());
 

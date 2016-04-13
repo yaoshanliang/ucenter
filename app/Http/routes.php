@@ -60,12 +60,15 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
 
 $api = app('api.router');
 $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($api) {
-    $api->group(['middleware' => 'oauth'], function ($api) {
+    $api->group([], function ($api) {
+        $api->post('oauth/accessToken', 'OauthController@getAccessToken');
+        $api->get('oauth/authCode', ['middleware' => ['check-authorization-params'], 'uses' => 'OauthController@getAuthCode']);
+
         $api->post('user', 'UserController@postUser');
-        $api->get('user/info', 'UserController@getInfo');
+        $api->get('user', 'UserController@getUser');
+        $api->put('user', 'UserController@putUser');
         $api->get('user/role', 'UserController@getRole');
         $api->get('user/permission', 'UserController@getPermission');
-        $api->put('user/info', 'UserController@putInfo');
 
         $api->put('app/secret', 'AppController@putSecret');
         $api->post('sms/code', 'SmsController@postCode');
@@ -74,10 +77,8 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\V1'], function ($a
         $api->post('log', 'LogController@postLog');
         $api->post('file', 'FileController@postFile');
         $api->post('email', 'EmailController@postEmail');
-    });
-    $api->group([], function ($api) {
-        $api->post('oauth/accessToken', 'OauthController@getAccessToken');
-        $api->get('oauth/authCode', ['middleware' => ['check-authorization-params'], 'uses' => 'OauthController@getAuthCode']);
+
+        $api->get('sys/cache', 'SysController@getCache');
     });
 });
 

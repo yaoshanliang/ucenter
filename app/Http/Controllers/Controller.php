@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Bus\DispatchesCommands;
@@ -15,6 +16,8 @@ use App\Model\Permission;
 use App\Model\Setting;
 use App\Model\UserWechat;
 use App\Model\UserRole;
+use App\Model\UserInfo;
+use App\Model\UserFields;
 use App\Model\RolePermission;
 use Cache;
 use Config;
@@ -27,59 +30,59 @@ use Dingo\Api\Routing\Helpers;
 
 abstract class Controller extends BaseController
 {
-
     use DispatchesCommands, ValidatesRequests;
     use Helpers;
 
+    // cache settings
     function cacheSettings()
     {
-        $settingsArray = Setting::all()->toArray();
-        foreach($settingsArray as $k => $v) {
-            $settings[$v['name']] = Cache::get(Config::get('cache.settings') . $v['name'], function() use ($v) {
-                Cache::forever(Config::get('cache.settings') . $v['name'], $v['value']);
-                return $v['value'];
-            });
+        $settingsArray = Setting::all();
+        foreach($settingsArray as $v) {
+            Cache::forever(Config::get('cache.settings') . $v->name, $v->value);
         }
     }
 
+    // cache apps
     function cacheApps($appId = 0)
     {
         $appsArray = App::where(function ($query) use ($appId) {
-                if ($appId) {
-                    $query->where('id', $appId);
-                }
-            })->get();
+            if ($appId) {
+                $query->where('id', $appId);
+            }
+        })->get();
         foreach($appsArray as $v) {
-            $cacheData = array('id' => $v['id'], 'name' => $v['name'], 'title' => $v['title']);
-            Cache::forever(Config::get('cache.apps') . $v['id'], $cacheData);
-            Cache::forever(Config::get('cache.clients') . $v['name'], $cacheData);
+            $cacheData = array('id' => $v->id, 'name' => $v->name, 'title' => $v->title);
+            Cache::forever(Config::get('cache.apps') . $v->id, $cacheData);
+            Cache::forever(Config::get('cache.clients') . $v->name, $cacheData);
         }
     }
 
+    // cache roles
     function cacheRoles($roleId = 0)
     {
         $rolesArray = Role::where(function ($query) use ($roleId) {
-                if ($roleId) {
-                    $query->where('id', $roleId);
-                }
-            })->get();
+            if ($roleId) {
+                $query->where('id', $roleId);
+            }
+        })->get();
         $rolePermissionsArray = RolePermission::where(function ($query) use ($roleId) {
-                if ($roleId) {
-                    $query->where('role_id', $roleId);
-                }
-            })->get();
+            if ($roleId) {
+                $query->where('role_id', $roleId);
+            }
+        })->get();
         foreach($rolesArray as $v) {
             $permissions = array();
             foreach ($rolePermissionsArray as $value) {
                 if ($v->id == $value->role_id) {
-                    $permissions[] = Cache::get(Config::get('cache.permissions') . $value->permission_id);
+                    $permissions[] = $value->permission_id;
                 }
             }
-            $cacheData = array('id' => $v->id, 'name' => $v->name, 'title' => $v->title, 'permissions' => $permissions);
+            $cacheData = array('id' => $v->id, 'name' => $v->name, 'title' => $v->title, 'permission_ids' => $permissions);
             Cache::forever(Config::get('cache.roles') . $v->id, $cacheData);
         }
     }
 
+    // cache permissions
     function cachePermissions()
     {
         $permissionsArray = Permission::all();
@@ -89,36 +92,34 @@ abstract class Controller extends BaseController
         }
     }
 
+    // cache users
     function cacheUsers($user_id = 0)
     {
         // 用户详细信息字段
-        $userFieldsArray = DB::table('user_fields')->get(array('id', 'name', 'title', 'description'));
+        $userFieldsArray = UserFields::get(array('id', 'name', 'title', 'description'));
         foreach ($userFieldsArray as $v) {
             $userFields[$v->id] = array('name' => $v->name, 'title' => $v->title);
         }
 
         // 用户基本信息，初始化详细信息
         $usersArray = User::where(function ($query) use ($user_id) {
-                if ($user_id) {
-                    $query->where('id', $user_id);
-                }
-            })
-            ->get(array('id', 'username', 'email', 'phone'))->toArray();
+            if ($user_id) {
+                $query->where('id', $user_id);
+            }
+        })->get(array('id', 'username', 'email', 'phone'));
         foreach ($usersArray as $v) {
-            $users[$v['id']] = array('user_id' => $v['id'], 'username' => $v['username'], 'email' => $v['email'], 'phone' => $v['phone']);
+            $users[$v['id']] = array('user_id' => $v->id, 'username' => $v->username, 'email' => $v->email, 'phone' => $v->phone);
             foreach ($userFields as $value) {
-                $users[$v['id']]['details'][$value['name']] = array('title' => $value['title'], 'value' => '');
+                $users[$v->id]['details'][$value['name']] = array('title' => $value['title'], 'value' => '');
             }
         }
 
         // 用户详细信息
-        $userInfoArray = DB::table('user_info')
-            ->where(function ($query) use ($user_id) {
-                if ($user_id) {
-                    $query->where('id', $user_id);
-                }
-            })
-            ->get(array('user_id', 'field_id', 'value'));
+        $userInfoArray = UserInfo::where(function ($query) use ($user_id) {
+            if ($user_id) {
+                $query->where('id', $user_id);
+            }
+        })->get(array('user_id', 'field_id', 'value'));
         foreach ($userInfoArray as $v) {
             $users[$v->user_id]['details'][$userFields[$v->field_id]['name']]['value'] = $v->value;
         }
@@ -128,7 +129,7 @@ abstract class Controller extends BaseController
         }
     }
 
-    // 缓存 用户-角色-权限
+    // cache user role
     function cacheUserRole()
     {
         $userRolesArray = UserRole::get();
@@ -140,16 +141,16 @@ abstract class Controller extends BaseController
             foreach ($value as $k => $v) {
                 $rolePermissions = array();
                 $rolePermissions['user_id'] = $k;
-                $rolePermissions['roles'] = array();
+                $rolePermissions['role_ids'] = array();
                 foreach ($v as $_v) {
-                    $rolePermissions['roles'][] = Cache::get(Config::get('cache.roles') . $_v);
+                    $rolePermissions['role_ids'][] = $_v;
                 }
                 Cache::forever(Config::get('cache.user_role.app_id') . $key . ':user_id:' . $k, $rolePermissions);
             }
         }
     }
 
-    // 缓存微信
+    // cache wechat
     function cacheWechat()
     {
         $usersArray = UserWechat::get(array('user_id', 'unionid', 'openid', 'nickname', 'sex', 'language', 'city', 'province', 'country', 'headimgurl'));

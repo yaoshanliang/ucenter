@@ -13,6 +13,11 @@ use Validator;
 
 class ApiController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('oauth', ['except' => ['getCache']]);
+    }
+
     /**
      * 获取用户id
      *
