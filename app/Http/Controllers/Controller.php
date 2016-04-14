@@ -229,7 +229,7 @@ abstract class Controller extends BaseController
                 'grant_type' => 'client_credentials'])
             ->post('api/oauth/accessToken');
 
-        return (array)$accessToken['data']['access_token'];
+        return $accessToken['data']->access_token;
     }
 
     public function log($type = 'S', $title = '', $data = '', $sql = '')

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8bf732d16d75bc04e57b87a59ee57819",
-    "content-hash": "1aeb9caf6fcead2899061fff4efb3ef2",
+    "hash": "fb1802824126929e08f82c7747a88671",
+    "content-hash": "fbf6f2a77a15197dc21ad33c391ac184",
     "packages": [
         {
             "name": "barryvdh/laravel-debugbar",
@@ -3480,16 +3480,16 @@
         },
         {
             "name": "yaoshanliang/phpsms",
-            "version": "v1.0",
+            "version": "v1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yaoshanliang/phpsms.git",
-                "reference": "880e4d3340221222e4dd8698cb40b06ea92114dd"
+                "reference": "cdb62f8fe1421da01673264bd64560056dbe7dec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://packagist.phpcomposer.com/files/yaoshanliang/phpsms/880e4d3340221222e4dd8698cb40b06ea92114dd.zip",
-                "reference": "880e4d3340221222e4dd8698cb40b06ea92114dd",
+                "url": "https://packagist.phpcomposer.com/files/yaoshanliang/phpsms/cdb62f8fe1421da01673264bd64560056dbe7dec.zip",
+                "reference": "cdb62f8fe1421da01673264bd64560056dbe7dec",
                 "shasum": ""
             },
             "require": {
@@ -3500,6 +3500,9 @@
                 "psr-4": {
                     "Yaoshanliang\\PhpSms\\": [
                         "src/agents/"
+                    ],
+                    "Toplan\\PhpSms\\Facades\\": [
+                        "src/phpsms/facades/"
                     ]
                 }
             },
@@ -3520,7 +3523,7 @@
                 "php",
                 "sms"
             ],
-            "time": "2016-02-26 07:52:34"
+            "time": "2016-04-13 03:24:33"
         },
         {
             "name": "zizaco/entrust",
