@@ -6,16 +6,46 @@
 * [Bootstrap](http://getbootstrap.com)
 * [Redis](http://redis.io)
 * [DataTables](http://datatables.net)
-* [monolog](https://github.com/yaoshanliang/monolog)
-* [entrust](https://github.com/yaoshanliang/entrust)
+* [phpsms](https://github.com/yaoshanliang/phpsms)
+* [dingo/api](https://github.com/dingo/api)
 
 ##安装配置
 
-####一些权限
+1、下载源码
+```
+git clone https://github.com/yaoshanliang/ucenter.git
+```
+或者
+```
+composer require yaoshanliang/ucenter
+```
 
-* chmod -R 777 storage
-* chmod -R 777 bootstrap/cache
+2、一些权限
+```
+chmod -R 777 storage
+chmod -R 777 bootstrap/cache
+```
 
+3、安装依赖
+```
+composer install
+```
+
+4、配置
+```
+cp .env.example .env
+```
+修改为自己的配置
+
+5、执行数据库迁移
+```
+php artisan migrate
+```
+
+6、导入数据
+```
+php artisan db:seed
+```
 
 ##Q&A
 
