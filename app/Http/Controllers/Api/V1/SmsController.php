@@ -65,13 +65,13 @@ class SmsController extends ApiController
     }
 
     /**
-     * 发送内容短信
+     * 验证短信
      *
      * @param string $phone 手机号
      * @param string $code 验证码
      * @return apiReturn
      */
-    public function validateCode(Request $request)
+    public function putCode(Request $request)
     {
         $this->apiValidate($request->only('phone', 'code'), ['phone' => 'required|size:11', 'code' => 'required|size:6']);
 
