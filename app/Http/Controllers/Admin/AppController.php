@@ -55,6 +55,7 @@ class AppController extends Controller
     {
         $this->validate($request, array(
             'title' => 'required',
+            'description' => 'required',
             'home_url' => 'required|url',
             'login_url' => 'required|url',
         ));
