@@ -141,7 +141,6 @@ class AppController extends Controller
     public function putEdit(AppRequest $request, $id)
     {
         $this->validate($request, array(
-            'name' => 'required|unique:apps,name,'.$id.'',
             'title' => 'required',
             'home_url' => 'required|url',
             'login_url' => 'required|url',
@@ -149,7 +148,6 @@ class AppController extends Controller
         ));
 
         $app = App::where('id', $id)->update(array(
-            'name' => $request->name,
             'title' => $request->title,
             'description' => $request->description,
             'home_url' => $request->home_url,
@@ -158,7 +156,6 @@ class AppController extends Controller
         ));
 
         $oauth_client = DB::table('oauth_clients')->where('id', $request->old_name)->update(array(
-            'id' => $request->name,
             'secret' => $request->secret,
             'name' => $request->title,
             'updated_at' => date('Y-m-d H:i:s')
