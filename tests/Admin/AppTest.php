@@ -11,15 +11,13 @@ class AppTest extends \TestCase
 {
     use WithoutMiddleware;
 
-    public function login()
-    {
-        $this->user = $this->post('/auth/login', ['username' => 'admin', 'password' => '123456']);
-        $this->be(User::where('username', 'admin')->first());
-    }
-
     public function setUp()
     {
         parent::setUp();
+
+        $this->startSession();
+
+        $this->withoutMiddleware();
 
         $this->login();
     }
@@ -60,7 +58,6 @@ class AppTest extends \TestCase
     {
         $app = App::orderBy('id', 'desc')->first();
         $app = $this->delete('/admin/app/delete', ['ids' => [$app->id]]);
-        $this->response;
         $this->assertResponseOk();
     }
 
