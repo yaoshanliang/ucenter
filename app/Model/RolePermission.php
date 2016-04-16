@@ -1,6 +1,6 @@
-<?php namespace App\Model;
+<?php
 
-use Illuminate\Database\Eloquent\Model;
+namespace App\Model;
 
 class RolePermission extends Model {
 
