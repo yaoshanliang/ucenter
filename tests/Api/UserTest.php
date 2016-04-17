@@ -7,9 +7,7 @@ use Auth;
 
 class UserTest extends \TestCase
 {
-
-
-    public function testLogin()
+    public function testGetAccessToken()
     {
     }
 

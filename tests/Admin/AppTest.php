@@ -2,26 +2,12 @@
 
 namespace Admin;
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Auth;
 use App\Model\User;
 use App\Model\App;
 
-class AppTest extends \TestCase
+class AppTest extends AdminTest
 {
-    use WithoutMiddleware;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->startSession();
-
-        $this->withoutMiddleware();
-
-        $this->login();
-    }
-
     public function testGetIndex()
     {
         $app = $this->call('GET', '/admin/app');

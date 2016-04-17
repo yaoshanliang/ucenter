@@ -2,13 +2,16 @@
 
 namespace Admin;
 
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Auth;
 
 class UserTest extends \TestCase
 {
+    use WithoutMiddleware;
+
     public function testLogin()
     {
-        $user = $this->post('/auth/login', ['username' => 'admin', 'password' => '123456']);
+        $this->login();
         $this->assertGreaterThan(0, Auth::id());
     }
 

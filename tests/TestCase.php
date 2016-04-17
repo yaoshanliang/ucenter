@@ -6,7 +6,7 @@ use App\Model\User;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
-    use WithoutMiddleware;
+    // use WithoutMiddleware;
 
     protected $user;
 
