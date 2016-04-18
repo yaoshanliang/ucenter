@@ -39,6 +39,10 @@ class Api
                 break;
 
             case ERROR:
+                $statusCode = STATUSCODE['OK'];
+                break;
+
+            case BADREQUEST:
                 $statusCode = STATUSCODE['BADREQUEST'];
                 break;
 
