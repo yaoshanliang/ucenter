@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Auth;
 use App\Model\User;
 
 class TestCase extends Illuminate\Foundation\Testing\TestCase
