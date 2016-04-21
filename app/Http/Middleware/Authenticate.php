@@ -3,6 +3,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
+use Session;
 
 class Authenticate
 {
@@ -37,7 +38,7 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                if ($referer = $request->headers->get('referer')) {
+                if (($url = Session::get('url')) && ($referer = $url['intended'])) {
                     return redirect()->guest('auth/login?goto=' . urlencode($referer));
                 }
                 return redirect()->guest('auth/login');
