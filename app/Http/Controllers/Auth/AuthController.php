@@ -78,6 +78,11 @@ class AuthController extends Controller
 
     public function getLogin(Request $request, Application $wechat)
     {
+        if ($request->goto) {
+            Session::put('goto', $request->goto);
+        } else {
+            Session::put('goto', url());
+        }
         $wechat->oauth->redirect();
         return view('auth.login')->with(array('loginFailed' => Cookie::get('login_failed')));
     }
@@ -87,7 +92,7 @@ class AuthController extends Controller
         $this->validate($request, ['username' => 'required', 'password' => 'required']);
 
         if (false === $this->checkCaptcha($request->luotest_response)) {
-            return redirect()->guest('/auth/login')
+            return redirect()->guest('/auth/login?goto=' . urlencode(Session::get('goto')))
                 ->withInput()
                 ->withErrors('人机验证未通过，请重试！');
         }
@@ -98,7 +103,7 @@ class AuthController extends Controller
             // 登陆失败记录，用于人机验证
             Cookie::queue('login_failed', 1, 3);
 
-            return redirect()->guest('/auth/login')
+            return redirect()->guest('/auth/login?goto=' . urlencode(Session::get('goto')))
                 ->withInput()
                 ->withErrors('账户与密码不匹配，请重试！');
         }
@@ -108,10 +113,7 @@ class AuthController extends Controller
         // 登陆之后的操作
         $this->afterLogin($request, $response, $credentials);
 
-        if ($request->goto) {
-            return redirect($request->goto);
-        }
-        return redirect()->intended();
+        return redirect(Session::get('goto'));
     }
 
     // 螺丝帽人机验证
@@ -137,7 +139,7 @@ class AuthController extends Controller
         $wechatUser = $wechat->oauth->user()->toArray();
         $user = Cache::get(Config::get('cache.wechat.openid') . $wechatUser['id']);
         if (empty($user)) {
-            return redirect(Session::get('_previous')['url'])
+            return redirect()->guest('/auth/login?goto=' . urlencode(Session::get('goto')))
                 ->withErrors('当前微信未绑定账户，请用账号登陆！');
         }
         Auth::loginUsingId($user['user_id']);
