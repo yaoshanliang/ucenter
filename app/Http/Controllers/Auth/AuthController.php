@@ -108,6 +108,9 @@ class AuthController extends Controller
         // 登陆之后的操作
         $this->afterLogin($request, $response, $credentials);
 
+        if ($request->goto) {
+            return redirect($request->goto);
+        }
         return redirect()->intended();
     }
 
@@ -134,7 +137,7 @@ class AuthController extends Controller
         $wechatUser = $wechat->oauth->user()->toArray();
         $user = Cache::get(Config::get('cache.wechat.openid') . $wechatUser['id']);
         if (empty($user)) {
-            return redirect()->guest('/auth/login')
+            return redirect(Session::get('_previous')['url'])
                 ->withErrors('当前微信未绑定账户，请用账号登陆！');
         }
         Auth::loginUsingId($user['user_id']);
