@@ -37,6 +37,9 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
+                if ($referer = $request->headers->get('referer')) {
+                    return redirect()->guest('auth/login?goto=' . urlencode($referer));
+                }
                 return redirect()->guest('auth/login');
             }
         }
