@@ -11,7 +11,7 @@ class SmsTest extends ApiTest
 
     public function testPutCode()
     {
-        $sms = $this->put('/api/sms/code', ['phone' => '18896581232', 'code'=> 1, 'access_token' => 'test']);
+        $sms = $this->put('/api/sms/code', ['phone' => '18896581232', 'code'=> 1, 'access_token' => $this->accessToken]);
         $this->assertResponseOk();
     }
 

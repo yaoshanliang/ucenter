@@ -2,10 +2,9 @@
 
 namespace Api;
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Auth;
 
-class UserTest extends \TestCase
+class UserTest extends ApiTest
 {
     public function testPostUser()
     {
@@ -15,25 +14,25 @@ class UserTest extends \TestCase
 
     public function testGetUser()
     {
-        $user = $this->get('/api/user?access_token=test')->seeJson(['code' => 1]);
+        $user = $this->get('/api/user?access_token=' . $this->accessToken)->seeJson(['code' => 1]);
         $this->assertResponseOk();
     }
 
     public function testGetRole()
     {
-        $user = $this->get('/api/user/role?access_token=test')->seeJson(['code' => 1]);
+        $user = $this->get('/api/user/role?access_token=' . $this->accessToken)->seeJson(['code' => 1]);
         $this->assertResponseOk();
     }
 
     public function testGetPermission()
     {
-        $user = $this->get('/api/user/permission?access_token=test')->seeJson(['code' => 1]);
+        $user = $this->get('/api/user/permission?access_token=' . $this->accessToken)->seeJson(['code' => 1]);
         $this->assertResponseOk();
     }
 
     public function testGetRolePermission()
     {
-        $user = $this->get('/api/user/rolePermission?access_token=test')->seeJson(['code' => 1]);
+        $user = $this->get('/api/user/rolePermission?access_token=' . $this->accessToken)->seeJson(['code' => 1]);
         $this->assertResponseOk();
     }
 }
