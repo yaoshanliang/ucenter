@@ -29,7 +29,8 @@ class AppTest extends AdminTest
 
     public function testGetEdit()
     {
-        $app = $this->call('GET', '/admin/app');
+        $app = App::orderBy('id', 'desc')->first();
+        $app = $this->call('GET', '/admin/app/edit/' . $app->id);
         $this->assertResponseOk();
     }
 
