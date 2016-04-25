@@ -146,7 +146,7 @@ function confirmEdit(field) {
     data[field] = value;
     data['access_token'] = "<?php echo $accessToken; ?>";
     $.ajax({
-        url: '/api/user/info',
+        url: '/api/user',
         type: 'PUT',
         data: data,
         dataType: 'json',
