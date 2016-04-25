@@ -261,6 +261,13 @@ class AppController extends Controller
             'updated_at' => date('Y-m-d H:i:s')
         ));
 
+        $oauth_client_endpoints = DB::table('oauth_client_endpoints')->insert(array(
+            'client_id' => $request->name,
+            'redirect_uri' => $request->login_url,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ));
+
         // 默认开发者角色
         $role = Role::create(array(
             'app_id' => $app->id,
@@ -342,6 +349,11 @@ class AppController extends Controller
             'id' => $request->name,
             'secret' => $request->secret,
             'name' => $request->title,
+            'updated_at' => date('Y-m-d H:i:s')
+        ));
+
+        $oauth_client_endpoints = DB::table('oauth_client_endpoints')->where('client_id', $request->old_name)->update(array(
+            'redirect_uri' => $request->login_url,
             'updated_at' => date('Y-m-d H:i:s')
         ));
 
