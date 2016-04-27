@@ -60,6 +60,14 @@
                     </button>
                 </p>
             </div>
+            <div class="col-md-4">
+                <label class="col-md-3 control-label">密码</label>
+                <p class="form-control-static">*********
+                    <button type="button" class="btn btn-outline btn-primary btn-xs" onclick="resetPassword();">
+                            修改
+                    </button>
+                </p>
+            </div>
         </div>
     </form>
     </div>
@@ -118,6 +126,9 @@ function bindWechat() {
     });
     $('#bind_wechat').modal('show');
 }
+function resetPassword() {
+    $('#reset_password').modal('show');
+}
 function confirmEdit(field) {
     switch (field) {
         case 'username' :
@@ -138,6 +149,18 @@ function confirmEdit(field) {
             var value = $('input[name="phone"]').val();
             if (value.length == 0) {
                 showFailTip('请输入新手机号');
+                return false;
+            }
+        break;
+        case 'password' :
+            var value = $('input[name="password"]').val();
+            var confirm_password = $('input[name="comfirm_password"]').val();
+            if (value.length == 0 || confirm_password.length === 0) {
+                showFailTip('请输入密码');
+                return false;
+            }
+            if (value != confirm_password) {
+                showFailTip('两次密码不一致');
                 return false;
             }
         break;
@@ -287,6 +310,43 @@ function confirmEdit(field) {
                     <div class="form-group">
                         <div class="col-md-offset-3">
                             <div id="wechat_container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="reset_password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:400px; margin-top:40px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5 class="modal-title" id="myModalLabel">修改密码</h5>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="password" class="form-control" name="password" placeholder="新密码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <input type="password" class="form-control" name="comfirm_password" placeholder="确认新密码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary btn-block" onClick="return confirmEdit('password');">确认</button>
                         </div>
                     </div>
                 </div>

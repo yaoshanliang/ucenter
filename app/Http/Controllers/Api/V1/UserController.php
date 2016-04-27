@@ -206,6 +206,10 @@ class UserController extends ApiController
                     $validator = $this->apiValidate(array($k => $request->$k), ['phone' => 'required|size:11|unique:users,phone,'.parent::getUserId().'|validate_code']);
                     break;
 
+                case 'password' :
+                    $validator = $this->apiValidate(array($k => $request->$k), ['password' => 'required|min:6']);
+                    break;
+
                 default :
                     $userFieldsArray = UserFields::where('name', $k)->first(array('id', 'validation'));
                     if (!empty($userFieldsArray)) {
@@ -227,6 +231,10 @@ class UserController extends ApiController
                             $isEdit = true;
                         }
                     break;
+
+                    case 'password' :
+                            $result = User::where('id', parent::getUserId())->update(array($k => bcrypt($request->$k)));
+                            $isEdit = true;
 
                     default :
                         if (isset($user['details'][$k]) && $user['details'][$k]['value'] != $request->$k) {
