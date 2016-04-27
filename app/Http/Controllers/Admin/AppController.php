@@ -38,6 +38,10 @@ class AppController extends Controller
             ->skip($request->start)
             ->take($request->length)
             ->get($fields);
+        foreach ($data as &$v) {
+            $user = Cache::get(Config::get('cache.users') . $v->user_id);
+            $v->user_id = $user['username'];
+        }
         $draw = (int)$request->draw;
         $recordsTotal = App::where('user_id', Auth::id())->count();
         $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
