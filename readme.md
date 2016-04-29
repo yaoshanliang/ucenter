@@ -1,6 +1,8 @@
 #用户中心
 ####——“统一身份认证服务”、“用户系统”、“权限系统”、“日志系统”、“文件系统”、“邮件服务”、“短信服务”
-*开放平台: [http://yaoshanliang.github.io/ucenter-open/](http://yaoshanliang.github.io/ucenter-open/)*
+*演示地址: [http://demo.ucenter.szjlxh.com](http://demo.ucenter.szjlxh.com)*
+
+*开放平台: [http://yaoshanliang.github.io/ucenter-open](http://yaoshanliang.github.io/ucenter-open)*
 
 * [Laravel](http://laravel.com)
 * [Bootstrap](http://getbootstrap.com)
