@@ -3339,21 +3339,21 @@
         },
         {
             "name": "toplan/phpsms",
-            "version": "1.2.2",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/toplan/phpsms.git",
-                "reference": "dc67f2917f073ad15a1ee3f2c34cfaa30d7c97b4"
+                "reference": "566dae7d50f761a4b098333615d4c3a4c5e8440f"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/toplan/phpsms/dc67f2917f073ad15a1ee3f2c34cfaa30d7c97b4.zip",
-                "reference": "dc67f2917f073ad15a1ee3f2c34cfaa30d7c97b4",
+                "url": "https://packagist.phpcomposer.com/files/toplan/phpsms/566dae7d50f761a4b098333615d4c3a4c5e8440f.zip",
+                "reference": "566dae7d50f761a4b098333615d4c3a4c5e8440f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0",
-                "toplan/task-balancer": "~0.3.0"
+                "toplan/task-balancer": "~0.4.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.0"
@@ -3363,7 +3363,9 @@
                 "psr-4": {
                     "Toplan\\PhpSms\\": [
                         "src/phpsms/",
-                        "src/phpsms/agents/",
+                        "src/phpsms/agents/"
+                    ],
+                    "Toplan\\PhpSms\\Facades\\": [
                         "src/phpsms/facades/"
                     ]
                 },
@@ -3388,20 +3390,20 @@
                 "sms",
                 "sms library for php"
             ],
-            "time": "2016-01-12 03:01:58"
+            "time": "2016-04-12 10:17:04"
         },
         {
             "name": "toplan/task-balancer",
-            "version": "0.3.0",
+            "version": "0.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/toplan/task-balancer.git",
-                "reference": "3320dc9e132d76c62caba4fa903fe3e8e1ca49cf"
+                "reference": "32914c1162fd566d811315f3e015039870642150"
             },
             "dist": {
                 "type": "zip",
-                "url": "http://packagist.phpcomposer.com/files/toplan/task-balancer/3320dc9e132d76c62caba4fa903fe3e8e1ca49cf.zip",
-                "reference": "3320dc9e132d76c62caba4fa903fe3e8e1ca49cf",
+                "url": "https://packagist.phpcomposer.com/files/toplan/task-balancer/32914c1162fd566d811315f3e015039870642150.zip",
+                "reference": "32914c1162fd566d811315f3e015039870642150",
                 "shasum": ""
             },
             "require": {
@@ -3430,7 +3432,7 @@
                 "load balancing",
                 "task"
             ],
-            "time": "2015-12-31 05:25:17"
+            "time": "2016-04-14 09:24:31"
         },
         {
             "name": "vlucas/phpdotenv",
