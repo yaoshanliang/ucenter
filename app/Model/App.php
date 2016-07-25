@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
 
-use App\Model\Model;
+use App\Model\BaseModel as Model;
 
 class App extends Model
 {

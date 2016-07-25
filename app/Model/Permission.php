@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
 
-use App\Model\Model;
+use App\Model\BaseModel as Model;
 use Zizaco\Entrust\EntrustPermission;
 
 class Permission extends EntrustPermission

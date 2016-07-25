@@ -2,7 +2,7 @@
 namespace App\Model;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Model\Model;
+use App\Model\BaseModel as Model;
 
 class Setting extends Model {
     protected $table = 'settings';

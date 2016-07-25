@@ -4,7 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Model extends Model
+class BaseModel extends Model
 {
     public function scopeWhereDataTables($query, $post, $fields = array())
     {

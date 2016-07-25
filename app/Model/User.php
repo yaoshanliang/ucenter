@@ -1,7 +1,7 @@
 <?php
 namespace App\Model;
 
-use App\Model\Model;
+use App\Model\BaseModel as Model;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
