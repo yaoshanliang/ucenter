@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Oauth;
 use App\Http\Controllers\Controller;
 use Authorizer;
 use Auth;
-use Request;
+use Illuminate\Http\Request;
 
 class OauthController extends Controller
 {
@@ -19,22 +19,4 @@ class OauthController extends Controller
 
        return view('oauth.authorize', ['params' => $formParams, 'client' => $authParams['client']]);
     }
-
-    public function postAuthorize()
-    {
-        $params = Authorizer::getAuthCodeRequestParams();
-        $params['user_id'] = Auth::id();
-        $redirectUri = '/';
-
-        if (Request::has('approve')) {
-            $redirectUri = Authorizer::issueAuthCode('user', $params['user_id'], $params);
-        }
-
-        if (Request::has('deny')) {
-            $redirectUri = Authorizer::authCodeRequestDeniedRedirectUri();
-        }
-
-        return redirect($redirectUri);
-    }
-
 }

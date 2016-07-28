@@ -20,9 +20,12 @@ use App\Jobs\UserLog;
 use App\Model\UserRole;
 use Curl\Curl;
 use EasyWeChat\Foundation\Application;
+use Authorizer;
 
 class AuthController extends Controller
 {
+    private $credentials;
+
     /*
     |--------------------------------------------------------------------------
     | Registration & Login Controller
@@ -78,42 +81,61 @@ class AuthController extends Controller
 
     public function getLogin(Request $request, Application $wechat)
     {
-        if ($request->goto) {
-            Session::put('goto', $request->goto);
-        } else {
-            Session::put('goto', url());
-        }
         $wechat->oauth->redirect();
         return view('auth.login')->with(array('loginFailed' => Cookie::get('login_failed')));
     }
 
     public function postLogin(Request $request, Response $response)
     {
-        $this->validate($request, ['username' => 'required', 'password' => 'required']);
-
-        if (false === $this->checkCaptcha($request->luotest_response)) {
-            return redirect()->guest('/auth/login?goto=' . urlencode(Session::get('goto')))
-                ->withInput()
-                ->withErrors('人机验证未通过，请重试！');
-        }
-
-        // 验证密码
-        if (false === ($userId = $this->verifyPassword($request->username, $request->password, $credentials))) {
-
-            // 登陆失败记录，用于人机验证
-            Cookie::queue('login_failed', 1, 3);
-
-            return redirect()->guest('/auth/login?goto=' . urlencode(Session::get('goto')))
-                ->withInput()
-                ->withErrors('账户与密码不匹配，请重试！');
+        if (!is_int(($userId = $this->_beforeLogin($request)))) {
+            return $userId;
         }
 
         Auth::loginUsingId($userId);
 
         // 登陆之后的操作
-        $this->afterLogin($request, $response, $credentials);
+        $this->afterLogin($request, $response);
 
-        return redirect(Session::get('goto'));
+        return redirect('');
+    }
+
+    public function postAuthorize(Request $request, Response $response)
+    {
+        if (!is_int(($userId = $this->_beforeLogin($request)))) {
+            return $userId;
+        }
+
+        $params = Authorizer::getAuthCodeRequestParams();
+
+        if (1 == $request->approve) {
+            $redirectUri = Authorizer::issueAuthCode('user', $userId, $params);
+        } else {
+            $redirectUri = Authorizer::authCodeRequestDeniedRedirectUri();
+        }
+
+        $this->afterLogin($request, $response);
+
+        return redirect($redirectUri);
+    }
+
+    private function _beforeLogin(Request $request)
+    {
+        $this->validate($request, ['username' => 'required', 'password' => 'required']);
+
+        if (false === $this->checkCaptcha($request->luotest_response)) {
+            return back()->withInput()->withErrors('人机验证未通过，请重试！');
+        }
+
+        // 验证密码
+        if (false === ($userId = $this->verifyPassword($request->username, $request->password))) {
+
+            // 登陆失败记录，用于人机验证
+            Cookie::queue('login_failed', 1, 3);
+
+            return back()->withInput()->withErrors('账户与密码不匹配，请重试！');
+        }
+
+        return $userId;
     }
 
     // 螺丝帽人机验证
@@ -139,8 +161,7 @@ class AuthController extends Controller
         $wechatUser = $wechat->oauth->user()->toArray();
         $user = Cache::get(Config::get('cache.wechat.openid') . $wechatUser['id']);
         if (empty($user)) {
-            return redirect()->guest('/auth/login?goto=' . urlencode(Session::get('goto')))
-                ->withErrors('当前微信未绑定账户，请用账号登陆！');
+            return back()->withErrors('当前微信未绑定账户，请用账号登陆！');
         }
         Auth::loginUsingId($user['user_id']);
         $this->afterLogin($request, $response, array('wechat' => $wechatUser['nickname']));
@@ -149,10 +170,10 @@ class AuthController extends Controller
     }
 
     // 登陆之后的操作
-    private function afterLogin(Request $request, Response $response, $credentials)
+    private function afterLogin(Request $request, Response $response)
     {
         $this->initRole($request, $response);
-        $this->loginLog($request, $credentials);
+        $this->loginLog($request, $this->credentials);
         $this->accessToken();
     }
 
@@ -166,18 +187,18 @@ class AuthController extends Controller
     }
 
     // 验证密码
-    public function verifyPassword($username, $password, &$credentials = array())
+    public function verifyPassword($username, $password)
     {
         if (false !== strpos($username, '@')) {
-            $credentials = array('email' => $username, 'password' => $password);
+            $this->credentials = array('email' => $username, 'password' => $password);
         } elseif (preg_match('/^\d{11}$/', $username)) {
-            $credentials = array('phone' => $username, 'password' => $password);
+            $this->credentials = array('phone' => $username, 'password' => $password);
         }
-        if (!empty($credentials) && Auth::once($credentials)) {
+        if (!empty($this->credentials) && Auth::once($this->credentials)) {
             return Auth::id();
         }
-        $credentials = array('username' => $username, 'password' => $password);
-        if (Auth::once($credentials)) {
+        $this->credentials = array('username' => $username, 'password' => $password);
+        if (Auth::once($this->credentials)) {
             return Auth::id();
         }
 

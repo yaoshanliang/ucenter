@@ -38,10 +38,6 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                if (($url = Session::get('url')) && ($referer = $url['intended'])) {
-                    Session::put('goto', $referer);
-                    return redirect()->guest('auth/login?goto=' . urlencode($referer));
-                }
                 return redirect()->guest('auth/login');
             }
         }
