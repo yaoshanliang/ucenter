@@ -88,7 +88,7 @@ app('api.exception')->register(function (Exception $exception) {
     return app('App\Exceptions\ApiHandler')->render($request, $exception);
 });
 
-Route::get('/oauth/authorize', ['as' => 'oauth.authorize.get', 'middleware' => ['check-authorization-params', 'auth'], 'uses' => 'Oauth\OauthController@getAuthorize']);
-Route::post('/oauth/authorize', ['as' => 'oauth.authorize.post', 'middleware' => ['csrf', 'check-authorization-params', 'auth'], 'uses' => 'Oauth\OauthController@postAuthorize']);
+Route::get('/oauth/authorize', ['as' => 'oauth.authorize.get', 'middleware' => ['check-authorization-params'], 'uses' => 'Oauth\OauthController@getAuthorize']);
+Route::post('/oauth/authorize', ['as' => 'oauth.authorize.post', 'middleware' => ['csrf', 'check-authorization-params'], 'uses' => 'Auth\AuthController@postAuthorize']);
 Route::get('/oauth/wechatCallback', 'Auth\AuthController@wechatCallback');
 Route::post('/oauth/verifyPassword', 'Auth\AuthController@verifyPassword');
