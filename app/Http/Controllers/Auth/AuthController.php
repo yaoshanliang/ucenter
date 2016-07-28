@@ -164,7 +164,8 @@ class AuthController extends Controller
             return back()->withErrors('当前微信未绑定账户，请用账号登陆！');
         }
         Auth::loginUsingId($user['user_id']);
-        $this->afterLogin($request, $response, array('wechat' => $wechatUser['nickname']));
+        $this->credentials = array('wechat' => $wechatUser['nickname']);
+        $this->afterLogin($request, $response);
 
         return redirect()->intended();
     }
@@ -173,13 +174,13 @@ class AuthController extends Controller
     private function afterLogin(Request $request, Response $response)
     {
         $this->initRole($request, $response);
-        $this->loginLog($request, $this->credentials);
+        $this->loginLog($request);
         $this->accessToken();
     }
 
     // 登录日志
-    private function loginLog($request, $credentials) {
-        $loginWay = key($credentials) . ' : ' . current($credentials);
+    private function loginLog($request) {
+        $loginWay = key($this->credentials) . ' : ' . current($this->credentials);
         $ips = $request->ips();
         $ip = $ips[0];
         $ips = implode(',', $ips);
