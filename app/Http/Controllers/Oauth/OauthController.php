@@ -5,11 +5,13 @@ use App\Http\Controllers\Controller;
 use Authorizer;
 use Auth;
 use Illuminate\Http\Request;
+use EasyWeChat\Foundation\Application;
 
 class OauthController extends Controller
 {
-    public function getAuthorize()
+    public function getAuthorize(Application $wechat)
     {
+        $wechat->oauth->redirect();
         $authParams = Authorizer::getAuthCodeRequestParams();
         $formParams = array_except($authParams,'client');
         $formParams['client_id'] = $authParams['client']->getId();
