@@ -62,12 +62,13 @@
                                     <a class="btn btn-link" href="{{ url('/password/phone') }}">忘记密码</a>
                                     <a class="btn btn-link" href="{{ url('/auth/register') }}">注册账户</a>
                                     <img style="cursor:pointer; padding-left:20px;" src="{{ asset('/images/icon24_appwx_logo.png') }}"
-                                        onclick="javascript:window.location.href='<?php echo
-                                        "https://open.weixin.qq.com/connect/qrconnect?appid=" . env('WECHAT_APPID') .
-                                        "&redirect_uri=" . urlencode(url('oauth/wechatCallback')) .
-                                        "&goto=" . urlencode($_GET['redirect_uri']) .
-                                        "&response_type=code&scope=snsapi_login&state=" . md5(time()) .
-                                        "#wechat_redirect"; ?>'">
+                                        onclick="javascript:window.location.href='<?php
+                                            $wechatLoginA = "https://open.weixin.qq.com/connect/qrconnect?appid=" . env('WECHAT_APPID') .
+                                                "&redirect_uri=" . urlencode(url('oauth/wechatCallback?goto=' . $_GET['redirect_uri']));
+                                            $wechatLoginB = "&response_type=code&scope=snsapi_login&state=" . md5(time()) .
+                                                "#wechat_redirect";
+                                            echo $wechatLoginA . ('&failed=' . $wechatLoginA . $wechatLoginB) . $wechatLoginB;
+                                        ?>'">
                                 </div>
                             </div>
                         </div>

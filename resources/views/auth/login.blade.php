@@ -69,7 +69,7 @@
                                 <img style="cursor:pointer; padding-left:20px;" src="{{ asset('/images/icon24_appwx_logo.png') }}"
                                     onclick="javascript:window.location.href='<?php echo
                                     "https://open.weixin.qq.com/connect/qrconnect?appid=" . env('WECHAT_APPID') .
-                                    "&redirect_uri=" . urlencode(url('oauth/wechatCallback')) .
+                                    "&redirect_uri=" . urlencode(url('oauth/wechatCallback?goto=/auth/login')) .
                                     "&response_type=code&scope=snsapi_login&state=" . md5(time()) .
                                     "#wechat_redirect"; ?>'">
                             </div>
