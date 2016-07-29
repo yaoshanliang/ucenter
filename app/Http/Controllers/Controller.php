@@ -240,4 +240,9 @@ abstract class Controller extends BaseController
         $appId = Session::get('current_app_id') ? Session::get('current_app_id') : 1;
         Queue::push(new UserLog($appId, Auth::id(), $type, $title, $data, $sql, $ip, $ips));
     }
+
+    public function getAppByClientId($clientId)
+    {
+        return Cache::get(Config::get('cache.clients') . $clientId);
+    }
 }

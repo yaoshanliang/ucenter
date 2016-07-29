@@ -184,7 +184,12 @@ class AuthController extends Controller
         $ips = $request->ips();
         $ip = $ips[0];
         $ips = implode(',', $ips);
-        $log = Queue::push(new UserLog(1, Auth::id(), 'S', '登录', $loginWay, '', $ip, $ips));
+        $appId = 1;
+        if ($request->client_id) {
+            $app = $this->getAppByClientId($request->client_id);
+            $appId = $app['id'];
+        }
+        $log = Queue::push(new UserLog($appId, Auth::id(), 'S', '登录', $loginWay, '', $ip, $ips));
     }
 
     // 验证密码
