@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">授权</div>
+                <div class="panel-heading">统一身份认证</div>
                 <div class="panel-body">
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
@@ -28,11 +28,14 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <p class="lead">{{ $client->getName() }}</p>
-                                将访问您的如下资料：
-                                <ul>
-                                <li class="text-success">个人信息</li>
+                                <label class="col-md-2 control-label"></label>
+                                <div class="col-md-10">
+                                    <p class="lead">{{ $client->getName() }}</p>
+                                    将访问您的如下资料：
+                                    <ul>
+                                    <li class="text-success">个人信息</li>
                                 </ul>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-6">

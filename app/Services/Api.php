@@ -4,8 +4,8 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Lang;
 
-define('SUCCESS', 1);
-define('ERROR', 0);
+define('SUCCESS', 0);
+define('ERROR', 1);
 define('BADREQUEST', 1000);
 define('UNAUTHORIZED', 1001);
 define('FORBIDDEN', 1003);
