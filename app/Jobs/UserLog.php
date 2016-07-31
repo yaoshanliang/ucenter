@@ -40,8 +40,9 @@ class UserLog extends Job implements SelfHandling, ShouldBeQueued {
      */
     public function handle()
     {
-        echo '[', date('Y-m-d H:i:s'), ']', '[User Log]...';
-        $user_log = UserLogModel::create(array_merge($this->log, array('created_at' => date('Y-m-d H:i:s'))));
+        $popedAt = date('Y-m-d H:i:s');
+		echo '[', $popedAt, ']', '[User Log]...';
+        $user_log = UserLogModel::create(array_merge($this->log, array('poped_at' => $popedAt, 'created_at' => date('Y-m-d H:i:s'))));
         echo 'OK!';
     }
 
