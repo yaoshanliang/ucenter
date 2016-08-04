@@ -46,7 +46,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'getLogout', 'postAuthorize']);
+        $this->middleware('guest', ['except' => ['getLogout', 'postAuthorize']]);
     }
 
     /**
