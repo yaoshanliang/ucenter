@@ -96,7 +96,7 @@ function openDetails(nTr, id) {
         },
 
         success: function (data, textStatus) {
-            if (data.code === 1) {
+            if (data.code === 0) {
                 data = data.data;
                 var details = '<tr role="row"><td colspan=7><table width=100%>';
                 if(data.length == 0) {

@@ -54,7 +54,7 @@
 <script>
 function choose_role(user_id) {
     $.getJSON('/admin/user/role/' + user_id, function(data) {
-        if (data.code === 1) {
+        if (data.code === 0) {
             data = data.data;
             var html;
             for (var i = 0; i < data.length; i++) {

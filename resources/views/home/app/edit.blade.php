@@ -103,7 +103,7 @@ function generateSecret()
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         success: function(data) {
-            if(data['code'] === 1) {
+            if(data['code'] === 0) {
                 showSuccessTip(data['message']);
                 $("input[name='secret']").val(data['data']);
             } else {
