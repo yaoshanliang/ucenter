@@ -145,9 +145,9 @@ class AppController extends Controller
         if ($appAccess) {
             $type = ('access' == $request->type) ? '接入' : '退出';
             $this->log('A', '申请' . $type . '应用', "app_id: $request->app_id, user_id: " . Auth::id());
-            return $this->response->array(array('code' => 1, 'message' => '申请成功，待审核'));
+            return $this->response->array(array('code' => 0, 'message' => '申请成功，待审核'));
         } else {
-            return $this->response->array(array('code' => 0, 'message' => '申请失败'));
+            return $this->response->array(array('code' => 1, 'message' => '申请失败'));
         }
     }
 
@@ -162,9 +162,9 @@ class AppController extends Controller
         if ($appAccess) {
             $type = ('access' == $request->type) ? '接入' : '退出';
             $this->log('A', '取消申请' . $type . '应用', "app_id: $request->app_id, user_id: " . Auth::id());
-            return $this->response->array(array('code' => 1, 'message' => '取消成功'));
+            return $this->response->array(array('code' => 0, 'message' => '取消成功'));
         } else {
-            return $this->response->array(array('code' => 0, 'message' => '取消失败'));
+            return $this->response->array(array('code' => 1, 'message' => '取消失败'));
         }
     }
 
@@ -182,7 +182,7 @@ class AppController extends Controller
 		Session::put('current_role_title', $role['title']);
 		Session::put('current_role_id', $role['id']);
 
-        return $this->response->array(array('code' => 1, 'message' => '切换应用成功'));
+        return $this->response->array(array('code' => 0, 'message' => '切换应用成功'));
     }
 
     // 切换角色
@@ -196,10 +196,10 @@ class AppController extends Controller
 
         // temp solution
         if (!in_array($oldRole['name'], array('developer', 'admin')) && in_array($role['name'], array('developer', 'admin'))) {
-            return $this->response->array(array('code' => 1, 'message' => '切换角色成功', 'data' => array('redirect' => '/admin/index')));
+            return $this->response->array(array('code' => 0, 'message' => '切换角色成功', 'data' => array('redirect' => '/admin/index')));
         }
 
-        return $this->response->array(array('code' => 1, 'message' => '切换角色成功', 'data' => array('redirect' => '')));
+        return $this->response->array(array('code' => 0, 'message' => '切换角色成功', 'data' => array('redirect' => '')));
     }
 
     // 切换到管理后台
@@ -224,7 +224,7 @@ class AppController extends Controller
 		Session::put('current_role_title', $role['title']);
 		Session::put('current_role_id', $role['id']);
 
-        return $this->response->array(array('code' => 1, 'message' => '切换成功', 'data' => array('redirect' => '/admin/index')));
+        return $this->response->array(array('code' => 0, 'message' => '切换成功', 'data' => array('redirect' => '/admin/index')));
     }
 
     // 创建应用
@@ -421,12 +421,12 @@ class AppController extends Controller
 
             $this->log('D', '删除应用', $appTitles);
 
-            return $this->response->array(array('code' => 1, 'message' => '删除成功'));
+            return $this->response->array(array('code' => 0, 'message' => '删除成功'));
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;
 
-            return $this->response->array(array('code' => 0, 'message' => '删除失败'));
+            return $this->response->array(array('code' => 1, 'message' => '删除失败'));
         }
     }
 }

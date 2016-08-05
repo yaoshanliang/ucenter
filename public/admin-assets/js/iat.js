@@ -1,3 +1,5 @@
+SUCCESS = 0;
+
 /**
  * 显示操作成功信息
  *
@@ -78,7 +80,7 @@ function submit_datatable(type, datatable_id, url, ids, tip_msg, tip_time) {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         success: function(data) {
-            if(data['code'] === 1) {
+            if(data['code'] === SUCCESS) {
                 if (type == 'delete' && url == '/admin/app/delete') {
                     window.location.reload();
                 } else {
@@ -185,7 +187,7 @@ function change_app(url, app_id) {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         success: function(data) {
-            if(data['code'] === 1) {
+            if(data['code'] === SUCCESS) {
                 window.location.reload();
                 showSuccessTip(data['message']);
             } else {
@@ -207,7 +209,7 @@ function change_role(url, role_id) {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         success: function(data) {
-            if(data['code'] === 1) {
+            if(data['code'] === SUCCESS) {
                 window.location.href = data['data']['redirect'];
                 showSuccessTip(data['message']);
             } else {
@@ -223,7 +225,7 @@ function change_role(url, role_id) {
 // 选中角色
 function chooseRole(user_id) {
     $.getJSON('/admin/user/role/' + user_id, function(data) {
-        if (data.code === 1) {
+        if (data.code === SUCCESS) {
             data = data.data;
             var html;
             for (var i = 0; i < data.length; i++) {
@@ -265,7 +267,7 @@ function selectOrUnselectRole(user_id, role_id) {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         success: function(data) {
-            if(data['code'] === 1) {
+            if(data['code'] === SUCCESS) {
                 showSuccessTip(data['message']);
             } else {
                 showFailTip(data['message']);
@@ -286,7 +288,7 @@ function selectOrUnselectPermission(role_id, permission_id) {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         success: function(data) {
-            if(data['code'] === 1) {
+            if(data['code'] === SUCCESS) {
                 showSuccessTip(data['message']);
             } else {
                 showFailTip(data['message']);
@@ -327,7 +329,7 @@ function apply() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         success: function(data) {
-            if(data['code'] === 1) {
+            if(data['code'] === SUCCESS) {
                 showSuccessTip(data['message']);
                 $('#app_apply').modal('hide');
                 $('#app_all').DataTable().draw(false);//保持分页
@@ -365,7 +367,7 @@ function handleApply() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         success: function(data) {
-            if(data['code'] === 1) {
+            if(data['code'] === SUCCESS) {
                 showSuccessTip(data['message']);
                 $('#handle_app_apply').modal('hide');
                 $('#app_apply').DataTable().draw(false);
@@ -388,7 +390,7 @@ function redirectAdmin(app_id) {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         success: function(data) {
-            if(data['code'] === 1) {
+            if(data['code'] === SUCCESS) {
                 window.location.href = data['data']['redirect'];
                 showSuccessTip(data['message']);
             } else {

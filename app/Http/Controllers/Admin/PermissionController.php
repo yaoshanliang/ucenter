@@ -181,12 +181,12 @@ class PermissionController extends Controller
             // 日志
             $this->log('D', '删除权限', $data);
 
-            return $this->response->array(array('code' => 1, 'message' => '删除成功'));
+            return $this->response->array(array('code' => 0, 'message' => '删除成功'));
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;
 
-            return $this->response->array(array('code' => 0, 'message' => '删除失败'));
+            return $this->response->array(array('code' => 1, 'message' => '删除失败'));
         }
     }
 }

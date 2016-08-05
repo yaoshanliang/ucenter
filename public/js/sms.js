@@ -1,3 +1,5 @@
+SUCCESS = 0;
+
 function sendCode() {
     var phone = $('input[name="phone"]').val();
     if (phone.length != 11) {
@@ -14,7 +16,7 @@ function sendCode() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         success: function(data) {
-            if(data['code'] === 1) {
+            if(data['code'] === SUCCESS) {
                 showSuccessTip(data['message']);
                 var InterValObj;
                 var total_count = 60;//总倒计时秒数
@@ -69,7 +71,7 @@ function validateCode() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         success: function(data) {
-            if(data['code'] === 1) {
+            if(data['code'] === SUCCESS) {
                 confirmEdit('phone');
             } else {
                 showFailTip(data['message']);

@@ -143,7 +143,7 @@ class UserController extends Controller
             UserRole::where('role_id', '<>', $appRole->role_id)->where('app_id', Session::get('current_app_id'))->where('user_id', $request->user_id)->delete();
         }
 
-        return $this->response->array(array('code' => 1, 'message' => '已处理'));
+        return $this->response->array(array('code' => 0, 'message' => '已处理'));
     }
 
     // 用户信息字段
@@ -251,12 +251,12 @@ class UserController extends Controller
             }
             $this->log('D', '移除用户', $data);
 
-            return $this->response->array(array('code' => 1, 'message' => '移除成功'));
+            return $this->response->array(array('code' => 0, 'message' => '移除成功'));
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;
 
-            return $this->response->array(array('code' => 0, 'message' => '移除失败'));
+            return $this->response->array(array('code' => 1, 'message' => '移除失败'));
         }
     }
 
@@ -276,7 +276,7 @@ class UserController extends Controller
             }
         }
 
-        return $this->response->array(array('code' => 1, 'message' => '获取成功', 'data' => $roles));
+        return $this->response->array(array('code' => 0, 'message' => '获取成功', 'data' => $roles));
     }
 
     // 勾选或取消勾选角色
@@ -326,6 +326,6 @@ class UserController extends Controller
         }
 
         return empty($rs) ? $this->response->array(array('code' => 0, 'message' => $type . '失败')) :
-            $this->response->array(array('code' => 1, 'message' => $type . '成功'));
+            $this->response->array(array('code' => 0, 'message' => $type . '成功'));
     }
 }

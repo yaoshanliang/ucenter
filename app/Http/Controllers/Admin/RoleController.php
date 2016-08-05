@@ -83,7 +83,7 @@ class RoleController extends Controller
             }
         }
 
-        return $this->response->array(array('code' => 1, 'message' => '获取权限成功', 'data' => $permissions));
+        return $this->response->array(array('code' => 0, 'message' => '获取权限成功', 'data' => $permissions));
     }
 
     // 当前角色已拥有权限列表
@@ -219,7 +219,7 @@ class RoleController extends Controller
         }
 
         return empty($rs) ? $this->response->array(array('code' => 0, 'message' => $type . '失败')) :
-            $this->response->array(array('code' => 1, 'message' => $type . '成功'));
+            $this->response->array(array('code' => 0, 'message' => $type . '成功'));
     }
 
     // 删除
@@ -252,12 +252,12 @@ class RoleController extends Controller
             // 日志
             $this->log('D', '删除角色', $data);
 
-            return $this->response->array(array('code' => 1, 'message' => '删除成功'));
+            return $this->response->array(array('code' => 0, 'message' => '删除成功'));
         } catch (Exception $e) {
             DB::rollBack();
             throw $e;
 
-            return $this->response->array(array('code' => 0, 'message' => '删除失败'));
+            return $this->response->array(array('code' => 1, 'message' => '删除失败'));
         }
     }
 }

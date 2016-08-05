@@ -55,7 +55,7 @@ class PasswordController extends Controller
         $validateCode = $this->api
             ->with(['phone' => $request->phone, 'code' => $request->code, 'access_token' => $request->access_token])
             ->put('api/sms/code');
-        if (1 !== $validateCode['code']) {
+        if (0 !== $validateCode['code']) {
             return redirect()->back()->withInput()->withErrors($validateCode['message']);
         }
 
