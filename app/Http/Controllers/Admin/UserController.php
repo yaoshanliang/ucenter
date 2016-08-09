@@ -325,6 +325,8 @@ class UserController extends Controller
             }
         }
 
+        $this->cacheUserRole($request->user_id);
+
         return empty($rs) ? $this->response->array(array('code' => 0, 'message' => $type . '失败')) :
             $this->response->array(array('code' => 0, 'message' => $type . '成功'));
     }

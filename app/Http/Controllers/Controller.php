@@ -130,9 +130,13 @@ abstract class Controller extends BaseController
     }
 
     // cache user role
-    function cacheUserRole()
+    function cacheUserRole($user_id = 0)
     {
-        $userRolesArray = UserRole::get();
+        $userRolesArray = UserRole::where(function ($query) use ($user_id) {
+            if ($user_id) {
+                $query->where('user_id', $user_id);
+            }
+        })->get();
         foreach ($userRolesArray as $v) {
             $roles[$v->app_id][$v->user_id][] = $v->role_id;
         }
