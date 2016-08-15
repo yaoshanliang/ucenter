@@ -22,13 +22,11 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="{{url('/')}}">{{ Cache::get('settings:site_name') }}</a>
+                <a class="navbar-brand" href="{{url('/')}}">{{ Cache::get('settings:site_sub_name') }}</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    @if (isset($app_info['title']))
-                        <li><a href={{$app_info['home_url']}} target="_blank">{{$app_info['title']}}</a></li>
-                    @endif
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
