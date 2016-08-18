@@ -48,6 +48,7 @@ php artisan migrate
 ```
 php artisan db:seed
 ```
+用户名：admin 密码：123456
 
 ##Q&A
 
