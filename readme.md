@@ -48,6 +48,13 @@ php artisan migrate
 ```
 php artisan db:seed
 ```
+
+7、cache写入
+
+访问/api/sys/cache
+
+8、登录
+
 用户名：admin 密码：123456
 
 ##Q&A
