@@ -8,7 +8,7 @@ use Illuminate\Http\Response;
 use App\Services\Api;
 
 use Queue;
-use App\Jobs\AppLog;
+use App\Model\AppLog;
 
 class LogController extends ApiController
 {
@@ -24,18 +24,32 @@ class LogController extends ApiController
     {
         // 验证
         $this->apiValidate($request->all(), [
-            'type' => 'required|in:A,D,S,U',
-            'title' => 'required',
-            'data' => 'required'
         ]);
 
-        // 日志队列
-        $ips = $request->ips();
-        $ip = $ips[0];
-        $ips = implode(',', $ips);
-        Queue::push(new AppLog(parent::getAppId(), parent::getUserId(), $request->type, $request->title, $request->data, "$request->sql", $ip, $ips));
+        AppLog::create([
+            'app_id' => parent::getAppId(),
+            'user_id' => "$request->user_id",
+            'request_method' => "$request->request_method",
+            'request_url' => "$request->request_url",
+            'request_params' => "$request->request_params",
+            'response_code' => "$request->response_code",
+            'response_message' => "$request->response_message",
+            'response_data' => "$request->response_data",
+            'request_ip' => "$request->request_ip",
+            'user_agent' => "$request->user_agent",
+            'request_at' => "$request->request_at",
+            'pushed_at' => "$request->pushed_at",
+            'poped_at' => "$request->poped_at",
+            'created_at' => $this->getMillisecond(),
+            'request_time' => date('Y-m-d H:i:s', (int)$request->request_at),
+        ]);
 
         return Api::apiReturn(SUCCESS, '记录成功');
+    }
+
+    public function getMillisecond() {
+        list($s1, $s2) = explode(' ', microtime());
+        return (float)sprintf('%f', (floatval($s1) + floatval($s2)));
     }
 
 }
