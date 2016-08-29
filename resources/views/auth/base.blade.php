@@ -9,6 +9,7 @@
     <link href="{{ asset('/css/app.css') }}" rel="stylesheet">
     <script src="{{ asset('/js/jquery.min.js') }}"></script>
     <script src="/admin-assets/js/iat.js"></script>
+    
 
 </head>
 <body>

@@ -25,6 +25,7 @@
 <!-- iat JavaScript -->
 <script src="{{ asset('admin-assets/js/iat.js') }}"></script>
 
+
 <style>
 table {
     margin-top: 6px !important;

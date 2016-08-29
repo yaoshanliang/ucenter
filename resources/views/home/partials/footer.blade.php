@@ -1,6 +1,7 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ asset('admin-assets/js/bootstrap.min.js') }}"></script>
 
+
 <!-- Metis Menu Plugin JavaScript -->
 <script src="{{ asset('admin-assets/js/metisMenu.min.js') }}"></script>
 
@@ -13,6 +14,7 @@
 
 <!-- icheck JavaScript -->
 <script src="{{ asset('plugin/icheck/icheck.min.js') }}"></script>
+
 <style>
 td.highlight {
     background-color: whitesmoke !important;
