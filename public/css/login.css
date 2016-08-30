@@ -99,16 +99,17 @@ input{
     clear: both;
 }
 .button{
-    width: 18%;
+    width: 12%;
     height: 29px;
     background:  rgba(195, 196, 188, 0.68);
     float: left;
     margin-top: 4%;
     margin-left: 10%;
     border-color: #00bc0c;
-    border-radius: 5px;
+    border-radius: 2px;
     font-size:16px;
-    opacity:.5;
+    opacity:.8;
+    cursor: pointer;
 }
 .register{
     margin-left: 4%;
@@ -116,7 +117,7 @@ input{
 .weChat{
     float: left;
     margin-top: 5%;
-    margin-left: 4%;
+    margin-left: 5%;
     cursor: pointer;
 }
 input:focus{
