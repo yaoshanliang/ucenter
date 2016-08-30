@@ -10,7 +10,7 @@
 <script src="{{ asset('/js/jquery.mousewheel.min.js') }}"  type="text/javascript"></script>
 <script type="text/javascript">
 
-</script> 
+</script>  
 </head>
 <body>
 <div class="top section"></div>
@@ -40,10 +40,10 @@
             <div class="login-input">
                 <form  role="form" method="POST" action="{{ url('/auth/login') }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <font class="font">账号:</font>
-                        <input type="text" class="userName"  name="username" value="{{ old('username') }}" placeholder="用户名/邮箱/手机" style="margin-top:2%;">
-                    <font class="font">密码:</font>
-                        <input type="password" class="password"  name="password" placeholder="密码">
+                    <div><font class="font">账号:</font>
+                        <input type="text" class="userName"  name="username" value="{{ old('username') }}" placeholder="用户名/邮箱/手机" style="margin-top:2%;"></div>
+                    <div><font class="font">密码:</font>
+                        <input type="password" class="password"  name="password" placeholder="密码"></div>
                      @if ($loginFailed)
                         <script src="//captcha.luosimao.com/static/js/api.js"></script>
                         <div class="form-group">
@@ -53,9 +53,9 @@
                             </div>
                         </div>
                         @endif
-                            <input type="checkbox" class="checkbox">
+                        <div><input type="checkbox" class="checkbox">
                             <label>
-                            <font class="rememberPassword" name="remember">记住密码</font></label>
+                            <font class="rememberPassword" name="remember">记住密码</font></label></div>
                     <p class="logIn">
                         <button type="submit" class="button">登录</button>
                         <font class="weChat"><a href="{{ url('/auth/register') }}">注册</a></font>
@@ -81,40 +81,44 @@
 <section id="section6" class="section section6">
   <article class="sectionWrapper section6Wrapper">
   <div class="">
-        <p class="details-title">全球领先、安全、稳定的云计算产品</p></div>
+        <p class="details-title">嘉禄讯汇内部系统</p></div>
 <div class="flash4">
-    <ul>
+    <ul class="ul">
         <li class="first" style="width: 280px; height:405px; overflow: hidden;">
             <div class="imgTop">
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <a href=""><p class="bt_1">全球领先</p><p class="bt_2" ></p></a>
+                <p class="bt_1"><a href="http://www.szjlxh.com/db">数据库</a></p><p class="bt_2" ></p>
             </div>
+            <a href="http://www.szjlxh.com/db"><img src="/images/mysql.png" class="image"></a>
         </li>
         <li style="width: 260px; overflow: hidden; height:350px"">
             <div class="imgTop">
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <a href=""><p class="bt_1">全球领先</p><p class="bt_2"></p></a>
+                <p class="bt_1"><a href="http://www.szjlxh.com/wiki">Wiki</a></p><p class="bt_2"></p>
             </div>
+            <a href="http://www.szjlxh.com/wiki"><img src="/images/wiki.png" class="image"></a>
         </li>
         <li style="width: 260px; overflow: hidden; height:350px"">
             <div class="imgTop">
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <a href=""><p class="bt_1">全球领先</p><p class="bt_2"></p></a>
+                <p class="bt_1"><a href="http://www.szjlxh.com/book ">图书馆</a></p><p class="bt_2"></p>
             </div>
+            <a href="http://www.szjlxh.com/book "><img src="/images/wordpress.png" class="image"></a>
         </li>
         <li style="width: 260px; overflow: hidden; height:350px"">
             <div class="imgTop">
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <a href=""><p class="bt_1">全球领先</p><p class="bt_2"></p></a>
+                <p class="bt_1"><a href="http://www.szjlxh.com/redis">Redis</a></p><p class="bt_2"></p>
             </div>
+            <a href="http://www.szjlxh.com/redis"><img src="/images/redis.png" class="image"></a>
         </li>
     </ul>   
 </div>

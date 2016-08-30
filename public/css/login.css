@@ -2,7 +2,6 @@
 body{
     background: #232323;
     margin: 0px;
-    background: url(/images/background2.jpg) no-repeat center;
     font-family: "Roboto", Helvetica, Arial, sans-serif;
 }
 a{
@@ -20,7 +19,7 @@ ul ,li {
 .login{
     z-index: 100;
     /*opacity: .9;*/
-    width: 35%;
+    width: 40%;
     height: 52%;
     margin-top: 10%;
     padding-top: 1px;
@@ -31,8 +30,8 @@ ul ,li {
     width: 90%;
     height: 90%;
     margin: 18px auto;
-    background: rgba(195, 196, 188, 0.68);
-    /*background: rgba(238, 237, 241, 0.68);*/
+    /*background: rgba(195, 196, 188, 0.68);*/
+    background: rgba(255, 255, 255, 0.3);
     /*opacity: .9;*/
     border-radius: 5px;
 }
@@ -41,20 +40,21 @@ ul ,li {
     width: 100%;
     height: 10%;
     opacity: 1;
-    font-size: 19px;
+    font-size: 17px;
     color: #232323;
     text-align: center;
     border-radius: 5px;
     margin-top: 0px;
 }
 .login-font1{
-    padding-top: 13px;
+    padding-top: 15px;
     width: 100%;
     height: 13%;
     /*background: rgba(7, 7, 3, 0.3);*/
-    background: rgba(122, 122, 124, 0.3);
+    /*background: rgba(122, 122, 124, 0.3);*/
+    background:rgba(245, 245, 245, 0.26);
     opacity: 1;
-    font-size: 22px;
+    font-size: 20px;
     color: white;
     border-radius: 5px;
     margin-top: 0px;
@@ -62,7 +62,7 @@ ul ,li {
 }
 input{
     width: 62%;
-    height: 35px;
+    height: 30px;
     background:  rgba(122, 122, 124, 0.3);
     border: 0px solid  rgba(122, 122, 124, 0.3);
     border-radius: 5px;
@@ -86,7 +86,7 @@ input{
 }
 .checkbox{
     width: 4%;
-    height: 18px;
+    height: 14px;
     float: left;
     cursor: pointer;
     margin-left: 10%;
@@ -99,16 +99,17 @@ input{
     clear: both;
 }
 .button{
-    width: 18%;
+    width: 12%;
     height: 29px;
     background:  rgba(195, 196, 188, 0.68);
     float: left;
     margin-top: 4%;
     margin-left: 10%;
     border-color: #00bc0c;
-    border-radius: 5px;
+    border-radius: 2px;
     font-size:16px;
-    opacity:.5;
+    opacity:.8;
+    cursor: pointer;
 }
 .register{
     margin-left: 4%;
@@ -116,11 +117,11 @@ input{
 .weChat{
     float: left;
     margin-top: 5%;
-    margin-left: 4%;
+    margin-left: 5%;
     cursor: pointer;
 }
 input:focus{
-    border: 1px solid #00bc0c;
+    border-color: #00bc0c;
 }
 .arrow_down {
     position: absolute;
@@ -132,7 +133,11 @@ input:focus{
     overflow: auto;
     _height: 1% ;
 }
-
+.ul{
+    display:block;
+    height:100%;
+    margin:0px auto;
+}
 
 /* 第二页部分*/
 .details{
@@ -154,7 +159,7 @@ input:focus{
     margin:0px auto;
     margin-bottom:20px;
     position:relative; 
-    margin-top: 8%;
+    margin-top: 5%;
 }
 .flash4 ul li{
     border:.1px solid #dbdbdd;
@@ -164,7 +169,6 @@ input:focus{
 }
 .flash4 ul li .imgTop .tm{
     opacity:1; 
-    cursor:pointer;
 }
 
 .flash4 ul li .imgCon{
@@ -179,8 +183,8 @@ input:focus{
 }
 .flash4 ul li .imgBot p.bt_1{
     width:260px;
-    line-height:45px;
-    font-size:16px;
+    line-height:75px;
+    font-size:20px;
     color:#232323;
     text-indent:20px;
     float:left;
@@ -193,7 +197,7 @@ input:focus{
     display:none;
 }
 .flash4 ul li .imgBot p.bt_2 span{
-    font-size:14px;
+    font-size:14px; 
     color:#232323;
     padding-right:30px;
 }
@@ -206,7 +210,12 @@ input:focus{
     right:0px;
     bottom:0px;
 }
-
+.image{
+    width: 61.8%;
+    display: block;
+    margin: 20% auto;
+    cursor: pointer;
+}
 
 /* 整屏切换部分*/
 html, body {
