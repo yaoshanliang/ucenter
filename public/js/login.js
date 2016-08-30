@@ -23,7 +23,7 @@ $(function() {
 		$('.gem-back').css({width:imgtopW*0.375,height:imgtopH*0.19,marginTop:imgtopH*0.259});
 	}
 function changebg(){
-var random_bg=Math.floor(Math.random()*3+1);
+var random_bg=Math.floor(Math.random()*10+1);
 var bg='url(/images/background'+random_bg+'.jpg) no-repeat center';
     $("body").css("background",bg);
 }
