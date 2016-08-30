@@ -1,0 +1,384 @@
+/* 第一页部分*/
+body{
+    background: #232323;
+    margin: 0px;
+    background: url(/images/background2.jpg) no-repeat center;
+    font-family: "Roboto", Helvetica, Arial, sans-serif;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+ul ,li {
+    list-style: none;
+}
+.container{
+    width: 100%;
+    height: 700px;
+    padding-top: 1px;
+}
+.login{
+    z-index: 100;
+    /*opacity: .9;*/
+    width: 35%;
+    height: 52%;
+    margin-top: 10%;
+    padding-top: 1px;
+    border-radius: 5px;
+    margin-left: 60%;
+}
+.login-first{
+    width: 90%;
+    height: 90%;
+    margin: 18px auto;
+    background: rgba(195, 196, 188, 0.68);
+    /*background: rgba(238, 237, 241, 0.68);*/
+    /*opacity: .9;*/
+    border-radius: 5px;
+}
+.login-font{
+    padding-top: 15px;
+    width: 100%;
+    height: 10%;
+    opacity: 1;
+    font-size: 19px;
+    color: #232323;
+    text-align: center;
+    border-radius: 5px;
+    margin-top: 0px;
+}
+.login-font1{
+    padding-top: 13px;
+    width: 100%;
+    height: 13%;
+    /*background: rgba(7, 7, 3, 0.3);*/
+    background: rgba(122, 122, 124, 0.3);
+    opacity: 1;
+    font-size: 22px;
+    color: white;
+    border-radius: 5px;
+    margin-top: 0px;
+    border-bottom: 1px solid silver;
+}
+input{
+    width: 62%;
+    height: 35px;
+    background:  rgba(122, 122, 124, 0.3);
+    border: 0px solid  rgba(122, 122, 124, 0.3);
+    border-radius: 5px;
+    color: #232323;
+    margin-left: 4%;
+    margin-top: 5%;
+    font-size: 17px;
+}
+.font{
+    padding-left: 10%;
+    }
+.userName{
+    background-color:  rgba(122, 122, 124, 0.3);
+    background-size: 6% 58%;
+    padding-left: 3%;
+}
+.password{
+    background-color:  rgba(122, 122, 124, 0.3);
+    background-size: 6% 58%;
+    padding-left: 3%;
+}
+.checkbox{
+    width: 4%;
+    height: 18px;
+    float: left;
+    cursor: pointer;
+    margin-left: 10%;
+}
+.rememberPassword{
+    float: left;
+    margin-top: 4%;
+}
+.logIn{
+    clear: both;
+}
+.button{
+    width: 18%;
+    height: 29px;
+    background:  rgba(195, 196, 188, 0.68);
+    float: left;
+    margin-top: 4%;
+    margin-left: 10%;
+    border-color: #00bc0c;
+    border-radius: 5px;
+    font-size:16px;
+    opacity:.5;
+}
+.register{
+    margin-left: 4%;
+}
+.weChat{
+    float: left;
+    margin-top: 5%;
+    margin-left: 4%;
+    cursor: pointer;
+}
+input:focus{
+    border: 1px solid #00bc0c;
+}
+.arrow_down {
+    position: absolute;
+    bottom: 4%;
+    left: 49%;
+    z-index: 100;
+}
+.clearfix{
+    overflow: auto;
+    _height: 1% ;
+}
+
+
+/* 第二页部分*/
+.details{
+    width: 85%;
+    height: 88%;
+    margin:  0px auto;
+}
+.details-title{
+    width: 100%;
+    height: 12%;
+    background: #f6f6f6;
+    font-size: 24px;
+    text-align: center;
+    padding-top: 3%;
+}
+.flash4{
+    width:85%;
+    height:450px;
+    margin:0px auto;
+    margin-bottom:20px;
+    position:relative; 
+    margin-top: 8%;
+}
+.flash4 ul li{
+    border:.1px solid #dbdbdd;
+   /* position:relative;
+    overflow:hidden;*/
+    float:left;
+}
+.flash4 ul li .imgTop .tm{
+    opacity:1; 
+    cursor:pointer;
+}
+
+.flash4 ul li .imgCon{
+    width:280px;
+    height:405px;
+}
+.flash4 ul li .imgBot{
+    width:280px;
+    height:100px;
+    background:#e5e6e6; 
+    margin-top:-424px;
+}
+.flash4 ul li .imgBot p.bt_1{
+    width:260px;
+    line-height:45px;
+    font-size:16px;
+    color:#232323;
+    text-indent:20px;
+    float:left;
+}
+.flash4 ul li .imgBot p.bt_2{
+    width:230px;
+    height:45px;
+    line-height:45px;
+    float:left;
+    display:none;
+}
+.flash4 ul li .imgBot p.bt_2 span{
+    font-size:14px;
+    color:#232323;
+    padding-right:30px;
+}
+
+.flash4 ul li.first{
+    width:280px;
+}
+.flash4 ul li.fast{
+    position:absolute;
+    right:0px;
+    bottom:0px;
+}
+
+
+/* 整屏切换部分*/
+html, body {
+    width: 100%;
+    height: 100%;
+}
+.section .mt20 {
+    margin: 0;
+}
+.top {
+    background:#fff;
+    line-height:30px;
+    text-align:center;}
+.foot {
+    z-index: 101;
+}
+section, article {
+    width: 100%;
+    //min-width: 1000px;
+    height: 100%;
+    position: relative;
+}
+article .txthide {
+    text-indent: -999999em;
+    overflow: hidden;
+    line-height: 0;
+    font-size: 0px;
+    display: none;
+}
+.sectionTitle {
+    width: 100%;
+    height: 55%;
+    margin: 0 auto;
+    padding-top: 0px;
+    text-align: center;
+    position: absolute;
+    top: 7%;
+    left: 0;
+    opacity: 0;
+    -webkit-transform: translateY(-30px);
+    -ms-transform: translateY(-30px);
+    transform: translateY(-30px);
+    -webkit-transition: all 1s ease-out;
+    transition: all 1s ease-out;
+    z-index: 8;
+}
+.fadeInDown .sectionTitle {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
+}
+.sectionBtndiv {
+    width: 100%;
+    position: absolute;
+    bottom: auto;
+    left: 0px;
+    text-align: center;
+    z-index: 10;
+}
+.sectionBtnsub img {
+    width: 100%;
+}
+.sectionbg {
+    width: 100%;
+    height: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+_width:expression((document.documentElement.clientWidth||document.body.clientWidth)>1920?"1920px":"100%");
+}
+.section1, .section2, .section3, .section4, .sectionbg5 {
+    -webkit-background-size: 100% auto;
+    background-size: 100% auto;
+    background-position: bottom center;
+    background-repeat: no-repeat;
+}
+.section6 {
+    background: #f6f6f6;
+}
+.secitonbottombg {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 20%;
+    left: 0px;
+    z-index: 1;
+}
+.section1 .secitonbottombg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.section2 .secitonbottombg img, .section5 .secitonbottombg img, .section6 .secitonbottombg img {
+    width: 70%;
+    max-width: 1000px;
+_width:expression((document.documentElement.clientWidth||document.body.clientWidth)>100?"1000px":"70%");
+}
+.section3 .secitonbottombg img, .section4 .secitonbottombg img {
+    width: 79%;
+    max-width: 1128px;
+_width:expression((document.documentElement.clientWidth||document.body.clientWidth)>100?"1128px":"79%");
+}
+.section1 .secitonbottombg img {
+    width: 100%;
+    max-width: 1622px;
+    height: auto;
+    max-height: 705px;
+_width:expression((document.documentElement.clientWidth||document.body.clientWidth)>100?"1622px":"100%");
+}
+.section6 .secitonbottombg img {
+    height: auto;
+    max-height: 630px;
+}
+.section1 .sectionTitle {
+    text-align: center;
+    opacity: 1;
+    top: 28%;
+    _top: 26%;
+    left: 20%;
+    z-index: 30;
+}
+.section1 .sectionTitle h2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 52%;
+    width: 100%;
+    text-align: center;
+}
+.section1 .sectionTitle h2 img {
+    height: 100%;
+    width: auto;
+}
+.section1 .dload {
+    position: absolute;
+    top: 60%;
+    left: 0;
+    height: 40%;
+    width: 100%;
+    text-align: center;
+}
+.section1 .iph_dload {
+    position: absolute;
+    top: 60%;
+    left: 0;
+    height: 18%;
+    width: 100%;
+    text-align: center;
+}
+.section1 .iph_dload img, .section1 .andr_dload img {
+    height: 100%;
+    width: auto;
+}
+.section1 .andr_dload {
+    position: absolute;
+    top: 85%;
+    left: 0;
+    height: 18%;
+    width: 100%;
+    text-align: center;
+}
+.section6 .secitonbottombg a {
+    position: absolute;
+    left: 0;
+    bottom: 5%;
+    height: 15%;
+    width: 100%;
+    z-index: 99;
+}
+.section6 .secitonbottombg a img {
+    height: 100%;
+    width: auto;
+}
