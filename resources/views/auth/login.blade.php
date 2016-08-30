@@ -10,7 +10,7 @@
 <script src="{{ asset('/js/jquery.mousewheel.min.js') }}"  type="text/javascript"></script>
 <script type="text/javascript">
 
-</script> 
+</script>  
 </head>
 <body>
 <div class="top section"></div>
@@ -40,10 +40,10 @@
             <div class="login-input">
                 <form  role="form" method="POST" action="{{ url('/auth/login') }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <font class="font">账号:</font>
-                        <input type="text" class="userName"  name="username" value="{{ old('username') }}" placeholder="用户名/邮箱/手机" style="margin-top:2%;">
-                    <font class="font">密码:</font>
-                        <input type="password" class="password"  name="password" placeholder="密码">
+                    <div><font class="font">账号:</font>
+                        <input type="text" class="userName"  name="username" value="{{ old('username') }}" placeholder="用户名/邮箱/手机" style="margin-top:2%;"></div>
+                    <div><font class="font">密码:</font>
+                        <input type="password" class="password"  name="password" placeholder="密码"></div>
                      @if ($loginFailed)
                         <script src="//captcha.luosimao.com/static/js/api.js"></script>
                         <div class="form-group">
@@ -53,9 +53,9 @@
                             </div>
                         </div>
                         @endif
-                            <input type="checkbox" class="checkbox">
+                        <div><input type="checkbox" class="checkbox">
                             <label>
-                            <font class="rememberPassword" name="remember">记住密码</font></label>
+                            <font class="rememberPassword" name="remember">记住密码</font></label></div>
                     <p class="logIn">
                         <button type="submit" class="button">登录</button>
                         <font class="weChat"><a href="{{ url('/auth/register') }}">注册</a></font>
@@ -83,7 +83,7 @@
   <div class="">
         <p class="details-title">全球领先、安全、稳定的云计算产品</p></div>
 <div class="flash4">
-    <ul>
+    <ul class="ul">
         <li class="first" style="width: 280px; height:405px; overflow: hidden;">
             <div class="imgTop">
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
