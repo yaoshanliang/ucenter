@@ -134,6 +134,7 @@ input:focus{
     _height: 1% ;
 }
 .ul{
+    width: 1148px;
     display:block;
     height:100%;
     margin:0px auto;
@@ -154,7 +155,7 @@ input:focus{
     padding-top: 3%;
 }
 .flash4{
-    width:85%;
+    width:100%;
     height:450px;
     margin:0px auto;
     margin-bottom:20px;
