@@ -81,7 +81,7 @@
 <section id="section6" class="section section6">
   <article class="sectionWrapper section6Wrapper">
   <div class="">
-        <p class="details-title">全球领先、安全、稳定的云计算产品</p></div>
+        <p class="details-title"></p></div>
 <div class="flash4">
     <ul class="ul">
         <li class="first" style="width: 280px; height:405px; overflow: hidden;">
@@ -89,32 +89,36 @@
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <a href=""><p class="bt_1">全球领先</p><p class="bt_2" ></p></a>
+                <p class="bt_1"><a href="http://www.szjlxh.com/db">数据库</a></p><p class="bt_2" ></p>
             </div>
+            <a href="http://www.szjlxh.com/db"><img src="/images/mysql.png" class="image"></a>
         </li>
         <li style="width: 260px; overflow: hidden; height:350px"">
             <div class="imgTop">
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <a href=""><p class="bt_1">全球领先</p><p class="bt_2"></p></a>
+                <p class="bt_1"><a href="http://www.szjlxh.com/wiki">Wiki</a></p><p class="bt_2"></p>
             </div>
+            <a href="http://www.szjlxh.com/wiki"><img src="/images/wiki.png" class="image"></a>
         </li>
         <li style="width: 260px; overflow: hidden; height:350px"">
             <div class="imgTop">
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <a href=""><p class="bt_1">全球领先</p><p class="bt_2"></p></a>
+                <p class="bt_1"><a href="http://www.szjlxh.com/book ">图书馆</a></p><p class="bt_2"></p>
             </div>
+            <a href="http://www.szjlxh.com/book "><img src="/images/wordpress.png" class="image"></a>
         </li>
         <li style="width: 260px; overflow: hidden; height:350px"">
             <div class="imgTop">
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <a href=""><p class="bt_1">全球领先</p><p class="bt_2"></p></a>
+                <p class="bt_1"><a href="http://www.szjlxh.com/redis">Redis</a></p><p class="bt_2"></p>
             </div>
+            <a href="http://www.szjlxh.com/redis"><img src="/images/redis.png" class="image"></a>
         </li>
     </ul>   
 </div>

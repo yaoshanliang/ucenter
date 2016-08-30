@@ -30,8 +30,8 @@ ul ,li {
     width: 90%;
     height: 90%;
     margin: 18px auto;
-    background: rgba(195, 196, 188, 0.68);
-    /*background: rgba(238, 237, 241, 0.68);*/
+    /*background: rgba(195, 196, 188, 0.68);*/
+    background: rgba(255, 255, 255, 0.3);
     /*opacity: .9;*/
     border-radius: 5px;
 }
@@ -51,7 +51,8 @@ ul ,li {
     width: 100%;
     height: 13%;
     /*background: rgba(7, 7, 3, 0.3);*/
-    background: rgba(122, 122, 124, 0.3);
+    /*background: rgba(122, 122, 124, 0.3);*/
+    background:rgba(245, 245, 245, 0.26);
     opacity: 1;
     font-size: 20px;
     color: white;
@@ -157,7 +158,7 @@ input:focus{
     margin:0px auto;
     margin-bottom:20px;
     position:relative; 
-    margin-top: 8%;
+    margin-top: 5%;
 }
 .flash4 ul li{
     border:.1px solid #dbdbdd;
@@ -167,7 +168,6 @@ input:focus{
 }
 .flash4 ul li .imgTop .tm{
     opacity:1; 
-    cursor:pointer;
 }
 
 .flash4 ul li .imgCon{
@@ -182,8 +182,8 @@ input:focus{
 }
 .flash4 ul li .imgBot p.bt_1{
     width:260px;
-    line-height:45px;
-    font-size:16px;
+    line-height:75px;
+    font-size:20px;
     color:#232323;
     text-indent:20px;
     float:left;
@@ -196,7 +196,7 @@ input:focus{
     display:none;
 }
 .flash4 ul li .imgBot p.bt_2 span{
-    font-size:14px;
+    font-size:14px; 
     color:#232323;
     padding-right:30px;
 }
@@ -209,7 +209,12 @@ input:focus{
     right:0px;
     bottom:0px;
 }
-
+.image{
+    width: 61.8%;
+    display: block;
+    margin: 18% auto;
+    cursor: pointer;
+}
 
 /* 整屏切换部分*/
 html, body {
