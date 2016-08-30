@@ -81,7 +81,7 @@
 <section id="section6" class="section section6">
   <article class="sectionWrapper section6Wrapper">
   <div class="">
-        <p class="details-title"></p></div>
+        <p class="details-title">嘉禄讯汇内部系统</p></div>
 <div class="flash4">
     <ul class="ul">
         <li class="first" style="width: 280px; height:405px; overflow: hidden;">
