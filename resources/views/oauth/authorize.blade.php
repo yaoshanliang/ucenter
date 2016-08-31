@@ -15,6 +15,9 @@
 <body>
 <div class="top section"></div>
 <!-- container -->
+<div id="formbackground" style="position:absolute; width:100%; height:100%; z-index:-1">  
+<img src="" height="100%" width="100%" class="backgroundimg"/>  
+</div>
 <section id="section1" class="section section1">
   <article class="sectionWrapper section1Wrapper fadeInDown">
       <div class="container">
@@ -52,7 +55,7 @@
                    
                     <p class="logIn">
                         <button type="submit" class="button" value=1 name="approve">登录</button>
-                        <button type="submit" class="button1" value=0  name="approve">取消</button>
+                        <button type="submit" class="button" value=0  name="approve">取消</button>
                         <font class="weChat"><a href="{{ url('/auth/register') }}">注册</a></font>
                         <font class="weChat"><a href="{{ url('/password/phone') }}">忘记密码</a></font>
                         <font class="weChat">
@@ -88,7 +91,7 @@
              <div class="imgBot">
                 <a href="http://www.szjlxh.com/db"><p class="bt_1">数据库</p><p class="bt_2" ></p></a>
             </div>
-            <a href="http://www.szjlxh.com/db"><img src="/images/mysql.png" class="image"></a>
+            <div class="imgDiv"><a href="http://www.szjlxh.com/db"><img src="/images/mysql.png" class="image"></a></div>
         </li>
         <li style="width: 260px; overflow: hidden; height:350px"">
             <div class="imgTop">
@@ -97,7 +100,7 @@
             <div class="imgBot">
                 <a href="http://www.szjlxh.com/wiki"><p class="bt_1">Wiki</p><p class="bt_2"></p></a>
             </div>
-            <a href="http://www.szjlxh.com/wiki"><img src="/images/wiki.png" class="image"></a>
+            <div class="imgDiv"><a href="http://www.szjlxh.com/wiki"><img src="/images/wiki.png" class="image"></a></div>
         </li>
         <li style="width: 260px; overflow: hidden; height:350px"">
             <div class="imgTop">
@@ -106,7 +109,7 @@
             <div class="imgBot">
                 <a href="http://www.szjlxh.com/book "><p class="bt_1">图书馆</p><p class="bt_2"></p></a>
             </div>
-            <a href="http://www.szjlxh.com/book "><img src="/images/wordpress.png" class="image"></a>
+            <div class="imgDiv"><a href="http://www.szjlxh.com/book "><img src="/images/wordpress.png" class="image"></a></div>
         </li>
         <li style="width: 260px; overflow: hidden; height:350px"">
             <div class="imgTop">
@@ -115,7 +118,7 @@
             <div class="imgBot">
                 <a href="http://www.szjlxh.com/redis"><p class="bt_1">Redis</p><p class="bt_2"></p></a>
             </div>
-            <a href="http://www.szjlxh.com/redis"><img src="/images/redis.png" class="image"></a>
+            <div class="imgDiv"><a href="http://www.szjlxh.com/redis"><img src="/images/redis.png" class="image"></a></div>
         </li>
     </ul>   
 </div>

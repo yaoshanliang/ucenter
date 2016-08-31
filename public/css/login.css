@@ -1,10 +1,9 @@
 /* 第一页部分*/
 body{
     width:100%;
-    background: #232323;
+    background: #f6f6f6;
     margin: 0px;
     font-family: "Roboto", Helvetica, Arial, sans-serif;
-    background-size:100% 100%;
 }
 a{
     text-decoration: none;
@@ -15,14 +14,14 @@ ul ,li {
 }
 .container{
     width: 100%;
-    height: 700px;
+    height: 100%;
     padding-top: 1px;
 }
 .login{
     z-index: 100;
     /*opacity: .9;*/
     width: 40%;
-    height: 52%;
+    height: 55%;
     margin-top: 10%;
     padding-top: 1px;
     border-radius: 5px;
@@ -113,19 +112,6 @@ input{
     opacity:.8;
     cursor: pointer;
 }
-.button1{
-    width: 12%;
-    height: 29px;
-    background:  rgba(195, 196, 188, 0.68);
-    float: left;
-    margin-top: 4%;
-    margin-left: 6%;
-    border-color: #00bc0c;
-    border-radius: 2px;
-    font-size:16px;
-    opacity:.8;
-    cursor: pointer;
-}
 .register{
     margin-left: 4%;
 }
@@ -175,7 +161,7 @@ input:focus{
     margin:0px auto;
     margin-bottom:20px;
     position:relative; 
-    margin-top: 5%;
+    margin-top: 8%;
 }
 .flash4 ul li{
     border:.1px solid #dbdbdd;
@@ -226,10 +212,13 @@ input:focus{
     right:0px;
     bottom:0px;
 }
+.imgDiv{
+    margin-top:20%;
+}
 .image{
     width: 61.8%;
     display: block;
-    margin: 25% auto;
+    margin: 24% auto;
     cursor: pointer;
 }
 
