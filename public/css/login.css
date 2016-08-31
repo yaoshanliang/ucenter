@@ -1,9 +1,10 @@
 /* 第一页部分*/
 body{
+    width:100%;
     background: #232323;
     margin: 0px;
     font-family: "Roboto", Helvetica, Arial, sans-serif;
-    background-size: 100% 100%;
+    background-size:100% 100%;
 }
 a{
     text-decoration: none;
@@ -106,6 +107,19 @@ input{
     float: left;
     margin-top: 4%;
     margin-left: 10%;
+    border-color: #00bc0c;
+    border-radius: 2px;
+    font-size:16px;
+    opacity:.8;
+    cursor: pointer;
+}
+.button1{
+    width: 12%;
+    height: 29px;
+    background:  rgba(195, 196, 188, 0.68);
+    float: left;
+    margin-top: 4%;
+    margin-left: 6%;
     border-color: #00bc0c;
     border-radius: 2px;
     font-size:16px;
@@ -215,7 +229,7 @@ input:focus{
 .image{
     width: 61.8%;
     display: block;
-    margin: 20% auto;
+    margin: 25% auto;
     cursor: pointer;
 }
 

@@ -28,8 +28,8 @@ var bg='url(/images/background'+random_bg+'.jpg) no-repeat center';
     $("body").css("background",bg);
 }
 
-$(".flash4 ul").find('li').eq(0).css({'border':'.1px solid #00c1de','box-shadow':'0px 0px 3.5px #00c1de', 'margin-top':'-25px'});
-$(".flash4 ul").find('li').eq(0).find('.imgBot').css({background:'#00c1de',height:'125px'});
+$(".flash4 ul").find('li').eq(0).css({'border':'.1px solid #8dcfe9','box-shadow':'0px 0px 3.5px #8dcfe9', 'margin-top':'-25px'});
+$(".flash4 ul").find('li').eq(0).find('.imgBot').css({background:'#8dcfe9',height:'125px'});
 $(".flash4 ul").find('li').eq(0).find('.bt_1').css({color:"white",'line-height':'95px'});
 //手风琴动画效果
 $(".flash4 ul li").mouseover(function(){
@@ -37,8 +37,8 @@ $(".flash4 ul li").mouseover(function(){
     $(".flash4 ul li").css({'border':'.1px solid #dbdbdd', 'box-shadow':'0px 0px 0px #00c1de','margin-top':'0px'});
     $('.imgBot').css({'background':'#e5e6e6','height':'100px'});
     $('.bt_1').css({color:"#232323",'line-height':'75px'});
-    $(this).css({'border':'.1px solid #00c1de','box-shadow':'0px 0px 3.5px #00c1de', 'margin-top':'-25px'});
-    $(this).find('.imgBot').css({background:'#00c1de',height:'125px'});
+    $(this).css({'border':'.1px solid #8dcfe9','box-shadow':'0px 0px 3.5px #8dcfe9', 'margin-top':'-25px'});
+    $(this).find('.imgBot').css({background:'#8dcfe9',height:'125px'});
     $(this).find('.bt_1').css({color:"white",'line-height':'95px'});
     $(this).stop().animate({width:280, height:405},300).siblings("li").stop().animate({width:260, height:350},300);
     });
