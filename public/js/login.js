@@ -24,8 +24,8 @@ $(function() {
 	}
 function changebg(){
 var random_bg=Math.floor(Math.random()*10+1);
-var bg='url(/images/background'+random_bg+'.jpg) no-repeat center';
-    $("body").css("background",bg);
+var bg='/images/background'+random_bg+'.jpg';
+    $(".backgroundimg").attr('src', bg);
 }
 
 $(".flash4 ul").find('li').eq(0).css({'border':'.1px solid #8dcfe9','box-shadow':'0px 0px 3.5px #8dcfe9', 'margin-top':'-25px'});
