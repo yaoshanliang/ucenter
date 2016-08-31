@@ -11,7 +11,7 @@
 <script type="text/javascript">
 
 </script>  
-</head>
+</head> 
 <body>
 <div class="top section"></div>
 <!-- container -->
@@ -89,7 +89,7 @@
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <p class="bt_1"><a href="http://www.szjlxh.com/db">数据库</a></p><p class="bt_2" ></p>
+                <a href="http://www.szjlxh.com/db"><p class="bt_1">数据库</p><p class="bt_2" ></p></a>
             </div>
             <a href="http://www.szjlxh.com/db"><img src="/images/mysql.png" class="image"></a>
         </li>
@@ -98,7 +98,7 @@
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <p class="bt_1"><a href="http://www.szjlxh.com/wiki">Wiki</a></p><p class="bt_2"></p>
+                <a href="http://www.szjlxh.com/wiki"><p class="bt_1">Wiki</p><p class="bt_2"></p></a>
             </div>
             <a href="http://www.szjlxh.com/wiki"><img src="/images/wiki.png" class="image"></a>
         </li>
@@ -107,7 +107,7 @@
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <p class="bt_1"><a href="http://www.szjlxh.com/book ">图书馆</a></p><p class="bt_2"></p>
+                <a href="http://www.szjlxh.com/book "><p class="bt_1">图书馆</p><p class="bt_2"></p></a>
             </div>
             <a href="http://www.szjlxh.com/book "><img src="/images/wordpress.png" class="image"></a>
         </li>
@@ -116,7 +116,7 @@
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <p class="bt_1"><a href="http://www.szjlxh.com/redis">Redis</a></p><p class="bt_2"></p>
+                <a href="http://www.szjlxh.com/redis"><p class="bt_1">Redis</p><p class="bt_2"></p></a>
             </div>
             <a href="http://www.szjlxh.com/redis"><img src="/images/redis.png" class="image"></a>
         </li>

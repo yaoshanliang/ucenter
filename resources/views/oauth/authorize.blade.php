@@ -45,14 +45,14 @@
                     <input type="hidden" name="state" value="{{$params['state']}}">
                     <input type="hidden" name="scope" value="{{$params['scope']}}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                    <font class="font">账号:</font>
-                    <input type="text" class="userName"  name="username" value="{{ old('username') }}" placeholder="用户名/邮箱/手机" style="margin-top:2%;">
-                    <font class="font">密码:</font>
-                    <input type="password" class="password"  name="password" placeholder="密码">
+                    <div><font class="font">账号:</font>
+                        <input type="text" class="userName"  name="username" value="{{ old('username') }}" placeholder="用户名/邮箱/手机" style="margin-top:2%;"></div>
+                    <div><font class="font">密码:</font>
+                        <input type="password" class="password"  name="password" placeholder="密码"></div>
                    
                     <p class="logIn">
                         <button type="submit" class="button" value=1 name="approve">登录</button>
-                        <button type="submit" class="button" value=0  name="approve">取消</button>
+                        <button type="submit" class="button1" value=0  name="approve">取消</button>
                         <font class="weChat"><a href="{{ url('/auth/register') }}">注册</a></font>
                         <font class="weChat"><a href="{{ url('/password/phone') }}">忘记密码</a></font>
                         <font class="weChat">
@@ -72,46 +72,50 @@
         </div>
     </div>
 </div>
- <div class="arrow_down"> <a href="#section6"> <img src="/images/arrow_down.png" width="42px" height="24px" alt="arrow_down"> </a> </div>
+  <div class="arrow_down"> <a href="#section6"> <img src="/images/arrow_down.png" width="42px" height="24px" alt="arrow_down"> </a> </div>
   </article>
 </section>
 <section id="section6" class="section section6">
   <article class="sectionWrapper section6Wrapper">
   <div class="">
-        <p class="details-title">全球领先、安全、稳定的云计算产品</p></div>
+        <p class="details-title">嘉禄讯汇&nbsp;&nbsp;内部系统</p></div>
 <div class="flash4">
-    <ul>
+    <ul class="ul">
         <li class="first" style="width: 280px; height:405px; overflow: hidden;">
             <div class="imgTop">
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
-            <div class="imgBot">
-                <a href=""><p class="bt_1">全球领先</p><p class="bt_2" ></p></a>
+             <div class="imgBot">
+                <a href="http://www.szjlxh.com/db"><p class="bt_1">数据库</p><p class="bt_2" ></p></a>
             </div>
+            <a href="http://www.szjlxh.com/db"><img src="/images/mysql.png" class="image"></a>
         </li>
         <li style="width: 260px; overflow: hidden; height:350px"">
             <div class="imgTop">
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <a href=""><p class="bt_1">全球领先</p><p class="bt_2"></p></a>
+                <a href="http://www.szjlxh.com/wiki"><p class="bt_1">Wiki</p><p class="bt_2"></p></a>
             </div>
+            <a href="http://www.szjlxh.com/wiki"><img src="/images/wiki.png" class="image"></a>
         </li>
         <li style="width: 260px; overflow: hidden; height:350px"">
             <div class="imgTop">
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <a href=""><p class="bt_1">全球领先</p><p class="bt_2"></p></a>
+                <a href="http://www.szjlxh.com/book "><p class="bt_1">图书馆</p><p class="bt_2"></p></a>
             </div>
+            <a href="http://www.szjlxh.com/book "><img src="/images/wordpress.png" class="image"></a>
         </li>
         <li style="width: 260px; overflow: hidden; height:350px"">
             <div class="imgTop">
                 <div style="width:278px;height:405px;" alt="" class="tm"></div>
             </div>
             <div class="imgBot">
-                <a href=""><p class="bt_1">全球领先</p><p class="bt_2"></p></a>
+                <a href="http://www.szjlxh.com/redis"><p class="bt_1">Redis</p><p class="bt_2"></p></a>
             </div>
+            <a href="http://www.szjlxh.com/redis"><img src="/images/redis.png" class="image"></a>
         </li>
     </ul>   
 </div>
