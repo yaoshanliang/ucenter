@@ -20,19 +20,14 @@ class AppLogController extends Controller
 
     public function postLists(Request $request)
     {
-        $fields = array('id', 'user_id', 'type', 'title', 'data', 'sql', 'ip', 'pushed_at', 'created_at');
-        $searchFields = array('user_id', 'type', 'title');
+        $searchFields = array('user_id', 'request_method', 'request_url', 'request_params', 'response_code', 'response_message', 'response_data', 'user_id', 'user_ip', 'user_client', 'user_agent');
 
         $data = AppLog::where('app_id', Session::get('current_app_id'))
             ->whereDataTables($request, $searchFields)
             ->orderByDataTables($request)
             ->skip($request->start)
             ->take($request->length)
-            ->get($fields);
-        foreach ($data as &$v) {
-            $user = Cache::get(Config::get('cache.users') . $v->user_id);
-            $v->user_id = $user['username'];
-        }
+            ->get();
         $draw = (int)$request->draw;
         $recordsTotal = AppLog::where('app_id', Session::get('current_app_id'))->count();
         $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
@@ -41,15 +36,14 @@ class AppLogController extends Controller
     }
 
     // 详细
-    public function getShow(Request $request, $id)
+    public function getLog(Request $request, $id)
     {
         if (!AppLog::where('app_id', Session::get('current_app_id'))->where('id', $id)->exists()) {
             return $this->response->array(array('code' => 0, 'message' => 'Forbidden'));
         }
 
         $applog = Applog::find($id);
-        $user = Cache::get(Config::get('cache.users') . $applog->user_id);
-        return view('admin.applog.show')->with(compact('applog', 'user'));
+        return $this->response->array(array('code' => 0, 'message' => '获取日志成功', 'data' => $applog));
     }
 
 }
