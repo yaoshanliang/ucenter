@@ -13,7 +13,7 @@
 </script> 
 </head>
 <body>
-<div class="top section"></div>
+<div class="top section"></div> 
 <!-- container -->
 <div id="formbackground" style="position:absolute; width:100%; height:100%; z-index:-1">  
 <img src="" height="100%" width="100%" class="backgroundimg"/>  
@@ -21,16 +21,7 @@
 <section id="section1" class="section section1">
   <article class="sectionWrapper section1Wrapper fadeInDown">
       <div class="container">
-      @if (count($errors) > 0)
-        <div class="alert alert-danger">
-        <strong>Whoops!</strong> There were some problems with your input.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+      
     <div class="login">
         <div class="login-first">
             <div class="login-font1">
@@ -40,6 +31,16 @@
                 </font>
             </div>
             <div class="login-font">统一身份认证</div>
+            @if (count($errors) > 0)
+                <div class="alert alert-danger  danger-warning">
+                    <strong>Whoops!</strong> There were some problems with your input.
+                    <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+                </ul>
+        </div>
+        @endif
             <div class="login-input">
                 <form  role="form" method="post" action="{{ route('oauth.authorize.post', $params) }}">
                     <input type="hidden" name="client_id" value="{{$params['client_id']}}">
@@ -49,7 +50,7 @@
                     <input type="hidden" name="scope" value="{{$params['scope']}}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div><font class="font">账号:</font>
-                        <input type="text" class="userName"  name="username" value="{{ old('username') }}" placeholder="用户名/邮箱/手机" style="margin-top:2%;"></div>
+                        <input type="text" class="userName"  name="username" value="{{ old('username') }}" placeholder="用户名/邮箱/手机" style="margin-top:1.5%;"></div>
                     <div><font class="font">密码:</font>
                         <input type="password" class="password"  name="password" placeholder="密码"></div>
                    
