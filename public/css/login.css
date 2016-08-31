@@ -21,19 +21,21 @@ ul ,li {
     z-index: 100;
     /*opacity: .9;*/
     width: 40%;
-    height: 55%;
+    height: auto;
     margin-top: 10%;
     padding-top: 1px;
     border-radius: 5px;
     margin-left: 60%;
 }
+.danger-warning{
+    color: red;
+    text-align: center;
+}
 .login-first{
     width: 90%;
     height: 90%;
     margin: 18px auto;
-    /*background: rgba(195, 196, 188, 0.68);*/
     background: rgba(255, 255, 255, 0.3);
-    /*opacity: .9;*/
     border-radius: 5px;
 }
 .login-font{
@@ -49,10 +51,9 @@ ul ,li {
 }
 .login-font1{
     padding-top: 15px;
+    padding-bottom: 15px;
     width: 100%;
     height: 13%;
-    /*background: rgba(7, 7, 3, 0.3);*/
-    /*background: rgba(122, 122, 124, 0.3);*/
     background:rgba(245, 245, 245, 0.26);
     opacity: 1;
     font-size: 20px;
@@ -63,9 +64,9 @@ ul ,li {
 }
 input{
     width: 62%;
-    height: 30px;
-    background:  rgba(122, 122, 124, 0.3);
-    border: 0px solid  rgba(122, 122, 124, 0.3);
+    height: 38px;
+    background: rgba(255, 255, 255, 0.3);
+    border: 0px solid rgba(255, 255, 255, 0.3);
     border-radius: 5px;
     color: #232323;
     margin-left: 4%;
@@ -76,14 +77,26 @@ input{
     padding-left: 10%;
     }
 .userName{
-    background-color:  rgba(122, 122, 124, 0.3);
+    background-color:  rgba(255, 255, 255, 0.3);
     background-size: 6% 58%;
     padding-left: 3%;
 }
 .password{
-    background-color:  rgba(122, 122, 124, 0.3);
+    background-color:  rgba(255, 255, 255, 0.3);
     background-size: 6% 58%;
     padding-left: 3%;
+}
+.verification{
+    margin-top: 6%;
+}
+.verification1{
+    display: inline-block;
+    width: 65%;
+    padding-left: 4%;
+    margin-top: -1%;
+}
+.font-title{
+    padding-left: 10%;
 }
 .checkbox{
     width: 4%;
@@ -98,6 +111,8 @@ input{
 }
 .logIn{
     clear: both;
+    width: 100%;
+    height: 70px;
 }
 .button{
     width: 12%;
@@ -122,7 +137,7 @@ input{
     cursor: pointer;
 }
 input:focus{
-    border-color: #00bc0c;
+    border-color: red;
 }
 .arrow_down {
     position: absolute;
