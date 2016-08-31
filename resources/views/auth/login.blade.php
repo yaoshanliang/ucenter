@@ -20,16 +20,6 @@
 <section id="section1" class="section section1">
   <article class="sectionWrapper section1Wrapper fadeInDown">
       <div class="container">
-      @if (count($errors) > 0)
-        <div class="alert alert-danger">
-            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif 
     <div class="login">
         <div class="login-first">
             <div class="login-font1">
@@ -39,26 +29,36 @@
                 </font>
             </div>
             <div class="login-font">统一身份认证</div>
+            @if (count($errors) > 0)
+                <div class="alert alert-danger danger-warning">
+                    <strong>Whoops!</strong> There were some problems with your input.
+                    <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                    </ul>
+                </div>
+            @endif 
             <div class="login-input">
                 <form  role="form" method="POST" action="{{ url('/auth/login') }}">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div><font class="font">账号:</font>
-                        <input type="text" class="userName"  name="username" value="{{ old('username') }}" placeholder="用户名/邮箱/手机" style="margin-top:2%;"></div>
+                        <input type="text" class="userName"  name="username" value="{{ old('username') }}" placeholder="用户名/邮箱/手机" style="margin-top:1.5%;"></div>
                     <div><font class="font">密码:</font>
                         <input type="password" class="password"  name="password" placeholder="密码"></div>
                      @if ($loginFailed)
                         <script src="//captcha.luosimao.com/static/js/api.js"></script>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">验证</label>
-                            <div class="col-md-10">
-                                <div class="l-captcha" data-site-key="{{ env('CAPTCHA_SITE_KEY') }}" data-width="100%"></div>
-                            </div>
+                        <div class="form-group verification">
+                            <label class="col-md-2 control-label font-title">验证:</label>
+                            <font class="col-md-10 verification1" style="">
+                                <font class="l-captcha" data-site-key="{{ env('CAPTCHA_SITE_KEY') }}" data-width="100%" style="display:inline-block ; border-radius:10px;"></font>
+                            </font>
                         </div>
                         @endif
                         <div><input type="checkbox" class="checkbox">
                             <label>
                             <font class="rememberPassword" name="remember">记住密码</font></label></div>
-                    <p class="logIn">
+                    <div class="logIn">
                         <button type="submit" class="button">登录</button>
                         <font class="weChat"><a href="{{ url('/auth/register') }}">注册</a></font>
                         <font class="weChat"><a href="{{ url('/password/phone') }}">忘记密码</a></font>
@@ -70,7 +70,7 @@
                                     "&response_type=code&scope=snsapi_login&state=" . md5(time()) .
                                     "#wechat_redirect"; ?>'">
                         </font>
-                    </p>
+                    </div>
                 </form>
             </div>
 
