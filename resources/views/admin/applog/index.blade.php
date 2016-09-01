@@ -69,8 +69,7 @@ var columns = [
                 {
                     "data": "response_data",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        // $(nTd).html(sData.replace(/,/g, ', '));
-                        $(nTd).html('<div style="word-break: break-all">' + sData.replace(/,/g, ', ') + '</div>');
+                        $(nTd).html(sData.replace(/,/g, ', '));
                     }
                 },
                 {"data": "user_id"},
