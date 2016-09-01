@@ -69,7 +69,8 @@ var columns = [
                 {
                     "data": "response_data",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html(sData.replace(/,/g, ', '));
+                        // $(nTd).html(sData.replace(/,/g, ', '));
+                        $(nTd).html('<div style="word-break: break-all">' + sData.replace(/,/g, ', ') + '</div>');
                     }
                 },
                 {"data": "user_id"},
@@ -126,7 +127,6 @@ function getTime(time) {
 }
 
 function openDetails(nTr, id) {
-    console.log(nTr);
     $.ajax({
         url: '/admin/applog/log/' + id,
         dataType: "json",
