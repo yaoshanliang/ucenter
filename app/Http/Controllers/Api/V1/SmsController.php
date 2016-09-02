@@ -13,6 +13,7 @@ use App\Services\Api;
 use App\Model\User;
 use PhpSms;
 use App\Jobs\Sms;
+use App\Exceptions\ApiException;
 
 class SmsController extends ApiController
 {
