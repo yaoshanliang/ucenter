@@ -102,7 +102,8 @@ class SmsController extends ApiController
             empty(parent::getUserId()) ? Cache::put(Config::get('cache.sms.count.phone') . $phone, 1, 60) :
                 Cache::put(Config::get('cache.sms.count.user_id') . parent::getUserId(), 1, 60);
         } else {
-            if (!in_array($phone, Config::get('phpsms.whiteList')) && $count > 3) {
+            // if (!in_array($phone, Config::get('phpsms.whiteList')) && $count > 3) {
+            if (false === strpos(env('SMS_WHITE_LIST'), $phone) && $count > 3) {
                 throw new ApiException('超过每小时三次限制');
             }
             empty(parent::getUserId()) ? Cache::put(Config::get('cache.sms.count.phone') . $phone, ++$count, 60) :
