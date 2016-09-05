@@ -39,7 +39,6 @@ class Email extends Job implements SelfHandling, ShouldBeQueued
     public function handle()
     {
         $popedAt = date('Y-m-d H:i:s');
-        echo '[', $popedAt, ']', '[Email Log]...';
 
         // 发送邮件
         $mail = $this->log;
@@ -50,7 +49,5 @@ class Email extends Job implements SelfHandling, ShouldBeQueued
 
         // 记录日志
         $user_log = EmailModel::create(array_merge($this->log, array('poped_at' => $popedAt, 'created_at' => date('Y-m-d H:i:s'))));
-
-        echo 'OK!';
     }
 }

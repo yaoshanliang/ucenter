@@ -39,14 +39,12 @@ class Sms extends Job implements SelfHandling, ShouldBeQueued
     public function handle()
     {
         $popedAt = date('Y-m-d H:i:s');
-        echo '[', $popedAt, ']', '[Sms Log]...';
 
         // PhpSms::queue(false);
         // $sms = $this->log;
         // $result = PhpSms::make()->to($sms['phone'])->content($sms['content'])->send();
 
         $user_log = SmsModel::create(array_merge($this->log, array('poped_at' => $popedAt, 'created_at' => date('Y-m-d H:i:s'))));
-        echo 'OK!';
     }
 
 }

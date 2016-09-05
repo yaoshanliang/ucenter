@@ -16,7 +16,6 @@ function sendCode() {
             'X-CSRF-TOKEN': $('input[name="_token"]').val()
         },
         success: function(data) {
-            console.log(SUCCESS);
             if(data['code'] === SUCCESS) {
                 showSuccessTip(data['message']);
                 var InterValObj;
