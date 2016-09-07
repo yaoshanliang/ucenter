@@ -69,7 +69,7 @@ var columns = [
                 {
                     "data": "response_data",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html(sData.replace(/#/g, '# '));
+                        $(nTd).html(sData.replace(/,/g, ', ').replace(/#/g, '# '));
                     }
                 },
                 {"data": "user_id"},
@@ -147,7 +147,7 @@ function openDetails(nTr, id) {
                 data = data.data;
                 var details = td00 + 'id' + td01 + td10 + data['id'] + td11;
                 details += td00 + '请求数据' + td01 + td10 + data['request_params'].replace(/,/g, ', ') + td11;
-                details += td00 + '返回数据' + td01 + td10 + data['response_data'].replace(/#/g, '# ') + td11;
+                details += td00 + '返回数据' + td01 + td10 + data['response_data'].replace(/,/g, ', ').replace(/#/g, '# ') + td11;
                 details += td00 + '用户agent' + td01 + td10 + data['user_agent'] + td11;
                 details += td00 + '请求时间' + td01 + td10 + getTime(data['request_at']) + td11;
                 details += td00 + '返回时间' + td01 + td10 + getTime(data['poped_at']) + td11;
