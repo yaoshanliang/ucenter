@@ -22,15 +22,16 @@ class AppLogController extends Controller
     {
         $searchFields = array('user_id', 'request_method', 'request_url', 'request_params', 'response_code', 'response_message', 'response_data', 'user_id', 'user_ip', 'user_client', 'user_agent');
 
-        $data = AppLog::where('app_id', Session::get('current_app_id'))
+        $pre = AppLog::where('app_id', Session::get('current_app_id'))
             ->whereDataTables($request, $searchFields)
             ->orderByDataTables($request)
             ->skip($request->start)
-            ->take($request->length)
-            ->get();
+            ->take($request->length);
+        $data = $pre->get();
+        $count = $pre->count();
         $draw = (int)$request->draw;
         $recordsTotal = AppLog::where('app_id', Session::get('current_app_id'))->count();
-        $recordsFiltered = strlen($request->search['value']) ? count($data) : $recordsTotal;
+        $recordsFiltered = strlen($request->search['value']) ? $count : $recordsTotal;
 
         return $this->response->array(compact('draw', 'recordsFiltered', 'recordsTotal', 'data'));
     }
