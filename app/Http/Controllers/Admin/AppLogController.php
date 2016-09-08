@@ -24,11 +24,9 @@ class AppLogController extends Controller
 
         $pre = AppLog::where('app_id', Session::get('current_app_id'))
             ->whereDataTables($request, $searchFields)
-            ->orderByDataTables($request)
-            ->skip($request->start)
-            ->take($request->length);
-        $data = $pre->get();
+            ->orderByDataTables($request);
         $count = $pre->count();
+        $data = $pre->skip($request->start)->take($request->length)->get();
         $draw = (int)$request->draw;
         $recordsTotal = AppLog::where('app_id', Session::get('current_app_id'))->count();
         $recordsFiltered = strlen($request->search['value']) ? $count : $recordsTotal;
