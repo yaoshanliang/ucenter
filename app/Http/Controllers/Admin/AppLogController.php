@@ -20,7 +20,7 @@ class AppLogController extends Controller
 
     public function postLists(Request $request)
     {
-        $searchFields = array('user_id', 'request_method', 'request_url', 'request_params', 'response_code', 'response_message', 'response_data', 'user_id', 'user_ip', 'user_client', 'user_agent');
+        $searchFields = array('user_id', 'request_method', 'request_url', 'request_params', 'response_code', 'response_message', 'response_data', 'user_id', 'user_ip', 'user_client', 'user_agent', 'request_time');
 
         $pre = AppLog::where('app_id', Session::get('current_app_id'))
             ->whereDataTables($request, $searchFields)
