@@ -35,6 +35,11 @@ div.dataTables_info {
     padding-top: 8px;
     color: #777;
 }
+div.dataTables_processing {
+    height: 100%;
+    // top: 25px;
+    margin-top: 0;
+}
 .JColResizer {
      // display:none;
      // margin:0,4px,0,4px !important;
