@@ -75,7 +75,7 @@ var columns = [
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                         // console.log(sData.indexOf("\""));
                         if (((sData != '' ) && (sData.indexOf("\"") != 0))) {
-                            $(nTd).JSONView(sData, { collapsed: true });
+                            $(nTd).JSONView(sData.replace(/#/g, '# '), { collapsed: true });
                         }
 
                         // $(nTd).html(sData.replace(/,/g, ', ').replace(/#/g, '# '));
