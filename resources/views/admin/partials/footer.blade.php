@@ -37,7 +37,7 @@ div.dataTables_info {
 }
 div.dataTables_processing {
     height: 100%;
-    // top: 25px;
+    top: 60px;
     margin-top: 0;
 }
 .JColResizer {
