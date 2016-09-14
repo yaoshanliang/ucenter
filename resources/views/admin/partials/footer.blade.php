@@ -14,6 +14,10 @@
 <!-- icheck JavaScript -->
 <script src="{{ asset('plugin/icheck/icheck.min.js') }}"></script>
 
+<!-- JSONView JavaScript -->
+<script src="{{ asset('admin-assets/js/jquery.jsonview.js') }}"></script>
+<link href="{{ asset('admin-assets/css/jquery.jsonview.css') }}" rel="stylesheet">
+
 <style>
 td.highlight {
     background-color: whitesmoke !important;

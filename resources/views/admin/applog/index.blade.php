@@ -9,6 +9,7 @@
         <div class="dataTable_wrapper">
             <br />
             <div class="input-group custom-search-form">
+                <a id="refresh" href='javascript:void(0);' class="btn btn-outline btn-default" onclick='return refresh();'>刷新</a>
                 <input type="text" id="search" class="form-control search" placeholder="搜索">
                 <span class="input-group-btn">
                     <button class="btn btn-default" type="button">
@@ -69,7 +70,13 @@ var columns = [
                 {
                     "data": "response_data",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html(sData.replace(/,/g, ', ').replace(/#/g, '# '));
+                        // console.log(sData.indexOf("\""));
+                        if (((sData != '' ) && (sData.indexOf("\"") != 0))) {
+                            $(nTd).JSONView(sData, { collapsed: true });
+                        }
+
+                        // $(nTd).html(sData.replace(/,/g, ', ').replace(/#/g, '# '));
+                        // $(nTd).JSONView(sData.replace(/,/g, ', ').replace(/#/g, '# '));
                     }
                 },
                 {"data": "user_id"},
@@ -162,5 +169,13 @@ function openDetails(nTr, id) {
        }
     });
 }
+
+function refresh() {
+    table.draw();
+    showSuccessTip('刷新成功');
+}
+
+$('.btn-outline').mouseleave(function(){$('.btn-outline').css({'background-color': 'transparent'});})
+$('.btn-outline').mouseenter(function(){$('.btn-outline').css({'background-color': '#e6e6e6'});})
 </script>
 @endsection
