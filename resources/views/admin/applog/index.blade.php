@@ -62,7 +62,10 @@ var columns = [
                 {
                     "data": "request_params",
                     "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                        $(nTd).html(sData.replace(/,/g, ', '));
+                        // $(nTd).html(sData.replace(/,/g, ', '));
+                        if (((sData != '' ) && (sData.indexOf("\"") != 0))) {
+                            $(nTd).JSONView(sData, { collapsed: true });
+                        }
                     }
                 },
                 {"data": "response_code"},
