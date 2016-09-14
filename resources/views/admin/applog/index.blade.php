@@ -175,7 +175,6 @@ function openDetails(nTr, id) {
 
 function refresh() {
     table.draw();
-    showSuccessTip('刷新成功');
 }
 
 $('.btn-outline').mouseleave(function(){$('.btn-outline').css({'background-color': 'transparent'});})
