@@ -74,7 +74,7 @@ function datatable_base() {
             "dom":
                 "<'row'<'col-sm-6'><'col-sm-6'>r>"+
                 "t"+
-                "<'row'<'pull-left'l><'pull-left'i><'col-sm-6 pull-right'p>>",
+                "<'row'<'pull-left'l><'pull-left'i><'col-sm-7 pull-right'p>>",
             "pagingType": "full_numbers",
             "iDisplayLength": 8,
             "lengthMenu": [[8, 25, 50, 100], [8, 25, 50, 100]],
