@@ -39,16 +39,6 @@
                             </div>
                         </div>
 
-                        @if ($loginFailed)
-                        <script src="//captcha.luosimao.com/static/js/api.js"></script>
-                        <div class="form-group">
-                            <label class="col-md-2 control-label">验证</label>
-                            <div class="col-md-10">
-                                <div class="l-captcha" data-site-key="{{ env('CAPTCHA_SITE_KEY') }}" data-width="100%"></div>
-                            </div>
-                        </div>
-                        @endif
-
                         <div class="form-group">
                             <label class="col-md-2 control-label"></label>
                             <div class="col-md-10">
@@ -66,12 +56,6 @@
                                 <button type="submit" class="btn btn-primary">登录</button>
                                 <a class="btn btn-link" href="{{ url('/password/phone') }}">忘记密码</a>
                                 <a class="btn btn-link" href="{{ url('/auth/register') }}">注册账户</a>
-                                <img style="cursor:pointer; padding-left:20px;" src="{{ asset('/images/icon24_appwx_logo.png') }}"
-                                    onclick="javascript:window.location.href='<?php echo
-                                    "https://open.weixin.qq.com/connect/qrconnect?appid=" . env('WECHAT_APPID') .
-                                    "&redirect_uri=" . urlencode(url('oauth/wechatCallback?goto=/auth/login')) .
-                                    "&response_type=code&scope=snsapi_login&state=" . md5(time()) .
-                                    "#wechat_redirect"; ?>'">
                             </div>
                             </div>
                         </div>

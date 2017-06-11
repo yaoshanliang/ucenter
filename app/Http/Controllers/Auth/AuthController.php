@@ -122,37 +122,13 @@ class AuthController extends Controller
     {
         $this->validate($request, ['username' => 'required', 'password' => 'required']);
 
-        if (false === $this->checkCaptcha($request->luotest_response)) {
-            return back()->withInput()->withErrors('人机验证未通过，请重试！');
-        }
-
         // 验证密码
         if (false === ($userId = $this->verifyPassword($request->username, $request->password))) {
-
-            // 登陆失败记录，用于人机验证
-            Cookie::queue('login_failed', 1, 3);
 
             return back()->withInput()->withErrors('账户与密码不匹配，请重试！');
         }
 
         return $userId;
-    }
-
-    // 螺丝帽人机验证
-    // link:https://luosimao.com/docs/api/56
-    private function checkCaptcha($response)
-    {
-        if (!is_null($response)) {
-            if ($response != '') {
-                $curl = new Curl();
-                $result = $curl->post('https://captcha.luosimao.com/api/site_verify', array(
-                    'api_key' => env('CAPTCHA_API_KEY'),
-                    'response' => $response,
-                ));
-                return ('success') == $result->res ? true : false;
-            }
-            return false;
-        }
     }
 
     // 微信登陆之后的回调
