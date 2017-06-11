@@ -205,9 +205,9 @@ class UserController extends Controller
         ));
 
         // 发送邀请邮件
-        $mail = Queue::push(new SendEmail('invite', '邀请入驻用户中心', $token, $request->email));
+        // $mail = Queue::push(new SendEmail('invite', '邀请入驻用户中心', $token, $request->email));
 
-        if ($user && $password_reset && $user_role && $mail) {
+        if ($user && $password_reset && $user_role) {
             session()->flash('success_message', '用户邀请成功');
             return Redirect::to('/admin/user/invite');
         } else {
