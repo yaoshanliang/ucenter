@@ -4,6 +4,8 @@
 
 *演示地址: [http://demo.ucenter.szjlxh.com](http://demo.ucenter.szjlxh.com)*
 
+* 用户名：admin 密码：123456
+
 *开放平台: [http://yaoshanliang.github.io/ucenter-open](http://yaoshanliang.github.io/ucenter-open)*
 
 * [Laravel](http://laravel.com)
