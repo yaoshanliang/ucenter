@@ -2,7 +2,7 @@
 
 #### ——“统一身份认证服务”、“用户系统”、“权限系统”、“日志系统”、“文件系统”、“邮件服务”、“短信服务”
 
-*演示地址: [http://demo.ucenter.szjlxh.com](http://demo.ucenter.szjlxh.com)*
+*地址: [http://ucenter.sshmt.com](http://ucenter.sshmt.com)*
 
 * 用户名：admin 密码：123456
 
